@@ -3,4 +3,4 @@
 - django 2.2.3
 - pymysql 0.9.3
 - cryptography 2.7
-- 
+
