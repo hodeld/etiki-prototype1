@@ -5,6 +5,10 @@ from . import views
 
 app_name = 'etilog'
 urlpatterns = [
-    path('', views.overview_impevs, name='home'), #= login-redirect in settings
+    #path('', views.startinfo, name='startinfo'), #
+    path('', views.overview_impevs, name='home'),
+    
+    
+    
     
 ]

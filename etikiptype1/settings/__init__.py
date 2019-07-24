@@ -11,11 +11,9 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-#from .secrets import *
+
 import django_heroku 
 
-import pymysql
-pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,6 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    #third party apps
+    'django_tables2',
+    'django_filters',
+    'bootstrap4',
     
     # Local apps
     'etilog.apps.EtilogConfig'
@@ -122,9 +125,16 @@ USE_L10N = True
 USE_TZ = True
 
 
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
 
 django_heroku.settings(locals())

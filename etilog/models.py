@@ -59,7 +59,6 @@ class ImpactEvent (models.Model):
     reference = models.ForeignKey(Reference, on_delete=models.CASCADE)
     source_url = models.URLField(blank=True, null=True)
     
-    def __str__(self):
-        return self.name
+
     
     
