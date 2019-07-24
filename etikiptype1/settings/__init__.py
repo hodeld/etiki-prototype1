@@ -82,13 +82,9 @@ WSGI_APPLICATION = 'etikiptype1.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', #'django.db.backends.sqlite3',
-        'NAME': 'etiki_pt1'#,  #os.path.join(BASE_DIR, 'algoterm_vers1'), #'db.sqlite3'),
-        #'USER': db_user, #'admin',
-        #'PASSWORD': db_password,
-        #'HOST': db_host,  #'127.0.0.1',
-        #'PORT': db_port #'3306', #'5432', -> check firts
+    "default": {
+        "ENGINE" : "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3")
     }
 }
 
