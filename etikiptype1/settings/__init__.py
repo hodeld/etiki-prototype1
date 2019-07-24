@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from .secrets import *
+#from .secrets import *
 import django_heroku 
 
 import pymysql
@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'etikiptype1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', #'django.db.backends.sqlite3',
-        'NAME': 'etiki_pt1',  #os.path.join(BASE_DIR, 'algoterm_vers1'), #'db.sqlite3'),
-        'USER': db_user, #'admin',
-        'PASSWORD': db_password,
-        'HOST': db_host,  #'127.0.0.1',
-        'PORT': db_port #'3306', #'5432', -> check firts
+        'NAME': 'etiki_pt1'#,  #os.path.join(BASE_DIR, 'algoterm_vers1'), #'db.sqlite3'),
+        #'USER': db_user, #'admin',
+        #'PASSWORD': db_password,
+        #'HOST': db_host,  #'127.0.0.1',
+        #'PORT': db_port #'3306', #'5432', -> check firts
     }
 }
 
