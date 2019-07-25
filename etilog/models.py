@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 
 class Country (models.Model):
     numeric = models.PositiveSmallIntegerField(unique = True)
-    name = models.CharField(unique = True,  max_length=15)
+    name = models.CharField(unique = True,  max_length=100)
     alpha2code = models.CharField(unique = True, verbose_name='alpha-2-code', max_length=2)
     alpha3code = models.CharField(unique = True, verbose_name='alpha-3-code', max_length=3)
     def __str__(self):
