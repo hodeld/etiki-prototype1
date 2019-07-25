@@ -125,7 +125,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap.html"
 BOOTSTRAP4 = {
     'include_jquery': True,
 }

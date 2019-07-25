@@ -11,9 +11,9 @@ class ImpEvTable(tables.Table):
     basic table for impact events
     '''
 
-    
+    id = tables.Column( linkify = True )
     class Meta:
         model = ImpactEvent
-        attrs = {'class': 'table table-sm'}
-        #exclude = (  'deleted', 'eventcat', 'masterevent')
+        attrs = {'class': 'table table-hover table-sm' } #bootstrap4 classes
+        exclude = (  'created_at', 'updated_at', )
     
