@@ -46,7 +46,7 @@ class Reference (models.Model):
         
 class SustainabilityDomain (models.Model):
     impnr = models.PositiveSmallIntegerField(verbose_name='Import Number', blank=True,null=True)
-    name = models.CharField(unique = True,  max_length=15)
+    name = models.CharField(unique = True,  max_length=30)
     def __str__(self):
         return self.name
     class Meta:
