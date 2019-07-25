@@ -65,8 +65,7 @@ class SustainabilityCategory (models.Model):
 
 class SustainabilityTag (models.Model):
     impnr = models.PositiveSmallIntegerField(verbose_name='Import Number', blank=True,null=True)
-    name = models.CharField(unique = True,  max_length=15)
-    name_long = models.CharField(unique = True,  max_length=50)
+    name = models.CharField(unique = True,  max_length=35)
     sust_categories = models.ManyToManyField('SustainabilityCategory', blank=True)
     description = models.CharField(max_length=200, blank=True,null=True)
     def __str__(self):

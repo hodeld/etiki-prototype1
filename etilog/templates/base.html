@@ -4,24 +4,57 @@
 <script src="{% static 'algoterm/js/script_algoterm.js' %}"></script>
 <head>
 <title>{% block title %}etiki {% endblock title %} | etiki</title>
-{#import bootstrap4#} 
-{% load bootstrap4 %} 
-
-{# Embed Bootstrap CSS #}
-{% bootstrap_css %} 
-{# Embed Bootstrap JS+jQuery #}
-{% bootstrap_javascript jquery='full' %} 
+{#import bootstrap4#} {% load bootstrap4 %} {# Embed Bootstrap CSS #} 
+{%bootstrap_css %} {# Embed Bootstrap JS+jQuery #} 
+{% bootstrap_javascript jquery='full' %}
 <style>
-body {
-/* default is 1rem or 16px */
-font-size: 12px;
+.navbar {
+     background-color: #3E7480; 	
 }
+
+body {
+	/* default is 1rem or 16px */
+	font-size: 12px;
+}
+.text-primary { color: #3E7480; }
+
 .table-sm {
-     font-size: 1em; 
+	font-size: 1em;
+}
+
+.table-sm .orderable a{
+	color: #3E7480;
 }
 </style>
 </head>
 <body>
+	{# Navigation Menu #}
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-dark rounded">
+			<a class="navbar-brand" href="#">etiki</a>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active"><a class="nav-link">overview</a></li>
+				<li class="nav-item"><a class="nav-link">Left Link 2</a></li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item"><a class="nav-link"
+					href="{% url 'admin:index' %}">Admin</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="{% url 'admin:etilog_impactevent_add' %}">new Impact
+						Event</a></li>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false"> Dropdown on Right</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="#">Action</a> <a
+							class="dropdown-item" href="#">Another action with a lot of
+							text inside of an item</a>
+					</div></li>
+			</ul>
+		</nav>
+
+	</header>
 
 	{# The Document Body #}
 
