@@ -55,7 +55,7 @@ class SustainabilityDomain (models.Model):
 class SustainabilityCategory (models.Model):
     
     impnr = models.PositiveSmallIntegerField(verbose_name='Import Number', blank=True,null=True)
-    name = models.CharField(unique = True,  max_length=15)
+    name = models.CharField(unique = True,  max_length=40)
     name_long = models.CharField(unique = True,  max_length=50)
     sust_domain = models.ForeignKey(SustainabilityDomain, on_delete=models.CASCADE)
     def __str__(self):
