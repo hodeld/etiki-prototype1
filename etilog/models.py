@@ -86,6 +86,7 @@ class ImpactEvent (models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     reference = models.ForeignKey(Reference, on_delete=models.CASCADE)
     source_url = models.URLField(blank=True, null=True)
+    comment = models.CharField(max_length=200, blank=True,null=True)
     
     def __str__(self):
         name_str = self.company.name[:10] + '_' + self.date_impact.strftime('%y') + '_' + self.sust_category.name

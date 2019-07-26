@@ -17,5 +17,5 @@ class ImpEvTable(tables.Table):
         attrs = {'class': 'table table-hover table-sm' } #bootstrap4 classes
         exclude = (  'created_at', 'updated_at', )
         fields = ('id', 'date_impact', 'company', 'country', 
-                  'sust_category', 'all_tags', 'reference', 'source_link' )
+                  'sust_category', 'all_tags', 'reference', 'source_link', 'comment' )
     
