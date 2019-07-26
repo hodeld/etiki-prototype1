@@ -15,7 +15,7 @@ class ImpEvTable(tables.Table):
     class Meta:
         model = ImpactEvent
         attrs = {'class': 'table table-hover table-sm' } #bootstrap4 classes
-        exclude = (  'created_at', 'updated_at', )
+        exclude = ('created_at', 'updated_at', )
         fields = ('id', 'date_impact', 'company', 'country', 
                   'sust_category', 'all_tags', 'reference', 'source_link', 'comment' )
     
