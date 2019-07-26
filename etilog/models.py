@@ -95,6 +95,10 @@ class ImpactEvent (models.Model):
         from django.urls import reverse
         return reverse('admin:etilog_impactevent_change', args=(self.pk,))
     
+    @property
+    def all_tags(self):
+        return ', '.join([x.name for x in self.sust_tags.all()])
+  
     class Meta:
         ordering = ['date_impact', 'company']
 
