@@ -28,12 +28,12 @@ class ImpEvTable(tables.Table):
     id = tables.Column(linkify = True )
     #source_url = DefWidthColumn(classname='limited_width')
        
-    
+    date_published = tables.Column(verbose_name='Date of Impact')
     class Meta:
         model = ImpactEvent
         attrs = {'class': 'table table-hover table-sm' } #bootstrap4 classes
         exclude = ('created_at', 'updated_at', )
-        fields = ('id', 'date_impact', 'company', 'country', 
+        fields = ('id', 'date_published', 'company', 'country', 
                   'sust_category', 'all_tags', 'reference', 'source_url', 'comment' )
     
     def render_source_url(self, value):

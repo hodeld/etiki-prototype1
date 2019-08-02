@@ -48,7 +48,18 @@ class Reference (models.Model):
         return self.name
     class Meta:
         ordering = ['name', ]
-        
+
+class Source(models.Model):
+    url = models.URLField()        
+    comment = models.CharField(blank=True, null=True, max_length=200)
+    def __str__(self):
+        url_str = str(self.url)[:50]
+        if self.comment:
+            
+            return self.comment + ': ' + url_str
+        else:
+            return url_str
+    
 class SustainabilityDomain (models.Model):
     impnr = models.PositiveSmallIntegerField(verbose_name='Import Number', blank=True,null=True)
     name = models.CharField(unique = True,  max_length=30)
@@ -97,6 +108,8 @@ class ImpactEvent (models.Model):
     sust_tags = models.ManyToManyField('SustainabilityTag', blank=True)
     
     source_url = models.URLField(blank=True, null=True)
+    sources = models.ManyToManyField('Source', blank=True, verbose_name = 'further sources', 
+                                     related_name = 'impevents') #get Source.impevents.all()
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, blank=True, null=True)    
     
     summary = models.CharField(max_length=200, blank=True,null=True, 
