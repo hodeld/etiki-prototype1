@@ -1,28 +1,37 @@
 {# HTML5 declaration #}
 <!DOCTYPE html>
 {% load static %}
-<script src="{% static 'algoterm/js/script_algoterm.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+{# or put it in static #}
+
+<script src="{% static 'etilog/js/script_etilog.js' %}"></script>
+
 <head>
 <title>{% block title %}etiki {% endblock title %} | etiki</title>
-{#import bootstrap4#} {% load bootstrap4 %} {# Embed Bootstrap CSS #} 
-{%bootstrap_css %} {# Embed Bootstrap JS+jQuery #} 
-{% bootstrap_javascript jquery='full' %}
+{#import bootstrap4#} {% load bootstrap4 %} {# Embed Bootstrap CSS #}
+{% bootstrap_css %} {# Embed Bootstrap JS+jQuery #} {% bootstrap_javascript jquery='full' %} 
+{% block head_css %} {% endblock head_css %}
 <style>
-.navbar {
-     background-color: #3E7480; 	
+.navbar-dark {
+	background-color: #3E7480;
 }
-
+.navbar-etilog a {
+	color: #3E7480;
+}
 body {
 	/* default is 1rem or 16px */
 	font-size: 12px;
 }
-.text-primary { color: #3E7480; }
+
+.text-primary {
+	color: #3E7480;
+}
 
 .table-sm {
 	font-size: 1em;
 }
 
-.table-sm .orderable a{
+.table-sm .orderable a {
 	color: #3E7480;
 }
 </style>
@@ -31,10 +40,12 @@ body {
 	{# Navigation Menu #}
 	<header>
 		<nav class="navbar navbar-expand-lg navbar-dark rounded">
-			<a class="navbar-brand" href="#">etiki</a>
+			<a class="navbar-brand" href="/">etiki</a>
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link">overview</a></li>
-				<li class="nav-item"><a class="nav-link">Left Link 2</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="{% url 'etilog:home' %}">overview</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="{% url 'etilog:newimpactevent' %}">New Impact Event</a></li>
 			</ul>
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item"><a class="nav-link"
@@ -52,6 +63,11 @@ body {
 							text inside of an item</a>
 					</div></li>
 			</ul>
+		</nav>
+		<nav class="navbar navbar-expand-lg rounded navbar-etilog">
+			<a class="navbar-brand" href="#"> 
+			{% block sitetitle %}Home{% endblock sitetitle %}</a>
+
 		</nav>
 
 	</header>

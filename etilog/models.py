@@ -36,6 +36,7 @@ class Media (models.Model):
         return self.name
     class Meta:
         ordering = ['name', ]
+        verbose_name = 'medium'
         
 class Reference (models.Model):
     name = models.CharField(unique = True, verbose_name='ReferenceName', max_length=50)
@@ -112,9 +113,9 @@ class ImpactEvent (models.Model):
                                      related_name = 'impevents') #get Source.impevents.all()
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, blank=True, null=True)    
     
-    summary = models.CharField(max_length=200, blank=True,null=True, 
+    summary = models.CharField(max_length=500, blank=True,null=True, 
                                help_text = 'abstract, title or first part of text')
-    comment = models.CharField(max_length=200, blank=True,null=True)
+    comment = models.CharField(max_length=500, blank=True,null=True)
     
     
     def __str__(self):

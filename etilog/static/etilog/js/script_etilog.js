@@ -1,6 +1,20 @@
 /**
- * 
+  
  */
+
+//jquery
+$(document).ready(function() {
+
+	$(".nav .nav-link").on("click", function(){
+		   $(".nav").find(".active").removeClass("active");
+		   $(this).addClass("active");
+		});
+
+});
+
+
+
+//javascript only 
 
 function toggle(source) {
 	var oform = source.form;

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_tables2',
     'django_filters',
     'bootstrap4',
+    'bootstrap_datepicker_plus',
     
     # Local apps
     'etilog.apps.EtilogConfig'
