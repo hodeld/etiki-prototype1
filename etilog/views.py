@@ -23,14 +23,14 @@ def startinfo(request):
         if form.is_valid():
             form.save() 
             print('valid', form.cleaned_data)
-            message = 'thank you!'
+            message = 'you are helping creating a new platform, thank you!'
         else:
             message = 'oh, this did not work!'
     
     else:
         message = ''
     form = NewSource()
-    return render(request, 'etilog/start.html', {'form': form,
+    return render(request, 'etilog/comingsoon.html', {'form': form,
                                                  'message': message
                                                              })
 

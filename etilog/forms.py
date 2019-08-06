@@ -71,9 +71,9 @@ class NewSource(forms.ModelForm):
     
 
         widgets = {
-            'url': forms.URLInput(attrs={'placeholder': 'http://urltoyourarticle.org',
+            'url': forms.URLInput(attrs={'placeholder': 'link to the article',
                                                 'size': '60',
-                                                'title': 'paste your url here',
+                                                'title': 'just copy/paste your link here',
                                                 'class': 'form-control',
                                             
                                                 }),

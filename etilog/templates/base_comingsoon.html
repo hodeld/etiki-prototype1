@@ -1,0 +1,35 @@
+{# HTML5 declaration #}
+<!DOCTYPE html>
+{% load static %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+{# or put it in static #}
+
+<script src="{% static 'etilog/js/script_etilog.js' %}"></script>
+
+<head>
+<title>{% block title %}etiki.org | it's coming  {% endblock title %} </title>
+{#import bootstrap4#} {% load bootstrap4 %} {# Embed Bootstrap CSS #}
+{% bootstrap_css %} {# Embed Bootstrap JS+jQuery #} {% bootstrap_javascript jquery='full' %} 
+{% block head_css %} {% endblock head_css %}
+<style>
+
+</style>
+</head>
+<body>
+
+	{# The Document Body #}
+
+	<div id="site-wrapper">{% block content %} {% endblock content %}
+	</div>
+
+	{# The Footer #}
+
+	<div class="footer">
+
+		<div class="container">
+			<br>
+
+			<p>prealpha; © etiki</p>
+		</div>
+	</div>
+</body>
