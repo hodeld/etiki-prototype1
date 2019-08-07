@@ -1,10 +1,7 @@
 {# HTML5 declaration #}
 <!DOCTYPE html>
 {% load static %}
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-{# or put it in static #}
 
-<script src="{% static 'etilog/js/script_etilog.js' %}"></script>
 
 <head>
 <title>{% block title %}etiki.org | it's coming  {% endblock title %} </title>
@@ -52,24 +49,28 @@ body, html {
 }
 
 /* Position text in the middle */
-.middle {
+.middle_notused {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  width: 70%;
 }
 
+.middle {
+	
+  text-align: center;
+
+
+}
 /* Style the <hr> element */
 hr {
   margin: auto;
   width: 40%;
 } 
 }
-.center_div{
-   margin: 0 auto;
-   width:80%  /* value of your choice which suits your alignment */
-    }
+
     
 .date {
     width: 20em;
@@ -81,6 +82,10 @@ hr {
   <div class="topleft">
     <img alt="" border="0" src="{% static 'etilog/img/logoetiki.png' %}" />
   </div>
+  <div class="row h-100 justify-content-center align-items-center">
+  {# in small screens (sm) different column separation #}
+  <div class="col-sm-1 col-md-3"></div>
+  <div class="col-sm-10 col-md-6">
   <div class="middle">
     <h1>etiki - it's coming</h1>
     <hr>
@@ -99,7 +104,10 @@ hr {
     <h6>{{ message }}</h6>
 
   </div>
-  
+
+</div>
+    <div class="col-sm-1 col-md-3"></div>
+   </div> 
   <div class="bottomleft">
     <p>prealpha; © etiki</p>
   </div>
