@@ -1,132 +1,49 @@
 {# HTML5 declaration #}
 <!DOCTYPE html>
-{% load static %}
+{%extends 'base_comingsoon.html'%} {%load static%} {%block content%}
 
-
-<head>
-<!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-<title>{% block title %}etiki.org | it's coming  {% endblock title %} </title>
-{#import bootstrap4#} {% load bootstrap4 %} {# Embed Bootstrap CSS #}
-{% bootstrap_css %} {# Embed Bootstrap JS+jQuery #} {% bootstrap_javascript jquery='full' %} 
-
-
-<style>
- /* Set height to 100% for body and html to enable the background image to cover the whole page: */
-body, html {
-  height: 100%
-}
-
-.bgimg {
-  /* Background image */
-  background-image: url("{% static 'etilog/img/background.gif' %}");
-  /* Full-screen */
-  height: 100%;
-  /* Center the background image */
-  background-position: center;
-  /* Scale and zoom in the image */
-  background-size: cover;
-  /* Add position: relative to enable absolutely positioned elements inside the image (place text) */
-  position: relative;
-  /* Add a white text color to all elements inside the .bgimg container */
-  color: white;
-  /* Add a font */
-  font-family: "Courier New", Courier, monospace;
-  /* Set the font-size to 25 pixels */
-  font-size: 1em; /*25px;*/
-}
-
-	
-/* Position text in the top-left corner */
-.topleft {
-  position: absolute;
-  top: 6px;
-  left: 16px;
-}
-
-/* Position text in the bottom-left corner */
-.bottomleft {
-  position: absolute;
-  bottom: 0;
-  left: 16px;
-}
-
-/* Position text in the middle */
-.middle_notused {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  width: 70%;
-}
-
-.middle {
-	
-  text-align: center;
-
-
-}
-/* Style the <hr> element */
-hr {
-  margin: auto;
-  width: 40%;
-} 
-}
-
-    
-.date {
-    width: 20em;
-}
-</style>
-<body>
-
- <div class="bgimg">
-  <div class="topleft">
-    <img alt="" border="0" src="{% static 'etilog/img/logoetiki.png' %}" />
-  </div>
-  <div class="row h-100 justify-content-center align-items-center">
-  {# in small screens (sm) different column separation #}
-  <div class="col-sm-1 col-md-3"></div>
-  <div class="col-sm-10 col-md-6">
-  <div class="middle">
-    <h1>etiki - it's coming</h1>
-    <hr>
-    <h6><br>Here you can register any report/article regarding (non-)ethical behaviour of any company.<br>We appreciate!</h6>
-    <form action="" method="post">
-    {% csrf_token %}
- 	<div class="input-group mb-3">
-	  {{form}}
-	  <div class="input-group-append">
-	    <button class="btn btn-dark" type="submit">Save</button>
-	  </div>
-	  </form>
-	  
+<div class="bgimg">
+	<div class="topleft">
+		<img alt="" border="0" src="{% static 'etilog/img/logoetiki.png' %}" />
 	</div>
-	
-    <h6>{{ message }}</h6>
+	<div class="row h-100 justify-content-center align-items-center">
+		{# in small screens (sm) different column separation #}
+		<div class="col-sm-1 col-md-3"></div>
+		<div class="col-sm-10 col-md-6">
+			<div class="middle">
+				<h1>etiki - it's coming</h1>
+				<hr>
+				<h6>
+					<br>We are collecting articles regarding ethical behaviour of
+					any company.<br>Any help appreciated!
+				</h6>
+				<form action="" method="post">
+					{% csrf_token %}
+					<div class="input-group mb-3">
+						{{form}}
+						<div class="input-group-append">
+							<button class="btn btn-dark" type="submit">Save</button>
+						</div>
+					</div>
+				</form>
 
-  </div>
+			</div>
 
+			<h6>{{ message }}</h6>
+
+		</div>
+
+
+		<div class="col-sm-1 col-md-3"></div>
+	</div>
+	<div class="bottomleft">
+		<p>prealpha; © etiki 2019</p>
+	</div>
 </div>
-    <div class="col-sm-1 col-md-3"></div>
-   </div> 
-  <div class="bottomleft">
-    <p>prealpha; © etiki</p>
-  </div>
+
+{% endblock content %}
 
 
 
 
-
-
-
-</body> 
-
-
-
- 
 
