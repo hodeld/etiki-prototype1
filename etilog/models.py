@@ -51,6 +51,7 @@ class Reference (models.Model):
         ordering = ['name', ]
 
 class Source(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True) #tz aware datetime
     url = models.URLField()        
     comment = models.CharField(blank=True, null=True, max_length=200)
     def __str__(self):

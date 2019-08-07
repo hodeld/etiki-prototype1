@@ -34,7 +34,7 @@ body, html {
   /* Add a font */
   font-family: "Courier New", Courier, monospace;
   /* Set the font-size to 25 pixels */
-  font-size: 25px;
+  font-size: 1em; /*25px;*/
 }
 
 /* Position text in the top-left corner */
@@ -49,7 +49,6 @@ body, html {
   position: absolute;
   bottom: 0;
   left: 16px;
-  font-size: 13px;
 }
 
 /* Position text in the middle */
@@ -85,13 +84,13 @@ hr {
   <div class="middle">
     <h1>etiki - it's coming</h1>
     <hr>
-    <h6><br>Here you can register any publication/article regarding (non-)ethical behaviour of any company.<br>We appreciate!</h6>
+    <h6><br>Here you can register any report/article regarding (non-)ethical behaviour of any company.<br>We appreciate!</h6>
     <form action="" method="post">
     {% csrf_token %}
  	<div class="input-group mb-3">
 	  {{form}}
 	  <div class="input-group-append">
-	    <button class="btn btn-dark" type="submit">Go</button>
+	    <button class="btn btn-dark" type="submit">Save</button>
 	  </div>
 	  </form>
 	  

@@ -1,10 +1,18 @@
 from django.contrib import admin
+from django.contrib.admin import AdminSite
 from django import forms
+from django.urls import reverse
 
 #models
 from .models import ImpactEvent, SustainabilityDomain, SustainabilityCategory, SustainabilityTag
 from .models import Company, Country,  ActivityCategory
 from .models import Media, Reference, Source
+
+class EtilogAdminSite(AdminSite):
+    site_header = 'Etiki Admin'
+    site_url = '/overview/' #reverse('etilog:home')
+
+
 
 class SourceInLine (admin.TabularInline):
 
@@ -36,18 +44,19 @@ class ImpactEventAdmin(admin.ModelAdmin):
     
 
 
-    
+#customized admin    
+admin_site = EtilogAdminSite(name = 'etilog_admin')
 
 # Register your models here.
-admin.site.register(ImpactEvent, ImpactEventAdmin)
-admin.site.register(SustainabilityCategory)
-admin.site.register(SustainabilityDomain)
-admin.site.register(SustainabilityTag)
-admin.site.register(Source)
-admin.site.register(Reference)
-admin.site.register(Company)
+admin_site.register(ImpactEvent, ImpactEventAdmin) #default is admin.site.register
+admin_site.register(SustainabilityCategory)
+admin_site.register(SustainabilityDomain)
+admin_site.register(SustainabilityTag)
+admin_site.register(Source)
+admin_site.register(Reference)
+admin_site.register(Company)
 
-admin.site.register(Media)
-admin.site.register(ActivityCategory)
-admin.site.register(Country)
+admin_site.register(Media)
+admin_site.register(ActivityCategory)
+admin_site.register(Country)
 
