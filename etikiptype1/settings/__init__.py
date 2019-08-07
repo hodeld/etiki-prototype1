@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django_filters',
     'bootstrap4',
     'bootstrap_datepicker_plus',
+    'crispy_forms',
     
     # Local apps
     'etilog.apps.EtilogConfig'
@@ -127,6 +128,7 @@ USE_TZ = True
 
 
 DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap.html"
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 BOOTSTRAP4 = {
     #already includes jquery:

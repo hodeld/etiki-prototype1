@@ -1,6 +1,11 @@
 {# HTML5 declaration #}
 <!DOCTYPE html>
 {% load static %} 
+{#import bootstrap4#} {% load bootstrap4 %} 
+{# Embed Bootstrap CSS#} 
+{%bootstrap_css%} 
+{# Embed Bootstrap JS+jQuery #}
+{%bootstrap_javascript jquery='full'%}
 {#<script src="{% static 'etilog/js/script_etilog.js' %}"></script>#}
 
 
@@ -10,14 +15,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}etiki.org | it's coming {%endblock title%} </title> 
-{#import bootstrap4#} {% load bootstrap4 %} 
-{# Embed Bootstrap CSS#} 
-{%bootstrap_css%} 
-{# Embed Bootstrap JS+jQuery #}
-{%bootstrap_javascript jquery='full'%}
+
 
 <link rel="stylesheet" type="text/css"
-	href="{% static 'etilog/style.css' %}">
+	href="{% static 'etilog/style_comingsoon.css' %}">
 {% block head_css %} {% endblock head_css %}
 
 </head>

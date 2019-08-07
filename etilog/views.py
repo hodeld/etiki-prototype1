@@ -49,13 +49,21 @@ def import_dbdata(request):
 
 def new_impact_event(request):
     if request.method == 'POST':
-        pass
+        form = NewImpactEvent(request.POST)
+        if form.is_valid():
+            form.save() 
+            print('valid', form.cleaned_data)
+            message = 'you are helping creating a new platform, thank you!'
+        else:
+            message = 'oh, this did not work!'
     
     else:
-        pass
+        message = ''
+ 
     form = NewImpactEvent()
     
     return render(request, 'etilog/newimpactevent.html', {'form': form,
+                                                          'message': message,
                                                              })
         
     

@@ -1,42 +1,24 @@
 {# HTML5 declaration #}
 <!DOCTYPE html>
 {% load static %}
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-{# or put it in static #}
-
-<script src="{% static 'etilog/js/script_etilog.js' %}"></script>
-<!-- Required meta tags for example for responsivity-->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-<head>
-<title>{% block title %}etiki {% endblock title %} | etiki</title>
 {#import bootstrap4#} {% load bootstrap4 %} {# Embed Bootstrap CSS #}
 {% bootstrap_css %} {# Embed Bootstrap JS+jQuery #} {% bootstrap_javascript jquery='full' %} 
 {% block head_css %} {% endblock head_css %}
-<style>
-.navbar-dark {
-	background-color: #3E7480;
-}
-.navbar-etilog a {
-	color: #3E7480;
-}
-body {
-	/* default is 1rem or 16px */
-	font-size: 12px;
-}
 
-.text-primary {
-	color: #3E7480;
-}
+<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
 
-.table-sm {
-	font-size: 1em;
-}
+{#import scripts need to be under url to scripts (loaded by bootstrap4) #}
+<script src="{% static 'etilog/js/script_etilog.js' %}"></script> 
+<script src="{% static 'etilog/js/jquery_etilog.js' %}"></script>
+<!-- Required meta tags for example for responsivity -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+<head>
+<title>{% block title %}etiki {% endblock title %} | etiki</title>
 
-.table-sm .orderable a {
-	color: #3E7480;
-}
-</style>
+<link rel="stylesheet" type="text/css"
+	href="{% static 'etilog/style.css' %}">
+
 </head>
 <body>
 	{# Navigation Menu #}
@@ -86,7 +68,7 @@ body {
 		<div class="container">
 			<br>
 
-			<p>prealpha; Copyright etiki.org</p>
+			<p>prealpha; Copyright etiki 2019</p>
 		</div>
 	</div>
 </body>
