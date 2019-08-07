@@ -127,8 +127,16 @@ USE_TZ = True
 
 
 DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap.html"
+
 BOOTSTRAP4 = {
+    #already includes jquery:
     'include_jquery': True,
+    #default:
+    #"css_url": {
+    #    "href": "https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css",
+    #    "integrity": "sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB",
+    #    "crossorigin": "anonymous",
+    #},
 }
 
 
