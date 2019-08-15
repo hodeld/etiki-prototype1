@@ -40,7 +40,7 @@ class Media (models.Model):
         
 class Reference (models.Model):
     name = models.CharField(unique = True, verbose_name='ReferenceName', max_length=50)
-    media = models.ForeignKey(Media, on_delete=models.CASCADE)
+    mediaform = models.ForeignKey(Media, on_delete=models.CASCADE)
     country = models.ForeignKey(Country, on_delete=models.CASCADE, blank=True,null=True, help_text = 'optional')
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=True,null=True,
                                 related_name = 'reference')

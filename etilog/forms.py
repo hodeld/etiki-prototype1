@@ -74,19 +74,24 @@ class NewImpactEvent(forms.ModelForm):
             #Field('sust_category', template="custom-slider.html"),
             Row(
                 Column(FieldWithButtons('company', 
-                                        StrictButton("Go!", css_class='btn btn-light',
-                                        css_id='id_btn_company',
-                                        admin_add_url=reverse_lazy('admin:etilog_company_add')+'?_to_field=id&_popup=1' 
+                                        StrictButton("Add!", css_class='btn btn-light',
+                                        css_id='add_id_company',
+                                        add_url=reverse_lazy('etilog:add_to_newimpact', 
+                                                             kwargs={'model_name': 'company'})
                                             )), 
                        css_class='col-6', ),
-                Column('reference', css_class='col-6')
+                
+                Column(FieldWithButtons('reference', 
+                                        StrictButton("Add!", css_class='btn btn-light',
+                                        css_id='add_id_reference',
+                                        add_url=reverse_lazy('etilog:add_to_newimpact', 
+                                                             kwargs={'model_name': 'reference'})
+                                            )), 
+                       css_class='col-6', )
             ),
             'sust_tags',
-            'summary', 
-            'comment',
-            HTML("""<a class="classes-for-styling" href="{% url 'admin:etilog_company_add' %}"
-            onclick='return showAddAnotherPopup(this);'
-            >addcompany</a>"""),
+            Field('summary', style='height: 7em'),
+            Field('comment', style='height: 7em'),
             
             Submit('submit', 'Save Impact Event', css_class='btn btn-light' )
         )
@@ -121,160 +126,43 @@ class NewImpactEvent(forms.ModelForm):
         }
         
         
-class NewImpactEvent(forms.ModelForm):
+class CompanyForm(forms.ModelForm):
     '''
-    form to create an impact event
+    form to create a company
     '''
-
-    year = forms.CharField(label = 'year published', )
-    sust_domain = forms.ChoiceField(label = 'Domain',
-                                    choices = CHOICES,
-                                    required=False)
-    
     def __init__(self, *args, **kwargs):
-        super (NewImpactEvent,self ).__init__(*args,**kwargs) 
-        self.fields['year'].widget = DatePickerInput( 
-                format = D_YEARFORMAT, #django datetime format
-                options={'viewMode': 'years', 
-                         })
-        #more complicate solution:
-        reference_pks = Reference.objects.values_list('pk', flat = True) #all ids
-        companies = Company.objects.exclude(reference__pk__in = reference_pks).distinct()
-        #companies = ImpactEvent.objects.order_by().values_list('company__name', flat = True).distinct()
-        self.fields['company'].widget = ListTextWidget(data_list=companies
-                                                       , name='company_list',
-                                                       attrs={'placeholder': 'Company',}
-                                                       )
-        #crispy form layout:
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            'source_url',
-            
-            Row(
-                Column('year', css_class='col-6'),
-                Column('date_published', css_class='col-6')
-            ),
-            Row(
-                Column('sust_domain', 
-                       css_class='col-6'),
-                Column(Field('sust_category', 
-                             data_susts_url=reverse_lazy('etilog:get_sustcagories')
-                             ),                           
-                             css_class='col-6')
-            ),
-            #InlineRadios('sust_domain'), 
-            #Field('sust_category', data_susts_url=reverse_lazy('etilog:get_sustcagories')), #reverse_lazy('etilog:get_sustcagories') does not work
-            #Field('sust_category', template="custom-slider.html"),
-            Row(
-                Column(FieldWithButtons('company', 
-                                        StrictButton("Go!", css_class='btn btn-light',
-                                        css_id='id_btn_company',
-                                        admin_add_url=reverse_lazy('admin:etilog_company_add')+'?_to_field=id&_popup=1' 
-                                            )), 
-                       css_class='col-6', ),
-                Column('reference', css_class='col-6')
-            ),
-            'sust_tags',
-            'summary', 
-            'comment',
-            HTML("""<a class="classes-for-styling" href="{% url 'admin:etilog_company_add' %}"
-            onclick='return showAddAnotherPopup(this);'
-            >addcompany</a>"""),
-            
-            Submit('submit', 'Save Impact Event', css_class='btn btn-light' )
-        )
+        super (CompanyForm,self ).__init__(*args,**kwargs) 
         
+        self.helper = FormHelper(self)
+        #adds a submit button at the end
+        self.helper.layout.append(
+            Submit('submit', 'Save', css_class='btn btn-light' )
+        )           
+
                   
     class Meta: #only for model fields
-        model = ImpactEvent
-        fields = ['source_url', 'year', 'date_published', 'company', 'reference', 
-                  'sust_category', 'sust_tags',
-                  'summary', 'comment' 
-                  ]
-    
-
-        widgets = {
-            'source_url': forms.URLInput(attrs={'placeholder': 'url to the article',
-                                                
-                                                }),
-            'date_published': DatePickerInput( #startperiod
-                format = D_FORMAT, #django datetime format
-                options={'viewMode': 'years', 
-                         'useCurrent': False #needed to take initial date
-                         },
-                ),
-            
-            }
-
-        labels = {
-            'date_published': ('exact date'),
-        }
-        help_texts = {
-           'date_published': (''),
-        }
+        model = Company
+        exclude = ['',]
         
-            
-     
-class NewImpactEvent_old(forms.ModelForm):
+class ReferenceForm(forms.ModelForm):
     '''
-    form to create an impact event
+    form to create a reference
     '''
-
-    year = forms.CharField(label = 'year published', )
-    sust_domain = forms.ChoiceField(label = 'Domain',
-                                    choices = CHOICES,
-                                    required=False,
-                                    widget = forms.RadioSelect())
-                                        #attrs={'class': 'form-check-input radio-inline',}))
-    def __init__(self, *args,**kwargs):
-        super (NewImpactEvent,self ).__init__(*args,**kwargs) 
-        self.fields['year'].widget = DatePickerInput( 
-                format = D_YEARFORMAT, #django datetime format
-                options={'viewMode': 'years', 
-                         })
-        #more complicate solution:
-        #impev_pks = ImpactEvent.objects.values_list('pk', flat = True) #all ids
-        #companies = Company.objects.filter(impevents__pk__in = impev_pks).distinct()
-        companies = ImpactEvent.objects.order_by().values_list('company__name', flat = True).distinct()
-        self.fields['company'].widget = ListTextWidget(data_list=companies
-                                                       , name='company_list',
-                                                       attrs={'placeholder': 'Company',}
-                                                       )
-        self.helper = FormHelper()
-        self.helper.layout = Layout(InlineRadios('sust_domain'))
+    def __init__(self, *args, **kwargs):
+        super (ReferenceForm,self ).__init__(*args,**kwargs) 
         
+        self.helper = FormHelper(self)
+        #adds a submit button at the end
+        self.helper.layout.append(
+            Submit('submit', 'Save', css_class='btn btn-light' )
+            )
+                  
+
                   
     class Meta: #only for model fields
-        model = ImpactEvent
-        fields = ['source_url', 'year', 'date_published', 'company', 'reference', 'sust_category', 
-                  'comment' ]
-    
+        model = Reference
+        exclude = []    
 
-        widgets = {
-            'source_url': forms.URLInput(attrs={'placeholder': 'url to the article',
-                                                
-                                                }),
-            'date_published': DatePickerInput( #startperiod
-                format = D_FORMAT, #django datetime format
-                options={'viewMode': 'years', 
-                         'useCurrent': False #needed to take initial date
-                         },
-                ),
-            
-            }
-
-        labels = {
-            'date_published': ('exact date'),
-        }
-        help_texts = {
-           'date_published': (''),
-        }
-        
-    
-    #helper = FormHelper()
-    #helper.layout = Layout(
-     #   Field('sust_domain', css_class='form-check-input radio-inline'), InlineRadios('field_name')
-     #   )
 
 class NewSource(forms.ModelForm):
     '''

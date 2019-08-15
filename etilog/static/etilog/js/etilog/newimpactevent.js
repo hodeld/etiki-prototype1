@@ -6,18 +6,23 @@
 
 $(document).ready(function() {
 
-	$("#id_btn_company").click( function() { 
-		var url = $(this).attr("admin-add-url");
+	$("#add_id_company").click( function() { 
+		var url = $(this).attr("add-url"); //model_name in url
 		w = window.open(url, "id_company", "width=600, height=800, scrollbars=yes");
 		
 		//var win = window.open(url, "popupWindow", "width=600, height=800, scrollbars=yes");
 		//win.focus();
         //return false;
-			
-		
 		
 
 	});
+	
+	$("#add_id_reference").click( function() { 
+		var url = $(this).attr("add-url");
+		window.open(url, "id_reference", "width=600, height=800, scrollbars=yes");
+
+	});
+	
 
 	$("#id_sust_domain").change(function() { // jquery code $# -> gives ide; if radioselect: id_id_sust_domain_0_2
 		var url = $("#id_sust_category").attr("data-susts-url"); // get the url of
@@ -48,3 +53,24 @@ $(document).ready(function() {
 	});
 
 });
+
+function closePopup(win, newID, newRepr, id) {
+    // for select $(id).append('<option value=' + newID + ' selected >' + newRepr + '</option>')
+	//var name = windowname_to_id(win.name);
+    var elem = document.getElementById(id);
+    var idj = "#" + id
+	if (elem) {
+        var elemName = elem.nodeName.toUpperCase();
+        if (elemName === 'SELECT') {
+        	$(idj).append('<option value=' + newID + ' selected >' + newRepr + '</option>');
+            
+        } 
+        else  {
+        	$(idj).val( newRepr );
+            
+            }
+	}
+        
+    win.close();
+
+}

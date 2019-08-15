@@ -12,7 +12,7 @@ from .models import ImpactEvent, Company, SustainabilityCategory
 #tables
 from .tables import ImpEvTable
 #forms
-from .forms import NewImpactEvent, NewSource, CompanyForm
+from .forms import NewImpactEvent, NewSource, CompanyForm, ReferenceForm
 
 #viewlogic
 from etilog.ViewLogic.ViewImportDB import parse_xcl
@@ -74,16 +74,28 @@ def impact_event_create(request):
                                                           'message': message,
                                                              })
         
-def company_create(request):
-    form = CompanyForm(request.POST or None)
+def add_foreignmodel(request, model_name):
+    if model_name == 'company':        
+        form = CompanyForm(request.POST or None)
+        id_field = 'id_company'
+        modelname = 'Company'
+    elif model_name == 'reference': 
+        form = ReferenceForm(request.POST or None)
+        id_field = 'id_reference'
+        modelname = 'Reference'
+    else:
+        modelname = 'Company'
+        form = CompanyForm(request.POST or None)
+            
     if form.is_valid():
         instance = form.save()
 
         ## Change the value of the "#id_company". This is the element id in the form
         
-        return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "#id_author");</script>' % (instance.pk, instance))
+        return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
     
-    return render(request, "company_form.html", {"form" : form})
+    return render(request, 'etilog/addforeign_form.html', {'form' : form,
+                                                           'modelname': modelname})
 
 @csrf_exempt    
 def get_company_id(request):
