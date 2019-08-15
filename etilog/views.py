@@ -8,7 +8,7 @@ import json
 from django_tables2 import RequestConfig
 
 #models
-from .models import ImpactEvent, Company, SustainabilityCategory
+from .models import ImpactEvent, Company, SustainabilityCategory, Reference
 #tables
 from .tables import ImpEvTable
 #forms
@@ -54,7 +54,9 @@ def impact_event_create(request):
 
         data_dict = request.POST.dict()
         company = Company.objects.get(name = data_dict['company'])
+        reference = Reference.objects.get(name = data_dict['reference'])
         data_dict ['company'] = company.id
+        data_dict ['reference'] = reference.id
         data_dict['sust_category'] = 1
         form = NewImpactEvent(data_dict)
 
@@ -64,6 +66,9 @@ def impact_event_create(request):
             message = 'Impact Event saved'
         else:
             message = form.errors
+            return render(request, 'etilog/newimpactevent.html', {'form': form,
+                                                          'message': message,
+                                                             })
     
     else:
         message = ''

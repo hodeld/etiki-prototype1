@@ -6,6 +6,7 @@ Created on 2.8.2019
 from django import forms
 from django.db.models import OuterRef
 from django.urls import reverse_lazy
+import json
 
 from bootstrap_datepicker_plus import DatePickerInput
 from crispy_forms.helper import FormHelper
@@ -21,6 +22,7 @@ from .fields import ListTextWidget
 DT_FORMAT = '%Y-%m-%d %H:%M:%S'
 #D_FORMAT = '%Y-%m-%d'
 D_FORMAT = '%d.%m.%Y'
+D_FORMAT_EXTRA = '%d.%m.%y'
 D_YEARFORMAT = '%Y'
 
 domains = [('0', '----')]
@@ -38,6 +40,7 @@ class NewImpactEvent(forms.ModelForm):
                                     choices = CHOICES,
                                     required=False)
     
+    
     def __init__(self, *args, **kwargs):
         super (NewImpactEvent,self ).__init__(*args,**kwargs) 
         self.fields['year'].widget = DatePickerInput( 
@@ -46,12 +49,28 @@ class NewImpactEvent(forms.ModelForm):
                          })
         #more complicate solution:
         reference_pks = Reference.objects.values_list('pk', flat = True) #all ids
-        companies = Company.objects.exclude(reference__pk__in = reference_pks).distinct()
+        q_companies = Company.objects.exclude(reference__pk__in = reference_pks).distinct()
+        q_comp_val = q_companies.values_list('name', flat = True)
         #companies = ImpactEvent.objects.order_by().values_list('company__name', flat = True).distinct()
-        self.fields['company'].widget = ListTextWidget(data_list=companies
-                                                       , name='company_list',
-                                                       attrs={'placeholder': 'Company',}
+        sepa = ';'
+        companies = sepa.join(list(q_comp_val))
+        q_references = Reference.objects.values_list('name', flat = True)
+        #references = list(Reference.objects.values_list('name', flat = True))
+        #rfrnces = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua & Barbuda","Argentina","Armenia","Aruba","Australia"]
+        
+        references = sepa.join(list(q_references))
+        self.fields['company'].widget = forms.TextInput(
+                                                       attrs={'placeholder': 'Company',
+                                                              'data_list': companies,
+                                                              'autocomplete': 'off'}
                                                        )
+        
+        self.fields['reference'].widget = forms.TextInput(
+                                                       attrs={'placeholder': 'Reference',
+                                                              'data_list': references,
+                                                              'autocomplete': 'off'}
+                                                       )
+        
         #crispy form layout:
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -83,15 +102,17 @@ class NewImpactEvent(forms.ModelForm):
                 
                 Column(FieldWithButtons('reference', 
                                         StrictButton("Add!", css_class='btn btn-light',
-                                        css_id='add_id_reference',
+                                        css_id='add_id_reference',                                       
                                         add_url=reverse_lazy('etilog:add_to_newimpact', 
                                                              kwargs={'model_name': 'reference'})
-                                            )), 
+                                            ),
+                                        value_list = references
+                                        ), 
                        css_class='col-6', )
             ),
             'sust_tags',
-            Field('summary', style='height: 7em'),
-            Field('comment', style='height: 7em'),
+            Field('summary', rows= 3),
+            Field('comment', rows= 3),
             
             Submit('submit', 'Save Impact Event', css_class='btn btn-light' )
         )
@@ -111,10 +132,15 @@ class NewImpactEvent(forms.ModelForm):
                                                 }),
             'date_published': DatePickerInput( #startperiod
                 format = D_FORMAT, #django datetime format
+                
                 options={'viewMode': 'years', 
-                         'useCurrent': False #needed to take initial date
+                         'useCurrent': False, #needed to take initial date
+                         'extraFormats': ['DD.MM.YY', 'DD.MM.YYYY' ], #javascript format
                          },
                 ),
+            'comment' : forms.Textarea() ,
+            'summary' : forms.Textarea() ,
+            
             
             }
 
