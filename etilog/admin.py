@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
 from django import forms
-from django.urls import reverse
+from django.urls import reverse_lazy
 
 #models
 from .models import ImpactEvent, SustainabilityDomain, SustainabilityCategory, SustainabilityTag
@@ -10,7 +10,7 @@ from .models import Media, Reference, Source
 
 class EtilogAdminSite(AdminSite):
     site_header = 'Etiki Admin'
-    site_url = '/overview/' #reverse('etilog:home')
+    site_url = reverse_lazy('etilog:home')
 
 
 
