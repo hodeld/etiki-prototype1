@@ -139,7 +139,8 @@ class NewImpactEvent(forms.ModelForm):
                          },
                 ),
             'comment' : forms.Textarea() ,
-            'summary' : forms.Textarea() ,
+            'summary' : forms.Textarea() ,  
+            
             
             
             }

@@ -57,7 +57,8 @@ def impact_event_create(request):
         reference = Reference.objects.get(name = data_dict['reference'])
         data_dict ['company'] = company.id
         data_dict ['reference'] = reference.id
-        data_dict['sust_category'] = 1
+        sust_tags_list = request.POST.getlist('sust_tags')
+        data_dict ['sust_tags'] = sust_tags_list
         form = NewImpactEvent(data_dict)
 
         if form.is_valid():
