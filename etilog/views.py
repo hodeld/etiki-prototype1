@@ -55,10 +55,12 @@ def impact_event_create(request, impact_id = None):
     if request.method == 'POST':
 
         data_dict = request.POST.dict()
-        company = Company.objects.get(name = data_dict['company'])
-        reference = Reference.objects.get(name = data_dict['reference'])
-        data_dict ['company'] = company.id
-        data_dict ['reference'] = reference.id
+        company_names = ['company']
+        data_dict = upd_datadict_company(company_names, data_dict)
+
+        data_dict = upd_datadict_reference(data_dict)
+
+        
         sust_tags_list = request.POST.getlist('sust_tags')
         data_dict ['sust_tags'] = sust_tags_list
         form = NewImpactEvent(data_dict)
@@ -69,6 +71,7 @@ def impact_event_create(request, impact_id = None):
             message = 'Impact Event saved'
         else:
             message = form.errors
+            form = NewImpactEvent(request.POST)
             return render(request, 'etilog/newimpactevent.html', {'form': form,
                                                           'message': message,
                                                              })
@@ -92,60 +95,80 @@ def impact_event_create(request, impact_id = None):
     return render(request, 'etilog/newimpactevent.html', {'form': form,
                                                           'message': message,
                                                              })
-def impact_event_copy(request):
-    if request.method == 'POST':
-
-        data_dict = request.POST.dict()
-        company = Company.objects.get(name = data_dict['company'])
-        reference = Reference.objects.get(name = data_dict['reference'])
-        data_dict ['company'] = company.id
-        data_dict ['reference'] = reference.id
-        sust_tags_list = request.POST.getlist('sust_tags')
-        data_dict ['sust_tags'] = sust_tags_list
-        form = NewImpactEvent(data_dict)
-
-        if form.is_valid():
-            form.save() 
-            print('valid', form.cleaned_data)
-            message = 'Impact Event saved'
-        else:
-            message = form.errors
-            return render(request, 'etilog/newimpactevent.html', {'form': form,
-                                                          'message': message,
-                                                             })
-    
-    else:
-        message = ''
- 
-    form = NewImpactEvent()
-    
-    return render(request, 'etilog/newimpactevent.html', {'form': form,
-                                                          'message': message,
-                                                             })
            
 def add_foreignmodel(request, main_model, foreign_model):
-    if foreign_model == 'company':        
-        form = CompanyForm(request.POST or None)
-        id_field = 'id_company'
-        modelname = 'Company'
-    elif foreign_model == 'reference': 
-        form = ReferenceForm(request.POST or None)
-        id_field = 'id_reference'
-        modelname = 'Reference'
-    else:
-        modelname = 'Company'
-        form = CompanyForm(request.POST or None)
+    if request.POST:
+        data_dict = request.POST.dict()
+        if foreign_model == 'reference': 
+            pass
+            #reference = Reference.objects.get(name = data_dict['name'])
+            #data_dict [foreign_model] = reference.id
             
-    if form.is_valid():
-        instance = form.save()
+        else: #company, owner, subsidiary, supplier, recipient
+            comany_names = ['owner', 'subsidiary', 'supplier', 'recipient']
+            data_dict = upd_datadict_company(comany_names, data_dict, m2m = True)
 
-        ## Change the value of the "#id_company". This is the element id in the form
+        id_field = 'id_' + foreign_model
+        if foreign_model == 'reference': 
+            form = ReferenceForm(data_dict)
+        else:
+            form = CompanyForm(data_dict)
         
-        return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+        if form.is_valid():
+            instance = form.save(commit = False) 
+            instance.save()
+            form.save_m2m() #due to many2many
+            
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+    
+        else:
+            if foreign_model == 'reference': 
+                form = ReferenceForm(request.POST)
+            else:
+                form = CompanyForm(request.POST)
+
+    else:
+        if foreign_model == 'reference': 
+            form = ReferenceForm()
+        
+        else:
+            form = CompanyForm()
+    
+    modelname = foreign_model[0].upper() + foreign_model[1:]
+
+    
+            #message = form.errors
+
     
     return render(request, 'etilog/addforeign_form.html', {'form' : form,
                                                            'modelname': modelname})
 
+def upd_datadict_company(fieldlist, data_dict, m2m = False):
+    for nam in fieldlist:
+        if data_dict.get(nam):
+            try:
+                obj = Company.objects.get(name = data_dict.get(nam))
+                if m2m:
+                    comp_id = [obj.id] #needs to be a list
+                else:
+                    comp_id = obj.id
+            except Company.DoesNotExist:
+                comp_id = data_dict.get(nam) #send back wrong name
+            data_dict[nam] = comp_id
+    return data_dict
+
+def upd_datadict_reference(data_dict):
+    nam = 'reference'
+    if data_dict.get(nam):
+        try:
+            obj = Reference.objects.get(name = data_dict.get(nam))
+            obj_id = obj.id
+        except Reference.DoesNotExist:
+            obj_id = data_dict.get(nam) #send back wrong name
+        data_dict[nam] = obj_id
+
+    return data_dict
+                
 @csrf_exempt    
 def get_company_id(request):
     if request.is_ajax():

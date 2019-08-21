@@ -58,23 +58,24 @@ class ReferenceWidget(AutocompleteWidget):
                 
 
 class CompanyWBtn(Layout):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, fieldname, mainmodel,  *args, **kwargs):
         super(CompanyWBtn, self).__init__(
-            FieldWithButtons('company', 
-                                    StrictButton("Add!", css_class='btn btn-light',
-                                    css_id='add_id_company',
+            FieldWithButtons(fieldname, 
+                                    StrictButton("Add!", css_class='btn btn-light add_foreignmodel', #class for jquery
+                                    #css_id='add_id_company',
                                     add_url=reverse_lazy('etilog:add_foreignmodel', 
-                                                         kwargs={'main_model': 'impev',
-                                                             'foreign_model': 'company'})
+                                                         kwargs={'main_model': mainmodel,
+                                                             'foreign_model': fieldname})
                                         ))
                         )
+
 
 class ReferenceWBtn(Layout):
     def __init__(self, *args, **kwargs):
         super(ReferenceWBtn, self).__init__(
             FieldWithButtons('reference', 
-                                        StrictButton("Add!", css_class='btn btn-light',
-                                        css_id='add_id_reference',                                       
+                                        StrictButton("Add!", css_class='btn btn-light add_foreignmodel',
+                                        #css_id='add_id_reference',                                       
                                         add_url=reverse_lazy('etilog:add_foreignmodel', 
                                                              kwargs={'main_model': 'impev',
                                                                  'foreign_model': 'reference'})

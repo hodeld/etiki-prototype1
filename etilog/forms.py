@@ -62,6 +62,16 @@ class NewImpactEvent(forms.ModelForm):
                 Column('year', css_class='col-6'),
                 Column('date_published', css_class='col-6')
             ),
+            
+            Row(
+                Column(CompanyWBtn(fieldname = 'company',
+                                   mainmodel = 'impev'), 
+                       css_class='col-6', ),
+                
+                Column(ReferenceWBtn(), 
+                       css_class='col-6', )
+            ),
+            
             Row(
                 Column('sust_domain', 
                        css_class='col-6'),
@@ -71,13 +81,7 @@ class NewImpactEvent(forms.ModelForm):
                              css_class='col-6')
             ),
 
-            Row(
-                Column(CompanyWBtn(), 
-                       css_class='col-6', ),
-                
-                Column(ReferenceWBtn(), 
-                       css_class='col-6', )
-            ),
+            
             Field('sust_tags', data_tags_url=reverse_lazy('etilog:get_sust_tags')),
             Field('summary', rows= 3),
             Field('comment', rows= 3),
@@ -130,10 +134,21 @@ class CompanyForm(forms.ModelForm):
         self.fields['supplier'].widget = CompanyWidget()
         self.fields['recipient'].widget = CompanyWidget()
         
+        #self.helper = FormHelper(self)
         self.helper = FormHelper(self)
+        self.helper['owner'].wrap(CompanyWBtn,  #fieldname is passed as arg
+                        mainmodel = 'company')
+        self.helper['subsidiary'].wrap(CompanyWBtn,  #fieldname is passed as arg
+                        mainmodel = 'company')
+        self.helper['supplier'].wrap(CompanyWBtn,  #fieldname is passed as arg
+                        mainmodel = 'company')
+        self.helper['recipient'].wrap(CompanyWBtn,  #fieldname is passed as arg
+                        mainmodel = 'company')
+        
+            
         #adds a submit button at the end
         self.helper.layout.append(
-            Submit('submit', 'Save', css_class='btn btn-light' )
+            Row(Submit('submit', 'Save', css_class='btn btn-light' ))
         )           
 
                   

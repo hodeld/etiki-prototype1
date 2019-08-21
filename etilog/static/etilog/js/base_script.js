@@ -11,10 +11,41 @@ $(document).ready(function() {
 		 autocomplete($(this)[ 0 ], el_list); //Equivalent to document.getElement...
 	 });
 
+	$(".add_foreignmodel").click( //to each element with this class
+			function() {
+				var url = $(this).attr("add-url"); // model_name in url
+				var wname = url.substring(0,5);
+				w = window.open(url, wname,
+						"width=600, height=800, scrollbars=yes");
+			});
+	
+	
 	
 
 });
 
+function closePopup(win, newID, newRepr, id) {
+	// for select $(id).append('<option value=' + newID + ' selected >' +
+	// newRepr + '</option>')
+	// var name = windowname_to_id(win.name);
+	var elem = document.getElementById(id);
+	var idj = "#" + id
+	if (elem) {
+		var elemName = elem.nodeName.toUpperCase();
+		if (elemName === 'SELECT') {
+			$(idj).append(
+					'<option value=' + newID + ' selected >' + newRepr
+							+ '</option>');
+
+		} else {
+			$(idj).val(newRepr);
+
+		}
+	}
+
+	win.close();
+
+}
 
 function autocomplete(inp, arr) {
 	  /*the autocomplete function takes two arguments,
