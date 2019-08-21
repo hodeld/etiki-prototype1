@@ -15,7 +15,7 @@ from crispy_forms.bootstrap import  InlineRadios, FieldWithButtons, StrictButton
 
 #models
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
-from .fields import ListTextWidget
+from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn
 
 
     
@@ -30,46 +30,28 @@ domains.extend(list(SustainabilityDomain.objects.values_list('id', 'name')))
 
 CHOICES = domains
 
+
+
 class NewImpactEvent(forms.ModelForm):
     '''
     form to create an impact event
     '''
 
-    year = forms.CharField(label = 'year published', )
+    year = forms.CharField(label = 'year published', required=False)
     sust_domain = forms.ChoiceField(label = 'Domain',
                                     choices = CHOICES,
                                     required=False)
-    
-    
+
     def __init__(self, *args, **kwargs):
         super (NewImpactEvent,self ).__init__(*args,**kwargs) 
         self.fields['year'].widget = DatePickerInput( 
                 format = D_YEARFORMAT, #django datetime format
                 options={'viewMode': 'years', 
                          })
-        #more complicate solution:
-        reference_pks = Reference.objects.values_list('pk', flat = True) #all ids
-        q_companies = Company.objects.exclude(reference__pk__in = reference_pks).distinct()
-        q_comp_val = q_companies.values_list('name', flat = True)
-        #companies = ImpactEvent.objects.order_by().values_list('company__name', flat = True).distinct()
-        sepa = ';'
-        companies = sepa.join(list(q_comp_val))
-        q_references = Reference.objects.values_list('name', flat = True)
-        #references = list(Reference.objects.values_list('name', flat = True))
-        #rfrnces = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua & Barbuda","Argentina","Armenia","Aruba","Australia"]
-        
-        references = sepa.join(list(q_references))
-        self.fields['company'].widget = forms.TextInput(
-                                                       attrs={'placeholder': 'Company',
-                                                              'data_list': companies,
-                                                              'autocomplete': 'off'}
-                                                       )
-        
-        self.fields['reference'].widget = forms.TextInput(
-                                                       attrs={'placeholder': 'Reference',
-                                                              'data_list': references,
-                                                              'autocomplete': 'off'}
-                                                       )
+              
+        self.fields['company'].widget = CompanyWidget()
+        self.fields['reference'].widget = ReferenceWidget()
+           
         
         #crispy form layout:
         self.helper = FormHelper()
@@ -88,29 +70,15 @@ class NewImpactEvent(forms.ModelForm):
                              ),                           
                              css_class='col-6')
             ),
-            #InlineRadios('sust_domain'), 
-            #Field('sust_category', data_susts_url=reverse_lazy('etilog:get_sustcagories')), #reverse_lazy('etilog:get_sustcagories') does not work
-            #Field('sust_category', template="custom-slider.html"),
+
             Row(
-                Column(FieldWithButtons('company', 
-                                        StrictButton("Add!", css_class='btn btn-light',
-                                        css_id='add_id_company',
-                                        add_url=reverse_lazy('etilog:add_to_newimpact', 
-                                                             kwargs={'model_name': 'company'})
-                                            )), 
+                Column(CompanyWBtn(), 
                        css_class='col-6', ),
                 
-                Column(FieldWithButtons('reference', 
-                                        StrictButton("Add!", css_class='btn btn-light',
-                                        css_id='add_id_reference',                                       
-                                        add_url=reverse_lazy('etilog:add_to_newimpact', 
-                                                             kwargs={'model_name': 'reference'})
-                                            ),
-                                        value_list = references
-                                        ), 
+                Column(ReferenceWBtn(), 
                        css_class='col-6', )
             ),
-            'sust_tags',
+            Field('sust_tags', data_tags_url=reverse_lazy('etilog:get_sust_tags')),
             Field('summary', rows= 3),
             Field('comment', rows= 3),
             
@@ -139,10 +107,7 @@ class NewImpactEvent(forms.ModelForm):
                          },
                 ),
             'comment' : forms.Textarea() ,
-            'summary' : forms.Textarea() ,  
-            
-            
-            
+            'summary' : forms.Textarea() 
             }
 
         labels = {
@@ -159,6 +124,11 @@ class CompanyForm(forms.ModelForm):
     '''
     def __init__(self, *args, **kwargs):
         super (CompanyForm,self ).__init__(*args,**kwargs) 
+        
+        self.fields['owner'].widget = CompanyWidget()
+        self.fields['subsidiary'].widget = CompanyWidget()
+        self.fields['supplier'].widget = CompanyWidget()
+        self.fields['recipient'].widget = CompanyWidget()
         
         self.helper = FormHelper(self)
         #adds a submit button at the end
@@ -177,6 +147,7 @@ class ReferenceForm(forms.ModelForm):
     '''
     def __init__(self, *args, **kwargs):
         super (ReferenceForm,self ).__init__(*args,**kwargs) 
+        
         
         self.helper = FormHelper(self)
         #adds a submit button at the end

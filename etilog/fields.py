@@ -4,6 +4,14 @@ Created on 15 Mar 2019
 @author: daim
 '''
 from django import forms
+from django.urls import reverse_lazy
+
+#crispoy
+from crispy_forms.layout import Layout, Field, Row, Column, Submit, Button, HTML
+from crispy_forms.bootstrap import  InlineRadios, FieldWithButtons, StrictButton
+
+#models
+from .models import Company, Reference
 
 
 class ListTextWidget(forms.TextInput):
@@ -21,3 +29,55 @@ class ListTextWidget(forms.TextInput):
         data_list += '</datalist>'
 
         return (text_html + data_list)
+
+class AutocompleteWidget(forms.TextInput):
+    def __init__(self, data_list, placeholder, *args, **kwargs):
+        super(AutocompleteWidget, self).__init__(*args, **kwargs)
+        
+        sepa = ';'
+        list_str = sepa.join(list(data_list))
+        
+        self.attrs.update({'autocomplete': 'off',
+                      'data_list': list_str,
+                      'placeholder': placeholder,
+                      'class': 'autocompwidget'}) #used for jquery
+
+class CompanyWidget(AutocompleteWidget):
+    def __init__(self, *args, **kwargs):
+        reference_pks = Reference.objects.values_list('pk', flat = True) #all ids
+        q_companies = Company.objects.exclude(reference__pk__in = reference_pks).distinct()        
+        q_comp_val = q_companies.values_list('name', flat = True)
+        AutocompleteWidget.__init__(self, data_list = q_comp_val, 
+                                    placeholder = 'Company', *args, **kwargs)
+        
+class ReferenceWidget(AutocompleteWidget):
+    def __init__(self, *args, **kwargs):
+        q_references = Reference.objects.values_list('name', flat = True)
+        AutocompleteWidget.__init__(self, data_list = q_references, 
+                                    placeholder = 'Reference', *args, **kwargs)
+                
+
+class CompanyWBtn(Layout):
+    def __init__(self, *args, **kwargs):
+        super(CompanyWBtn, self).__init__(
+            FieldWithButtons('company', 
+                                    StrictButton("Add!", css_class='btn btn-light',
+                                    css_id='add_id_company',
+                                    add_url=reverse_lazy('etilog:add_foreignmodel', 
+                                                         kwargs={'main_model': 'impev',
+                                                             'foreign_model': 'company'})
+                                        ))
+                        )
+
+class ReferenceWBtn(Layout):
+    def __init__(self, *args, **kwargs):
+        super(ReferenceWBtn, self).__init__(
+            FieldWithButtons('reference', 
+                                        StrictButton("Add!", css_class='btn btn-light',
+                                        css_id='add_id_reference',                                       
+                                        add_url=reverse_lazy('etilog:add_foreignmodel', 
+                                                             kwargs={'main_model': 'impev',
+                                                                 'foreign_model': 'reference'})
+                                            ))                                       
+                        )
+        

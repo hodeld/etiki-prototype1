@@ -5,13 +5,12 @@
 // jquery
 
 $(document).ready(function() {
-	var ref_list_str = $("#id_reference").attr("data_list");
-	var ref_list = ref_list_str.split(";")
-	autocomplete(document.getElementById("id_reference"), ref_list);
+	 $(".autocompwidget").each(function(){
+		 var list_str = $(this).attr("data_list");
+		 var el_list = list_str.split(";");
+		 autocomplete($(this)[ 0 ], el_list); //Equivalent to document.getElement...
+	 });
 	
-	var comp_list_str = $("#id_company").attr("data_list");
-	var comp_list = comp_list_str.split(";")
-	autocomplete(document.getElementById("id_company"), comp_list);
 
 	$("#add_id_company").click( function() { 
 		var url = $(this).attr("add-url"); //model_name in url
@@ -51,6 +50,25 @@ $(document).ready(function() {
 
 		});
 	});
+	
+	$("#id_sust_category").change(function() { // jquery code $# -> gives ide; if radioselect: id_id_sust_domain_0_2
+		var url = $("#id_sust_tags").attr("data-tags-url"); // get the url of
+
+		var categoryId = $(this).val(); // get the selected category ID from the
+										// HTML input
+		$.ajax({ // initialize an AJAX request
+			url : url, // set the url of the request (= '')
+			data : {
+				'categoryId' : categoryId
+			// add the categoryId to the GET parameters
+			},
+			success: function (data) {   // `data` is the return of the `load_susts` view function
+		          $("#id_sust_tags").html(data);  // replace the contents of the sust input with the data that came from the server
+		        }
+
+		});
+	});
+	
 	
 	$("#id_year").on('dp.update', function(e) { // e = event
 

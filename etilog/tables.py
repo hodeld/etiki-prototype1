@@ -5,6 +5,7 @@ Created on 24 Jul 2019
 '''
 #django 
 from django.utils.html import mark_safe
+from django.urls import reverse
 #3rd app
 import django_tables2 as tables
 #models
@@ -26,6 +27,9 @@ class ImpEvTable(tables.Table):
     '''
 
     id = tables.Column(linkify = True )
+    copy = tables.Column(verbose_name= 'copy IE',
+                         accessor = 'id',
+                         linkify = lambda record: reverse('etilog:impactevent_copy', args=(record.id,)))
     #source_url = DefWidthColumn(classname='limited_width')
        
     date_published = tables.Column(verbose_name='Date of Impact')
@@ -33,11 +37,14 @@ class ImpEvTable(tables.Table):
         model = ImpactEvent
         attrs = {'class': 'table table-hover table-sm' } #bootstrap4 classes
         exclude = ('created_at', 'updated_at', )
-        fields = ('id', 'date_published', 'company', 'country', 
-                  'sust_category', 'all_tags', 'reference', 'source_url', 'comment' )
+        fields = ('id', 'copy', 'date_published', 'company', 'country', 
+                  'sust_category', 'get_tags', 'reference',  'source_url', 'summary' )
     
     def render_source_url(self, value):
         val_short = str(value)[:20]
         return  val_short
+    
+    def render_copy(self):
+        return 'copy!'
     
     

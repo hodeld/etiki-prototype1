@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite
+from django.contrib.auth.models import User, Group
 from django import forms
 from django.urls import reverse_lazy
 
@@ -43,15 +44,23 @@ class ImpactEventAdmin(admin.ModelAdmin):
     form = ImpactEventAdminForm
     
 
+class TagsAdmin(admin.ModelAdmin):
+    model = SustainabilityTag
+    list_display = ('name', 'get_categories', )
+
+    
+
 
 #customized admin    
 admin_site = EtilogAdminSite(name = 'etilog_admin')
 
+admin_site.register(User)
+admin_site.register(Group)
 # Register your models here.
 admin_site.register(ImpactEvent, ImpactEventAdmin) #default is admin.site.register
 admin_site.register(SustainabilityCategory)
 admin_site.register(SustainabilityDomain)
-admin_site.register(SustainabilityTag)
+admin_site.register(SustainabilityTag, TagsAdmin)
 admin_site.register(Source)
 admin_site.register(Reference)
 admin_site.register(Company)

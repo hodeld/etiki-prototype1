@@ -21,14 +21,19 @@ class ActivityCategory  (models.Model):
     
 class Company (models.Model):
     
-    name = models.CharField(unique = True, verbose_name='CompanyName', max_length=50)
+    name = models.CharField(unique = True, max_length=50)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     activity = models.ForeignKey(ActivityCategory, on_delete=models.CASCADE)
     comment = models.CharField(max_length=200, blank=True,null=True)
+    subsidiary = models.ManyToManyField('self', blank=True)
+    owner = models.ManyToManyField('self', blank=True)    
+    supplier = models.ManyToManyField('self', blank=True)
+    recipient = models.ManyToManyField('self', blank=True)
     def __str__(self):
         return self.name
     class Meta:
         ordering = ['name', ]
+        verbose_name = 'Organisation'
     
 class Media (models.Model):
     name = models.CharField(unique = True, verbose_name='MediaType', max_length=50)
@@ -40,7 +45,7 @@ class Media (models.Model):
         
 class Reference (models.Model):
     name = models.CharField(unique = True, verbose_name='ReferenceName', max_length=50)
-    mediaform = models.ForeignKey(Media, on_delete=models.CASCADE)
+    mediaform = models.ForeignKey(Media, on_delete=models.CASCADE, default = 1) #newspaper
     country = models.ForeignKey(Country, on_delete=models.CASCADE, blank=True,null=True, help_text = 'optional')
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=True,null=True,
                                 related_name = 'reference')
@@ -92,6 +97,10 @@ class SustainabilityTag (models.Model):
     comment = models.CharField(max_length=200, blank=True,null=True)
     def __str__(self):
         return self.name
+    
+    @property
+    def get_categories(self):
+        return '; '.join([x.name for x in self.sust_categories.all()])
     class Meta:
         ordering = ['name', ]
       
@@ -129,7 +138,7 @@ class ImpactEvent (models.Model):
         return reverse('admin:etilog_impactevent_change', args=(self.pk,))
     
     @property
-    def all_tags(self):
+    def get_tags(self):
         return ', '.join([x.name for x in self.sust_tags.all()])
   
     class Meta:
