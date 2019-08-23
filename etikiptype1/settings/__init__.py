@@ -147,5 +147,12 @@ BOOTSTRAP4 = {
 
 STATIC_URL = '/static/'
 
-
+#needed for debug = False -> test if needs to under heroku setting
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+#at the end -> overrates settings, eg logger
 django_heroku.settings(locals())
+
+
+
+#logger -> 
+
