@@ -42,8 +42,10 @@ def startinfo(request):
 def overview_impevs(request):
     #parse_url()
     table = ImpEvTable(ImpactEvent.objects.all())
-    #table.order_by = 'start'
-    RequestConfig(request, paginate={'per_page': 20}).configure(table) 
+    table.order_by = '-date_published'
+    RequestConfig(request, paginate={'per_page': 100}).configure(table) 
+    #RequestConfig(request, paginate=False).configure(table) 
+    
     
     return render(request, 'etilog/impactevents_overview.html', {'table': table})
 
