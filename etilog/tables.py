@@ -26,7 +26,7 @@ class ImpEvTable(tables.Table):
     basic table for impact events
     '''
 
-    id = tables.Column(linkify = True )
+    id = tables.Column(linkify = True, attrs={'td': {'class': 'my-class'}} )
     copy = tables.Column(verbose_name= 'copy IE',
                          accessor = 'id',
                          linkify = lambda record: reverse('etilog:impactevent_copy', args=(record.id,)))
@@ -35,10 +35,12 @@ class ImpEvTable(tables.Table):
     date_published = tables.Column(verbose_name='Date of Impact')
     class Meta:
         model = ImpactEvent
-        attrs = {'class': 'table table-hover table-sm' } #bootstrap4 classes
+        
         exclude = ('created_at', 'updated_at', )
         fields = ('id', 'copy', 'date_published', 'company', 'country', 
                   'sust_category', 'get_tags', 'reference',  'source_url', 'summary' )
+        attrs = {'class': 'table table-hover table-sm'} #bootstrap4 classes }  #used for list filtering
+        
     
     def render_source_url(self, value):
         val_short = str(value)[:20]
@@ -46,5 +48,12 @@ class ImpEvTable(tables.Table):
     
     def render_copy(self):
         return 'copy!'
+    
+    #adds column name as css class in td tag:
+    def get_column_class_names(self, classes_set, bound_column):
+                    classes_set = super().get_column_class_names(classes_set, bound_column)
+                    classes_set.add(bound_column.name)
+
+                    return classes_set
     
     
