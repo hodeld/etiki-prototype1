@@ -1,17 +1,45 @@
-{# ... #}
-{% extends 'base.html' %}
+{# ... #} {% extends 'base.html' %} 
 {% load static %}
+{% block djangoadmin %} 
 
-{% load render_table from django_tables2 %}
+
+
+{% endblock djangoadmin %}
+{% load crispy_forms_tags %}
+
+{% load render_table from django_tables2 %} 
+{% block head_css %} 
+{{ filter.form.media }} {# Adds date-picker required JS and CSS #}
+
+{% endblock head_css %} 
 {% block script %} 
 <script src="{% static 'etilog/js/etilog/List.js' %}"></script>
+<script>
+    var datef = {{datef}}; 
+</script>
+
 
 {% endblock script %}
 {% block title %}Overview{% endblock title %}
 {% block sitetitle %}Ovierview{% endblock sitetitle %}
 {% block content %}  
-
-
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-12 col-lg-8">
+			<button class="btn btn-light btn-block" type="button" data-toggle="collapse" data-target="#filterform" aria-expanded="false" aria-controls="collapseExample">
+			    	Filter options
+			  </button>
+			  <br>
+			<div class="collapse" id="filterform">
+				
+			{# important: not  filter.form|crispy  #}
+			{% crispy filter.form %} 
+			</div>
+		</div>
+		
+	</div>
+</div>
+<br>
            	
 {% render_table table %}
     	

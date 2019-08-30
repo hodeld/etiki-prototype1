@@ -10,12 +10,13 @@ import json
 
 from bootstrap_datepicker_plus import DatePickerInput
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Column, Submit, Button, HTML
-from crispy_forms.bootstrap import  InlineRadios, FieldWithButtons, StrictButton
+from crispy_forms.layout import Layout, Field, Row, Column, Submit, Hidden, Div, Button, ButtonHolder, HTML
+from crispy_forms.bootstrap import  FormActions, FieldWithButtons, StrictButton
 
 #models
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
 from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn
+from .fields import DateYearPicker
 
 
     
@@ -29,8 +30,52 @@ domains = [('0', '----')]
 domains.extend(list(SustainabilityDomain.objects.values_list('id', 'name')))
 
 CHOICES = domains
+datefiltername = 'datefilter'
 
+class ImpevOverviewFForm(forms.Form):
 
+    #datefiltersub = forms.CharField(label = '', required=False)
+    
+    def __init__(self, *args, **kwargs):
+        super(ImpevOverviewFForm, self).__init__(*args, **kwargs)
+        
+        self.fields['date_from'].widget = DateYearPicker()
+        self.fields['date_to'].widget = DateYearPicker()
+
+        
+        self.helper = FormHelper()
+        self.helper.form_method = 'get'
+
+        self.helper.layout = Layout(
+            
+           
+            Row(
+                Column(HTML('<label class="col-form-label hidden-label">1</label>'), #for margin of button
+                    ButtonHolder(
+                        
+                        Button(datefiltername, 'Date', css_class='btn-light',  #'active btn-light',  
+                               data_toggle='button',
+                               aria_pressed = "true") 
+                        )
+                    , css_class='col-12 col-lg-2') #on small devive -> col-12 -> new line
+                    ,
+                Column('date_from', css_class='col-12 col-lg-5'),
+                Column('date_to', css_class='col-12 col-lg-5')
+            ),
+            Row(
+                Column(
+                    
+                        Submit('submit', 'Apply Filter', css_class='btn btn-light btn-block',),    
+                    css_class='col-12'
+                    )
+                )
+            ,
+            
+            Hidden('i-datefilter', 'true', css_id = 'id-i-'+ datefiltername ) #id not working
+            )
+    
+  
+  
 
 class NewImpactEvent(forms.ModelForm):
     '''
@@ -102,14 +147,7 @@ class NewImpactEvent(forms.ModelForm):
             'source_url': forms.URLInput(attrs={'placeholder': 'url to the article',
                                                 
                                                 }),
-            'date_published': DatePickerInput( #startperiod
-                format = D_FORMAT, #django datetime format
-                
-                options={'viewMode': 'years', 
-                         'useCurrent': False, #needed to take initial date
-                         'extraFormats': ['DD.MM.YY', 'DD.MM.YYYY' ], #javascript format
-                         },
-                ),
+            'date_published': DateYearPicker(),
             'comment' : forms.Textarea() ,
             'summary' : forms.Textarea() 
             }

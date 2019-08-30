@@ -35,20 +35,20 @@ class DefWidthColumn(tables.Column):
 
 
 
-class SustcatColumn(tables.Column):
+class SustcatColumn2(tables.Column):
 
     def __init__(self, *args, **kwargs):
         def cssclass_sustcat(**kwargs):
             record = kwargs.get('record', None) #value already changed through rendering
             if record:
                 sustcat = record.sust_category
-                bntclass = 'btn disabled btn-sm '
+                bntclass = 'sustbtn btn btn-' #.sustbtn in css
                 if 'negativ' in sustcat.name :
-                    return bntclass + 'btn-danger'
+                    return bntclass + 'danger'
                 elif 'controv' in sustcat.name :
-                    return bntclass + 'btn-warning'
+                    return bntclass + 'warning'
                 elif 'positiv' in sustcat.name :
-                    return bntclass + 'btn-success'
+                    return bntclass + 'success'
             else:
                 return ''
         super(SustcatColumn, self).__init__(*args, **kwargs, 
@@ -60,6 +60,23 @@ class SustcatColumn(tables.Column):
         sustdomain = sustcat.sust_domain.name
         return sustdomain
 
+class SustcatColumn(tables.TemplateColumn):
+
+    def __init__(self, *args, **kwargs):
+        
+        #bntclass = 'sustbtn btn-sm btn-' #.sustbtn in css
+        bntclass = 'sustbtn btn btn-sm disabled btn-block btn-' #.sustbtn in css, btn-block: expands
+        disabl = ' disabled'
+        extra_dict = {'clsneg': bntclass  + 'danger',
+                      'clspos': bntclass + 'success',
+                      'clscon': bntclass + 'warning',
+                      }
+        print ('dsf')
+        super(SustcatColumn, self).__init__(  #*args, **kwargs,
+                                             template_name= 'etilog/cell_button.html',
+                                             extra_context=extra_dict,
+                                             attrs={'td': {'class':'sustcl'}}
+                                             )
 
    
     
@@ -76,6 +93,7 @@ class ImpEvTable(tables.Table):
        
     date_published = tables.DateColumn(verbose_name='Date of Impact', format = 'M Y')
     sust_category = SustcatColumn()
+    #sust_category = tables.TemplateColumn('<button class="badge sustbtn badge-danger">Detail</button>')
     summary = tables.Column(attrs ={'td': {'title': get_hovertitle}})
     country = tables.Column(accessor = 'company.country') 
     

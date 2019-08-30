@@ -21,6 +21,21 @@ body {
 .table-sm .orderable a {
 	color: #3E7480;
 }
+
+/*#impev-list > table > tbody > tr:nth-child(1) > td.badge.badge-danger.sust_category*/
+
+.table-sm .sustbtn { /* button within cell */
+	display: block; /*centers in horizontally */
+	margin:auto;	
+}
+.table-sm .sustcl	 {
+	vertical-align: middle;
+	
+}	
+.table-sm td	 {
+	/* vertical-align: middle; */
+	
+}	
 .center_div {
 	margin: 0 auto;
 	width: 80% /* value of your choice which suits your alignment */
@@ -58,3 +73,8 @@ body {
   background-color: DodgerBlue !important;
   color: #ffffff;
 }
+.hidden-label{
+	visibility: hidden;
+}
+
+

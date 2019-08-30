@@ -10,14 +10,19 @@ from django_tables2 import RequestConfig
 
 #models
 from .models import ImpactEvent, Company, SustainabilityCategory, Reference
+from etilog.models import SustainabilityTag
+
 #tables
 from .tables import ImpEvTable
 #forms
 from .forms import NewImpactEvent, NewSource, CompanyForm, ReferenceForm
+#forms
+from .filters import ImpevOverviewFilter
 
 #viewlogic
 from etilog.ViewLogic.ViewImportDB import parse_xcl
-from etilog.models import SustainabilityTag
+from etilog.ViewLogic.ViewMain import get_filterdict
+
 #from etilog.ViewLogic.ViewAccessURL import parse_url
 
 # Create your views here.
@@ -40,14 +45,30 @@ def startinfo(request):
                                                              })
 
 def overview_impevs(request):
-    #parse_url()
-    table = ImpEvTable(ImpactEvent.objects.all())
+    #parse_url() -> to get pdfs / test
+    
+    q_ie = ImpactEvent.objects.all()
+    filter_dict, datef = get_filterdict(request)
+    if datef == True:
+        datef = "true"
+    else:
+        datef = "false"
+       
+    filt = ImpevOverviewFilter(filter_dict, queryset=q_ie)
+        
+        
+    table = ImpEvTable(filt.qs)
     table.order_by = '-date_published'
-    RequestConfig(request, paginate={'per_page': 100}).configure(table) 
+    n_page = filt.qs.count() - 1
+    if n_page < 0:
+        n_page = 1
+    RequestConfig(request, paginate={'per_page': n_page}).configure(table) 
     #RequestConfig(request, paginate=False).configure(table) 
     
     
-    return render(request, 'etilog/impactevents_overview.html', {'table': table})
+    return render(request, 'etilog/impactevents_overview.html', {'table': table,
+                                                                 'filter': filt,
+                                                                 'datef': datef})
 
 def import_dbdata(request):
     

@@ -9,10 +9,13 @@ from django.urls import reverse_lazy
 #crispoy
 from crispy_forms.layout import Layout, Field, Row, Column, Submit, Button, HTML
 from crispy_forms.bootstrap import  InlineRadios, FieldWithButtons, StrictButton
+#datepicker
+from bootstrap_datepicker_plus import DatePickerInput
 
 #models
 from .models import Company, Reference
 
+D_FORMAT = '%d.%m.%Y'
 
 class ListTextWidget(forms.TextInput):
     def __init__(self, data_list, name, *args, **kwargs):
@@ -81,4 +84,15 @@ class ReferenceWBtn(Layout):
                                                                  'foreign_model': 'reference'})
                                             ))                                       
                         )
+        
+class DateYearPicker(DatePickerInput):
+    def __init__(self, *args, **kwargs):
+        super(DateYearPicker, self).__init__(
+            format = D_FORMAT, #django datetime format
+                
+            options={'viewMode': 'years', 
+                     'useCurrent': False, #needed to take initial date
+                     'extraFormats': ['DD.MM.YY', 'DD.MM.YYYY' ], #javascript format
+                     },
+            )
         
