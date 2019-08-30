@@ -15,10 +15,6 @@ import os
 import django_heroku 
 
 
-try:
-    from secrets import *
-except:
-    from secrets_dist import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,6 +25,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', 'Optional default value')
+
+db_user = os.getenv('DB_USER', 'Optional default value')
+db_password = os.getenv('DB_PW', 'Optional default value')
+db_host = os.getenv('DB_HOST', 'Optional default value')
+db_port = os.getenv('DB_PORT', 'Optional default value')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -90,12 +91,6 @@ WSGI_APPLICATION = 'etikiptype1.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-if db_user == None:
-    
-    db_user = 'name'
-    db_password = 'pw' #postgres password
-    db_host = '127.0.0.1'
-    db_port = '0000'
 
 DATABASES = {
     'default': {
