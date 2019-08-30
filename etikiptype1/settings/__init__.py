@@ -14,6 +14,7 @@ import os
 
 import django_heroku 
 
+
 try:
     from secrets import *
 except:
@@ -89,6 +90,12 @@ WSGI_APPLICATION = 'etikiptype1.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+if db_user == None:
+    
+    db_user = 'name'
+    db_password = 'pw' #postgres password
+    db_host = '127.0.0.1'
+    db_port = '0000'
 
 DATABASES = {
     'default': {
