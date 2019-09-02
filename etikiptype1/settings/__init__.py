@@ -33,7 +33,7 @@ db_host = os.getenv('DB_HOST', 'Optional default value')
 db_port = os.getenv('DB_PORT', 'Optional default value')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
