@@ -78,6 +78,37 @@ $(document).ready(
 								.defaultDate(date_str);
 
 					});
+			$("#id_date_published").on(
+					'dp.update',
+					function(e) { // e = event
+						set_firstjan(e, this);
+
+					});
+			$("#id_date_impact").on(
+					'dp.update',
+					function(e) { // e = event
+						set_firstjan(e, this);
+
+					});
 
 		});
 
+function set_firstjan(e, element) { // e = event
+	
+	var changed = e["change"];
+	if (changed == 'YYYY'){ //if year changed
+		var dt = e.viewDate._d;
+		var year_i = dt.getFullYear() //integer
+		if (e.viewDate._i) { //last date
+			var m_str  = e.viewDate._i.substring(0,6);				
+		}
+		else {
+			var m_str  = '01.01.';	
+		}
+		var date_str = m_str + year_i.toString();
+		$(element).data("DateTimePicker").clear();
+		$(element).data("DateTimePicker")
+				.defaultDate(date_str);
+	}
+}
+	

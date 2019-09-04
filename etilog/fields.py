@@ -16,6 +16,7 @@ from bootstrap_datepicker_plus import DatePickerInput
 from .models import Company, Reference
 
 D_FORMAT = '%d.%m.%Y'
+D_YEARFORMAT = '%Y'
 
 class ListTextWidget(forms.TextInput):
     def __init__(self, data_list, name, *args, **kwargs):
@@ -46,10 +47,9 @@ class AutocompleteWidget(forms.TextInput):
                       'class': 'autocompwidget'}) #used for jquery
 
 class CompanyWidget(AutocompleteWidget):
-    def __init__(self, *args, **kwargs):
-        reference_pks = Reference.objects.values_list('pk', flat = True) #all ids
-        q_companies = Company.objects.exclude(reference__pk__in = reference_pks).distinct()        
-        q_comp_val = q_companies.values_list('name', flat = True)
+    def __init__(self, *args, **kwargs):       
+        #when excluding companies in Reference -> excludes also companies which are both.
+        q_comp_val = Company.objects.values_list('name', flat = True)
         AutocompleteWidget.__init__(self, data_list = q_comp_val, 
                                     placeholder = 'Company', *args, **kwargs)
         
@@ -57,14 +57,14 @@ class ReferenceWidget(AutocompleteWidget):
     def __init__(self, *args, **kwargs):
         q_references = Reference.objects.values_list('name', flat = True)
         AutocompleteWidget.__init__(self, data_list = q_references, 
-                                    placeholder = 'Reference', *args, **kwargs)
+                                    placeholder = 'Newspaper', *args, **kwargs)
                 
 
 class CompanyWBtn(Layout):
     def __init__(self, fieldname, mainmodel,  *args, **kwargs):
         super(CompanyWBtn, self).__init__(
             FieldWithButtons(fieldname, 
-                                    StrictButton("Add!", css_class='btn btn-light add_foreignmodel', #class for jquery
+                                    StrictButton("+", css_class='btn btn-light add_foreignmodel', #class for jquery
                                     #css_id='add_id_company',
                                     add_url=reverse_lazy('etilog:add_foreignmodel', 
                                                          kwargs={'main_model': mainmodel,
@@ -77,7 +77,7 @@ class ReferenceWBtn(Layout):
     def __init__(self, *args, **kwargs):
         super(ReferenceWBtn, self).__init__(
             FieldWithButtons('reference', 
-                                        StrictButton("Add!", css_class='btn btn-light add_foreignmodel',
+                                        StrictButton("+", css_class='btn btn-light add_foreignmodel',
                                         #css_id='add_id_reference',                                       
                                         add_url=reverse_lazy('etilog:add_foreignmodel', 
                                                              kwargs={'main_model': 'impev',

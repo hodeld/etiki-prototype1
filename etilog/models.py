@@ -24,10 +24,10 @@ class Company (models.Model):
     name = models.CharField(unique = True, max_length=50)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     activity = models.ForeignKey(ActivityCategory, on_delete=models.CASCADE)
-    subsidiary = models.ManyToManyField('self', blank=True)
-    owner = models.ManyToManyField('self', blank=True)    
-    supplier = models.ManyToManyField('self', blank=True)
-    recipient = models.ManyToManyField('self', blank=True)
+    subsidiary = models.ManyToManyField('self', blank=True, verbose_name='owns')
+    owner = models.ManyToManyField('self', blank=True, verbose_name='owned by')    
+    supplier = models.ManyToManyField('self', blank=True, verbose_name='delivers to')
+    recipient = models.ManyToManyField('self', blank=True, verbose_name='supplied by')
     comment = models.CharField(max_length=200, blank=True,null=True)
     def __str__(self):
         return self.name

@@ -66,12 +66,10 @@ class SustcatColumn(tables.TemplateColumn):
         
         #bntclass = 'sustbtn btn-sm btn-' #.sustbtn in css
         bntclass = 'sustbtn btn btn-sm disabled btn-block btn-' #.sustbtn in css, btn-block: expands
-        disabl = ' disabled'
         extra_dict = {'clsneg': bntclass  + 'danger',
                       'clspos': bntclass + 'success',
                       'clscon': bntclass + 'warning',
                       }
-        print ('dsf')
         super(SustcatColumn, self).__init__(  #*args, **kwargs,
                                              template_name= 'etilog/cell_button.html',
                                              extra_context=extra_dict,
