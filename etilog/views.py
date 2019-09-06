@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 import json
@@ -9,13 +9,13 @@ import json
 from django_tables2 import RequestConfig
 
 #models
-from .models import ImpactEvent, Company, SustainabilityCategory, Reference
+from .models import ImpactEvent, Company, SustainabilityCategory, Reference, Country
 from etilog.models import SustainabilityTag
 
 #tables
 from .tables import ImpEvTable
 #forms
-from .forms import NewImpactEvent, NewSource, CompanyForm, ReferenceForm
+from .forms import NewImpactEvent, NewSource, CompanyForm, ReferenceForm, SearchForm
 #forms
 from .filters import ImpevOverviewFilter
 
@@ -47,7 +47,11 @@ def startinfo(request):
 def overview_impevs(request):
     #parse_url() -> to get pdfs / test
     
-    q_ie = ImpactEvent.objects.all()
+    #q_ie = ImpactEvent.objects.all()
+    #for testing
+    q_ie = ImpactEvent.objects.filter(Q(id = 10) #q_ie = ImpactEvent.objects.all()
+                                      | Q(id = 20)
+                                      ) 
     filter_dict, datef = get_filterdict(request)
     if datef == True:
         datef = "true"
@@ -65,10 +69,19 @@ def overview_impevs(request):
     RequestConfig(request, paginate={'per_page': n_page}).configure(table) 
     #RequestConfig(request, paginate=False).configure(table) 
     
+    searchform = SearchForm()
+    companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
+    countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
+    references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
     
     return render(request, 'etilog/impactevents_overview.html', {'table': table,
                                                                  'filter': filt,
-                                                                 'datef': datef})
+                                                                 'datef': datef,
+                                                                 'searchform': searchform,
+                                                                 'companies_url': companies_url,
+                                                                 'countries_url': countries_url,
+                                                                 'references_url': references_url,
+                                                                 })
 
 def import_dbdata(request):
     
@@ -194,14 +207,30 @@ def upd_datadict_reference(data_dict):
     return data_dict
                 
 @csrf_exempt    
-def get_company_id(request):
+def get_company_notused(request):
     if request.is_ajax():
         company_name = request.GET['company_name']
         company_id = Company.objects.get(name = company_name).id
         data = {'company_id':company_id,}
         return HttpResponse(json.dumps(data), content_type='application/json')
     return HttpResponse("/")
-    
+
+def load_names(request, modelname):
+    if modelname == 'company':
+        #q_comp_val = Company.objects.values( 'id', 'name')
+        q_names = Company.objects.values_list( 'name', flat = True) #id
+    elif modelname == 'reference':
+        q_names = Reference.objects.values_list( 'name', flat = True) #id
+    elif modelname == 'country':
+        q_names = Country.objects.values_list( 'name', flat = True) #id
+    else:
+        return HttpResponse("/")
+        
+    data = json.dumps(list(q_names))
+    return HttpResponse(data, content_type='application/json')
+
+
+#used in New IE Form     
 def load_sustcategories(request): #, 
     domain_id_str = request.GET.get('domainId')
     domain_id = int(domain_id_str)
@@ -210,6 +239,7 @@ def load_sustcategories(request): #,
     
     return render(request, 'etilog/select_sustcateg.html', {'susts': sustcategories})       
 
+#used in New IE Form  
 def load_sust_tags(request): #, 
     category_id_str = request.GET.get('categoryId')
     category_id = int(category_id_str)

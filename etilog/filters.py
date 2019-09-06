@@ -51,14 +51,6 @@ class ImpevOverviewFilter(FilterSet):
     
     class Meta:
         model = ImpactEvent
-        fields = [ 'date_from', 'date_to',]
+        fields = ['date_from', 'date_to', 'company']
         form = ImpevOverviewFForm
  
-class ImpevOverviewFilter2(FilterSet):
-    
-    class Meta:
-        model = ImpactEvent
-
-        exclude = [ '', ]
-        #form = ImpevOverviewFForm        
-                  

@@ -32,15 +32,61 @@ domains.extend(list(SustainabilityDomain.objects.values_list('id', 'name')))
 CHOICES = domains
 datefiltername = 'datefilter'
 
+class SearchForm(forms.Form):
+
+    search = forms.CharField(label = '', required=False)
+    searchtags = forms.CharField(label = '', required=False)
+    freetext = forms.CharField(label = 'freetext', required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+            
+
+        
+        self.helper = FormHelper()
+        
+        self.helper.layout = Layout(
+            
+        Row(
+                Column(Field('search', id = 'id_search', autocomplete="off", 
+                             placeholder = 'Search Companies, Countries, …',
+                       ),
+                        css_class='col-12'                             
+                    )
+                ),
+        Row(
+                Column(Field('searchtags', id = 'id_searchtags', autocomplete="off", 
+                             placeholder = 'searchtags'
+                       ),
+                        css_class='col-12'                             
+                    )
+                ),
+        Row(
+                Column(Field('freetext', id = 'id_f_freetext', 
+                             
+                             data_role='tagsinput'
+                       ),
+                        css_class='col-12'                             
+                    ),id = 'id_row_f_freetext', css_class='row_tags_class'
+                ),
+        )
+            
+           
+            
+        
 class ImpevOverviewFForm(forms.Form):
 
     #datefiltersub = forms.CharField(label = '', required=False)
-    
+
     def __init__(self, *args, **kwargs):
         super(ImpevOverviewFForm, self).__init__(*args, **kwargs)
         
         self.fields['date_from'].widget = DateYearPicker()
         self.fields['date_to'].widget = DateYearPicker()
+        #self.fields['company'].widget = CompanyWidget()
+        self.fields['company'].widget = forms.TextInput() #disabled
+        #self.fields['search'].widget = forms.TextInput()
+        
 
         
         self.helper = FormHelper()
@@ -48,6 +94,14 @@ class ImpevOverviewFForm(forms.Form):
 
         self.helper.layout = Layout(
             
+            Row(
+                Column(Field('company', id = 'id_f_company',  #id working only id
+                        data_role='tagsinput',  #without data_role -> is set in function with options; value='Amsterdam,Washington,Sydney,Beijing,Cairo',
+                         disabled=True   
+                       ),
+                        css_class='col-12'                             
+                    ),id = 'id_row_f_company', css_class='row_tags_class') #to hide element
+                ,
            
             Row(
                 Column(HTML('<label class="col-form-label hidden-label">1</label>'), #for margin of button
@@ -74,7 +128,7 @@ class ImpevOverviewFForm(forms.Form):
             Hidden('i-datefilter', 'true', css_id = 'id-i-'+ datefiltername ) #id not working
             )
     
-  
+    
   
 CSS_COL_CLS = 'col-12 col-lg-6'
 class NewImpactEvent(forms.ModelForm):

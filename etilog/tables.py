@@ -75,8 +75,7 @@ class SustcatColumn(tables.TemplateColumn):
                                              extra_context=extra_dict,
                                              attrs={'td': {'class':'sustcl'}}
                                              )
-
-   
+          
     
     
 class ImpEvTable(tables.Table):
@@ -94,6 +93,7 @@ class ImpEvTable(tables.Table):
     #sust_category = tables.TemplateColumn('<button class="badge sustbtn badge-danger">Detail</button>')
     summary = tables.Column(attrs ={'td': {'title': get_hovertitle}})
     country = tables.Column(accessor = 'company.country') 
+    get_tags = tables.Column(verbose_name = 'Tags', orderable = False)
     
     class Meta:
         model = ImpactEvent

@@ -16,27 +16,33 @@
 <script src="{% static 'etilog/js/etilog/List.js' %}"></script>
 <script>
     var datef = {{datef}}; 
+    var companies_url = "{{companies_url}}";  
+    var countries_url = "{{countries_url}}";  
+    var references_url = "{{references_url}}";  
+
 </script>
 
 
 {% endblock script %}
 {% block title %}Overview{% endblock title %}
 {% block sitetitle %}Ovierview{% endblock sitetitle %}
-{% block content %}  
+{% block content %}
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-12 col-lg-8">
-			<button class="btn btn-light btn-block" type="button" data-toggle="collapse" data-target="#filterform" aria-expanded="false" aria-controls="collapseExample">
-			    	Filter options
-			  </button>
-			  <br>
-			<div class="collapse" id="filterform">
-				
-			{# important: not  filter.form|crispy  #}
-			{% crispy filter.form %} 
+		<div class="col-12 col-lg-8"> 
+			<button class="btn btn-light btn-block" type="button"
+				data-toggle="collapse" data-target="#filterform"  
+				aria-expanded="false" aria-controls="collapseExample">
+				Filter options
+				</button>
+			<br>
+
+			<div class="collapse show" id="filterform"> {# for testing  class="collapse" #}
+			{% crispy searchform %} {# important: not filter.form|crispy #}
+			{% crispy filter.form %} {# important: not filter.form|crispy #} 
 			</div>
 		</div>
-		
+
 	</div>
 </div>
 <br>
@@ -47,8 +53,14 @@
 
 {% block bottomscript %}
 
-<!--needs to be below body due to reference to the table -->
+
+<script src="{% static 'etilog/js/etilog/tagsinput.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script> <!-- jquery.min -->
+<!--following needs to be below body due to reference to the table -->
+<!--under tagsinput due to reference to tagsinput -->
 <script src="{% static 'etilog/js/etilog/table_filter.js' %}"></script>
+
  
 {% endblock bottomscript %}
 
