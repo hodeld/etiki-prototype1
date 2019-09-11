@@ -140,7 +140,24 @@ class ImpactEvent (models.Model):
     @property
     def get_tags(self):
         return ', '.join([x.name for x in self.sust_tags.all()])
-  
+    
+    @property
+    def date_display(self):
+        if self.date_impact:
+            value = self.date_impact
+        else:
+            value = self.date_published
+        return  value
+    
+    @property
+    def country_display(self):
+        if self.country:
+            value = self.country
+        else:
+            value = self.company.country
+        return  value
+    
+    
     class Meta:
         ordering = ['date_impact', 'company']
 

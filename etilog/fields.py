@@ -96,3 +96,25 @@ class DateYearPicker(DatePickerInput):
                      },
             )
         
+class RowTagsInput(Layout):
+    def __init__(self, field_name,  col_class,  field_id = None, row_id=None, *args, **kwargs):
+        if field_id == None:
+            field_id = 'id_f_' + field_name 
+        if row_id == None:
+            row_id = 'id_row_f_' + field_name
+        super(RowTagsInput, self).__init__(           
+            Row(
+                    Column(Field(field_name, id = field_id,
+                            #data_role='tagsinput',  
+                             #disabled=True, 
+                             #readonly=True,
+                             css_class = 'f_tagsinput'  
+                           ),
+                            css_class = col_class                             
+                        ),
+                css_class='row_tags_class',
+                id = row_id
+                )
+            )
+                    
+        

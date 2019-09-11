@@ -77,4 +77,8 @@ body {
 	visibility: hidden;
 }
 
+.row_tags_class{
+	/*can be shown with jquery later on*/
+	display: none;
+}
 

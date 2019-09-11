@@ -92,7 +92,7 @@ class ImpEvTable(tables.Table):
     sust_category = SustcatColumn()
     #sust_category = tables.TemplateColumn('<button class="badge sustbtn badge-danger">Detail</button>')
     summary = tables.Column(attrs ={'td': {'title': get_hovertitle}})
-    country = tables.Column(accessor = 'company.country') 
+    country = tables.Column(accessor = 'country_display') 
     get_tags = tables.Column(verbose_name = 'Tags', orderable = False)
     
     class Meta:

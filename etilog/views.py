@@ -52,12 +52,9 @@ def overview_impevs(request):
     q_ie = ImpactEvent.objects.filter(Q(id = 10) #q_ie = ImpactEvent.objects.all()
                                       | Q(id = 20)
                                       ) 
-    filter_dict, datef = get_filterdict(request)
-    if datef == True:
-        datef = "true"
-    else:
-        datef = "false"
-       
+    filter_dict, datef, json_tag_dic = get_filterdict(request) #hiddencompany
+      
+    q_ie = ImpactEvent.objects.all()
     filt = ImpevOverviewFilter(filter_dict, queryset=q_ie)
         
         
@@ -81,6 +78,7 @@ def overview_impevs(request):
                                                                  'companies_url': companies_url,
                                                                  'countries_url': countries_url,
                                                                  'references_url': references_url,
+                                                                 'json_tag_dic': json_tag_dic,
                                                                  })
 
 def import_dbdata(request):
@@ -217,15 +215,16 @@ def get_company_notused(request):
 
 def load_names(request, modelname):
     if modelname == 'company':
-        #q_comp_val = Company.objects.values( 'id', 'name')
-        q_names = Company.objects.values_list( 'name', flat = True) #id
+        q_names = Company.objects.values( 'id', 'name')
+        #q_names = Company.objects.values_list( 'name', flat = True) #id
     elif modelname == 'reference':
-        q_names = Reference.objects.values_list( 'name', flat = True) #id
+        q_names = Reference.objects.values( 'id', 'name')
     elif modelname == 'country':
-        q_names = Country.objects.values_list( 'name', flat = True) #id
+        q_names = Country.objects.values( 'id', 'name')
     else:
         return HttpResponse("/")
         
+    #data = json.dumps(list(q_names))
     data = json.dumps(list(q_names))
     return HttpResponse(data, content_type='application/json')
 

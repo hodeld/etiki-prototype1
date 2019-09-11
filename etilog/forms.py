@@ -17,6 +17,7 @@ from crispy_forms.bootstrap import  FormActions, FieldWithButtons, StrictButton
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
 from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn
 from .fields import DateYearPicker
+from .fields import RowTagsInput
 
 
     
@@ -49,7 +50,7 @@ class SearchForm(forms.Form):
             
         Row(
                 Column(Field('search', id = 'id_search', autocomplete="off", 
-                             placeholder = 'Search Companies, Countries, …',
+                             placeholder = 'Search Companies, Countries, Newspaper …',
                        ),
                         css_class='col-12'                             
                     )
@@ -67,7 +68,7 @@ class SearchForm(forms.Form):
                              data_role='tagsinput'
                        ),
                         css_class='col-12'                             
-                    ),id = 'id_row_f_freetext', css_class='row_tags_class'
+                    ), id = 'id_row_f_freetext', css_class='row_tags_class'
                 ),
         )
             
@@ -83,25 +84,21 @@ class ImpevOverviewFForm(forms.Form):
         
         self.fields['date_from'].widget = DateYearPicker()
         self.fields['date_to'].widget = DateYearPicker()
-        #self.fields['company'].widget = CompanyWidget()
         self.fields['company'].widget = forms.TextInput() #disabled
-        #self.fields['search'].widget = forms.TextInput()
+        self.fields['country'].widget = forms.TextInput() #disabled
+        self.fields['reference'].widget = forms.TextInput() #disabled
         
 
         
         self.helper = FormHelper()
         self.helper.form_method = 'get'
+        self.helper.form_id = 'id_filterform'
 
         self.helper.layout = Layout(
             
-            Row(
-                Column(Field('company', id = 'id_f_company',  #id working only id
-                        data_role='tagsinput',  #without data_role -> is set in function with options; value='Amsterdam,Washington,Sydney,Beijing,Cairo',
-                         disabled=True   
-                       ),
-                        css_class='col-12'                             
-                    ),id = 'id_row_f_company', css_class='row_tags_class') #to hide element
-                ,
+            RowTagsInput('company',  'col-12'),
+            RowTagsInput('country',  'col-12'),
+            RowTagsInput('reference',  'col-12'),
            
             Row(
                 Column(HTML('<label class="col-form-label hidden-label">1</label>'), #for margin of button
@@ -125,7 +122,8 @@ class ImpevOverviewFForm(forms.Form):
                 )
             ,
             
-            Hidden('i-datefilter', 'true', css_id = 'id-i-'+ datefiltername ) #id not working
+            Hidden('i-datefilter', 'true', css_id = 'id-i-'+ datefiltername ),
+            Hidden('hiddenocompany', 'true', id = 'id_f_company_array' ) #id not working
             )
     
     
