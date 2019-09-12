@@ -11,24 +11,13 @@ $(document).ready(function() {
 	change_activ();
 	$('#button-id-datefilter').click(filter_toggle);
 	
+	$('.btnselect').on('click', set_domain);
+	set_filterbtns();
+	
 	//$('.row_tags_class').hide(); -> done in css
 	
-	$('#id_filterform').submit(function() {
-		  $('.f_tagsinput').prop("disabled", false);
-		});
 	$('.f_tagsinput').tagsinput({
 		  	itemValue: 'id',
-		  	
-		  	//itemValue: 'jsobj',
-		  	//itemValue: 'name',
-			//itemValue: function(item) {
-				//var val_id = item.id;
-		//var val_name = item.name;
-		//var valobj = {[val_id]: val_name};
-		//var jsobj = JSON.stringify(valobj);
-		//return jsobj;
-		//},
-			
 			itemText: 'name',
 		});
 	
@@ -72,22 +61,6 @@ $(document).ready(function() {
 		});
 	var elttag = $('.f_tagsinput') //array of elements
 	
-	$.each(elttag, function( index, elt ) {
-		val_str = $(elt).val();
-		if (val_str){
-			val_list = val_str.split(",");
-			val_list.forEach(function (val_id, index) {
-				if (typeof(suggestion_dict) !== 'undefined'){
-					modname = 'companies'
-					sugg_list = suggestion_dict[modname];
-					suggestion = sugg_list[val_id];
-					elt.tagsinput('add', suggestion);
-					$(el_id).show();				  
-					}
-		})
-		}
-	});
-	
 	var multitemplate_st = '<h5 class="category-name text-primary">';
 	var multitemplate_et = '</h5>';
 	
@@ -123,13 +96,6 @@ $(document).ready(function() {
 		
 		});
 
-	var suggestion_dict = {
-			'companies':{},
-			'countries':{},
-			'references':{}						
-	};	
-	
-		
 	$('#id_search').bind('typeahead:select', function(ev, suggestion) {
 		  	//var val_str = suggestion;
 		  	var val_str = suggestion['name'];
@@ -154,20 +120,8 @@ $(document).ready(function() {
 				else {
 					var elt = $('#id_f_freetext');					
 				}
-				
-				//var val_id = suggestion.id;
-				//var val_name = suggestion.name;
-				
-			    var valobj = {[val_id]: val_str};
-			    var jsobj = JSON.stringify(valobj);
-			    //suggestion['jsobj'] = jsobj;
-			    //suggestion['jsobj'] = '{"name":"John","age":30,"city":"New York"}'
-			    
-				elt.tagsinput('add', suggestion);	//adds tag
-				
-				
-				$('#id_f_company_array').val(jsobj);
-				
+		    
+				elt.tagsinput('add', suggestion);	//adds tag	
 				
 				$(el_id).show();
 				$(this).typeahead('val', ''); //typeahead input
@@ -268,9 +222,42 @@ function set_filtertags(){
 		$.each(v, function(ki, vi){
 			$(el_id).tagsinput('add', vi);
 			});
-		//$(el_id).tagsinput('add', v);	//adds tag
+
 	
 		$(el_row_id).show();
 	});	
 }
+function set_filterbtns(){
+	$.each(btns_dict, function( k, v ) {
+		var part_id = '#id-' + k + '-btn-';	
+		$.each(v, function(index, val_i){
+			var btn_id = part_id + val_i;
+			//$(btn_id).addClass("active");
+			$(btn_id).click(); //clicks and adds to hidden input
+			});
+	});	
+}
 
+function set_domain(event) {
+	//var id_val =   event.target.name //+ '"' + ',' ;
+	var id_val = Number(event.target.name);
+	var pressed = event.target.attributes['aria-pressed'].value; // true or false
+	var el_val = $('#id_sust_domain').val();
+	var val_list = JSON.parse("[" + el_val + "]"); 
+	//var val_list = el_val.split();
+
+	if (pressed  == "false"){ //means was pressed now
+		
+		//var new_val = el_val + id_val
+		val_list.push(id_val)
+	}
+	else{
+		//var new_val = el_val.replace(id_val, '');	
+		var index = val_list.indexOf(id_val);
+		if (index > -1) {
+			val_list.splice(index, 1);
+		    }
+	}
+	//$('#id_sust_domain').val(new_val)
+	$('#id_sust_domain').val(val_list);
+}

@@ -20,6 +20,7 @@
     var countries_url = "{{countries_url}}";  
     var references_url = "{{references_url}}";  
     var tags_dict = JSON.parse('{{ json_tag_dic|safe }}');
+    var btns_dict = JSON.parse('{{ json_btn_dic|safe }}');
 
 </script>
 
@@ -31,10 +32,10 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-12 col-lg-8"> 
-			<button class="btn btn-light btn-block" type="button"
+			<button class="btn btn-secondary" type="button"
 				data-toggle="collapse" data-target="#filterform"  
 				aria-expanded="false" aria-controls="collapseExample">
-				Filter options
+				Filter options &#11022
 				</button>
 			<br>
 

@@ -16,8 +16,19 @@ def get_filterdict(request):
     reqdict =  request.GET 
     datef_str = 'false'
     tag_dict ={}
+    btn_dict = {}
     def set_value(keyname):
         filter_dict[keyname] = reqdict.get(keyname,'')
+    
+    def get_idlist(fname):
+        id_strli = filter_dict.get(fname, ['']) #can be list ['']
+        id_str = id_strli[0] #','.join(id_list) 
+        
+        if len(id_str)> 0: #
+            id_list = id_str.split(',')
+        else:
+            id_list = None           
+        return id_list, id_str
         
     if len(reqdict) == 0: #first time GET
         st, et = get_dateframe() #date as string '%d.%m.%Y'
@@ -42,12 +53,9 @@ def get_filterdict(request):
                      }
         
         for fname in field_names:
-            id_strli = filter_dict.get(fname, ['']) #can be list ['']
-            id_str = id_strli[0] #','.join(id_list) #needs to be a string in CharFilter
-            
-            filter_dict[fname] = id_str
-            if len(id_str)> 0: #
-                id_list = id_str.split(',')
+            id_list, id_str = get_idlist(fname)
+            filter_dict[fname] = id_str #needs to be a string in CharFilter
+            if id_list:
                 q = modelarr[fname]
                 id_dict = {}
                 for id_val in id_list:
@@ -61,6 +69,15 @@ def get_filterdict(request):
                     
                     
                 tag_dict[fname] = id_dict
+        field_names = ['sust_domain',]
+        
+        for fname in field_names:
+            id_list, id_str = get_idlist(fname)
+            filter_dict[fname] = id_list #for multiple: needs to be a list
+            btn_dict[fname] = id_list
+
     js_tag_dict = json.dumps(tag_dict)
+    js_btn_dict = json.dumps(btn_dict)
+    
                
-    return filter_dict, datef_str, js_tag_dict
+    return filter_dict, datef_str, js_tag_dict, js_btn_dict

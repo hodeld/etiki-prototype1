@@ -17,7 +17,7 @@ from crispy_forms.bootstrap import  FormActions, FieldWithButtons, StrictButton
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
 from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn
 from .fields import DateYearPicker
-from .fields import RowTagsInput
+from .fields import RowTagsInput, ColBtnSelect
 
 
     
@@ -84,9 +84,10 @@ class ImpevOverviewFForm(forms.Form):
         
         self.fields['date_from'].widget = DateYearPicker()
         self.fields['date_to'].widget = DateYearPicker()
-        self.fields['company'].widget = forms.TextInput() #disabled
-        self.fields['country'].widget = forms.TextInput() #disabled
-        self.fields['reference'].widget = forms.TextInput() #disabled
+        self.fields['company'].widget = forms.TextInput() 
+        self.fields['country'].widget = forms.TextInput() 
+        self.fields['reference'].widget = forms.TextInput() 
+        #self.fields['sust_domain'].widget = forms.TextInput() 
         
 
         
@@ -99,7 +100,11 @@ class ImpevOverviewFForm(forms.Form):
             RowTagsInput('company',  'col-12'),
             RowTagsInput('country',  'col-12'),
             RowTagsInput('reference',  'col-12'),
-           
+            #Row(Column('sust_domain'),  css_class='col-12'),
+            Hidden('sust_domain', '', id='id_sust_domain'), #, id='id_sust_domain' ),
+            Row(Field('sust_category', type = 'hidden')), 
+            Row(ColBtnSelect()),
+         
             Row(
                 Column(HTML('<label class="col-form-label hidden-label">1</label>'), #for margin of button
                     ButtonHolder(
@@ -116,14 +121,12 @@ class ImpevOverviewFForm(forms.Form):
             Row(
                 Column(
                     
-                        Submit('submit', 'Apply Filter', css_class='btn btn-light btn-block',),    
+                        Submit('submit', 'Apply Filter', css_class='btn btn-info btn-block',),    
                     css_class='col-12'
                     )
                 )
             ,
-            
-            Hidden('i-datefilter', 'true', css_id = 'id-i-'+ datefiltername ),
-            Hidden('hiddenocompany', 'true', id = 'id_f_company_array' ) #id not working
+            Hidden('i-datefilter', 'true', css_id = 'id-i-'+ datefiltername )
             )
     
     

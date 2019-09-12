@@ -7,13 +7,13 @@ from django import forms
 from django.urls import reverse_lazy
 
 #crispoy
-from crispy_forms.layout import Layout, Field, Row, Column, Submit, Button, HTML
+from crispy_forms.layout import Layout, Field, Row, Column, Submit, Button, HTML, ButtonHolder
 from crispy_forms.bootstrap import  InlineRadios, FieldWithButtons, StrictButton
 #datepicker
 from bootstrap_datepicker_plus import DatePickerInput
 
 #models
-from .models import Company, Reference
+from .models import Company, Reference, SustainabilityDomain
 
 D_FORMAT = '%d.%m.%Y'
 D_YEARFORMAT = '%Y'
@@ -117,4 +117,21 @@ class RowTagsInput(Layout):
                 )
             )
                     
-        
+class ColBtnSelect(Layout):
+    def __init__(self, col_class= 'col-12 col-lg-6', *args, **kwargs): #distribute buttons
+        q = SustainabilityDomain.objects.all()
+        btn_list = []
+        for dom in q:
+            btn = Button(dom.id, dom.name, css_class='btnselect btn-outline-info btn-sm',  #'active btn-light',  
+                               css_id = 'id-sust_domain-btn-' + str(dom.id),
+                               data_toggle='button',
+                               aria_pressed = "false") 
+            btn_list.append(btn)
+            
+        html_str = '<label class="col-form-label">Which Field</label>'
+        super(ColBtnSelect, self).__init__( 
+                           
+            Column(HTML(html_str),
+                   ButtonHolder(*btn_list),
+                css_class = col_class  ) 
+            )                          

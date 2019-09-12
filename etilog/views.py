@@ -52,11 +52,10 @@ def overview_impevs(request):
     q_ie = ImpactEvent.objects.filter(Q(id = 10) #q_ie = ImpactEvent.objects.all()
                                       | Q(id = 20)
                                       ) 
-    filter_dict, datef, json_tag_dic = get_filterdict(request) #hiddencompany
+    filter_dict, datef, js_tag_dict, js_btn_dict = get_filterdict(request) #hiddencompany
       
     q_ie = ImpactEvent.objects.all()
     filt = ImpevOverviewFilter(filter_dict, queryset=q_ie)
-        
         
     table = ImpEvTable(filt.qs)
     table.order_by = '-date_published'
@@ -78,7 +77,8 @@ def overview_impevs(request):
                                                                  'companies_url': companies_url,
                                                                  'countries_url': countries_url,
                                                                  'references_url': references_url,
-                                                                 'json_tag_dic': json_tag_dic,
+                                                                 'json_tag_dic': js_tag_dict,
+                                                                 'json_btn_dic': js_btn_dict,
                                                                  })
 
 def import_dbdata(request):

@@ -81,4 +81,22 @@ body {
 	/*can be shown with jquery later on*/
 	display: none;
 }
+#filterform{
+	/*max-width: 500px;*/
+	padding: 10px 20px;
+	background: #f4f7f8;
+	margin: 10px auto;
+	padding: 20px;
+	background: #f4f7f8;
+	border-radius: 8px;
+}
 
+
+#id_date_from{
+  width: 30px;
+}
+ .btnselect{
+ 
+    margin-bottom: 3px;
+}
+ 
