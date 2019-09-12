@@ -13,7 +13,7 @@ from crispy_forms.bootstrap import  InlineRadios, FieldWithButtons, StrictButton
 from bootstrap_datepicker_plus import DatePickerInput
 
 #models
-from .models import Company, Reference, SustainabilityDomain
+from .models import Company, Reference, SustainabilityDomain, SustainabilityTendency
 
 D_FORMAT = '%d.%m.%Y'
 D_YEARFORMAT = '%Y'
@@ -117,7 +117,7 @@ class RowTagsInput(Layout):
                 )
             )
                     
-class ColBtnSelect(Layout):
+class ColDomainBtnSelect(Layout):
     def __init__(self, col_class= 'col-12 col-lg-6', *args, **kwargs): #distribute buttons
         q = SustainabilityDomain.objects.all()
         btn_list = []
@@ -125,13 +125,42 @@ class ColBtnSelect(Layout):
             btn = Button(dom.id, dom.name, css_class='btnselect btn-outline-info btn-sm',  #'active btn-light',  
                                css_id = 'id-sust_domain-btn-' + str(dom.id),
                                data_toggle='button',
-                               aria_pressed = "false") 
+                               aria_pressed = "false",
+                               targfield = 'id_sust_domain') 
             btn_list.append(btn)
             
         html_str = '<label class="col-form-label">Which Field</label>'
-        super(ColBtnSelect, self).__init__( 
+        super(ColDomainBtnSelect, self).__init__( 
                            
             Column(HTML(html_str),
                    ButtonHolder(*btn_list),
                 css_class = col_class  ) 
-            )                          
+            )    
+
+class ColTendencyBtnSelect(Layout):
+    def __init__(self, col_class= 'col-12 col-lg-6', *args, **kwargs): #distribute buttons
+        q = SustainabilityTendency.objects.all()
+        btn_list = []
+        for tend in q:
+            bntclass = 'btnselect btn-sm btn-outline-'
+            if 'negativ' in tend.name :
+                csscls =  bntclass + 'danger'
+            
+            elif 'positiv' in tend.name :
+                csscls =  bntclass + 'success'
+            else: # 'controv' in tend.name :
+                csscls =  bntclass +'warning'
+            btn = Button(tend.id, tend.name, css_class=csscls,  #'active btn-light',  
+                               css_id = 'id-sust_tendency-btn-' + str(tend.id),
+                               data_toggle='button',
+                               aria_pressed = "false",
+                               targfield = 'id_sust_tendency') 
+            btn_list.append(btn)
+            
+        html_str = '<label class="col-form-label">Which Tendency</label>'
+        super(ColTendencyBtnSelect, self).__init__( 
+                           
+            Column(HTML(html_str),
+                   ButtonHolder(*btn_list),
+                css_class = col_class  ) 
+            )                           

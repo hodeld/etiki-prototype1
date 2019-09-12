@@ -12,8 +12,10 @@ from django_filters import MultipleChoiceFilter
 
 #models
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
+from etilog.models import SustainabilityTendency
 #forms
 from .forms import ImpevOverviewFForm
+
 
 
     
@@ -53,6 +55,9 @@ class ImpevOverviewFilter(FilterSet):
     sust_domain = ModelMultipleChoiceFilter(field_name = 'sust_category__sust_domain', #ModelMultiple... -> accepts list
                          label = '',
                          queryset=SustainabilityDomain.objects.all()) #any queryset
+    sust_tendency = ModelMultipleChoiceFilter(field_name = 'sust_tendency', #ModelMultiple... -> accepts list
+                         label = '',
+                         queryset=SustainabilityTendency.objects.all()) #any queryset
 
     def filter_idlist(self,queryset, name, value):
         #value = value.replace('[','') #comes as "['3',]"

@@ -69,7 +69,7 @@ def get_filterdict(request):
                     
                     
                 tag_dict[fname] = id_dict
-        field_names = ['sust_domain',]
+        field_names = ['sust_domain', 'sust_tendency']
         
         for fname in field_names:
             id_list, id_str = get_idlist(fname)

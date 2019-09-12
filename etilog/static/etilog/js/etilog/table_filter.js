@@ -11,7 +11,7 @@ $(document).ready(function() {
 	change_activ();
 	$('#button-id-datefilter').click(filter_toggle);
 	
-	$('.btnselect').on('click', set_domain);
+	$('.btnselect').on('click', set_val_from_btn);
 	set_filterbtns();
 	
 	//$('.row_tags_class').hide(); -> done in css
@@ -229,7 +229,7 @@ function set_filtertags(){
 }
 function set_filterbtns(){
 	$.each(btns_dict, function( k, v ) {
-		var part_id = '#id-' + k + '-btn-';	
+		var part_id = '#id-' + k + '-btn-';	//k = sust_domain or sust_tendency
 		$.each(v, function(index, val_i){
 			var btn_id = part_id + val_i;
 			//$(btn_id).addClass("active");
@@ -238,11 +238,13 @@ function set_filterbtns(){
 	});	
 }
 
-function set_domain(event) {
+function set_val_from_btn(event) {
 	//var id_val =   event.target.name //+ '"' + ',' ;
 	var id_val = Number(event.target.name);
+	var input_id = '#' + $(event.target).attr('targfield');
 	var pressed = event.target.attributes['aria-pressed'].value; // true or false
-	var el_val = $('#id_sust_domain').val();
+	//var el_val = $('#id_sust_domain').val();
+	var el_val = $(input_id).val();
 	var val_list = JSON.parse("[" + el_val + "]"); 
 	//var val_list = el_val.split();
 
@@ -259,5 +261,6 @@ function set_domain(event) {
 		    }
 	}
 	//$('#id_sust_domain').val(new_val)
-	$('#id_sust_domain').val(val_list);
+	//$('#id_sust_domain').val(val_list);
+	$(input_id).val(val_list);
 }

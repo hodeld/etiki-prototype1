@@ -17,7 +17,7 @@ from crispy_forms.bootstrap import  FormActions, FieldWithButtons, StrictButton
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
 from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn
 from .fields import DateYearPicker
-from .fields import RowTagsInput, ColBtnSelect
+from .fields import RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect
 
 
     
@@ -102,8 +102,9 @@ class ImpevOverviewFForm(forms.Form):
             RowTagsInput('reference',  'col-12'),
             #Row(Column('sust_domain'),  css_class='col-12'),
             Hidden('sust_domain', '', id='id_sust_domain'), #, id='id_sust_domain' ),
-            Row(Field('sust_category', type = 'hidden')), 
-            Row(ColBtnSelect()),
+            Row(ColDomainBtnSelect()),
+            Hidden('sust_tendency', '', id='id_sust_tendency'), #, id='id_sust_domain' ),
+            Row(ColTendencyBtnSelect()),
          
             Row(
                 Column(HTML('<label class="col-form-label hidden-label">1</label>'), #for margin of button

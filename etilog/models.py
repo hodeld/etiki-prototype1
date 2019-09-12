@@ -76,6 +76,15 @@ class SustainabilityDomain (models.Model):
         return self.name
     class Meta:
         ordering = ['name', ]
+        
+class SustainabilityTendency (models.Model):
+    impnr = models.PositiveSmallIntegerField(verbose_name='Import Number', blank=True,null=True)
+    name = models.CharField(unique = True,  max_length=30)
+    comment = models.CharField(max_length=200, blank=True,null=True)
+    def __str__(self):
+        return self.name
+    class Meta:
+        ordering = ['name', ]
            
 class SustainabilityCategory (models.Model):
     
@@ -93,6 +102,8 @@ class SustainabilityTag (models.Model):
     impnr = models.PositiveSmallIntegerField(verbose_name='Import Number', blank=True,null=True)
     name = models.CharField(unique = True,  max_length=35)
     sust_categories = models.ManyToManyField('SustainabilityCategory', blank=True)
+    sust_domains = models.ManyToManyField('SustainabilityDomain', blank=True)
+    sust_tendency = models.ForeignKey(SustainabilityTendency, on_delete=models.SET_NULL, blank=True, null=True)
     description = models.CharField(max_length=200, blank=True,null=True)
     comment = models.CharField(max_length=200, blank=True,null=True)
     def __str__(self):
@@ -101,6 +112,11 @@ class SustainabilityTag (models.Model):
     @property
     def get_categories(self):
         return '; '.join([x.name for x in self.sust_categories.all()])
+    
+    @property
+    def get_domains(self):
+        return '; '.join([x.name for x in self.sust_domains.all()])
+    
     class Meta:
         ordering = ['name', ]
       
@@ -118,6 +134,8 @@ class ImpactEvent (models.Model):
     reference = models.ForeignKey(Reference, on_delete=models.CASCADE)
     sust_category = models.ForeignKey(SustainabilityCategory, on_delete=models.CASCADE)
     sust_tags = models.ManyToManyField('SustainabilityTag', blank=True)
+    sust_domain = models.ForeignKey(SustainabilityDomain, on_delete=models.CASCADE)
+    sust_tendency = models.ForeignKey(SustainabilityTendency, on_delete=models.SET_NULL, blank=True, null=True) #todo:on_delete=models.CASCADE)
     
     source_url = models.URLField(blank=True, null=True)
     sources = models.ManyToManyField('Source', blank=True, verbose_name = 'further sources', 

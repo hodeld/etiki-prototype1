@@ -46,7 +46,7 @@ class ImpactEventAdmin(admin.ModelAdmin):
 
 class TagsAdmin(admin.ModelAdmin):
     model = SustainabilityTag
-    list_display = ('name', 'get_categories', )
+    list_display = ('name', 'get_categories', 'get_domains', 'sust_tendency' )
 
     
 
