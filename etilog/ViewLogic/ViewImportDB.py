@@ -214,8 +214,8 @@ def parse_ies_domain_tendency():
 def get_domain_tendency(st_db):
     dom_db =  st_db.sust_domain
     sname = st_db.name
-    pos = 'positiv'
-    neg = 'negativ' 
+    pos = 'positive'
+    neg = 'negative' 
     contr = 'controversial' 
     if pos in sname:
         name_str = pos

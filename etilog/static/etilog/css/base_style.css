@@ -89,6 +89,9 @@ body {
 	padding: 20px;
 	background: #f4f7f8;
 	border-radius: 8px;
+	/*display: None;
+	z-index: 10;
+	position: fixed;*/
 }
 
 

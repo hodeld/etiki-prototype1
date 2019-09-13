@@ -132,7 +132,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap.html"
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html" #'django_tables2/bootstrap-responsive.html'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 BOOTSTRAP4 = {

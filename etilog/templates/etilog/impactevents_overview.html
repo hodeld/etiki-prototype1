@@ -32,6 +32,8 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-12 col-lg-8"> 
+			<h5>{{ message }}</h5>
+			<hr class="mt-0 mb-4">
 			<button class="btn btn-secondary" type="button"
 				data-toggle="collapse" data-target="#filterform"  
 				aria-expanded="false" aria-controls="collapseExample">
@@ -43,13 +45,19 @@
 			{% crispy searchform %} {# important: not filter.form|crispy #}
 			{% crispy filter.form %} {# important: not filter.form|crispy #} 
 			</div>
+		
 		</div>
+		
 
 	</div>
 </div>
 <br>
            	
 {% render_table table %}
+<nav aria-label="Table navigation">
+            <ul class="pagination justify-content-center">
+            </ul>
+        </nav>
     	
 {% endblock content %}  
 

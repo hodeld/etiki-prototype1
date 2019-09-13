@@ -32,7 +32,8 @@ def get_filterdict(request):
         
     if len(reqdict) == 0: #first time GET
         st, et = get_dateframe() #date as string '%d.%m.%Y'
-        filter_dict = {'date_from': st, 'date_to': et} #needs to be correct format
+        #filter_dict = {'date_from': st, 'date_to': et} #needs to be correct format
+        filter_dict = None
         datef_str = 'true'
     else:
         filter_dict = dict(reqdict)

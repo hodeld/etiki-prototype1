@@ -102,9 +102,9 @@ class ImpevOverviewFForm(forms.Form):
             RowTagsInput('reference',  'col-12'),
             #Row(Column('sust_domain'),  css_class='col-12'),
             Hidden('sust_domain', '', id='id_sust_domain'), #, id='id_sust_domain' ),
-            Row(ColDomainBtnSelect()),
-            Hidden('sust_tendency', '', id='id_sust_tendency'), #, id='id_sust_domain' ),
-            Row(ColTendencyBtnSelect()),
+            Hidden('sust_tendency', '', id='id_sust_tendency'), 
+            Row(ColDomainBtnSelect(),ColTendencyBtnSelect()),
+            
          
             Row(
                 Column(HTML('<label class="col-form-label hidden-label">1</label>'), #for margin of button
@@ -122,7 +122,7 @@ class ImpevOverviewFForm(forms.Form):
             Row(
                 Column(
                     
-                        Submit('submit', 'Apply Filter', css_class='btn btn-info btn-block',),    
+                        Submit('submit', 'Apply Filter', css_class='btn btn-secondary btn-block',),    
                     css_class='col-12'
                     )
                 )

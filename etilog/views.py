@@ -47,23 +47,28 @@ def startinfo(request):
 def overview_impevs(request):
     #parse_url() -> to get pdfs / test
     
-    #q_ie = ImpactEvent.objects.all()
-    #for testing
-    q_ie = ImpactEvent.objects.filter(Q(id = 10) #q_ie = ImpactEvent.objects.all()
-                                      | Q(id = 20)
-                                      ) 
     filter_dict, datef, js_tag_dict, js_btn_dict = get_filterdict(request) #hiddencompany
-      
-    q_ie = ImpactEvent.objects.all()
-    filt = ImpevOverviewFilter(filter_dict, queryset=q_ie)
-        
+    LIMIT = 21
+    if  filter_dict:
+        q_ie = ImpactEvent.objects.all()
+        msg_base =  'show %s filtered impact events'
+    else:
+        last_ies = ImpactEvent.objects.all().order_by('-updated_at')[:LIMIT]
+        dt = list(last_ies)[-1].updated_at
+        q_ie = ImpactEvent.objects.filter(updated_at__gte = dt)
+        msg_base = 'show %s most recent added impact events'
+    filt = ImpevOverviewFilter(filter_dict, queryset=q_ie)       
     table = ImpEvTable(filt.qs)
     table.order_by = '-date_published'
-    n_page = filt.qs.count() - 1
+    cnt_ies = filt.qs.count() 
+    msg_results = msg_base % cnt_ies
+    n_page = cnt_ies - 1
     if n_page < 0:
         n_page = 1
-    RequestConfig(request, paginate={'per_page': n_page}).configure(table) 
-    #RequestConfig(request, paginate=False).configure(table) 
+    pag_dict={'per_page': n_page,}
+    
+    #RequestConfig(request, paginate=pag_dict).configure(table) 
+    RequestConfig(request, paginate=False).configure(table) 
     
     searchform = SearchForm()
     companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
@@ -79,6 +84,7 @@ def overview_impevs(request):
                                                                  'references_url': references_url,
                                                                  'json_tag_dic': js_tag_dict,
                                                                  'json_btn_dic': js_btn_dict,
+                                                                 'message': msg_results
                                                                  })
 
 def import_dbdata(request):

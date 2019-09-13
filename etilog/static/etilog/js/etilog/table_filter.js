@@ -1,27 +1,25 @@
 
 
 $(document).ready(function() {
-	$('tbody').addClass("list"); // for list filter
-	$('.table-container').attr('id', 'impev-list'); // for list filter
-
-
-	$('.table-container').prepend('<input  class="search form-control" placeholder="Search"  />');
 	
+	//for date filter toggle
 	$('#button-id-datefilter').attr("aria-pressed", datef); //datef: true or false
 	change_activ();
 	$('#button-id-datefilter').click(filter_toggle);
 	
+	//button select for categories
 	$('.btnselect').on('click', set_val_from_btn);
 	set_filterbtns();
 	
 	//$('.row_tags_class').hide(); -> done in css
 	
+	//add tagsinput on hidden fields
 	$('.f_tagsinput').tagsinput({
 		  	itemValue: 'id',
 			itemText: 'name',
 		});
 	
-	
+	//set filtertags set before
 	set_filtertags();
 	
 	
@@ -161,21 +159,10 @@ $(document).ready(function() {
 		
        
      });
-   //needs to be inside ready, sothat elements of specific ID and Class
-     // at the end as if no pages -> error
- 	var impevopts = {
- 			  valueNames: [ 'company', 'country', 'reference', 'sust_category', 'date_published' ],
- 			  page: 20,
- 			  pagination: {
- 			    innerWindow: 2,
- 			    outerWindow: 1,
- 			    left: 0,
- 			    right: 0,
- 			    paginationClass: "pagination", //class name generated in django-table
- 			    }
- 			};
-
- 	var impevList = new List('impev-list', impevopts);
+     
+     //for List.js
+     prepare_list()
+ 	
 	
 	
 	
@@ -263,4 +250,27 @@ function set_val_from_btn(event) {
 	//$('#id_sust_domain').val(new_val)
 	//$('#id_sust_domain').val(val_list);
 	$(input_id).val(val_list);
+}
+
+function prepare_list(){
+	$('tbody').addClass("list"); // for list filter
+ 	$('.table-container').attr('id', 'impev-list'); // for list filter
+ 	//need to be in same container as table for list filter
+ 	$('.table-container').prepend('<input  class="search form-control" placeholder="Search"  />');
+ 	$('.table-container').append('<nav aria-label="Table navigation"><ul class="pagination justify-content-center"></ul></nav>')
+ 	
+ 	var impevopts = {
+ 			  valueNames: [ 'company', 'country', 'reference', 'sust_category', 'date_published' ],
+ 			  page: 20,
+ 			  pagination: {
+ 			    innerWindow: 2,
+ 			    outerWindow: 1,
+ 			    left: 0,
+ 			    right: 0,
+ 			    paginationClass: "pagination", //class name generated in django-table
+ 			    }
+ 			};
+
+ 	//initiate List incl. pagination
+ 	var impevList = new List('impev-list', impevopts);
 }
