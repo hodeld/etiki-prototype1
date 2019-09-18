@@ -2,8 +2,6 @@
 {% load static %}
 {% block djangoadmin %} 
 
-
-
 {% endblock djangoadmin %}
 {% load crispy_forms_tags %}
 
@@ -22,11 +20,10 @@
     var btns_dict = JSON.parse('{{ json_btn_dic|safe }}');
 
 </script>
-
-
 {% endblock script %}
 {% block title %}Overview{% endblock title %}
-{% block sitetitle %}Ovierview{% endblock sitetitle %}
+{% block cls_overview %}active{%endblock cls_overview %}
+
 {% block content %}
 <div class="container">
 	<div class="row justify-content-center">
