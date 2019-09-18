@@ -38,10 +38,10 @@ class ImpevOverviewFilter(FilterSet):
         
     date_from = DateFilter(field_name = 'date_published',
                            lookup_expr='gt',
-                           label = 'from')
+                           label = 'Date from')
     date_to = DateFilter(field_name = 'date_published',
                          lookup_expr='lt',
-                         label = 'to')
+                         label = 'Date to')
     
     #company, reference, country could be done like sust_domain -> but handling error messages needed
     company = CharFilter(field_name = 'company',

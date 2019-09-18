@@ -36,7 +36,6 @@ datefiltername = 'datefilter'
 class SearchForm(forms.Form):
 
     search = forms.CharField(label = '', required=False)
-    searchtags = forms.CharField(label = '', required=False)
     freetext = forms.CharField(label = 'freetext', required=False)
 
     def __init__(self, *args, **kwargs):
@@ -56,12 +55,27 @@ class SearchForm(forms.Form):
                     )
                 ),
         Row(
-                Column(Field('searchtags', id = 'id_searchtags', autocomplete="off", 
-                             placeholder = 'searchtags'
+                Column(Field('freetext', id = 'id_f_freetext', 
+                             
+                             data_role='tagsinput'
                        ),
                         css_class='col-12'                             
-                    )
+                    ), id = 'id_row_f_freetext', css_class='row_tags_class'
                 ),
+        )
+        
+
+class FreetextForm(forms.Form):
+
+    freetext = forms.CharField(label = 'freetext', required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(FreetextForm, self).__init__(*args, **kwargs)
+       
+        self.helper = FormHelper()
+        
+        self.helper.layout = Layout(
+            
         Row(
                 Column(Field('freetext', id = 'id_f_freetext', 
                              
@@ -107,17 +121,8 @@ class ImpevOverviewFForm(forms.Form):
             
          
             Row(
-                Column(HTML('<label class="col-form-label hidden-label">1</label>'), #for margin of button
-                    ButtonHolder(
-                        
-                        Button(datefiltername, 'Date', css_class='btn-light',  #'active btn-light',  
-                               data_toggle='button',
-                               aria_pressed = "true") 
-                        )
-                    , css_class='col-12 col-lg-2') #on small devive -> col-12 -> new line
-                    ,
-                Column('date_from', css_class='col-12 col-lg-5'),
-                Column('date_to', css_class='col-12 col-lg-5')
+                Column('date_from', css_class='col-12 col-lg-6'),
+                Column('date_to', css_class='col-12 col-lg-6')
             ),
             Row(
                 Column(
@@ -126,8 +131,6 @@ class ImpevOverviewFForm(forms.Form):
                     css_class='col-12'
                     )
                 )
-            ,
-            Hidden('i-datefilter', 'true', css_id = 'id-i-'+ datefiltername )
             )
     
     

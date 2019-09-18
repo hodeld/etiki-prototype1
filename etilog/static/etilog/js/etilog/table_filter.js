@@ -2,11 +2,6 @@
 
 $(document).ready(function() {
 	
-	//for date filter toggle
-	$('#button-id-datefilter').attr("aria-pressed", datef); //datef: true or false
-	change_activ();
-	$('#button-id-datefilter').click(filter_toggle);
-	
 	//button select for categories
 	$('.btnselect').on('click', set_val_from_btn);
 	set_filterbtns();
@@ -22,14 +17,6 @@ $(document).ready(function() {
 	//set filtertags set before
 	set_filtertags();
 	
-	
-	
-	//initialize bloodhound
-	var colors_suggestions = new Bloodhound({
-		  datumTokenizer: Bloodhound.tokenizers.whitespace, 
-		  queryTokenizer: Bloodhound.tokenizers.whitespace, 
-		  local: ['Red','Blood Red','White','Blue','Yellow','Green','Black','Pink','Orange']
-		});
 	//initialize bloodhound
 	var companies = new Bloodhound({
 		  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
@@ -139,33 +126,10 @@ $(document).ready(function() {
 		
 		
 	});
-	
-	
-
-     
-     $('#id_searchtags').tagsinput({ //options only when without data_role
-		typeaheadjs: 
-		(
-				//Configuration options
-				{
-			  hint: true,
-			  highlight: true,
-			  minLength: 1
-			},
-		//data options: mandatory
-			{
-        source: colors_suggestions
-        })
-		
-       
-     });
      
      //for List.js
      prepare_list()
- 	
-	
-	
-	
+
 });
 
 function filter_toggle(event) {
@@ -192,15 +156,7 @@ function filter_toggle(event) {
 	//oform.appendChild(filterinput); //appends hidden input field; send request directly did not get response?!
 	//oform.submit();
 }
-function change_activ(){
-	if (datef == true){
-		$('#button-id-datefilter').addClass("active");
-	}
-	else {
-		return  $('#button-id-datefilter').removeClass("active");
-	
-	}	
-}
+
 
 function set_filtertags(){
 	$.each(tags_dict, function( k, v ) {

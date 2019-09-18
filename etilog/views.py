@@ -15,7 +15,7 @@ from etilog.models import SustainabilityTag
 #tables
 from .tables import ImpEvTable
 #forms
-from .forms import NewImpactEvent, NewSource, CompanyForm, ReferenceForm, SearchForm
+from .forms import NewImpactEvent, NewSource, CompanyForm, ReferenceForm, SearchForm, FreetextForm
 #forms
 from .filters import ImpevOverviewFilter
 
@@ -47,7 +47,7 @@ def startinfo(request):
 def overview_impevs(request):
     #parse_url() -> to get pdfs / test
     
-    filter_dict, datef, js_tag_dict, js_btn_dict = get_filterdict(request) #hiddencompany
+    filter_dict, js_tag_dict, js_btn_dict = get_filterdict(request) #hiddencompany
     LIMIT = 21
     if  filter_dict:
         q_ie = ImpactEvent.objects.all()
@@ -66,14 +66,15 @@ def overview_impevs(request):
     RequestConfig(request, paginate=False).configure(table) 
     
     searchform = SearchForm() #Filter ServerSide
+    freetextform = FreetextForm()
     companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
     references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
     
     return render(request, 'etilog/impactevents_overview.html', {'table': table,
                                                                  'filter': filt,
-                                                                 'datef': datef,
                                                                  'searchform': searchform,
+                                                                 'freetextform': freetextform,
                                                                  'companies_url': companies_url,
                                                                  'countries_url': countries_url,
                                                                  'references_url': references_url,

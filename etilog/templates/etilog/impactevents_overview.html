@@ -15,7 +15,6 @@
 {% block script %} 
 <script src="{% static 'etilog/js/etilog/List.js' %}"></script>
 <script>
-    var datef = {{datef}}; 
     var companies_url = "{{companies_url}}";  
     var countries_url = "{{countries_url}}";  
     var references_url = "{{references_url}}";  
@@ -34,6 +33,9 @@
 		<div class="col-12 col-lg-8"> 
 			<h5>{{ message }}</h5>
 			<hr class="mt-0 mb-4">
+			<div  id="mainsearchform"> {# for testing  class="collapse" #}
+			{% crispy searchform %} {# important: not filter.form|crispy #}
+			</div>
 			<button class="btn btn-secondary" type="button"
 				data-toggle="collapse" data-target="#filterform"  
 				aria-expanded="false" aria-controls="collapseExample">
@@ -42,7 +44,7 @@
 			<br>
 
 			<div class="collapse show" id="filterform"> {# for testing  class="collapse" #}
-			{% crispy searchform %} {# important: not filter.form|crispy #}
+			{% crispy freetextform %} {# important: not filter.form|crispy #}
 			{% crispy filter.form %} {# important: not filter.form|crispy #} 
 			</div>
 		

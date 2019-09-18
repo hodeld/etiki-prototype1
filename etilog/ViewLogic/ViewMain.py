@@ -14,7 +14,6 @@ from etilog.ViewLogic.ViewDatetime import get_dateframe
 
 def get_filterdict(request):
     reqdict =  request.GET 
-    datef_str = 'false'
     tag_dict ={}
     btn_dict = {}
     def set_value(keyname):
@@ -31,21 +30,11 @@ def get_filterdict(request):
         return id_list, id_str
         
     if len(reqdict) == 0: #first time GET
-        st, et = get_dateframe() #date as string '%d.%m.%Y'
-        #filter_dict = {'date_from': st, 'date_to': et} #needs to be correct format
         filter_dict = None
-        datef_str = 'true'
     else:
         filter_dict = dict(reqdict)
-        datef_str =  reqdict.get('i-datefilter', None) #string
-        if datef_str:
-            if datef_str == 'true':
-                set_value('date_from')
-                set_value('date_to')
-            else:
-                datef_str = 'false'
-                filter_dict['date_from'] = ''
-                filter_dict['date_to'] = ''
+        set_value('date_from')
+        set_value('date_to')
                 
         field_names = ['company', 'reference', 'country']
         modelarr = {'company': Company.objects.all(), 
@@ -81,4 +70,4 @@ def get_filterdict(request):
     js_btn_dict = json.dumps(btn_dict)
     
                
-    return filter_dict, datef_str, js_tag_dict, js_btn_dict
+    return filter_dict, js_tag_dict, js_btn_dict
