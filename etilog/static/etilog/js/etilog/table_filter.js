@@ -122,7 +122,7 @@ $(document).ready(function() {
 				elt.tagsinput('add', suggestion);	//adds tag	
 				
 				$(el_id).show();
-				$(this).typeahead('val', ''); //typeahead input
+				$(this).typeahead('val', ''); //typeahead input			
 			}
 			
 		
@@ -279,5 +279,8 @@ function prepare_list(){
  		  var searchString = $(this).val();
  		 impevList.search(searchString);
  		});
+ 	$('#id_search').bind('typeahead:select', function() {
+ 		impevList.search(''); //to clear List search 		
+ 	});
  	
 }
