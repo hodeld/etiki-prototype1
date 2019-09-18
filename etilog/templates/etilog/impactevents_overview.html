@@ -31,30 +31,28 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-12 col-lg-8"> 
-			<h5>{{ message }}</h5>
-			<hr class="mt-0 mb-4">
-			<div  id="mainsearchform"> {# for testing  class="collapse" #}
-			{% crispy searchform %} {# important: not filter.form|crispy #}
-			</div>
-			<button class="btn btn-secondary" type="button"
-				data-toggle="collapse" data-target="#filterform"  
-				aria-expanded="false" aria-controls="collapseExample">
-				Filter options &#11022
-				</button>
-			<br>
-
-			<div class="collapse show" id="filterform"> {# for testing  class="collapse" #}
-			{% crispy freetextform %} {# important: not filter.form|crispy #}
-			{% crispy filter.form %} {# important: not filter.form|crispy #} 
-			</div>
-		
+			<div class="searchform" id="mainsearchform"> {# for testing  class="collapse" #}
+				{% crispy searchform %} {# important: not filter.form|crispy #}
+				
+				<button class="btn btn-sm btn-secondary" type="button"
+					data-toggle="collapse" data-target="#filterform"  
+					aria-expanded="false" aria-controls="collapseExample">
+					Filter options &#11022
+					</button>
+				<br>
+	
+				<div class="collapse" id="filterform"> {# for testing  class="collapse" #}
+				{% crispy freetextform %} {# important: not filter.form|crispy #}
+				{% crispy filter.form %} {# important: not filter.form|crispy #} 
+				</div>
+		</div>
 		</div>
 		
 
 	</div>
 </div>
 <br>
-           	
+<h5>{{ message }}</h5>           	
 {% render_table table %}
 
     	

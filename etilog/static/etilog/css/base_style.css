@@ -81,7 +81,7 @@ body {
 	/*can be shown with jquery later on*/
 	display: none;
 }
-#filterform{
+.searchform{
 	/*max-width: 500px;*/
 	padding: 10px 20px;
 	background: #f4f7f8;

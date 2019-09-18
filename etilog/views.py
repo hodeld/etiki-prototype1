@@ -51,12 +51,12 @@ def overview_impevs(request):
     LIMIT = 21
     if  filter_dict:
         q_ie = ImpactEvent.objects.all()
-        msg_base =  'show %s filtered impact events'
+        msg_base =  'shows %s filtered impact events'
     else:
         last_ies = ImpactEvent.objects.all().order_by('-updated_at')[:LIMIT]
         dt = list(last_ies)[-1].updated_at
         q_ie = ImpactEvent.objects.filter(updated_at__gte = dt)
-        msg_base = 'show %s most recent added impact events'
+        msg_base = 'shows %s most recent added impact events'
     filt = ImpevOverviewFilter(filter_dict, queryset=q_ie)       
     table = ImpEvTable(filt.qs)
     table.order_by = '-date_published'
