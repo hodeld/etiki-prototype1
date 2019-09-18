@@ -256,7 +256,8 @@ function prepare_list(){
 	$('tbody').addClass("list"); // for list filter
  	$('.table-container').attr('id', 'impev-list'); // for list filter
  	//need to be in same container as table for list filter
- 	$('.table-container').prepend('<input  class="search form-control" placeholder="Search"  />');
+ 	//$('.table-container').prepend('<input  class="search form-control" placeholder="Search"  />');
+ 	
  	$('.table-container').append('<nav aria-label="Table navigation"><ul class="pagination justify-content-center"></ul></nav>')
  	
  	var impevopts = {
@@ -273,4 +274,10 @@ function prepare_list(){
 
  	//initiate List incl. pagination
  	var impevList = new List('impev-list', impevopts);
+ 	//searchfield outside container:
+ 	$('#id_search').on('keyup', function() {
+ 		  var searchString = $(this).val();
+ 		 impevList.search(searchString);
+ 		});
+ 	
 }

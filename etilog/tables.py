@@ -101,7 +101,7 @@ class ImpEvTable(tables.Table):
         exclude = ('created_at', 'updated_at', )
         fields = ('id', 'copy', 'date_published', 'company', 'country', 
                   'sust_category', 'get_tags', 'reference',  'source_url', 'summary' )
-        attrs = {'class': 'table table-hover table-sm table-responsive'} #bootstrap4 classes 
+        attrs = {'class': 'table table-hover table-sm table-responsive table-fixed'} #bootstrap4 classes 
         
     
     def render_source_url(self, value):

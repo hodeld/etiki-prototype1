@@ -62,15 +62,10 @@ def overview_impevs(request):
     table.order_by = '-date_published'
     cnt_ies = filt.qs.count() 
     msg_results = msg_base % cnt_ies
-    n_page = cnt_ies - 1
-    if n_page < 0:
-        n_page = 1
-    pag_dict={'per_page': n_page,}
     
-    #RequestConfig(request, paginate=pag_dict).configure(table) 
     RequestConfig(request, paginate=False).configure(table) 
     
-    searchform = SearchForm()
+    searchform = SearchForm() #Filter ServerSide
     companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
     references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})

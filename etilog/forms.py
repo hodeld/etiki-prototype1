@@ -50,7 +50,7 @@ class SearchForm(forms.Form):
             
         Row(
                 Column(Field('search', id = 'id_search', autocomplete="off", 
-                             placeholder = 'Search Companies, Countries, Newspaper …',
+                             placeholder = 'Search Companies, Countries, Newspaper …'
                        ),
                         css_class='col-12'                             
                     )
