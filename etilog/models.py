@@ -134,7 +134,7 @@ class ImpactEvent (models.Model):
     reference = models.ForeignKey(Reference, on_delete=models.CASCADE)
     sust_category = models.ForeignKey(SustainabilityCategory, on_delete=models.CASCADE)
     sust_tags = models.ManyToManyField('SustainabilityTag', blank=True)
-    sust_domain = models.ForeignKey(SustainabilityDomain, on_delete=models.CASCADE)
+    sust_domain = models.ForeignKey(SustainabilityDomain, on_delete=models.CASCADE) #models.PROTECT
     sust_tendency = models.ForeignKey(SustainabilityTendency, on_delete=models.SET_NULL, blank=True, null=True) #todo:on_delete=models.CASCADE)
     
     source_url = models.URLField(blank=True, null=True)

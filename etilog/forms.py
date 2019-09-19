@@ -140,9 +140,6 @@ class NewImpactEvent(forms.ModelForm):
     '''
     form to create an impact event
     '''
-    sust_domain = forms.ChoiceField(label = 'which field of impact',
-                                    choices = CHOICES,
-                                    required=False)
 
     def __init__(self, *args, **kwargs):
         super (NewImpactEvent,self ).__init__(*args,**kwargs) 
@@ -171,16 +168,16 @@ class NewImpactEvent(forms.ModelForm):
             ),
             
             Row(
-                Column('sust_domain', 
-                       css_class=CSS_COL_CLS),
-                Column(Field('sust_category', 
-                             data_susts_url=reverse_lazy('etilog:get_sustcagories')
+                Column(Field('sust_domain'
+                             ),                           
+                             css_class=CSS_COL_CLS),
+                Column(Field('sust_tendency'
                              ),                           
                              css_class=CSS_COL_CLS)
             ),
 
             
-            Field('sust_tags', data_tags_url=reverse_lazy('etilog:get_sust_tags')),
+            Field('sust_tags', data_url=reverse_lazy('etilog:get_sust_tags')),
             Field('summary', rows= 3),
             Field('comment', rows= 3),
             
@@ -191,7 +188,7 @@ class NewImpactEvent(forms.ModelForm):
     class Meta: #only for model fields
         model = ImpactEvent
         fields = ['source_url', 'date_published', 'date_impact', 'company', 'reference', 
-                  'sust_category', 'sust_tags',
+                  'sust_domain', 'sust_tendency', 'sust_tags',
                   'summary', 'comment' 
                   ]
     

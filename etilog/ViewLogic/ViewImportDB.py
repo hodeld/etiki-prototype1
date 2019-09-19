@@ -25,9 +25,9 @@ def parse_xcl(): #, eventlist, eventtype_dict):
 
     warnings.simplefilter("default")
     
-    #imp_originalmodel(wb)
+    imp_originalmodel(wb)
 
-    #parse_tags_domain_tendency() #after parse tags
+    parse_tags_domain_tendency() #after parse tags
     parse_ies_domain_tendency()
 
 def imp_originalmodel(wb):
@@ -217,7 +217,7 @@ def get_domain_tendency(st_db):
     pos = 'positive'
     neg = 'negative' 
     contr = 'controversial' 
-    if pos in sname:
+    if pos[:4] in sname:
         name_str = pos
         def_data = {'name': name_str }
         ten_db, created = SustainabilityTendency.objects.get_or_create(name__icontains = name_str,
@@ -226,13 +226,13 @@ def get_domain_tendency(st_db):
         
      
       
-    elif neg in sname:
+    elif neg[:4] in sname:
         name_str = neg
         def_data = {'name': name_str }
         ten_db, created = SustainabilityTendency.objects.get_or_create(name__icontains = name_str,
                                                defaults = def_data)
  
-    elif contr in sname:
+    elif contr[:4] in sname:
         name_str = contr
         def_data = {'name': name_str }
         ten_db, created = SustainabilityTendency.objects.get_or_create(name__icontains = name_str,

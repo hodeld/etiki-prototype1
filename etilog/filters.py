@@ -52,7 +52,7 @@ class ImpevOverviewFilter(FilterSet):
     country = CharFilter(field_name = 'country_display', #can be country
                          label = 'Country',
                          method = 'filter_country_idlist')
-    sust_domain = ModelMultipleChoiceFilter(field_name = 'sust_category__sust_domain', #ModelMultiple... -> accepts list
+    sust_domain = ModelMultipleChoiceFilter(field_name = 'sust_domain', #ModelMultiple... -> accepts list
                          label = '',
                          queryset=SustainabilityDomain.objects.all()) #any queryset
     sust_tendency = ModelMultipleChoiceFilter(field_name = 'sust_tendency', #ModelMultiple... -> accepts list

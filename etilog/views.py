@@ -232,7 +232,7 @@ def load_names(request, modelname):
 
 
 #used in New IE Form     
-def load_sustcategories(request): #, 
+def load_sustcategories_notusedanymore(request): #, 
     domain_id_str = request.GET.get('domainId')
     domain_id = int(domain_id_str)
     sustcategories = SustainabilityCategory.objects.filter(sust_domain = domain_id)
@@ -242,11 +242,26 @@ def load_sustcategories(request): #,
 
 #used in New IE Form  
 def load_sust_tags(request): #, 
-    category_id_str = request.GET.get('categoryId')
-    category_id = int(category_id_str)
-    sust_tags = SustainabilityTag.objects.filter(Q(sust_categories = category_id)
-                                                 |Q(sust_categories__isnull = True)
-                                                 ).order_by('name')
+    tendency_id_str = request.GET.get('categoryId')
+    lookup_dict = {}
+
+    def lookup_many(name_s, val):
+        id_list = [int(val)] #list
+        lookup = '__'.join([name_s, 'in'])   
+        lookup_dict[lookup] = id_list
+    
+    def lookup_one(name_s, val):
+        f_id = int(val)
+        lookup_dict[name_s] = f_id
+    
+    if len(tendency_id_str) > 0:
+        lookup_one('sust_tendency', tendency_id_str)
+    domain_id_str = request.GET.get('domainId')
+    if len(domain_id_str) > 0:
+        lookup_many('sust_domains', domain_id_str)
+        
+    sust_tags = SustainabilityTag.objects.filter(**lookup_dict).order_by('name')
+
 
     
     return render(request, 'etilog/select_sust_tags.html', {'tags': sust_tags})       

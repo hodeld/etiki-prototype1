@@ -51,7 +51,7 @@ class SustcatColumn2(tables.Column):
                     return bntclass + 'success'
             else:
                 return ''
-        super(SustcatColumn, self).__init__(*args, **kwargs, 
+        super(SustcatColumn2, self).__init__(*args, **kwargs, 
                                             attrs={'td': {'class': cssclass_sustcat}}
                                             )
 
@@ -60,7 +60,7 @@ class SustcatColumn2(tables.Column):
         sustdomain = sustcat.sust_domain.name
         return sustdomain
 
-class SustcatColumn(tables.TemplateColumn):
+class BtnTendencyColumn(tables.TemplateColumn):
 
     def __init__(self, *args, **kwargs):
         
@@ -70,10 +70,11 @@ class SustcatColumn(tables.TemplateColumn):
                       'clspos': bntclass + 'success',
                       'clscon': bntclass + 'warning',
                       }
-        super(SustcatColumn, self).__init__(  #*args, **kwargs,
+        super(BtnTendencyColumn, self).__init__(  
                                              template_name= 'etilog/cell_button.html',
                                              extra_context=extra_dict,
-                                             attrs={'td': {'class':'sustcl'}}
+                                             attrs={'td': {'class':'sustcl'}},
+                                             *args, **kwargs,
                                              )
           
     
@@ -88,8 +89,8 @@ class ImpEvTable(tables.Table):
                          accessor = 'id',
                          linkify = lambda record: reverse('etilog:impactevent_copy', args=(record.id,)))
        
-    date_published = tables.DateColumn(verbose_name='Date of Impact', format = 'M Y')
-    sust_category = SustcatColumn()
+    date_published = tables.DateColumn(verbose_name='Date', format = 'M Y')
+    btncol = BtnTendencyColumn(accessor = 'sust_domain', verbose_name = 'Categ.',)
     #sust_category = tables.TemplateColumn('<button class="badge sustbtn badge-danger">Detail</button>')
     summary = tables.Column(attrs ={'td': {'title': get_hovertitle}})
     country = tables.Column(accessor = 'country_display') 
@@ -99,8 +100,8 @@ class ImpEvTable(tables.Table):
         model = ImpactEvent
         
         exclude = ('created_at', 'updated_at', )
-        fields = ('id', 'copy', 'date_published', 'company', 'country', 
-                  'sust_category', 'get_tags', 'reference',  'source_url', 'summary' )
+        fields = ('id', 'copy', 'date_published', 'company', 'country',
+                  'btncol', 'get_tags', 'reference',  'source_url', 'summary' )
         attrs = {'class': 'table table-hover table-sm table-responsive table-fixed'} #bootstrap4 classes 
         
     

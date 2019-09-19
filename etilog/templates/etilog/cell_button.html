@@ -1,8 +1,8 @@
 <!-- for table value css class depending on value  -->
-{% if  'negativ' in value.name %}
-<button class="{{clsneg }}">{{ value.sust_domain.name }}</button>
-{% elif   'positiv' in value.name %}
-<button class="{{clspos }}">{{ value.sust_domain.name }}</button>
+{% if  'negativ' in record.sust_tendency.name %}
+<button class="{{clsneg }}">{{ value }}</button>
+{% elif   'positiv' in record.sust_tendency.name %}
+<button class="{{clspos }}">{{ value}}</button>
 {% else %}
-<button class="{{clscon }}">{{ value.sust_domain.name }}</button>
+<button class="{{clscon }}">{{ value }}</button>
 {% endif %}
