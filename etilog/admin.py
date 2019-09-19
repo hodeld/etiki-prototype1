@@ -5,7 +5,8 @@ from django import forms
 from django.urls import reverse_lazy
 
 #models
-from .models import ImpactEvent, SustainabilityDomain, SustainabilityCategory, SustainabilityTag
+from .models import ImpactEvent 
+from .models import SustainabilityDomain, SustainabilityTendency, SustainabilityCategory, SustainabilityTag
 from .models import Company, Country,  ActivityCategory
 from .models import Media, Reference, Source
 
@@ -46,7 +47,7 @@ class ImpactEventAdmin(admin.ModelAdmin):
 
 class TagsAdmin(admin.ModelAdmin):
     model = SustainabilityTag
-    list_display = ('name', 'get_categories', )
+    list_display = ('name', 'get_categories', 'get_domains', 'sust_tendency' )
 
     
 
@@ -60,6 +61,7 @@ admin_site.register(Group)
 admin_site.register(ImpactEvent, ImpactEventAdmin) #default is admin.site.register
 admin_site.register(SustainabilityCategory)
 admin_site.register(SustainabilityDomain)
+admin_site.register(SustainabilityTendency)
 admin_site.register(SustainabilityTag, TagsAdmin)
 admin_site.register(Source)
 admin_site.register(Reference)

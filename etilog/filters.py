@@ -4,22 +4,18 @@ Created on 2.8.2019
 @author: daim
 '''
 #fjango
-from django import forms
-from django.db.models import OuterRef
-from django.urls import reverse_lazy
-import json
-#filter
-from django_filters import FilterSet, DateFromToRangeFilter, DateFilter
-#form
-from bootstrap_datepicker_plus import DatePickerInput
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Column, Submit
+from django.db.models import Q
 
+#filter
+from django_filters import FilterSet, DateFilter, CharFilter, ModelMultipleChoiceFilter
+from django_filters import MultipleChoiceFilter
 
 #models
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
+from etilog.models import SustainabilityTendency
 #forms
 from .forms import ImpevOverviewFForm
+
 
 
     
@@ -36,29 +32,61 @@ CHOICES = domains
 
 
 
+    
 class ImpevOverviewFilter(FilterSet):
-    def __init__(self, *args, **kwargs):
-        super(ImpevOverviewFilter, self).__init__(*args, **kwargs)
+
         
     date_from = DateFilter(field_name = 'date_published',
                            lookup_expr='gt',
-                           label = 'from')
+                           label = 'Date from')
     date_to = DateFilter(field_name = 'date_published',
                          lookup_expr='lt',
-                         label = 'to')
-
+                         label = 'Date to')
     
+    #company, reference, country could be done like sust_domain -> but handling error messages needed
+    company = CharFilter(field_name = 'company',
+                         method = 'filter_idlist')
+    reference = CharFilter(field_name = 'reference',
+                           label = 'Where was it published',
+                         method = 'filter_idlist')
+    country = CharFilter(field_name = 'country_display', #can be country
+                         label = 'Country',
+                         method = 'filter_country_idlist')
+    sust_domain = ModelMultipleChoiceFilter(field_name = 'sust_domain', #ModelMultiple... -> accepts list
+                         label = '',
+                         queryset=SustainabilityDomain.objects.all()) #any queryset
+    sust_tendency = ModelMultipleChoiceFilter(field_name = 'sust_tendency', #ModelMultiple... -> accepts list
+                         label = '',
+                         queryset=SustainabilityTendency.objects.all()) #any queryset
+
+    def filter_idlist(self,queryset, name, value):
+        #value = value.replace('[','') #comes as "['3',]"
+        #value = value.replace(']','')
+        id_list = list(value.split(',')) #1,2,4"
+        if len(id_list) > 0:
+            lookup = '__'.join([name, 'in'])   
+            qs = queryset.filter(**{lookup: id_list}) #"name__in = id_list
+        else:
+            qs = queryset
+        return qs
+    
+    def filter_country_idlist(self,queryset, name, value):
+        id_list = list(value.split(',')) #1,2,4"
+        if len(id_list) > 0:
+            qs = queryset.filter(Q(country__in = id_list)
+                                 | Q(company__country__in = id_list, country__isnull = True)
+                                 )  #"name__in = id_list
+        else:
+            qs = queryset
+        return qs
+
+    def filter_sust_domains(self,queryset, name, value):
+        pass
+        
+                            
     
     class Meta:
         model = ImpactEvent
-        fields = [ 'date_from', 'date_to',]
+        fields = ['date_from', 'date_to', 'company', 'country', 'reference', 'sust_domain', 'sust_category']
         form = ImpevOverviewFForm
  
-class ImpevOverviewFilter2(FilterSet):
-    
-    class Meta:
-        model = ImpactEvent
-
-        exclude = [ '', ]
-        #form = ImpevOverviewFForm        
-                  

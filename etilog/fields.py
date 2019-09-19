@@ -7,15 +7,16 @@ from django import forms
 from django.urls import reverse_lazy
 
 #crispoy
-from crispy_forms.layout import Layout, Field, Row, Column, Submit, Button, HTML
+from crispy_forms.layout import Layout, Field, Row, Column, Submit, Button, HTML, ButtonHolder
 from crispy_forms.bootstrap import  InlineRadios, FieldWithButtons, StrictButton
 #datepicker
 from bootstrap_datepicker_plus import DatePickerInput
 
 #models
-from .models import Company, Reference
+from .models import Company, Reference, SustainabilityDomain, SustainabilityTendency
 
 D_FORMAT = '%d.%m.%Y'
+D_YEARFORMAT = '%Y'
 
 class ListTextWidget(forms.TextInput):
     def __init__(self, data_list, name, *args, **kwargs):
@@ -46,10 +47,9 @@ class AutocompleteWidget(forms.TextInput):
                       'class': 'autocompwidget'}) #used for jquery
 
 class CompanyWidget(AutocompleteWidget):
-    def __init__(self, *args, **kwargs):
-        reference_pks = Reference.objects.values_list('pk', flat = True) #all ids
-        q_companies = Company.objects.exclude(reference__pk__in = reference_pks).distinct()        
-        q_comp_val = q_companies.values_list('name', flat = True)
+    def __init__(self, *args, **kwargs):       
+        #when excluding companies in Reference -> excludes also companies which are both.
+        q_comp_val = Company.objects.values_list('name', flat = True)
         AutocompleteWidget.__init__(self, data_list = q_comp_val, 
                                     placeholder = 'Company', *args, **kwargs)
         
@@ -57,14 +57,14 @@ class ReferenceWidget(AutocompleteWidget):
     def __init__(self, *args, **kwargs):
         q_references = Reference.objects.values_list('name', flat = True)
         AutocompleteWidget.__init__(self, data_list = q_references, 
-                                    placeholder = 'Reference', *args, **kwargs)
+                                    placeholder = 'Newspaper', *args, **kwargs)
                 
 
 class CompanyWBtn(Layout):
     def __init__(self, fieldname, mainmodel,  *args, **kwargs):
         super(CompanyWBtn, self).__init__(
             FieldWithButtons(fieldname, 
-                                    StrictButton("Add!", css_class='btn btn-light add_foreignmodel', #class for jquery
+                                    StrictButton("+", css_class='btn btn-light add_foreignmodel', #class for jquery
                                     #css_id='add_id_company',
                                     add_url=reverse_lazy('etilog:add_foreignmodel', 
                                                          kwargs={'main_model': mainmodel,
@@ -77,7 +77,7 @@ class ReferenceWBtn(Layout):
     def __init__(self, *args, **kwargs):
         super(ReferenceWBtn, self).__init__(
             FieldWithButtons('reference', 
-                                        StrictButton("Add!", css_class='btn btn-light add_foreignmodel',
+                                        StrictButton("+", css_class='btn btn-light add_foreignmodel',
                                         #css_id='add_id_reference',                                       
                                         add_url=reverse_lazy('etilog:add_foreignmodel', 
                                                              kwargs={'main_model': 'impev',
@@ -96,3 +96,71 @@ class DateYearPicker(DatePickerInput):
                      },
             )
         
+class RowTagsInput(Layout):
+    def __init__(self, field_name,  col_class,  field_id = None, row_id=None, *args, **kwargs):
+        if field_id == None:
+            field_id = 'id_f_' + field_name 
+        if row_id == None:
+            row_id = 'id_row_f_' + field_name
+        super(RowTagsInput, self).__init__(           
+            Row(
+                    Column(Field(field_name, id = field_id,
+                            #data_role='tagsinput',  
+                             #disabled=True, 
+                             #readonly=True,
+                             css_class = 'f_tagsinput'  
+                           ),
+                            css_class = col_class                             
+                        ),
+                css_class='row_tags_class',
+                id = row_id
+                )
+            )
+                    
+class ColDomainBtnSelect(Layout):
+    def __init__(self, col_class= 'col-12 col-lg-6', *args, **kwargs): #distribute buttons
+        q = SustainabilityDomain.objects.all()
+        btn_list = []
+        for dom in q:
+            btn = Button(dom.id, dom.name, css_class='btnselect btn-outline-info btn-sm',  #'active btn-light',  
+                               css_id = 'id-sust_domain-btn-' + str(dom.id),
+                               data_toggle='button',
+                               aria_pressed = "false",
+                               targfield = 'id_sust_domain') 
+            btn_list.append(btn)
+            
+        html_str = '<label class="col-form-label">Which Field</label>'
+        super(ColDomainBtnSelect, self).__init__( 
+                           
+            Column(HTML(html_str),
+                   ButtonHolder(*btn_list),
+                css_class = col_class  ) 
+            )    
+
+class ColTendencyBtnSelect(Layout):
+    def __init__(self, col_class= 'col-12 col-lg-6', *args, **kwargs): #distribute buttons
+        q = SustainabilityTendency.objects.all()
+        btn_list = []
+        for tend in q:
+            bntclass = 'btnselect btn-sm btn-outline-'
+            if 'negativ' in tend.name :
+                csscls =  bntclass + 'danger'
+            
+            elif 'positiv' in tend.name :
+                csscls =  bntclass + 'success'
+            else: # 'controv' in tend.name :
+                csscls =  bntclass +'warning'
+            btn = Button(tend.id, tend.name, css_class=csscls,  #'active btn-light',  
+                               css_id = 'id-sust_tendency-btn-' + str(tend.id),
+                               data_toggle='button',
+                               aria_pressed = "false",
+                               targfield = 'id_sust_tendency') 
+            btn_list.append(btn)
+            
+        html_str = '<label class="col-form-label">Which Tendency</label>'
+        super(ColTendencyBtnSelect, self).__init__( 
+                           
+            Column(HTML(html_str),
+                   ButtonHolder(*btn_list),
+                css_class = col_class  ) 
+            )                           

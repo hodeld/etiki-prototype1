@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 import json
@@ -9,13 +9,13 @@ import json
 from django_tables2 import RequestConfig
 
 #models
-from .models import ImpactEvent, Company, SustainabilityCategory, Reference
+from .models import ImpactEvent, Company, SustainabilityCategory, Reference, Country
 from etilog.models import SustainabilityTag
 
 #tables
 from .tables import ImpEvTable
 #forms
-from .forms import NewImpactEvent, NewSource, CompanyForm, ReferenceForm
+from .forms import NewImpactEvent, NewSource, CompanyForm, ReferenceForm, SearchForm, FreetextForm
 #forms
 from .filters import ImpevOverviewFilter
 
@@ -47,28 +47,41 @@ def startinfo(request):
 def overview_impevs(request):
     #parse_url() -> to get pdfs / test
     
-    q_ie = ImpactEvent.objects.all()
-    filter_dict, datef = get_filterdict(request)
-    if datef == True:
-        datef = "true"
+    filter_dict, js_tag_dict, js_btn_dict = get_filterdict(request) #hiddencompany
+    LIMIT = 21
+    if  filter_dict:
+        q_ie = ImpactEvent.objects.all()
+        msg_base =  'shows %s filtered impact events'
     else:
-        datef = "false"
-       
-    filt = ImpevOverviewFilter(filter_dict, queryset=q_ie)
-        
-        
+        last_ies = ImpactEvent.objects.all().order_by('-updated_at')[:LIMIT]
+        dt = list(last_ies)[-1].updated_at
+        q_ie = ImpactEvent.objects.filter(updated_at__gte = dt)
+        msg_base = 'shows %s most recent added impact events'
+    filt = ImpevOverviewFilter(filter_dict, queryset=q_ie)       
     table = ImpEvTable(filt.qs)
     table.order_by = '-date_published'
-    n_page = filt.qs.count() - 1
-    if n_page < 0:
-        n_page = 1
-    RequestConfig(request, paginate={'per_page': n_page}).configure(table) 
-    #RequestConfig(request, paginate=False).configure(table) 
+    cnt_ies = filt.qs.count() 
+    msg_results = msg_base % cnt_ies
     
+    RequestConfig(request, paginate=False).configure(table) 
+    
+    searchform = SearchForm() #Filter ServerSide
+    freetextform = FreetextForm()
+    companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
+    countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
+    references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
     
     return render(request, 'etilog/impactevents_overview.html', {'table': table,
                                                                  'filter': filt,
-                                                                 'datef': datef})
+                                                                 'searchform': searchform,
+                                                                 'freetextform': freetextform,
+                                                                 'companies_url': companies_url,
+                                                                 'countries_url': countries_url,
+                                                                 'references_url': references_url,
+                                                                 'json_tag_dic': js_tag_dict,
+                                                                 'json_btn_dic': js_btn_dict,
+                                                                 'message': msg_results
+                                                                 })
 
 def import_dbdata(request):
     
@@ -194,15 +207,32 @@ def upd_datadict_reference(data_dict):
     return data_dict
                 
 @csrf_exempt    
-def get_company_id(request):
+def get_company_notused(request):
     if request.is_ajax():
         company_name = request.GET['company_name']
         company_id = Company.objects.get(name = company_name).id
         data = {'company_id':company_id,}
         return HttpResponse(json.dumps(data), content_type='application/json')
     return HttpResponse("/")
-    
-def load_sustcategories(request): #, 
+
+def load_names(request, modelname):
+    if modelname == 'company':
+        q_names = Company.objects.values( 'id', 'name')
+        #q_names = Company.objects.values_list( 'name', flat = True) #id
+    elif modelname == 'reference':
+        q_names = Reference.objects.values( 'id', 'name')
+    elif modelname == 'country':
+        q_names = Country.objects.values( 'id', 'name')
+    else:
+        return HttpResponse("/")
+        
+    #data = json.dumps(list(q_names))
+    data = json.dumps(list(q_names))
+    return HttpResponse(data, content_type='application/json')
+
+
+#used in New IE Form     
+def load_sustcategories_notusedanymore(request): #, 
     domain_id_str = request.GET.get('domainId')
     domain_id = int(domain_id_str)
     sustcategories = SustainabilityCategory.objects.filter(sust_domain = domain_id)
@@ -210,12 +240,28 @@ def load_sustcategories(request): #,
     
     return render(request, 'etilog/select_sustcateg.html', {'susts': sustcategories})       
 
+#used in New IE Form  
 def load_sust_tags(request): #, 
-    category_id_str = request.GET.get('categoryId')
-    category_id = int(category_id_str)
-    sust_tags = SustainabilityTag.objects.filter(Q(sust_categories = category_id)
-                                                 |Q(sust_categories__isnull = True)
-                                                 ).order_by('name')
+    tendency_id_str = request.GET.get('categoryId')
+    lookup_dict = {}
+
+    def lookup_many(name_s, val):
+        id_list = [int(val)] #list
+        lookup = '__'.join([name_s, 'in'])   
+        lookup_dict[lookup] = id_list
+    
+    def lookup_one(name_s, val):
+        f_id = int(val)
+        lookup_dict[name_s] = f_id
+    
+    if len(tendency_id_str) > 0:
+        lookup_one('sust_tendency', tendency_id_str)
+    domain_id_str = request.GET.get('domainId')
+    if len(domain_id_str) > 0:
+        lookup_many('sust_domains', domain_id_str)
+        
+    sust_tags = SustainabilityTag.objects.filter(**lookup_dict).order_by('name')
+
 
     
     return render(request, 'etilog/select_sust_tags.html', {'tags': sust_tags})       

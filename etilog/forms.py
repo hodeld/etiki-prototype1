@@ -17,6 +17,7 @@ from crispy_forms.bootstrap import  FormActions, FieldWithButtons, StrictButton
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
 from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn
 from .fields import DateYearPicker
+from .fields import RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect
 
 
     
@@ -32,67 +33,116 @@ domains.extend(list(SustainabilityDomain.objects.values_list('id', 'name')))
 CHOICES = domains
 datefiltername = 'datefilter'
 
+class SearchForm(forms.Form):
+
+    search = forms.CharField(label = '', required=False)
+    freetext = forms.CharField(label = 'freetext', required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+            
+
+        
+        self.helper = FormHelper()
+        
+        self.helper.layout = Layout(
+            
+        Row(
+                Column(Field('search', id = 'id_search', autocomplete="off", 
+                             placeholder = 'Search Companies, Countries, Newspaper …'
+                       ),
+                        css_class='col-12'                             
+                    )
+                ),
+        Row(
+                Column(Field('freetext', id = 'id_f_freetext', 
+                             
+                             data_role='tagsinput'
+                       ),
+                        css_class='col-12'                             
+                    ), id = 'id_row_f_freetext', css_class='row_tags_class'
+                ),
+        )
+        
+
+class FreetextForm(forms.Form):
+
+    freetext = forms.CharField(label = 'freetext', required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(FreetextForm, self).__init__(*args, **kwargs)
+       
+        self.helper = FormHelper()
+        
+        self.helper.layout = Layout(
+            
+        Row(
+                Column(Field('freetext', id = 'id_f_freetext', 
+                             
+                             data_role='tagsinput'
+                       ),
+                        css_class='col-12'                             
+                    ), id = 'id_row_f_freetext', css_class='row_tags_class'
+                ),
+        )
+            
+           
+            
+        
 class ImpevOverviewFForm(forms.Form):
 
     #datefiltersub = forms.CharField(label = '', required=False)
-    
+
     def __init__(self, *args, **kwargs):
         super(ImpevOverviewFForm, self).__init__(*args, **kwargs)
         
         self.fields['date_from'].widget = DateYearPicker()
         self.fields['date_to'].widget = DateYearPicker()
+        self.fields['company'].widget = forms.TextInput() 
+        self.fields['country'].widget = forms.TextInput() 
+        self.fields['reference'].widget = forms.TextInput() 
+        #self.fields['sust_domain'].widget = forms.TextInput() 
+        
 
         
         self.helper = FormHelper()
         self.helper.form_method = 'get'
+        self.helper.form_id = 'id_filterform'
 
         self.helper.layout = Layout(
             
-           
+            RowTagsInput('company',  'col-12'),
+            RowTagsInput('country',  'col-12'),
+            RowTagsInput('reference',  'col-12'),
+            #Row(Column('sust_domain'),  css_class='col-12'),
+            Hidden('sust_domain', '', id='id_sust_domain'), #, id='id_sust_domain' ),
+            Hidden('sust_tendency', '', id='id_sust_tendency'), 
+            Row(ColDomainBtnSelect(),ColTendencyBtnSelect()),
+            
+         
             Row(
-                Column(HTML('<label class="col-form-label hidden-label">1</label>'), #for margin of button
-                    ButtonHolder(
-                        
-                        Button(datefiltername, 'Date', css_class='btn-light',  #'active btn-light',  
-                               data_toggle='button',
-                               aria_pressed = "true") 
-                        )
-                    , css_class='col-12 col-lg-2') #on small devive -> col-12 -> new line
-                    ,
-                Column('date_from', css_class='col-12 col-lg-5'),
-                Column('date_to', css_class='col-12 col-lg-5')
+                Column('date_from', css_class='col-12 col-lg-6'),
+                Column('date_to', css_class='col-12 col-lg-6')
             ),
             Row(
                 Column(
                     
-                        Submit('submit', 'Apply Filter', css_class='btn btn-light btn-block',),    
+                        Submit('submit', 'Apply Filter', css_class='btn btn-secondary btn-block',),    
                     css_class='col-12'
                     )
                 )
-            ,
-            
-            Hidden('i-datefilter', 'true', css_id = 'id-i-'+ datefiltername ) #id not working
             )
     
+    
   
-  
-
+CSS_COL_CLS = 'col-12 col-lg-6'
 class NewImpactEvent(forms.ModelForm):
     '''
     form to create an impact event
     '''
 
-    year = forms.CharField(label = 'year published', required=False)
-    sust_domain = forms.ChoiceField(label = 'Domain',
-                                    choices = CHOICES,
-                                    required=False)
-
     def __init__(self, *args, **kwargs):
         super (NewImpactEvent,self ).__init__(*args,**kwargs) 
-        self.fields['year'].widget = DatePickerInput( 
-                format = D_YEARFORMAT, #django datetime format
-                options={'viewMode': 'years', 
-                         })
               
         self.fields['company'].widget = CompanyWidget()
         self.fields['reference'].widget = ReferenceWidget()
@@ -104,30 +154,30 @@ class NewImpactEvent(forms.ModelForm):
             'source_url',
             
             Row(
-                Column('year', css_class='col-6'),
-                Column('date_published', css_class='col-6')
+                Column('date_published', css_class=CSS_COL_CLS),
+                Column('date_impact', css_class=CSS_COL_CLS)
             ),
             
             Row(
                 Column(CompanyWBtn(fieldname = 'company',
                                    mainmodel = 'impev'), 
-                       css_class='col-6', ),
+                       css_class=CSS_COL_CLS, ),
                 
                 Column(ReferenceWBtn(), 
-                       css_class='col-6', )
+                       css_class=CSS_COL_CLS, )
             ),
             
             Row(
-                Column('sust_domain', 
-                       css_class='col-6'),
-                Column(Field('sust_category', 
-                             data_susts_url=reverse_lazy('etilog:get_sustcagories')
+                Column(Field('sust_domain'
                              ),                           
-                             css_class='col-6')
+                             css_class=CSS_COL_CLS),
+                Column(Field('sust_tendency'
+                             ),                           
+                             css_class=CSS_COL_CLS)
             ),
 
             
-            Field('sust_tags', data_tags_url=reverse_lazy('etilog:get_sust_tags')),
+            Field('sust_tags', data_url=reverse_lazy('etilog:get_sust_tags')),
             Field('summary', rows= 3),
             Field('comment', rows= 3),
             
@@ -137,8 +187,8 @@ class NewImpactEvent(forms.ModelForm):
                   
     class Meta: #only for model fields
         model = ImpactEvent
-        fields = ['source_url', 'year', 'date_published', 'company', 'reference', 
-                  'sust_category', 'sust_tags',
+        fields = ['source_url', 'date_published', 'date_impact', 'company', 'reference', 
+                  'sust_domain', 'sust_tendency', 'sust_tags',
                   'summary', 'comment' 
                   ]
     
@@ -148,15 +198,20 @@ class NewImpactEvent(forms.ModelForm):
                                                 
                                                 }),
             'date_published': DateYearPicker(),
+            'date_impact': DateYearPicker(),
             'comment' : forms.Textarea() ,
             'summary' : forms.Textarea() 
             }
 
         labels = {
-            'date_published': ('exact date'),
+            'date_published': ('when was it published'),
+            'date_impact': ('when did it happen'),
+            'reference': ('where was it published'),
+            'company': ('which company was concerned'),
         }
         help_texts = {
            'date_published': (''),
+           'date_impact': (''),
         }
         
         
