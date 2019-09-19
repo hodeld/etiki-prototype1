@@ -22,8 +22,8 @@ class ActivityCategory  (models.Model):
 class Company (models.Model):
     
     name = models.CharField(unique = True, max_length=50)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    activity = models.ForeignKey(ActivityCategory, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, on_delete=models.PROTECT)
+    activity = models.ForeignKey(ActivityCategory, on_delete=models.PROTECT)
     subsidiary = models.ManyToManyField('self', blank=True, verbose_name='owns')
     owner = models.ManyToManyField('self', blank=True, verbose_name='owned by')    
     supplier = models.ManyToManyField('self', blank=True, verbose_name='delivers to')
@@ -45,9 +45,9 @@ class Media (models.Model):
         
 class Reference (models.Model):
     name = models.CharField(unique = True, verbose_name='ReferenceName', max_length=50)
-    mediaform = models.ForeignKey(Media, on_delete=models.CASCADE, default = 1) #newspaper
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, blank=True,null=True, help_text = 'optional')
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=True,null=True,
+    mediaform = models.ForeignKey(Media, on_delete=models.PROTECT, default = 1) #newspaper
+    country = models.ForeignKey(Country, on_delete=models.PROTECT, blank=True,null=True, help_text = 'optional')
+    company = models.ForeignKey(Company, on_delete=models.PROTECT, blank=True,null=True,
                                 related_name = 'reference')
     comment = models.CharField(max_length=200, blank=True,null=True)
     
@@ -129,13 +129,13 @@ class ImpactEvent (models.Model):
                                       help_text = 'First time published. If only year is known put 1st of jan')
     date_impact = models.DateField(blank=True,null=True, help_text = 'optional date of impact')
     
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name = 'impevents')   
+    company = models.ForeignKey(Company, on_delete=models.PROTECT, related_name = 'impevents')   
        
-    reference = models.ForeignKey(Reference, on_delete=models.CASCADE)
-    sust_category = models.ForeignKey(SustainabilityCategory, on_delete=models.CASCADE)
+    reference = models.ForeignKey(Reference, on_delete=models.PROTECT)
+    sust_category = models.ForeignKey(SustainabilityCategory, on_delete=models.SET_NULL, blank=True,null=True) #will be deleted
     sust_tags = models.ManyToManyField('SustainabilityTag', blank=True)
-    sust_domain = models.ForeignKey(SustainabilityDomain, on_delete=models.CASCADE) #models.PROTECT
-    sust_tendency = models.ForeignKey(SustainabilityTendency, on_delete=models.SET_NULL, blank=True, null=True) #todo:on_delete=models.CASCADE)
+    sust_domain = models.ForeignKey(SustainabilityDomain, on_delete=models.PROTECT) 
+    sust_tendency = models.ForeignKey(SustainabilityTendency, on_delete=models.PROTECT) #todo:on_delete=models.CASCADE)
     
     source_url = models.URLField(blank=True, null=True)
     sources = models.ManyToManyField('Source', blank=True, verbose_name = 'further sources', 
@@ -148,7 +148,7 @@ class ImpactEvent (models.Model):
     
     
     def __str__(self):
-        name_str = self.company.name[:10] + '_' + self.date_published.strftime('%y') + '_' + self.sust_category.name
+        name_str = self.company.name[:10] + '_' + self.date_published.strftime('%y') + '_' + self.sust_domain.name + '_' + self.sust_tendency.name
         return name_str
     
     def get_absolute_url(self):
