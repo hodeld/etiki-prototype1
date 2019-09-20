@@ -14,8 +14,27 @@ $(document).ready(function() {
 			itemText: 'name',
 		});
 	
+	//form ajax options
+	var options = {			
+			  success: function(data) {
+			    $("#id_ovtable").html(data);
+			    prepare_list()
+			  }
+			};
+	// pass options to ajaxForm
+	$('#id_filterform').ajaxForm(options);
+
+	
+	
+	//directly submit on filterinputs:
+	$('.f_input').change(function(ev){
+		var foid = '#' + ev.target.form.id;
+		$(foid).submit();
+		
+		
+	});
 	//set filtertags set before
-	set_filtertags();
+	//set_filtertags();
 	
 	//initialize bloodhound
 	var companies = new Bloodhound({
@@ -205,7 +224,8 @@ function set_val_from_btn(event) {
 	}
 	//$('#id_sust_domain').val(new_val)
 	//$('#id_sust_domain').val(val_list);
-	$(input_id).val(val_list);
+	$(input_id).val(val_list)
+				.trigger('change'); //needed for hidden input fields
 }
 
 function prepare_list(){

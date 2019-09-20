@@ -10,7 +10,7 @@ import json
 
 from bootstrap_datepicker_plus import DatePickerInput
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Column, Submit, Hidden, Div, Button, ButtonHolder, HTML
+from crispy_forms.layout import Layout, Field, Row, Column, Submit, Hidden 
 from crispy_forms.bootstrap import  FormActions, FieldWithButtons, StrictButton
 
 #models
@@ -86,13 +86,12 @@ class FreetextForm(forms.Form):
                 ),
         )
             
-           
-            
-        
+   
 class ImpevOverviewFForm(forms.Form):
 
     #datefiltersub = forms.CharField(label = '', required=False)
-
+   
+    
     def __init__(self, *args, **kwargs):
         super(ImpevOverviewFForm, self).__init__(*args, **kwargs)
         
@@ -101,22 +100,25 @@ class ImpevOverviewFForm(forms.Form):
         self.fields['company'].widget = forms.TextInput() 
         self.fields['country'].widget = forms.TextInput() 
         self.fields['reference'].widget = forms.TextInput() 
-        #self.fields['sust_domain'].widget = forms.TextInput() 
+        self.fields['sust_domain'].widget = forms.HiddenInput() 
+        self.fields['sust_tendency'].widget = forms.HiddenInput() 
         
 
         
         self.helper = FormHelper()
         self.helper.form_method = 'get'
         self.helper.form_id = 'id_filterform'
-
+        cls_filterinput = 'f_input' #used for jquery submit
+        
+        
         self.helper.layout = Layout(
             
-            RowTagsInput('company',  'col-12'),
-            RowTagsInput('country',  'col-12'),
-            RowTagsInput('reference',  'col-12'),
+            RowTagsInput('company',  'col-12', field_class = cls_filterinput),
+            RowTagsInput('country',  'col-12', field_class = cls_filterinput),
+            RowTagsInput('reference',  'col-12', field_class = cls_filterinput),
             #Row(Column('sust_domain'),  css_class='col-12'),
-            Hidden('sust_domain', '', id='id_sust_domain'), #, id='id_sust_domain' ),
-            Hidden('sust_tendency', '', id='id_sust_tendency'), 
+            Field('sust_domain', '', id='id_sust_domain', css_class=cls_filterinput), #, id='id_sust_domain' ),
+            Field('sust_tendency', '', id='id_sust_tendency', css_class=cls_filterinput), 
             Row(ColDomainBtnSelect(),ColTendencyBtnSelect()),
             
          
@@ -124,13 +126,6 @@ class ImpevOverviewFForm(forms.Form):
                 Column('date_from', css_class='col-12 col-lg-6'),
                 Column('date_to', css_class='col-12 col-lg-6')
             ),
-            Row(
-                Column(
-                    
-                        Submit('submit', 'Apply Filter', css_class='btn btn-secondary btn-block',),    
-                    css_class='col-12'
-                    )
-                )
             )
     
     

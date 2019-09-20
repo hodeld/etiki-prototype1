@@ -34,7 +34,7 @@
 				<button class="btn btn-sm btn-secondary" type="button"
 					data-toggle="collapse" data-target="#filterform"  
 					aria-expanded="false" aria-controls="collapseExample">
-					Filter options &#11022
+					show/hide Filter options &#11022
 					</button>
 				<br>
 	
@@ -49,8 +49,12 @@
 	</div>
 </div>
 <br>
-<h5>{{ message }}</h5>           	
-{% render_table table %}
+
+<div  id="id_ovtable">
+	<h5>{{ message }}</h5>
+	{% render_table table %}
+</div>         	
+
 
     	
 {% endblock content %}  
@@ -65,6 +69,8 @@
 <!--under tagsinput due to reference to tagsinput -->
 <script src="{% static 'etilog/js/etilog/table_filter.js' %}"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+  
  
 {% endblock bottomscript %}
 
