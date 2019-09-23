@@ -48,20 +48,31 @@ def overview_impevs(request):
     #parse_url() -> to get pdfs / test
     
     filter_dict, js_tag_dict, js_btn_dict = get_filterdict(request) #hiddencompany
-    LIMIT = 21
+    limit_start = 21
+    limit_filt = 50
     if  filter_dict:
         q_ie = ImpactEvent.objects.all()
-        msg_base =  'shows %s filtered impact events'
+        msg_base =  'shows %d filtered impact events'
     else:
-        last_ies = ImpactEvent.objects.all().order_by('-updated_at')[:LIMIT]
+        last_ies = ImpactEvent.objects.all().order_by('-updated_at')[:limit_start]
         dt = list(last_ies)[-1].updated_at
         q_ie = ImpactEvent.objects.filter(updated_at__gte = dt)
-        msg_base = 'shows %s most recent added impact events'
-    filt = ImpevOverviewFilter(filter_dict, queryset=q_ie)       
-    table = ImpEvTable(filt.qs)
-    table.order_by = '-date_published'
-    cnt_ies = filt.qs.count() 
-    msg_results = msg_base % cnt_ies
+        msg_base = 'shows %d most recent added impact events'
+    filt = ImpevOverviewFilter(filter_dict, queryset=q_ie) 
+    table_qs =  filt.qs 
+    cnt_ies = table_qs.count() #one query too much
+    if cnt_ies > limit_filt:
+        last_ies = table_qs.order_by('-date_published')[:limit_filt]
+        dt = list(last_ies)[-1].date_published
+        table_qs = table_qs.filter(date_published__gte = dt)
+        msg_results = 'more than %d results! shows %d newest impact events' % (limit_filt, limit_filt)
+    else:
+        msg_results = msg_base % cnt_ies
+         
+    table = ImpEvTable(table_qs)
+    table.order_by = '-date_published' #needed?
+    #cnt_ies = filt.qs.count() 
+    
     
     RequestConfig(request, paginate=False).configure(table) 
     
@@ -71,6 +82,10 @@ def overview_impevs(request):
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
     references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
     
+    if filter_dict:
+        return render(request, 'etilog/impactevents_overview_table.html', {'table': table,
+                                                                           'message': msg_results})
+        
     return render(request, 'etilog/impactevents_overview.html', {'table': table,
                                                                  'filter': filt,
                                                                  'searchform': searchform,

@@ -84,7 +84,8 @@ class ReferenceWBtn(Layout):
                                                                  'foreign_model': 'reference'})
                                             ))                                       
                         )
-        
+                            
+                                    
 class DateYearPicker(DatePickerInput):
     def __init__(self, *args, **kwargs):
         super(DateYearPicker, self).__init__(
@@ -97,18 +98,19 @@ class DateYearPicker(DatePickerInput):
             )
         
 class RowTagsInput(Layout):
-    def __init__(self, field_name,  col_class,  field_id = None, row_id=None, *args, **kwargs):
+    def __init__(self, field_name,  col_class,  field_class = '', field_id = None, row_id=None, *args, **kwargs):
         if field_id == None:
             field_id = 'id_f_' + field_name 
         if row_id == None:
             row_id = 'id_row_f_' + field_name
+        cls_taginp = 'f_tagsinput'
         super(RowTagsInput, self).__init__(           
             Row(
                     Column(Field(field_name, id = field_id,
                             #data_role='tagsinput',  
                              #disabled=True, 
                              #readonly=True,
-                             css_class = 'f_tagsinput'  
+                             css_class = ' '.join([cls_taginp, field_class]) 
                            ),
                             css_class = col_class                             
                         ),

@@ -14,8 +14,46 @@ $(document).ready(function() {
 			itemText: 'name',
 		});
 	
-	//set filtertags set before
-	set_filtertags();
+	//form ajax options
+	var options = {			
+			  success: function(data) {
+			    $("#id_ovtable").html(data);
+			    prepare_list()
+			  }
+			};
+	// pass options to ajaxForm
+	$('#id_filterform').ajaxForm(options);
+	
+	
+
+    var timeout = false, // holder for timeout id
+	    delay = 400; // delay after event is "complete" to run callback
+    
+    // call once when page is initialized
+	set_topheadaer()
+	
+	// call once to initialize page
+	$(window).resize(function(){ //window changes-> a lot need to be handled
+		// clear the timeout
+		clearTimeout(timeout);
+		// start timing for event "completion"
+		timeout = setTimeout(set_topheadaer, delay);
+    });
+	
+	//directly submit on filterinputs:
+	$('.f_input').change(function(ev){
+		var foid = '#' + ev.target.form.id;
+		$(foid).submit();		
+		
+	});
+	
+	//directly submit on datetimeinput
+	$(".dateyearpicker").on('dp.change', function(ev) { // e = event
+		var foid = '#' + ev.target.form.id;
+		$(foid).submit();
+
+	});
+
 	
 	//initialize bloodhound
 	var companies = new Bloodhound({
@@ -126,7 +164,6 @@ $(document).ready(function() {
 		
 		
 	});
-     
      //for List.js
      prepare_list()
 
@@ -205,7 +242,8 @@ function set_val_from_btn(event) {
 	}
 	//$('#id_sust_domain').val(new_val)
 	//$('#id_sust_domain').val(val_list);
-	$(input_id).val(val_list);
+	$(input_id).val(val_list)
+				.trigger('change'); //needed for hidden input fields
 }
 
 function prepare_list(){
@@ -237,6 +275,11 @@ function prepare_list(){
  		});
  	$('#id_search').bind('typeahead:select', function() {
  		impevList.search(''); //to clear List search 		
- 	});
- 	
+ 	}); 	
+}
+function set_topheadaer(){
+	let hi = $('#id_navbar').outerHeight() - 2; //smaller than navbar
+	$('th').css({ top: hi }); 
+		
+	
 }

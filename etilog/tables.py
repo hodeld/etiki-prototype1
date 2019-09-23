@@ -78,12 +78,20 @@ class BtnTendencyColumn(tables.TemplateColumn):
                                              )
           
     
-    
+
 class ImpEvTable(tables.Table):
     '''
     basic table for impact events
     '''
-
+    CLS_HIDE_COLS = {'td': {'class': 'd-none d-lg-table-cell'}, #hide on screens smaller than ...
+                 'th': {'class': 'd-none d-lg-table-cell'}
+                 }  
+    cls_hide_hover_cols =   {'td': {'class': 'd-none d-lg-table-cell', #hide on screens smaller than ...
+                                'title': get_hovertitle, },
+                                 'th': {'class': 'd-none d-lg-table-cell'}
+                                 } 
+    cls_hover_cols =   {'td': {'title': get_hovertitle, }} 
+    
     id = tables.Column(linkify = True )
     copy = tables.Column(verbose_name= 'copy',
                          accessor = 'id',
@@ -92,22 +100,26 @@ class ImpEvTable(tables.Table):
     date_published = tables.DateColumn(verbose_name='Date', format = 'M Y')
     btncol = BtnTendencyColumn(accessor = 'sust_domain', verbose_name = 'Categ.',)
     #sust_category = tables.TemplateColumn('<button class="badge sustbtn badge-danger">Detail</button>')
-    summary = tables.Column(attrs ={'td': {'title': get_hovertitle}})
-    country = tables.Column(accessor = 'country_display') 
-    get_tags = tables.Column(verbose_name = 'Tags', orderable = False)
+    summary = tables.Column(attrs =cls_hide_hover_cols)
+    
+    country = tables.Column(accessor = 'country_display', attrs = CLS_HIDE_COLS) 
+    get_tags = tables.Column(verbose_name = 'Tags', orderable = False, attrs = cls_hover_cols)
+    reference = tables.Column(linkify = lambda record: record.source_url,  verbose_name = 'Published in', ) #
     
     class Meta:
         model = ImpactEvent
         
         exclude = ('created_at', 'updated_at', )
-        fields = ('id', 'copy', 'date_published', 'company', 'country',
-                  'btncol', 'get_tags', 'reference',  'source_url', 'summary' )
-        attrs = {'class': 'table table-hover table-sm table-responsive table-fixed'} #bootstrap4 classes 
+        #defines also order of columns
+        fields = ('id', 'copy', 'date_published', 'company',
+                  'btncol', 'country', 'get_tags',  'reference', 'summary' )
+        attrs = {'class': 'table table-hover table-sm'} #bootstrap4 classes ;table-responsive: not working with sticky
         
     
-    def render_source_url(self, value):
-        val_short = str(value)[:20]
-        return  val_short + '…'
+    def render_source_url(self, value, record):
+        #val_short = str(value)[:20] + '…'
+        val_short = str(record.reference.name)
+        return  val_short 
     
     def render_copy(self):
         return 'copy!'
