@@ -16,6 +16,7 @@ body {
 
 .table-sm {
 	font-size: 1em;
+	table-layout: fixed; /* total width according to container, width of column acc. to first row*/
 }
 
 .table-sm .orderable a {
@@ -25,17 +26,56 @@ body {
 /*#impev-list > table > tbody > tr:nth-child(1) > td.badge.badge-danger.sust_category*/
 
 .table-sm .sustbtn { /* button within cell */
-	display: block; /*centers in horizontally */
+	display: block; /*centers in horizontally  */
 	margin:auto;	
-}
+	overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    font-size: 1em;
+    line-height: .8em;
+}  
+    
 .table-sm .sustcl	 {
-	vertical-align: middle;
-	
+	vertical-align: middle;	
 }	
+.copy, .id {
+	width: 3%;
+	white-space: normal;
+}
 .table-sm td	 {
-	/* vertical-align: middle; */
+	overflow: hidden;
+    white-space: nowrap;
+    word-break: normal;
+    text-overflow: ellipsis;
+    height: 40px;
+	/* vertical-align: middle; */	
+}
+/* date_published: */
+td:nth-child(3){	
+	white-space: normal;
+	text-overflow: unset;	
+}
+th:nth-child(3){	
+	width: 10%;
+}
+/* summary: */
+th:nth-child(9){	
+	width: 25%;
+}
+td:nth-child(9){	
+	white-space: normal;
+}
+
+th {
+  background: #eee;
+  position: sticky;
+  position: -webkit-sticky;  /* required for Safari */
+  z-index: 900; /* navbar 1020; date widget : 1000??*/
+  top: 56px;
+  box-shadow: 0px 5px 4px white;
+  height: 40px;
+}
 	
-}	
 .center_div {
 	margin: 0 auto;
 	width: 80% /* value of your choice which suits your alignment */
@@ -104,16 +144,4 @@ body {
 }
 
 
-.table-fixed_differentnametoavoid {
-	/*footer auslassen, change height*/
-	overflow-y: auto;
-	height: 300px;
-	
-}
-
-.table-fixed_differentnametoavoid  th {
-    position: sticky; 
-    top: 0;
-    background: #eee;
-}
 

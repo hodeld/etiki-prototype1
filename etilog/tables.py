@@ -85,7 +85,12 @@ class ImpEvTable(tables.Table):
     '''
     CLS_HIDE_COLS = {'td': {'class': 'd-none d-lg-table-cell'}, #hide on screens smaller than ...
                  'th': {'class': 'd-none d-lg-table-cell'}
-                 }    
+                 }  
+    cls_hide_hover_cols =   {'td': {'class': 'd-none d-lg-table-cell', #hide on screens smaller than ...
+                                'title': get_hovertitle, },
+                                 'th': {'class': 'd-none d-lg-table-cell'}
+                                 } 
+    cls_hover_cols =   {'td': {'title': get_hovertitle, }} 
     
     id = tables.Column(linkify = True )
     copy = tables.Column(verbose_name= 'copy',
@@ -95,10 +100,10 @@ class ImpEvTable(tables.Table):
     date_published = tables.DateColumn(verbose_name='Date', format = 'M Y')
     btncol = BtnTendencyColumn(accessor = 'sust_domain', verbose_name = 'Categ.',)
     #sust_category = tables.TemplateColumn('<button class="badge sustbtn badge-danger">Detail</button>')
-    summary = tables.Column(attrs ={'td': {'title': get_hovertitle, }})
+    summary = tables.Column(attrs =cls_hide_hover_cols)
     
     country = tables.Column(accessor = 'country_display', attrs = CLS_HIDE_COLS) 
-    get_tags = tables.Column(verbose_name = 'Tags', orderable = False, attrs = CLS_HIDE_COLS)
+    get_tags = tables.Column(verbose_name = 'Tags', orderable = False, attrs = cls_hover_cols)
     reference = tables.Column(linkify = lambda record: record.source_url,  verbose_name = 'Published in', ) #
     
     class Meta:
@@ -108,7 +113,7 @@ class ImpEvTable(tables.Table):
         #defines also order of columns
         fields = ('id', 'copy', 'date_published', 'company',
                   'btncol', 'country', 'get_tags',  'reference', 'summary' )
-        attrs = {'class': 'table table-hover table-sm table-responsive table-fixed'} #bootstrap4 classes 
+        attrs = {'class': 'table table-hover table-sm'} #bootstrap4 classes ;table-responsive: not working with sticky
         
     
     def render_source_url(self, value, record):

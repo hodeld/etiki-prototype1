@@ -23,18 +23,37 @@ $(document).ready(function() {
 			};
 	// pass options to ajaxForm
 	$('#id_filterform').ajaxForm(options);
-
 	
+	
+
+    var timeout = false, // holder for timeout id
+	    delay = 400; // delay after event is "complete" to run callback
+    
+    // call once when page is initialized
+	set_topheadaer()
+	
+	// call once to initialize page
+	$(window).resize(function(){ //window changes-> a lot need to be handled
+		// clear the timeout
+		clearTimeout(timeout);
+		// start timing for event "completion"
+		timeout = setTimeout(set_topheadaer, delay);
+    });
 	
 	//directly submit on filterinputs:
 	$('.f_input').change(function(ev){
 		var foid = '#' + ev.target.form.id;
-		$(foid).submit();
-		
+		$(foid).submit();		
 		
 	});
-	//set filtertags set before
-	//set_filtertags();
+	
+	//directly submit on datetimeinput
+	$(".dateyearpicker").on('dp.change', function(ev) { // e = event
+		var foid = '#' + ev.target.form.id;
+		$(foid).submit();
+
+	});
+
 	
 	//initialize bloodhound
 	var companies = new Bloodhound({
@@ -145,7 +164,6 @@ $(document).ready(function() {
 		
 		
 	});
-     
      //for List.js
      prepare_list()
 
@@ -257,6 +275,11 @@ function prepare_list(){
  		});
  	$('#id_search').bind('typeahead:select', function() {
  		impevList.search(''); //to clear List search 		
- 	});
- 	
+ 	}); 	
+}
+function set_topheadaer(){
+	let hi = $('#id_navbar').outerHeight() - 2; //smaller than navbar
+	$('th').css({ top: hi }); 
+		
+	
 }
