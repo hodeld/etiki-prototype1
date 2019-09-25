@@ -16,7 +16,7 @@ from crispy_forms.bootstrap import  FormActions, FieldWithButtons, StrictButton
 #models
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
 from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn
-from .fields import DateYearPicker
+from .fields import DateYearPicker, DateYearPickerField
 from .fields import RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect
 
 
@@ -119,12 +119,12 @@ class ImpevOverviewFForm(forms.Form):
             #Row(Column('sust_domain'),  css_class='col-12'),
             Field('sust_domain', '', id='id_sust_domain', css_class=cls_filterinput), #, id='id_sust_domain' ),
             Field('sust_tendency', '', id='id_sust_tendency', css_class=cls_filterinput), 
-            Row(ColDomainBtnSelect(),ColTendencyBtnSelect()),
+            Row(ColDomainBtnSelect(labelname = 'Category'),ColTendencyBtnSelect(labelname = 'Which Tendency')),
             
          
             Row(
-                Column('date_from', css_class='col-12 col-lg-6'),
-                Column('date_to', css_class='col-12 col-lg-6')
+                Column(DateYearPickerField('date_from'), css_class='col-12 col-lg-6'),
+                Column(DateYearPickerField('date_to'), css_class='col-12 col-lg-6')
             ),
             )
     
@@ -149,8 +149,8 @@ class NewImpactEvent(forms.ModelForm):
             'source_url',
             
             Row(
-                Column('date_published', css_class=CSS_COL_CLS),
-                Column('date_impact', css_class=CSS_COL_CLS)
+                Column(DateYearPickerField('date_published'), css_class=CSS_COL_CLS),
+                Column(DateYearPickerField('date_impact'), css_class=CSS_COL_CLS)
             ),
             
             Row(
