@@ -135,8 +135,8 @@ def impact_event_create(request, impact_id = None):
         init_data = {}
         impev = ImpactEvent.objects.get(id = impact_id)
         init_data ['company'] = impev.company.name
-        init_data ['sust_domain'] = impev.sust_category.sust_domain.id
-        init_data ['sust_category'] = impev.sust_category.id
+        init_data ['sust_domain'] = impev.sust_domain.id
+        init_data ['sust_tendency'] = impev.sust_tendency.id
         init_data ['sust_tags'] = list(impev.sust_tags.all())
         init_data ['summary'] = impev.summary
         
