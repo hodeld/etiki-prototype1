@@ -80,6 +80,58 @@ th {
 	margin: 0 auto;
 	width: 80% /* value of your choice which suits your alignment */
 }
+
+/* sort styles: */
+th button.sort {
+  text-align:left; 
+  padding:0 10px;
+  line-height: $input-height;
+  border: none; background: none; 
+  display: block; width:100%; 
+  font-size: 12px; color: #888; 
+  border-bottom: 1px solid transparent;  
+}
+
+th button.sort.textcenter,
+th button.sort.text-center { text-align:center; }
+
+th button.sort.textright,
+th button.sort.text-right { text-align:right; }
+
+button.sort .bullet { margin-top:13px; }
+
+
+/* sort caret: */
+.table-list .caret:after { content:""; }
+.asc .caret:after {
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 3px solid #808080;
+  content: "";
+  position: relative;
+  top: -3px;
+  right: -4px;
+  font-size:0; }
+.desc .caret:after {
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid #808080;
+  content: "";
+  position: relative;
+  top: -4px;
+  right: -4px;
+  font-size:0; }
+
+button.sort .caret { display:none; }
+button.sort.asc .caret { display:inline-block; }
+button.sort.desc .caret { display:inline-block; }
+
+
+
 /*DATEINPUT*/
 .date {
 	width: 20em;

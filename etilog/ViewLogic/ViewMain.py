@@ -4,8 +4,7 @@ Created on 26.8.2019
 @author: daim
 '''
 
-from datetime import timedelta
-from django.utils import timezone
+from django.core.cache import cache #default cache in locmem
 import json
 
 from etilog.models import Country, Company, Reference
@@ -71,3 +70,12 @@ def get_filterdict(request):
     
                
     return filter_dict, js_tag_dict, js_btn_dict
+
+def set_cache(name, value, request, timeout = 3600):
+    key_name = str(request.user.id) + name
+    cache.set(key_name, value, timeout)
+
+def get_cache(name, request):
+    key_name = str(request.user.id) + name
+    value = cache.get(key_name, None)
+    return value

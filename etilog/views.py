@@ -21,7 +21,7 @@ from .filters import ImpevOverviewFilter
 
 #viewlogic
 from etilog.ViewLogic.ViewImportDB import parse_xcl
-from etilog.ViewLogic.ViewMain import get_filterdict
+from etilog.ViewLogic.ViewMain import get_filterdict, set_cache, get_cache
 
 #from etilog.ViewLogic.ViewAccessURL import parse_url
 
@@ -46,7 +46,10 @@ def startinfo(request):
 
 def overview_impevs(request):
     #parse_url() -> to get pdfs / test
-    
+    key_totnr = 'cnties'
+    cnt_tot = get_cache(key_totnr, request)
+    if cnt_tot == None:
+        cnt_tot = ImpactEvent.objects.all().count()
     filter_dict, js_tag_dict, js_btn_dict = get_filterdict(request) #hiddencompany
     limit_start = 21
     limit_filt = 50
@@ -82,9 +85,14 @@ def overview_impevs(request):
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
     references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
     
+    msg_results = msg_results + ' of %d in total' % cnt_tot
+    
     if filter_dict:
         return render(request, 'etilog/impactevents_overview_table.html', {'table': table,
-                                                                           'message': msg_results})
+                                                                           'message': msg_results
+                                                                           }
+                                                                           )
+      
         
     return render(request, 'etilog/impactevents_overview.html', {'table': table,
                                                                  'filter': filt,

@@ -24,6 +24,16 @@ def get_hovertitle(*args, **kwargs):
        
     return stitle
 
+def get_sortname(*args, **kwargs):
+    col = kwargs.get('bound_column', None) #value already changed through rendering
+    colname = ''
+    if  col:
+        colname = col.name
+    return colname
+    
+    
+    
+
 class DefWidthColumn(tables.Column):
 
     def __init__(self, classname=None, *args, **kwargs):
@@ -92,18 +102,28 @@ class ImpEvTable(tables.Table):
                                  } 
     cls_hover_cols =   {'td': {'title': get_hovertitle, }} 
     
+    attrs_sort_list = {'th': {'class': 'sort',
+                              'data-sort': get_sortname},
+                       } 
+    
+    atts_date_sort_list = {'th': {
+                                'class': 'sort',
+                                'data-sort': 'date_sort'},
+                       } 
+    
     id = tables.Column(linkify = True )
     copy = tables.Column(verbose_name= 'copy',
                          accessor = 'id',
                          linkify = lambda record: reverse('etilog:impactevent_copy', args=(record.id,)))
        
-    date_published = tables.DateColumn(verbose_name='Date', format = 'M Y')
-    btncol = BtnTendencyColumn(accessor = 'sust_domain', verbose_name = 'Categ.',)
-    #sust_category = tables.TemplateColumn('<button class="badge sustbtn badge-danger">Detail</button>')
+    date_published = tables.DateColumn(verbose_name='Date', format = 'M Y', attrs = atts_date_sort_list)
+    date_sort = tables.DateColumn(accessor='date_published', format = 'ymd')
+    
+    btncol = BtnTendencyColumn(accessor = 'sust_domain', verbose_name = 'Category',)
     summary = tables.Column(attrs =cls_hide_hover_cols)
     
     country = tables.Column(accessor = 'country_display', attrs = CLS_HIDE_COLS) 
-    get_tags = tables.Column(verbose_name = 'Tags', orderable = False, attrs = cls_hover_cols)
+    get_tags = tables.Column(verbose_name = 'Topics', orderable = False, attrs = cls_hover_cols)
     reference = tables.Column(linkify = lambda record: record.source_url,  verbose_name = 'Published in', ) #
     
     class Meta:
@@ -113,7 +133,17 @@ class ImpEvTable(tables.Table):
         #defines also order of columns
         fields = ('id', 'copy', 'date_published', 'company',
                   'btncol', 'country', 'get_tags',  'reference', 'summary' )
-        attrs = {'class': 'table table-hover table-sm'} #bootstrap4 classes ;table-responsive: not working with sticky
+        #orderable = False #for all columns
+        attrs = {'class': 'table table-hover table-sm', #bootstrap4 classes ;table-responsive: not working with sticky
+                "th" : {
+                    "_ordering": {
+                        "orderable": "sort", # Instead of `orderable` for list.js
+                        "ascending": "asc",   # Instead of `asc`
+                        "descending": "desc"  # Instead of `desc`
+                        }
+                    }
+                }
+        #template_name = 'etilog/etilog_djangotable.html'
         
     
     def render_source_url(self, value, record):
@@ -143,5 +173,10 @@ class ImpEvTable(tables.Table):
                     classes_set.add(bound_column.name)
 
                     return classes_set
+        
+    def before_render(self, request):
+        pass
+        #self.columns.hide('date_sort')
+        
     
     
