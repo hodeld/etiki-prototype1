@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Q
+from django.contrib.auth.decorators import permission_required, login_required
+from django.contrib.auth import logout
 import json
 
 #from 3rd apps
@@ -105,12 +106,13 @@ def overview_impevs(request):
                                                                  'json_btn_dic': js_btn_dict,
                                                                  'message': msg_results
                                                                  })
-
+@permission_required('etilog.impactevent')   
 def import_dbdata(request):
     
     parse_xcl()
     return HttpResponseRedirect(reverse('etilog:home'))
 
+@permission_required('etilog.impactevent') 
 def impact_event_create(request, impact_id = None):
     if request.method == 'POST':
 
@@ -155,7 +157,7 @@ def impact_event_create(request, impact_id = None):
     return render(request, 'etilog/newimpactevent.html', {'form': form,
                                                           'message': message,
                                                              })
-           
+@permission_required('etilog.impactevent')           
 def add_foreignmodel(request, main_model, foreign_model):
     if request.POST:
         data_dict = request.POST.dict()
@@ -287,4 +289,10 @@ def load_sust_tags(request): #,
 
 
     
-    return render(request, 'etilog/select_sust_tags.html', {'tags': sust_tags})       
+    return render(request, 'etilog/select_sust_tags.html', {'tags': sust_tags})   
+
+def logout_view(request): 
+    logout(request)
+    return HttpResponseRedirect(reverse('login'))
+    # Redirect to a success page.
+    
