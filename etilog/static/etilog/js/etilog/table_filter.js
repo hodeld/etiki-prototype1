@@ -172,7 +172,7 @@ $(document).ready(function() {
 
 
 function set_val_from_btn(event) {
-	//var id_val =   event.target.name //+ '"' + ',' ;
+	var el_id = '#' + event.target.id;
 	var id_val = Number(event.target.name);
 	var input_id = '#' + $(event.target).attr('targfield');
 	var pressed = event.target.attributes['aria-pressed'].value; // true or false
@@ -183,18 +183,19 @@ function set_val_from_btn(event) {
 
 	if (pressed  == "false"){ //means was pressed now
 		
-		//var new_val = el_val + id_val
+
 		val_list.push(id_val)
+		
 	}
 	else{
-		//var new_val = el_val.replace(id_val, '');	
+
 		var index = val_list.indexOf(id_val);
 		if (index > -1) {
 			val_list.splice(index, 1);
 		    }
 	}
-	//$('#id_sust_domain').val(new_val)
-	//$('#id_sust_domain').val(val_list);
+	
+
 	$(input_id).val(val_list)
 				.trigger('change'); //needed for hidden input fields
 }
