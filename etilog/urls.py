@@ -18,6 +18,8 @@ urlpatterns = [
     
     path(get_data + 'get_susttags/', views.load_sust_tags, name = 'get_sust_tags'),
     path(load_data + '<slug:modelname>', views.load_names, name = 'load_jsondata'),
+    
+    path('logout/', views.logout_view, name='logout'),
     #path(load_data + 'reference.json', views.load_references, name = 'load_references'),
     #path(load_data + 'country.json', views.load_countries, name = 'load_countries'),
     #path(get_data + 'get_sustcagories/', views.load_sustcategories, name = 'get_sustcagories'),

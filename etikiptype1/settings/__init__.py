@@ -122,7 +122,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+LOGIN_REDIRECT_URL = 'etilog:home'
 
+
+CACHES = {
+   'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+   }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

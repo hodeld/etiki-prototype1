@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Q
+from django.contrib.auth.decorators import permission_required, login_required
+from django.contrib.auth import logout
 import json
 
 #from 3rd apps
@@ -21,7 +22,7 @@ from .filters import ImpevOverviewFilter
 
 #viewlogic
 from etilog.ViewLogic.ViewImportDB import parse_xcl
-from etilog.ViewLogic.ViewMain import get_filterdict
+from etilog.ViewLogic.ViewMain import get_filterdict, set_cache, get_cache
 
 #from etilog.ViewLogic.ViewAccessURL import parse_url
 
@@ -46,7 +47,10 @@ def startinfo(request):
 
 def overview_impevs(request):
     #parse_url() -> to get pdfs / test
-    
+    key_totnr = 'cnties'
+    cnt_tot = get_cache(key_totnr, request)
+    if cnt_tot == None:
+        cnt_tot = ImpactEvent.objects.all().count()
     filter_dict, js_tag_dict, js_btn_dict = get_filterdict(request) #hiddencompany
     limit_start = 21
     limit_filt = 50
@@ -82,9 +86,14 @@ def overview_impevs(request):
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
     references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
     
+    msg_results = msg_results + ' of %d in total' % cnt_tot
+    
     if filter_dict:
         return render(request, 'etilog/impactevents_overview_table.html', {'table': table,
-                                                                           'message': msg_results})
+                                                                           'message': msg_results
+                                                                           }
+                                                                           )
+      
         
     return render(request, 'etilog/impactevents_overview.html', {'table': table,
                                                                  'filter': filt,
@@ -97,12 +106,13 @@ def overview_impevs(request):
                                                                  'json_btn_dic': js_btn_dict,
                                                                  'message': msg_results
                                                                  })
-
+@permission_required('etilog.impactevent')   
 def import_dbdata(request):
     
     parse_xcl()
     return HttpResponseRedirect(reverse('etilog:home'))
 
+@permission_required('etilog.impactevent') 
 def impact_event_create(request, impact_id = None):
     if request.method == 'POST':
 
@@ -135,8 +145,8 @@ def impact_event_create(request, impact_id = None):
         init_data = {}
         impev = ImpactEvent.objects.get(id = impact_id)
         init_data ['company'] = impev.company.name
-        init_data ['sust_domain'] = impev.sust_category.sust_domain.id
-        init_data ['sust_category'] = impev.sust_category.id
+        init_data ['sust_domain'] = impev.sust_domain.id
+        init_data ['sust_tendency'] = impev.sust_tendency.id
         init_data ['sust_tags'] = list(impev.sust_tags.all())
         init_data ['summary'] = impev.summary
         
@@ -147,7 +157,7 @@ def impact_event_create(request, impact_id = None):
     return render(request, 'etilog/newimpactevent.html', {'form': form,
                                                           'message': message,
                                                              })
-           
+@permission_required('etilog.impactevent')           
 def add_foreignmodel(request, main_model, foreign_model):
     if request.POST:
         data_dict = request.POST.dict()
@@ -279,4 +289,10 @@ def load_sust_tags(request): #,
 
 
     
-    return render(request, 'etilog/select_sust_tags.html', {'tags': sust_tags})       
+    return render(request, 'etilog/select_sust_tags.html', {'tags': sust_tags})   
+
+def logout_view(request): 
+    logout(request)
+    return HttpResponseRedirect(reverse('login'))
+    # Redirect to a success page.
+    

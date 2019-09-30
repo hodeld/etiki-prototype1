@@ -26,9 +26,10 @@ def parse_xcl(): #, eventlist, eventtype_dict):
     warnings.simplefilter("default")
     
     imp_originalmodel(wb)
-
-    parse_tags_domain_tendency() #after parse tags
-    parse_ies_domain_tendency()
+    
+    #not needed anymore as already parsed
+    #parse_tags_domain_tendency() #after parse tags
+    #parse_ies_domain_tendency()
 
 def imp_originalmodel(wb):
     parse_country(wb)
@@ -187,7 +188,6 @@ def parse_tags(wb):
             
         i += 1 
         
-#todo: adding domain and tendency to impact event
 def parse_tags_domain_tendency():
     q = SustainabilityTag.objects.all()
     for el_db in q:

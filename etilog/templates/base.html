@@ -28,30 +28,49 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 </head>
 <body>
 	{# Navigation Menu #}
+	<div class="container-fluid">
+	<br>
+	<h5>Welcome! On etiki you can lookup publications about ethical behaviour of companies and other organisations</h5>
+	</div>
 	<header class="navbar sticky-top navbar-expand-lg navbar-dark rounded" id="id_navbar">
-			<a class="navbar-brand" href="/">etiki</a>
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link {% block cls_overview %}{%endblock cls_overview %}"
-					href="{% url 'etilog:home' %}">overview</a></li>
-				<li class="nav-item"><a class="nav-link {% block cls_newie %}{%endblock cls_newie %}"
-					href="{% url 'etilog:newimpactevent' %}">New Impact Event</a></li>
-			</ul>
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item"><a class="nav-link"
-					href="{% url 'admin:index' %}">Admin</a></li>
-				<li class="nav-item"><a class="nav-link"
-					href="{% url 'admin:etilog_impactevent_add' %}">new Impact
-						Event</a></li>
-				<li class="nav-item dropdown"><a
-					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-					role="button" data-toggle="dropdown" aria-haspopup="true"
-					aria-expanded="false"> Dropdown on Right</a>
-					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="#">Action</a> <a
-							class="dropdown-item" href="#">Another action with a lot of
-							text inside of an item</a>
-					</div></li>
-			</ul>
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">etiki</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"  
+					data-target="#collapsenav">
+					<span class="navbar-toggler-icon"></span> 
+				</button>
+			</div>
+			<div class="collapse navbar-collapse" id="collapsenav">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item"><a
+						class="nav-link {% block cls_overview %}{%endblock cls_overview %}"
+						href="{% url 'etilog:home' %}">Listview</a></li>
+					<li class="nav-item"><a
+						class="nav-link {% block cls_newie %}{%endblock cls_newie %}"
+						href="{% url 'etilog:newimpactevent' %}">New Impact Event</a></li>
+				</ul>
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item"><a class="nav-link"
+						href="{% url 'admin:index' %}">Admin</a></li> 
+					{% if user.is_authenticated %}
+						<li class="nav-item"><a class="nav-link" href="{% url 'etilog:logout' %}">Logout</a></li> 
+					{% else %}
+						<li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li> 
+					{% endif %}
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+						role="button" data-toggle="dropdown" aria-haspopup="true"
+						aria-expanded="false"> Dropdown on Right</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="#">Action</a> <a
+								class="dropdown-item" href="#">Another action with a lot of
+								text inside of an item</a>
+						</div></li>
+				</ul>
+			</div>
+		</div>
+			
 
 	</header>
 

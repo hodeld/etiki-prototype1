@@ -96,7 +96,13 @@ class DateYearPicker(DatePickerInput):
                      'extraFormats': ['DD.MM.YY', 'DD.MM.YYYY' ], #javascript format
                      },
             )
+class DateYearPickerField(Layout):
+    def __init__(self, field_name,  *args, **kwargs):
+        super(DateYearPickerField, self).__init__(           
+            Field(field_name, autocomplete='off')
+            )
         
+                
 class RowTagsInput(Layout):
     def __init__(self, field_name,  col_class,  field_class = '', field_id = None, row_id=None, *args, **kwargs):
         if field_id == None:
@@ -120,7 +126,7 @@ class RowTagsInput(Layout):
             )
                     
 class ColDomainBtnSelect(Layout):
-    def __init__(self, col_class= 'col-12 col-lg-6', *args, **kwargs): #distribute buttons
+    def __init__(self, col_class= 'col-12 col-lg-6', labelname= 'Category', *args, **kwargs): #distribute buttons
         q = SustainabilityDomain.objects.all()
         btn_list = []
         for dom in q:
@@ -131,7 +137,7 @@ class ColDomainBtnSelect(Layout):
                                targfield = 'id_sust_domain') 
             btn_list.append(btn)
             
-        html_str = '<label class="col-form-label">Which Field</label>'
+        html_str = '<label class="col-form-label">%s</label>' % labelname
         super(ColDomainBtnSelect, self).__init__( 
                            
             Column(HTML(html_str),
@@ -140,7 +146,7 @@ class ColDomainBtnSelect(Layout):
             )    
 
 class ColTendencyBtnSelect(Layout):
-    def __init__(self, col_class= 'col-12 col-lg-6', *args, **kwargs): #distribute buttons
+    def __init__(self, col_class= 'col-12 col-lg-6', labelname= 'Which Tendency', *args, **kwargs): #distribute buttons
         q = SustainabilityTendency.objects.all()
         btn_list = []
         for tend in q:
@@ -159,7 +165,7 @@ class ColTendencyBtnSelect(Layout):
                                targfield = 'id_sust_tendency') 
             btn_list.append(btn)
             
-        html_str = '<label class="col-form-label">Which Tendency</label>'
+        html_str = '<label class="col-form-label">%s</label>' % labelname
         super(ColTendencyBtnSelect, self).__init__( 
                            
             Column(HTML(html_str),

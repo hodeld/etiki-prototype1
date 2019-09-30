@@ -169,6 +169,75 @@ $(document).ready(function() {
 
 });
 
+
+
+function set_val_from_btn(event) {
+	var el_id = '#' + event.target.id;
+	var id_val = Number(event.target.name);
+	var input_id = '#' + $(event.target).attr('targfield');
+	var pressed = event.target.attributes['aria-pressed'].value; // true or false
+	//var el_val = $('#id_sust_domain').val();
+	var el_val = $(input_id).val();
+	var val_list = JSON.parse("[" + el_val + "]"); 
+	//var val_list = el_val.split();
+
+	if (pressed  == "false"){ //means was pressed now
+		
+
+		val_list.push(id_val)
+		
+	}
+	else{
+
+		var index = val_list.indexOf(id_val);
+		if (index > -1) {
+			val_list.splice(index, 1);
+		    }
+	}
+	
+
+	$(input_id).val(val_list)
+				.trigger('change'); //needed for hidden input fields
+}
+
+function prepare_list(){
+	$('tbody').addClass("list"); // for list filter
+ 	$('.table-container').attr('id', 'impev-list'); // for list filter
+ 	//need to be in same container as table for list filter
+ 	//$('.table-container').prepend('<input  class="search form-control" placeholder="Search"  />');
+ 	
+ 	$('.table-container').append('<nav aria-label="Table navigation"><ul class="pagination justify-content-center"></ul></nav>')
+ 	
+ 	var impevopts = {
+ 			  valueNames: [ 'company', 'country', 'reference', 'sust_domain', 'topics',
+ 				  'date_published', 'date_sort', 'reference_sort', 'sudom_sort'],
+ 			  page: 20,
+ 			  pagination: {
+ 			    innerWindow: 2,
+ 			    outerWindow: 1,
+ 			    left: 0,
+ 			    right: 0,
+ 			    paginationClass: "pagination", //class name generated in django-table
+ 			    }
+ 			};
+
+ 	//initiate List incl. pagination
+ 	var impevList = new List('impev-list', impevopts);
+ 	//searchfield outside container:
+ 	$('#id_search').on('keyup', function() {
+ 		  var searchString = $(this).val();
+ 		 impevList.search(searchString);
+ 		});
+ 	$('#id_search').bind('typeahead:select', function() {
+ 		impevList.search(''); //to clear List search 		
+ 	}); 	
+}
+function set_topheadaer(){
+	let hi = $('#id_navbar').outerHeight() - 2; //smaller than navbar
+	$('th').css({ top: hi }); 	
+}
+
+//not used at the moment
 function filter_toggle(event) {
 	var filter = event.target.name;
 	var oform = event.target.form;
@@ -216,70 +285,4 @@ function set_filterbtns(){
 			$(btn_id).click(); //clicks and adds to hidden input
 			});
 	});	
-}
-
-function set_val_from_btn(event) {
-	//var id_val =   event.target.name //+ '"' + ',' ;
-	var id_val = Number(event.target.name);
-	var input_id = '#' + $(event.target).attr('targfield');
-	var pressed = event.target.attributes['aria-pressed'].value; // true or false
-	//var el_val = $('#id_sust_domain').val();
-	var el_val = $(input_id).val();
-	var val_list = JSON.parse("[" + el_val + "]"); 
-	//var val_list = el_val.split();
-
-	if (pressed  == "false"){ //means was pressed now
-		
-		//var new_val = el_val + id_val
-		val_list.push(id_val)
-	}
-	else{
-		//var new_val = el_val.replace(id_val, '');	
-		var index = val_list.indexOf(id_val);
-		if (index > -1) {
-			val_list.splice(index, 1);
-		    }
-	}
-	//$('#id_sust_domain').val(new_val)
-	//$('#id_sust_domain').val(val_list);
-	$(input_id).val(val_list)
-				.trigger('change'); //needed for hidden input fields
-}
-
-function prepare_list(){
-	$('tbody').addClass("list"); // for list filter
- 	$('.table-container').attr('id', 'impev-list'); // for list filter
- 	//need to be in same container as table for list filter
- 	//$('.table-container').prepend('<input  class="search form-control" placeholder="Search"  />');
- 	
- 	$('.table-container').append('<nav aria-label="Table navigation"><ul class="pagination justify-content-center"></ul></nav>')
- 	
- 	var impevopts = {
- 			  valueNames: [ 'company', 'country', 'reference', 'sust_category', 'date_published' ],
- 			  page: 20,
- 			  pagination: {
- 			    innerWindow: 2,
- 			    outerWindow: 1,
- 			    left: 0,
- 			    right: 0,
- 			    paginationClass: "pagination", //class name generated in django-table
- 			    }
- 			};
-
- 	//initiate List incl. pagination
- 	var impevList = new List('impev-list', impevopts);
- 	//searchfield outside container:
- 	$('#id_search').on('keyup', function() {
- 		  var searchString = $(this).val();
- 		 impevList.search(searchString);
- 		});
- 	$('#id_search').bind('typeahead:select', function() {
- 		impevList.search(''); //to clear List search 		
- 	}); 	
-}
-function set_topheadaer(){
-	let hi = $('#id_navbar').outerHeight() - 2; //smaller than navbar
-	$('th').css({ top: hi }); 
-		
-	
 }
