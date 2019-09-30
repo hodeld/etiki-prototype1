@@ -10,10 +10,12 @@
                 <tr>
                 {% for column in table.columns %}
                     {# was before <th {{ column.attrs.th.as_html }}> #}
-                    <th >
+                    <th  {{ column.attrs.th.as_html }}>
                         {% if column.orderable %}
-                            <button type="button" {{ column.attrs.th.as_html }}>{{ column.header }}<i class="caret"></i></button>
+                        	{{ column.header }}<i class="caret"></i>
+                            
                             {# was before <a href="{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}">{{ column.header }}</a> #}
+                            {# was before <button type="button" {{ column.attrs.btn.as_html }}>{{ column.header }}<i class="caret"></i></button>#}
                         {% else %}
                             {{ column.header }}
                         {% endif %}

@@ -208,7 +208,8 @@ function prepare_list(){
  	$('.table-container').append('<nav aria-label="Table navigation"><ul class="pagination justify-content-center"></ul></nav>')
  	
  	var impevopts = {
- 			  valueNames: [ 'company', 'country', 'reference', 'sust_category', 'date_published', 'date_sort' ],
+ 			  valueNames: [ 'company', 'country', 'reference', 'sust_domain', 'topics',
+ 				  'date_published', 'date_sort', 'reference_sort', 'sudom_sort'],
  			  page: 20,
  			  pagination: {
  			    innerWindow: 2,
