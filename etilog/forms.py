@@ -54,14 +54,6 @@ class SearchForm(forms.Form):
                         css_class='col-12'                             
                     )
                 ),
-        Row(
-                Column(Field('freetext', id = 'id_f_freetext', 
-                             
-                             data_role='tagsinput'
-                       ),
-                        css_class='col-12'                             
-                    ), id = 'id_row_f_freetext', css_class='row_tags_class'
-                ),
         )
         
 
@@ -101,6 +93,7 @@ class ImpevOverviewFForm(forms.Form):
         self.fields['country'].widget = forms.TextInput() 
         self.fields['reference'].widget = forms.TextInput() 
         self.fields['tags'].widget = forms.TextInput() 
+        self.fields['summary'].widget = forms.TextInput() 
         self.fields['sust_domain'].widget = forms.HiddenInput() 
         self.fields['sust_tendency'].widget = forms.HiddenInput() 
         
@@ -114,11 +107,21 @@ class ImpevOverviewFForm(forms.Form):
         
         self.helper.layout = Layout(
             
+            #RowTagsInput('summary',  'col-12', field_class = cls_filterinput),
+            Row(
+                Column(Field('summary', id = 'id_f_summary', 
+                             css_class = cls_filterinput,                          
+                             data_role='tagsinput'
+                       ),
+                        css_class='col-12'                             
+                    ), id = 'id_row_f_summary', css_class='row_tags_class'
+                ),
+            
+            RowTagsInput('tags',  'col-12', field_class = cls_filterinput),
             RowTagsInput('company',  'col-12', field_class = cls_filterinput),
             RowTagsInput('country',  'col-12', field_class = cls_filterinput),
             RowTagsInput('reference',  'col-12', field_class = cls_filterinput),
-            RowTagsInput('tags',  'col-12', field_class = cls_filterinput),
-            #Row(Column('sust_domain'),  css_class='col-12'),
+            
             Field('sust_domain', '', id='id_sust_domain', css_class=cls_filterinput), #, id='id_sust_domain' ),
             Field('sust_tendency', '', id='id_sust_tendency', css_class=cls_filterinput), 
             Row(ColDomainBtnSelect(labelname = 'Category'),ColTendencyBtnSelect(labelname = 'Which Tendency')),

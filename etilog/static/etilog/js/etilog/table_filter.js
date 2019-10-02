@@ -180,10 +180,14 @@ $(document).ready(function() {
 	// if changed without suggestion
 	$('#id_search').bind('typeahead:change', function() {
 		var val_str = $(this).typeahead('val');
-		var elt = $('#id_f_freetext');
+		//var elt = $('#id_f_freetext');
+		var elt = $('#id_f_summary');
+		var el_id = '#id_row_f_summary';
+		
 		
 		elt.tagsinput('add', val_str);	//adds tag
-		$('#id_row_f_freetext').show();
+		$(el_id).show();
+		//$('#id_row_f_freetext').show();
 		//$(this).val(''); 
 		$(this).typeahead('val', ''); //typeahead input
 		

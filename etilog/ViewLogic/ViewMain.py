@@ -64,6 +64,12 @@ def get_filterdict(request):
             id_list, id_str = get_idlist(fname)
             filter_dict[fname] = id_list #for multiple: needs to be a list
             btn_dict[fname] = id_list
+        
+        field_names = ['summary', ]
+        for fname in field_names:
+            text_str_li = filter_dict.get(fname, ['']) #can be list ['']
+            text_str = text_str_li[0]
+            filter_dict[fname] =  text_str
 
     js_tag_dict = json.dumps(tag_dict)
     js_btn_dict = json.dumps(btn_dict)
