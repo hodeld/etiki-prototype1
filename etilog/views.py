@@ -51,7 +51,7 @@ def overview_impevs(request):
     cnt_tot = get_cache(key_totnr, request)
     if cnt_tot == None:
         cnt_tot = ImpactEvent.objects.all().count()
-    filter_dict, js_tag_dict, js_btn_dict = get_filterdict(request) #hiddencompany
+    filter_dict = get_filterdict(request) #hiddencompany
     limit_start = 21
     limit_filt = 50
     if  filter_dict:
@@ -104,8 +104,6 @@ def overview_impevs(request):
                                                                  'countries_url': countries_url,
                                                                  'references_url': references_url,
                                                                  'tags_url': tags_url,
-                                                                 'json_tag_dic': js_tag_dict,
-                                                                 'json_btn_dic': js_btn_dict,
                                                                  'message': msg_results
                                                                  })
 @permission_required('etilog.impactevent')   
