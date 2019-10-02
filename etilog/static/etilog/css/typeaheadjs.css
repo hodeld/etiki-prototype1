@@ -1,5 +1,7 @@
 span.twitter-typeahead .tt-menu {
   cursor: pointer;
+  width: 100%; /* modification by damian */
+  
 }
 
 .dropdown-menu, span.twitter-typeahead .tt-menu {
@@ -32,7 +34,12 @@ span.twitter-typeahead .tt-suggestion {
   text-align: inherit;
   white-space: nowrap;
   background: none;
-  border: 0; }
+  border: 0;
+  /* modification by damian */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+   }
 span.twitter-typeahead .tt-suggestion:focus, .dropdown-item:hover, span.twitter-typeahead .tt-suggestion:hover {
     color: #2b2d2f;
     text-decoration: none;

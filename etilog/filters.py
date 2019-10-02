@@ -12,7 +12,7 @@ from django_filters import MultipleChoiceFilter
 
 #models
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
-from etilog.models import SustainabilityTendency
+from etilog.models import SustainabilityTendency, SustainabilityTag
 #forms
 from .forms import ImpevOverviewFForm
 
@@ -52,6 +52,10 @@ class ImpevOverviewFilter(FilterSet):
     country = CharFilter(field_name = 'country_display', #can be country
                          label = 'Country',
                          method = 'filter_country_idlist')
+    tags = ModelMultipleChoiceFilter(field_name = 'sust_tags',
+                         label = 'Topics',
+                         queryset=SustainabilityTag.objects.all())
+    
     sust_domain = ModelMultipleChoiceFilter(field_name = 'sust_domain', #ModelMultiple... -> accepts list
                          label = '',
                          queryset=SustainabilityDomain.objects.all()) #any queryset

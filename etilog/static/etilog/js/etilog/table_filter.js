@@ -4,7 +4,6 @@ $(document).ready(function() {
 	
 	//button select for categories
 	$('.btnselect').on('click', set_val_from_btn);
-	set_filterbtns();
 	
 	//$('.row_tags_class').hide(); -> done in css
 	
@@ -82,28 +81,50 @@ $(document).ready(function() {
 			  cache: false // 
 		        }		  
 		});
+	//initialize bloodhound
+	var tags = new Bloodhound({
+		  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
+		  queryTokenizer: Bloodhound.tokenizers.whitespace, 
+		  prefetch: {
+			  url: tags_url, // url set in html  
+			  cache: false // 
+		        }		  
+		});
+	
 	var elttag = $('.f_tagsinput') //array of elements
 	
 	var multitemplate_st = '<h5 class="category-name text-primary">';
 	var multitemplate_et = '</h5>';
-	
+	var limit_sugg = 3;
 	//initialize typehead -> needs to be below source (assignment is in order in js!
 	$('#id_search').typeahead(
 		{
 			highlight: true
+			
 		},
 		{
 		  name: 'companies',
 		  source: companies,
 		  display: 'name',
+		  limit: limit_sugg,
 		  templates: {
 		    header: multitemplate_st + 'Companies' + multitemplate_et
+		  }
+		},
+		{
+		  name: 'tags',
+		  source: tags,
+		  display: 'name',
+		  limit: limit_sugg,
+		  templates: {
+		    header: multitemplate_st + 'Topics' + multitemplate_et
 		  }
 		},
 		{
 		  name: 'countries',
 		  source: countries,
 		  display: 'name',
+		  limit: limit_sugg,
 		  templates: {
 		    header: multitemplate_st + 'Countries' + multitemplate_et
 		  }
@@ -112,6 +133,7 @@ $(document).ready(function() {
 		  name: 'references',
 		  source: references,
 		  display: 'name',
+		  limit: limit_sugg,
 		  templates: {
 		    header: multitemplate_st + 'Where was it published' + multitemplate_et
 		  }
@@ -139,7 +161,10 @@ $(document).ready(function() {
 					var elt = $('#id_f_reference');
 					var el_id = '#id_row_f_reference';					
 				}					
-				
+				else if (modname == 'tags'){
+					var elt = $('#id_f_tags');
+					var el_id = '#id_row_f_tags';					
+				}	
 				else {
 					var elt = $('#id_f_freetext');					
 				}
@@ -237,45 +262,7 @@ function set_topheadaer(){
 	$('th').css({ top: hi }); 	
 }
 
-//not used at the moment
-function filter_toggle(event) {
-	var filter = event.target.name;
-	var oform = event.target.form;
-	var pressed = event.target.attributes['aria-pressed'].value; // true or false
-	var input = document.createElement("input");
-	var inputname =  'i-' + filter
-	var inputid =  'id-i-' + filter
-	var filterinput =  document.getElementsByName(inputname)[0]; //ElementS for Name -> then a list
-	if (filterinput  == null){
-		
-		
-		var filterinput = document.createElement("input");
-		filterinput.setAttribute("type", "hidden");
-		filterinput.setAttribute("id", inputid);
-		filterinput.setAttribute("name", inputname);
-	}
-	var val = "true";
-	if (pressed  == "true"){
-		val = "false"
-	}
-	filterinput.value = val;
-	//oform.appendChild(filterinput); //appends hidden input field; send request directly did not get response?!
-	//oform.submit();
-}
 
-
-function set_filtertags(){
-	$.each(tags_dict, function( k, v ) {
-		var el_id = '#id_f_'+ k;	
-		var el_row_id = '#id_row_f_' + k;
-		$.each(v, function(ki, vi){
-			$(el_id).tagsinput('add', vi);
-			});
-
-	
-		$(el_row_id).show();
-	});	
-}
 function set_filterbtns(){
 	$.each(btns_dict, function( k, v ) {
 		var part_id = '#id-' + k + '-btn-';	//k = sust_domain or sust_tendency

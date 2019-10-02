@@ -100,6 +100,7 @@ class ImpevOverviewFForm(forms.Form):
         self.fields['company'].widget = forms.TextInput() 
         self.fields['country'].widget = forms.TextInput() 
         self.fields['reference'].widget = forms.TextInput() 
+        self.fields['tags'].widget = forms.TextInput() 
         self.fields['sust_domain'].widget = forms.HiddenInput() 
         self.fields['sust_tendency'].widget = forms.HiddenInput() 
         
@@ -116,6 +117,7 @@ class ImpevOverviewFForm(forms.Form):
             RowTagsInput('company',  'col-12', field_class = cls_filterinput),
             RowTagsInput('country',  'col-12', field_class = cls_filterinput),
             RowTagsInput('reference',  'col-12', field_class = cls_filterinput),
+            RowTagsInput('tags',  'col-12', field_class = cls_filterinput),
             #Row(Column('sust_domain'),  css_class='col-12'),
             Field('sust_domain', '', id='id_sust_domain', css_class=cls_filterinput), #, id='id_sust_domain' ),
             Field('sust_tendency', '', id='id_sust_tendency', css_class=cls_filterinput), 

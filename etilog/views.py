@@ -85,6 +85,7 @@ def overview_impevs(request):
     companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
     references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
+    tags_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'tags'})
     
     msg_results = msg_results + ' of %d in total' % cnt_tot
     
@@ -102,6 +103,7 @@ def overview_impevs(request):
                                                                  'companies_url': companies_url,
                                                                  'countries_url': countries_url,
                                                                  'references_url': references_url,
+                                                                 'tags_url': tags_url,
                                                                  'json_tag_dic': js_tag_dict,
                                                                  'json_btn_dic': js_btn_dict,
                                                                  'message': msg_results
@@ -248,6 +250,8 @@ def load_names(request, modelname):
         q_names = Reference.objects.values( 'id', 'name')
     elif modelname == 'country':
         q_names = Country.objects.values( 'id', 'name')
+    elif modelname == 'tags':
+        q_names = SustainabilityTag.objects.values( 'id', 'name')
     else:
         return HttpResponse("/")
         
