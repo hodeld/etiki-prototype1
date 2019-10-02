@@ -193,6 +193,12 @@ $(document).ready(function() {
 		
 		
 	});
+	
+	$("#id_search").keyup(function(event) {
+	    if (event.keyCode === 13) { //enter
+	        $(this).blur();
+	    }
+	});
      //for List.js
      prepare_list()
 
