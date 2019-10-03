@@ -23,6 +23,7 @@ from .filters import ImpevOverviewFilter
 #viewlogic
 from etilog.ViewLogic.ViewImportDB import parse_xcl
 from etilog.ViewLogic.ViewMain import get_filterdict, set_cache, get_cache
+from etilog.ViewLogic.ViewExport import exp_csv_nlp
 
 #from etilog.ViewLogic.ViewAccessURL import parse_url
 
@@ -106,6 +107,16 @@ def overview_impevs(request):
                                                                  'tags_url': tags_url,
                                                                  'message': msg_results
                                                                  })
+
+def export_csv_nlp(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+    response = exp_csv_nlp(response)
+    
+    return response
+    
+    
 @permission_required('etilog.impactevent')   
 def import_dbdata(request):
     
