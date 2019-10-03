@@ -283,3 +283,24 @@ function set_filterbtns(){
 			});
 	});	
 }
+
+function toggle_visibility(jqid) {
+    var e = $(jqid);
+    if(e.hasClass('show')){
+    	e.removeClass('show');
+    	}
+       
+    else {
+       e.addClass('show');
+    }
+ }
+
+function set_tag(id, tagname) {
+	var suggestion = {'id': id, 'name': tagname};
+	var elt = $('#id_f_tags');
+	var el_id = '#id_row_f_tags';
+	elt.tagsinput('add', suggestion);	//adds tag	
+	$(el_id).show();
+	
+	
+}

@@ -43,7 +43,7 @@ def get_filterdict(request):
             filter_dict[fname] = id_str #needs to be a string in CharFilter
                     
                     
-        field_names = ['sust_domain', 'sust_tendency']
+        field_names = ['sust_domain', 'sust_tendency', 'tags']
         
         for fname in field_names:
             id_list, id_str = get_idlist(fname)

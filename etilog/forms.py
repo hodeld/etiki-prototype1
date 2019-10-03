@@ -10,14 +10,14 @@ import json
 
 from bootstrap_datepicker_plus import DatePickerInput
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Column, Submit, Hidden 
+from crispy_forms.layout import Layout, Field, Row, Column, Submit, Hidden, HTML
 from crispy_forms.bootstrap import  FormActions, FieldWithButtons, StrictButton
 
 #models
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
 from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn
 from .fields import DateYearPicker, DateYearPickerField
-from .fields import RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect
+from .fields import RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics
 
 
     
@@ -49,11 +49,12 @@ class SearchForm(forms.Form):
             
         Row(
                 Column(Field('search', id = 'id_search', autocomplete="off", 
-                             placeholder = 'Search Companies, Countries, Newspaper …'
+                             placeholder = 'Search Companies, Countries, Topics, Newspaper …'
                        ),
                         css_class='col-12'                             
                     )
                 ),
+        RowTopics(),
         )
         
 
@@ -76,6 +77,7 @@ class FreetextForm(forms.Form):
                         css_class='col-12'                             
                     ), id = 'id_row_f_freetext', css_class='row_tags_class'
                 ),
+        
         )
             
    

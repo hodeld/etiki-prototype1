@@ -5,15 +5,17 @@ Created on 15 Mar 2019
 '''
 from django import forms
 from django.urls import reverse_lazy
+from django.db.models import Count
 
 #crispoy
-from crispy_forms.layout import Layout, Field, Row, Column, Submit, Button, HTML, ButtonHolder
+from crispy_forms.layout import Layout, Field, Row, Column, Div, Button, HTML, ButtonHolder
 from crispy_forms.bootstrap import  InlineRadios, FieldWithButtons, StrictButton
 #datepicker
 from bootstrap_datepicker_plus import DatePickerInput
 
 #models
-from .models import Company, Reference, SustainabilityDomain, SustainabilityTendency
+from etilog.models import Company, Reference, SustainabilityDomain, SustainabilityTendency, SustainabilityTag
+from etilog.models import ImpactEvent
 
 D_FORMAT = '%d.%m.%Y'
 D_YEARFORMAT = '%Y'
@@ -124,7 +126,7 @@ class RowTagsInput(Layout):
                 id = row_id
                 )
             )
-                    
+                   
 class ColDomainBtnSelect(Layout):
     def __init__(self, col_class= 'col-12 col-lg-6', labelname= 'Category', *args, **kwargs): #distribute buttons
         q = SustainabilityDomain.objects.all()
@@ -171,4 +173,37 @@ class ColTendencyBtnSelect(Layout):
             Column(HTML(html_str),
                    ButtonHolder(*btn_list),
                 css_class = col_class  ) 
+            )   
+
+class RowTopics(Layout):
+    def __init__(self, col_class= 'col-12', labelname= 'Topics', *args, **kwargs): #distribute buttons
+        #q = SustainabilityTag.objects.all()[:5]
+        nr_tags = 2
+        li_vals = []
+        for i in range(1,6):
+            vals = ImpactEvent.objects.filter(
+                        sust_domain = i).values_list(
+                            'sust_tags__id', 'sust_tags__name').annotate(
+                                tag_count=Count('sust_tags')).order_by(
+                                    '-tag_count')[:nr_tags]
+            li_vals.extend(vals)
+        
+        #val_people = ImpactEvent.objects.filter(sust_domain = 1).values_list('sust_tags__id', 'sust_tags__name').annotate(tag_count=Count('sust_tags')).order_by('-tag_count')[:5]
+       
+        topics_list = []
+        a_str = '''<a href="#" class="topic-link" onclick="set_tag(%d, '%s');">%s</a>'''
+        for tag in li_vals:
+            html_str = a_str % (tag[0], tag[1], tag[1]) #(tag.id, tag.name, tag.name)           
+            a_link = HTML(html_str)
+            div_a = Div(a_link, css_class = 'div_topic_li')
+            topics_list.append(div_a)
+            
+        html_str = '<label class="col-form-label">%s</label>' % labelname
+        super(RowTopics, self).__init__( 
+            Row(
+                           
+                Column(HTML(html_str),
+                       Div(*topics_list, css_class = 'd-flex flex-wrap'), #to wrap elements
+                    css_class = col_class  )  
+                )
             )                           

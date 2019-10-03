@@ -196,6 +196,23 @@ button.sort.desc .caret { display:inline-block; }
  
     margin-bottom: 3px;
 }
-
+.div_topic_li{
+	max-width: 100%;
+	
+}
+.topic-link{
+	max-width: 100%;
+	display:block;
+	padding-right: 10px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 14px;
+	color: #3E7480;
+	text-decoration: underline;
+		
+	
+	
+}
 
 
