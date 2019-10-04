@@ -10,8 +10,8 @@ import json
 
 from bootstrap_datepicker_plus import DatePickerInput
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Column, Submit, Hidden, HTML
-from crispy_forms.bootstrap import  FormActions, FieldWithButtons, StrictButton
+from crispy_forms.layout import Layout, Field, Row, Column, Submit, ButtonHolder, Button
+from crispy_forms.bootstrap import  FormActions, FieldWithButtons
 
 #models
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
@@ -159,7 +159,6 @@ class NewImpactEvent(forms.ModelForm):
                 Column(DateYearPickerField('date_published'), css_class=CSS_COL_CLS),
                 Column(DateYearPickerField('date_impact'), css_class=CSS_COL_CLS)
             ),
-            
             Row(
                 Column(CompanyWBtn(fieldname = 'company',
                                    mainmodel = 'impev'), 
@@ -183,7 +182,13 @@ class NewImpactEvent(forms.ModelForm):
             Field('summary', rows= 3),
             Field('comment', rows= 3),
             
-            Submit('submit', 'Save Impact Event', css_class='btn btn-light' )
+            Row(Column(Field('date_text'), css_class=CSS_COL_CLS)),
+            Field('article_text'),
+            
+            ButtonHolder(
+                Submit('submit', 'Save Impact Event', css_class='btn btn-secondary' ),
+                Button('next', 'Next', css_class='btn btn-light', onclick="next_ie();" )
+                )
         )
         
                   
@@ -191,7 +196,8 @@ class NewImpactEvent(forms.ModelForm):
         model = ImpactEvent
         fields = ['source_url', 'date_published', 'date_impact', 'company', 'reference', 
                   'sust_domain', 'sust_tendency', 'sust_tags',
-                  'summary', 'comment' 
+                  'summary', 'comment',
+                  'article_text', 'date_text', 
                   ]
     
 

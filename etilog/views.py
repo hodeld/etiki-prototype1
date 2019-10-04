@@ -1,7 +1,8 @@
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse, reverse_lazy
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth import logout
 import json
@@ -14,7 +15,7 @@ from .models import ImpactEvent, Company, SustainabilityCategory, Reference, Cou
 from etilog.models import SustainabilityTag
 
 #tables
-from .tables import ImpEvTable
+from .tables import ImpEvTable, ImpEvTablePrivat
 #forms
 from .forms import NewImpactEvent, NewSource, CompanyForm, ReferenceForm, SearchForm, FreetextForm
 #forms
@@ -54,15 +55,23 @@ def overview_impevs(request):
         cnt_tot = ImpactEvent.objects.all().count()
     filter_dict = get_filterdict(request) #hiddencompany
     limit_start = 21
-    limit_filt = 50
+    
+    if request.user.is_authenticated:
+        limit_filt = 1000
+        Table = ImpEvTablePrivat
+    else:
+        limit_filt = 50
+        Table = ImpEvTable
+        
     if  filter_dict:
         q_ie = ImpactEvent.objects.all()
         msg_base =  'shows %d filtered impact events'
-    else:
+    else: #newly loaded time on site
         last_ies = ImpactEvent.objects.all().order_by('-updated_at')[:limit_start]
         dt = list(last_ies)[-1].updated_at
         q_ie = ImpactEvent.objects.filter(updated_at__gte = dt)
         msg_base = 'shows %d most recent added impact events'
+    
     filt = ImpevOverviewFilter(filter_dict, queryset=q_ie) 
     table_qs =  filt.qs 
     cnt_ies = table_qs.count() #one query too much
@@ -74,7 +83,7 @@ def overview_impevs(request):
     else:
         msg_results = msg_base % cnt_ies
          
-    table = ImpEvTable(table_qs)
+    table = Table(table_qs)
     table.order_by = '-date_published' #needed?
     #cnt_ies = filt.qs.count() 
     
@@ -124,7 +133,7 @@ def import_dbdata(request):
     return HttpResponseRedirect(reverse('etilog:home'))
 
 @permission_required('etilog.impactevent') 
-def impact_event_create(request, impact_id = None):
+def impact_event_create(request, ie_id = None):
     if request.method == 'POST':
 
         data_dict = request.POST.dict()
@@ -152,9 +161,9 @@ def impact_event_create(request, impact_id = None):
     else:
         message = ''
     
-    if impact_id:
+    if ie_id: #copy
         init_data = {}
-        impev = ImpactEvent.objects.get(id = impact_id)
+        impev = ImpactEvent.objects.get(id = ie_id)
         init_data ['company'] = impev.company.name
         init_data ['sust_domain'] = impev.sust_domain.id
         init_data ['sust_tendency'] = impev.sust_tendency.id
@@ -162,12 +171,92 @@ def impact_event_create(request, impact_id = None):
         init_data ['summary'] = impev.summary
         
         form = NewImpactEvent(initial = init_data)
+            
     else:
         form = NewImpactEvent()
     
     return render(request, 'etilog/newimpactevent.html', {'form': form,
                                                           'message': message,
                                                              })
+@permission_required('etilog.impactevent') 
+# at ensure_csrf_cookie
+def impact_event_update(request, ie_id = None):
+    if request.method == 'POST':
+        data_dict = get_ie_form_data(request)
+
+        ie = ImpactEvent.objects.get(id = ie_id)
+        form = NewImpactEvent(data_dict, instance = ie) #todoonly updated data
+            
+            
+        to_json = {}
+        if form.is_valid():
+            form.save()
+            message = 'Impact Event updated' 
+            to_json['is_valid'] = 'true'
+            to_json['message'] = message            
+            
+        else:
+            message = form.errors.__html__() #html
+            err_items = list(form.errors.keys())
+            
+            #not used
+            #form = NewImpactEvent(request.POST)
+            #rendered = render_to_string('etilog/impev_upd_form.html', {'form': form }, request) #request needed for RequestContext -> csrf
+            #to_json['form'] = rendered
+            
+            to_json['is_valid'] = 'false'
+            to_json['err_items'] = err_items
+            to_json['message'] = message
+        return HttpResponse(json.dumps(to_json), content_type='application/json')
+    
+    else:
+        message = ''
+        form = get_ie_init_data(ie_id, update = True)
+        next_id = ImpactEvent.objects.filter(id__gt = ie_id).order_by('id').values_list('id', flat = True).first()
+        next_id_url = reverse_lazy('etilog:impactevent_update', kwargs={'ie_id': next_id})
+         
+
+
+    return render(request, 'etilog/impev_upd_base.html', {'form': form, #for form.media
+                                                          'message': message   ,
+                                                          'next_id_url': next_id_url                                                  
+                                                            })
+    
+def get_ie_form_data(request):
+    data_dict = request.POST.dict()
+    company_names = ['company']
+    data_dict = upd_datadict_company(company_names, data_dict)
+
+    data_dict = upd_datadict_reference(data_dict)
+
+    
+    sust_tags_list = request.POST.getlist('sust_tags')
+    data_dict ['sust_tags'] = sust_tags_list
+    return data_dict
+
+def get_ie_init_data(ie_id, update = False):
+    init_data = {}
+    impev = ImpactEvent.objects.get(id = ie_id)
+    init_data ['company'] = impev.company.name
+    init_data ['sust_domain'] = impev.sust_domain.id
+    init_data ['sust_tendency'] = impev.sust_tendency.id
+    init_data ['sust_tags'] = list(impev.sust_tags.all())
+    init_data ['summary'] = impev.summary
+    if update:
+        init_data ['article_text'] = impev.article_text
+        init_data ['source_url'] = impev.source_url
+        init_data ['date_published'] = impev.date_published
+        init_data ['date_impact'] = impev.date_impact
+        init_data ['date_text'] = impev.date_text
+        init_data ['comment'] = impev.comment
+        init_data ['reference'] = impev.reference.name
+        
+    
+    
+    form = NewImpactEvent(initial = init_data)
+    return form
+    
+    
 @permission_required('etilog.impactevent')           
 def add_foreignmodel(request, main_model, foreign_model):
     if request.POST:
@@ -192,6 +281,7 @@ def add_foreignmodel(request, main_model, foreign_model):
             instance.save()
             form.save_m2m() #due to many2many
             
+            #handles the result of the foreign model in the original one
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
     
         else:

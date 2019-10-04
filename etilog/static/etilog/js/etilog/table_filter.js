@@ -245,7 +245,8 @@ function prepare_list(){
  	
  	var impevopts = {
  			  valueNames: [ 'company', 'country', 'reference', 'sust_domain', 'topics',
- 				  'date_published', 'date_sort', 'reference_sort', 'sudom_sort'],
+ 				  'date_published', 'date_sort', 'reference_sort', 'sudom_sort',
+ 				  'id'],
  			  page: 20,
  			  pagination: {
  			    innerWindow: 2,

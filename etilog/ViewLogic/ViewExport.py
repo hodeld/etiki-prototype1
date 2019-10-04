@@ -30,11 +30,11 @@ def exp_csv_nlp(response):
                  'reference__id', 
                  'reference__name',
                  'source_url',
-                 #'article_text',
-                 #'pub_date_string'
+                 'article_text',
+                 'date_text'
                  ]
     
-    val_ie = ImpactEvent.objects.values_list(*val_names)[:5]
+    val_ie = ImpactEvent.objects.filter(article_text__isnull = False).values_list(*val_names)[:5]
     writer.writerow(header)
     for ie in val_ie:
         writer.writerow(ie)
