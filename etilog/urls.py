@@ -6,6 +6,7 @@ from . import views
 app_name = 'etilog'
 get_data = 'get_data/'
 load_data = 'load_data/'
+export = 'export/'
 
 
 urlpatterns = [
@@ -19,7 +20,8 @@ urlpatterns = [
     
     path(get_data + 'get_susttags/', views.load_sust_tags, name = 'get_sust_tags'),
     path(load_data + '<slug:modelname>', views.load_names, name = 'load_jsondata'),
-    path('exportdata', views.export_csv_nlp, name = 'export_csv_nlp'),
+    path(export + 'nlp', views.export_csv_nlp, name = 'export_csv_nlp'),
+    path(export + 'base', views.export_csv_base, name = 'export_csv_base'),
     
     path('logout/', views.logout_view, name='logout'),
     #path(load_data + 'reference.json', views.load_references, name = 'load_references'),

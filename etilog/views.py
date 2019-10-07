@@ -24,7 +24,8 @@ from .filters import ImpevOverviewFilter
 #viewlogic
 from etilog.ViewLogic.ViewImportDB import parse_xcl
 from etilog.ViewLogic.ViewMain import get_filterdict, set_cache, get_cache
-from etilog.ViewLogic.ViewExport import exp_csv_nlp
+from etilog.ViewLogic.ViewExport import exp_csv_nlp, exp_csv_basedata
+from etilog.ViewLogic.ViewDatetime import get_now
 
 #from etilog.ViewLogic.ViewAccessURL import parse_url
 
@@ -120,8 +121,22 @@ def overview_impevs(request):
 def export_csv_nlp(request):
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+    now = get_now()
+    date_str = now.strftime('%Y%m%d')
+    filename = 'impevs_nlp_' + date_str 
+    response['Content-Disposition'] = 'attachment; filename="%s.csv"' % filename
     response = exp_csv_nlp(response)
+    
+    return response
+
+def export_csv_base(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    now = get_now()
+    date_str = now.strftime('%Y%m%d')
+    filename = 'base_nlp_' + date_str 
+    response['Content-Disposition'] = 'attachment; filename="%s.csv"' % filename
+    response = exp_csv_basedata(response)
     
     return response
     
@@ -179,7 +194,6 @@ def impact_event_create(request, ie_id = None):
                                                           'message': message,
                                                              })
 @permission_required('etilog.impactevent') 
-# at ensure_csrf_cookie
 def impact_event_update(request, ie_id = None):
     if request.method == 'POST':
         data_dict = get_ie_form_data(request)

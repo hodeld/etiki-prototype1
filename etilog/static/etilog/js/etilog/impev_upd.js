@@ -22,6 +22,7 @@ $(document).ready(function() {
 			else {
 				$("#id_impev_msg").html(msg);
 				$('.is-invalid').removeClass('is-invalid') //django class
+				window.scrollTo(0, 0);
 			}
 		}
 	
