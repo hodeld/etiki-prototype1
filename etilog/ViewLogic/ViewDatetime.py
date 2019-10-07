@@ -21,3 +21,8 @@ def get_dateframe():
     st = st_dt.strftime('%d.%m.%Y')
     
     return st, et
+
+def get_now():
+    now = timezone.localtime()
+    
+    return now

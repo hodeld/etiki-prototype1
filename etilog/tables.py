@@ -179,8 +179,8 @@ class ImpEvTable(tables.Table):
         
         exclude = ('created_at', 'updated_at', )
         #defines also order of columns
-        fields = ('id', 'copy', 'date_published', 'company',
-                  'sust_domain', 'country', 'topics',  'reference', 'summary' )
+        fields = ('date_published', 'company',
+                  'sust_domain', 'country', 'topics',  'reference', 'summary')
         #orderable = False #for all columns
         attrs = {'class': 'table table-hover table-sm', #bootstrap4 classes ;table-responsive: not working with sticky
                 }
@@ -233,4 +233,5 @@ class ImpEvTablePrivat(ImpEvTable):
         attrs = {'class': 'table table-hover table-sm', #bootstrap4 classes ;table-responsive: not working with sticky
                 }
         template_name = 'etilog/etilog_djangotable.html'  
+        sequence = ('id', 'copy', '...')
     
