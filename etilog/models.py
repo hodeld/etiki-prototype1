@@ -128,6 +128,7 @@ class ImpactEvent (models.Model):
     date_published = models.DateField(verbose_name='Date IE published', 
                                       help_text = 'First time published. If only year is known put 1st of jan')
     date_impact = models.DateField(blank=True,null=True, help_text = 'optional date of impact')
+    date_text = models.CharField(max_length=100, blank=True,null=True)
     
     company = models.ForeignKey(Company, on_delete=models.PROTECT, related_name = 'impevents')   
        
@@ -145,6 +146,7 @@ class ImpactEvent (models.Model):
     summary = models.CharField(max_length=500, blank=True,null=True, 
                                help_text = 'abstract, title or first part of text')
     comment = models.CharField(max_length=500, blank=True,null=True)
+    article_text = models.TextField(blank=True, null=True)
     
     
     def __str__(self):

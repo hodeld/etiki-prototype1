@@ -10,14 +10,14 @@ import json
 
 from bootstrap_datepicker_plus import DatePickerInput
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Column, Submit, Hidden 
-from crispy_forms.bootstrap import  FormActions, FieldWithButtons, StrictButton
+from crispy_forms.layout import Layout, Field, Row, Column, Submit, ButtonHolder, Button
+from crispy_forms.bootstrap import  FormActions, FieldWithButtons
 
 #models
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
 from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn
 from .fields import DateYearPicker, DateYearPickerField
-from .fields import RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect
+from .fields import RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics
 
 
     
@@ -49,19 +49,12 @@ class SearchForm(forms.Form):
             
         Row(
                 Column(Field('search', id = 'id_search', autocomplete="off", 
-                             placeholder = 'Search Companies, Countries, Newspaper …'
+                             placeholder = 'Search Companies, Countries, Topics, Newspaper …'
                        ),
                         css_class='col-12'                             
                     )
                 ),
-        Row(
-                Column(Field('freetext', id = 'id_f_freetext', 
-                             
-                             data_role='tagsinput'
-                       ),
-                        css_class='col-12'                             
-                    ), id = 'id_row_f_freetext', css_class='row_tags_class'
-                ),
+        RowTopics(),
         )
         
 
@@ -84,6 +77,7 @@ class FreetextForm(forms.Form):
                         css_class='col-12'                             
                     ), id = 'id_row_f_freetext', css_class='row_tags_class'
                 ),
+        
         )
             
    
@@ -100,6 +94,8 @@ class ImpevOverviewFForm(forms.Form):
         self.fields['company'].widget = forms.TextInput() 
         self.fields['country'].widget = forms.TextInput() 
         self.fields['reference'].widget = forms.TextInput() 
+        self.fields['tags'].widget = forms.TextInput() 
+        self.fields['summary'].widget = forms.TextInput() 
         self.fields['sust_domain'].widget = forms.HiddenInput() 
         self.fields['sust_tendency'].widget = forms.HiddenInput() 
         
@@ -113,10 +109,21 @@ class ImpevOverviewFForm(forms.Form):
         
         self.helper.layout = Layout(
             
+            #RowTagsInput('summary',  'col-12', field_class = cls_filterinput),
+            Row(
+                Column(Field('summary', id = 'id_f_summary', 
+                             css_class = cls_filterinput,                          
+                             data_role='tagsinput'
+                       ),
+                        css_class='col-12'                             
+                    ), id = 'id_row_f_summary', css_class='row_tags_class'
+                ),
+            
+            RowTagsInput('tags',  'col-12', field_class = cls_filterinput),
             RowTagsInput('company',  'col-12', field_class = cls_filterinput),
             RowTagsInput('country',  'col-12', field_class = cls_filterinput),
             RowTagsInput('reference',  'col-12', field_class = cls_filterinput),
-            #Row(Column('sust_domain'),  css_class='col-12'),
+            
             Field('sust_domain', '', id='id_sust_domain', css_class=cls_filterinput), #, id='id_sust_domain' ),
             Field('sust_tendency', '', id='id_sust_tendency', css_class=cls_filterinput), 
             Row(ColDomainBtnSelect(labelname = 'Category'),ColTendencyBtnSelect(labelname = 'Which Tendency')),
@@ -152,7 +159,6 @@ class NewImpactEvent(forms.ModelForm):
                 Column(DateYearPickerField('date_published'), css_class=CSS_COL_CLS),
                 Column(DateYearPickerField('date_impact'), css_class=CSS_COL_CLS)
             ),
-            
             Row(
                 Column(CompanyWBtn(fieldname = 'company',
                                    mainmodel = 'impev'), 
@@ -176,7 +182,13 @@ class NewImpactEvent(forms.ModelForm):
             Field('summary', rows= 3),
             Field('comment', rows= 3),
             
-            Submit('submit', 'Save Impact Event', css_class='btn btn-light' )
+            Row(Column(Field('date_text'), css_class=CSS_COL_CLS)),
+            Field('article_text'),
+            
+            ButtonHolder(
+                Submit('submit', 'Save Impact Event', css_class='btn btn-secondary' ),
+                Button('next', 'Next', css_class='btn btn-light', onclick="next_ie();" )
+                )
         )
         
                   
@@ -184,7 +196,8 @@ class NewImpactEvent(forms.ModelForm):
         model = ImpactEvent
         fields = ['source_url', 'date_published', 'date_impact', 'company', 'reference', 
                   'sust_domain', 'sust_tendency', 'sust_tags',
-                  'summary', 'comment' 
+                  'summary', 'comment',
+                  'article_text', 'date_text', 
                   ]
     
 

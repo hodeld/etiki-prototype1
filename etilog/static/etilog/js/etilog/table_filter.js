@@ -4,7 +4,6 @@ $(document).ready(function() {
 	
 	//button select for categories
 	$('.btnselect').on('click', set_val_from_btn);
-	set_filterbtns();
 	
 	//$('.row_tags_class').hide(); -> done in css
 	
@@ -82,28 +81,50 @@ $(document).ready(function() {
 			  cache: false // 
 		        }		  
 		});
+	//initialize bloodhound
+	var tags = new Bloodhound({
+		  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
+		  queryTokenizer: Bloodhound.tokenizers.whitespace, 
+		  prefetch: {
+			  url: tags_url, // url set in html  
+			  cache: false // 
+		        }		  
+		});
+	
 	var elttag = $('.f_tagsinput') //array of elements
 	
 	var multitemplate_st = '<h5 class="category-name text-primary">';
 	var multitemplate_et = '</h5>';
-	
+	var limit_sugg = 3;
 	//initialize typehead -> needs to be below source (assignment is in order in js!
 	$('#id_search').typeahead(
 		{
 			highlight: true
+			
 		},
 		{
 		  name: 'companies',
 		  source: companies,
 		  display: 'name',
+		  limit: limit_sugg,
 		  templates: {
 		    header: multitemplate_st + 'Companies' + multitemplate_et
+		  }
+		},
+		{
+		  name: 'tags',
+		  source: tags,
+		  display: 'name',
+		  limit: limit_sugg,
+		  templates: {
+		    header: multitemplate_st + 'Topics' + multitemplate_et
 		  }
 		},
 		{
 		  name: 'countries',
 		  source: countries,
 		  display: 'name',
+		  limit: limit_sugg,
 		  templates: {
 		    header: multitemplate_st + 'Countries' + multitemplate_et
 		  }
@@ -112,6 +133,7 @@ $(document).ready(function() {
 		  name: 'references',
 		  source: references,
 		  display: 'name',
+		  limit: limit_sugg,
 		  templates: {
 		    header: multitemplate_st + 'Where was it published' + multitemplate_et
 		  }
@@ -139,7 +161,10 @@ $(document).ready(function() {
 					var elt = $('#id_f_reference');
 					var el_id = '#id_row_f_reference';					
 				}					
-				
+				else if (modname == 'tags'){
+					var elt = $('#id_f_tags');
+					var el_id = '#id_row_f_tags';					
+				}	
 				else {
 					var elt = $('#id_f_freetext');					
 				}
@@ -155,14 +180,24 @@ $(document).ready(function() {
 	// if changed without suggestion
 	$('#id_search').bind('typeahead:change', function() {
 		var val_str = $(this).typeahead('val');
-		var elt = $('#id_f_freetext');
+		//var elt = $('#id_f_freetext');
+		var elt = $('#id_f_summary');
+		var el_id = '#id_row_f_summary';
+		
 		
 		elt.tagsinput('add', val_str);	//adds tag
-		$('#id_row_f_freetext').show();
+		$(el_id).show();
+		//$('#id_row_f_freetext').show();
 		//$(this).val(''); 
 		$(this).typeahead('val', ''); //typeahead input
 		
 		
+	});
+	
+	$("#id_search").keyup(function(event) {
+	    if (event.keyCode === 13) { //enter
+	        $(this).blur();
+	    }
 	});
      //for List.js
      prepare_list()
@@ -210,7 +245,8 @@ function prepare_list(){
  	
  	var impevopts = {
  			  valueNames: [ 'company', 'country', 'reference', 'sust_domain', 'topics',
- 				  'date_published', 'date_sort', 'reference_sort', 'sudom_sort'],
+ 				  'date_published', 'date_sort', 'reference_sort', 'sudom_sort',
+ 				  'id'],
  			  page: 20,
  			  pagination: {
  			    innerWindow: 2,
@@ -237,45 +273,7 @@ function set_topheadaer(){
 	$('th').css({ top: hi }); 	
 }
 
-//not used at the moment
-function filter_toggle(event) {
-	var filter = event.target.name;
-	var oform = event.target.form;
-	var pressed = event.target.attributes['aria-pressed'].value; // true or false
-	var input = document.createElement("input");
-	var inputname =  'i-' + filter
-	var inputid =  'id-i-' + filter
-	var filterinput =  document.getElementsByName(inputname)[0]; //ElementS for Name -> then a list
-	if (filterinput  == null){
-		
-		
-		var filterinput = document.createElement("input");
-		filterinput.setAttribute("type", "hidden");
-		filterinput.setAttribute("id", inputid);
-		filterinput.setAttribute("name", inputname);
-	}
-	var val = "true";
-	if (pressed  == "true"){
-		val = "false"
-	}
-	filterinput.value = val;
-	//oform.appendChild(filterinput); //appends hidden input field; send request directly did not get response?!
-	//oform.submit();
-}
 
-
-function set_filtertags(){
-	$.each(tags_dict, function( k, v ) {
-		var el_id = '#id_f_'+ k;	
-		var el_row_id = '#id_row_f_' + k;
-		$.each(v, function(ki, vi){
-			$(el_id).tagsinput('add', vi);
-			});
-
-	
-		$(el_row_id).show();
-	});	
-}
 function set_filterbtns(){
 	$.each(btns_dict, function( k, v ) {
 		var part_id = '#id-' + k + '-btn-';	//k = sust_domain or sust_tendency
@@ -285,4 +283,25 @@ function set_filterbtns(){
 			$(btn_id).click(); //clicks and adds to hidden input
 			});
 	});	
+}
+
+function toggle_visibility(jqid) {
+    var e = $(jqid);
+    if(e.hasClass('show')){
+    	e.removeClass('show');
+    	}
+       
+    else {
+       e.addClass('show');
+    }
+ }
+
+function set_tag(id, tagname) {
+	var suggestion = {'id': id, 'name': tagname};
+	var elt = $('#id_f_tags');
+	var el_id = '#id_row_f_tags';
+	elt.tagsinput('add', suggestion);	//adds tag	
+	$(el_id).show();
+	
+	
 }

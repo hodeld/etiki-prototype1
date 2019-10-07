@@ -141,19 +141,14 @@ class BtnTendencyColumn(tables.TemplateColumn):
     
 
 
+
     
+        
 class ImpEvTable(tables.Table):
     '''
     basic table for impact events
     '''
     
-    
-    
-    id = tables.Column(linkify = True , orderable = False)
-    copy = tables.Column(verbose_name= 'copy',
-                         accessor = 'id',  orderable = False,
-                         linkify = lambda record: reverse('etilog:impactevent_copy', args=(record.id,)))
-       
     date_published = tables.DateColumn(verbose_name='Date', format = 'M Y', 
                                        attrs = get_attrs(sort = True, datasort = 'date_sort'))
     date_sort = tables.DateColumn(accessor='date_published', format = 'Ymd',
@@ -221,5 +216,21 @@ class ImpEvTable(tables.Table):
                     return classes_set
         
         
+class ImpEvTablePrivat(ImpEvTable):
+    '''
+    table for impact events for internal use
+    subclassing from public table
+    '''
     
+    id = tables.Column(attrs = get_attrs(sort = True),
+                       linkify = lambda record: reverse('etilog:impactevent_update', args=(record.id,)))
+    copy = tables.Column(verbose_name= 'copy',
+                         accessor = 'id',  orderable = False,
+                         linkify = lambda record: reverse('etilog:impactevent_copy', args=(record.id,)))  
+    
+    class Meta:
+        #css stuff needed in inherited table as well!
+        attrs = {'class': 'table table-hover table-sm', #bootstrap4 classes ;table-responsive: not working with sticky
+                }
+        template_name = 'etilog/etilog_djangotable.html'  
     

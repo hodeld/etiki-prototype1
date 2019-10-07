@@ -36,40 +36,27 @@ def get_filterdict(request):
         set_value('date_to')
                 
         field_names = ['company', 'reference', 'country']
-        modelarr = {'company': Company.objects.all(), 
-                    'reference': Reference.objects.all(),
-                     'country': Country.objects.all()
-                     }
+        
         
         for fname in field_names:
             id_list, id_str = get_idlist(fname)
             filter_dict[fname] = id_str #needs to be a string in CharFilter
-            if id_list:
-                q = modelarr[fname]
-                id_dict = {}
-                for id_val in id_list:
-                    idname_dict = {}
-                    id_int = int(id_val)
-                    ele = q.get(id = id_int)
-                    name_s = ele.name
-                    idname_dict['id'] = id_int
-                    idname_dict['name'] = name_s
-                    id_dict[id_int] = idname_dict
                     
                     
-                tag_dict[fname] = id_dict
-        field_names = ['sust_domain', 'sust_tendency']
+        field_names = ['sust_domain', 'sust_tendency', 'tags']
         
         for fname in field_names:
             id_list, id_str = get_idlist(fname)
             filter_dict[fname] = id_list #for multiple: needs to be a list
-            btn_dict[fname] = id_list
-
-    js_tag_dict = json.dumps(tag_dict)
-    js_btn_dict = json.dumps(btn_dict)
+        
+        field_names = ['summary', ]
+        for fname in field_names:
+            text_str_li = filter_dict.get(fname, ['']) #can be list ['']
+            text_str = text_str_li[0]
+            filter_dict[fname] =  text_str
     
                
-    return filter_dict, js_tag_dict, js_btn_dict
+    return filter_dict
 
 def set_cache(name, value, request, timeout = 3600):
     key_name = str(request.user.id) + name
