@@ -27,7 +27,7 @@ from etilog.ViewLogic.ViewMain import get_filterdict, set_cache, get_cache
 from etilog.ViewLogic.ViewExport import exp_csv_nlp, exp_csv_basedata
 from etilog.ViewLogic.ViewDatetime import get_now
 
-#from etilog.ViewLogic.ViewAccessURL import parse_url
+from etilog.ViewLogic.ViewAccessURL import parse_url, parse_url_readabilipy
 
 # Create your views here.
 def startinfo(request):
@@ -49,7 +49,7 @@ def startinfo(request):
                                                              })
 
 def overview_impevs(request):
-    #parse_url() -> to get pdfs / test
+    
     key_totnr = 'cnties'
     cnt_tot = get_cache(key_totnr, request)
     if cnt_tot == None:
@@ -143,8 +143,8 @@ def export_csv_base(request):
     
 @permission_required('etilog.impactevent')   
 def import_dbdata(request):
-    
-    parse_xcl()
+    parse_url_readabilipy() # -> to get pdfs / test
+    #parse_xcl()
     return HttpResponseRedirect(reverse('etilog:home'))
 
 @permission_required('etilog.impactevent') 

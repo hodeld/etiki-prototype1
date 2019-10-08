@@ -1,0 +1,22 @@
+{
+  "name": "etikiptype1",
+  "version": "1.0.0",
+  "description": "npm for etikiptype1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hodeld/etiki-prototype1.git"
+  },
+  "author": "Damian Hodel damian.hodel@etiki.org",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hodeld/etiki-prototype1/issues"
+  },
+  "homepage": "https://github.com/hodeld/etiki-prototype1#readme",
+  "dependencies": {
+    "ReadabiliPy": "git+https://github.com/alan-turing-institute/ReadabiliPy.git"
+  }
+}
