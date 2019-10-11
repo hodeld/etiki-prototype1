@@ -13,7 +13,7 @@ from etilog.models  import  Reference
 
 def exp_csv_nlp(response):
     
-    writer = csv.writer(response)
+    writer = get_csvwriter(response)
     header = ['ID', 
               'date_published', 
               'CompanyID',  
@@ -53,7 +53,7 @@ def exp_csv_nlp(response):
 
 def exp_csv_basedata(response):
     
-    writer = csv.writer(response)
+    writer = get_csvwriter(response)
     
     def writerow(modelname, header, vallist):
         writer.writerow(modelname)
@@ -126,3 +126,9 @@ def exp_csv_basedata(response):
     writerow(modelname, header, vallist)
 
     return response
+
+def get_csvwriter(response):
+    DELIMITER = 'ÿ'
+    writer = csv.writer(response, delimiter=DELIMITER)
+    return writer
+
