@@ -17,6 +17,7 @@ urlpatterns = [
     path('update_ie/<slug:ie_id>', views.impact_event_update, name='impactevent_update'),
     path('<slug:main_model>/add/<slug:foreign_model>', views.add_foreignmodel, name='add_foreignmodel'),
     path('importdbdata/', views.import_dbdata),
+    path('extract_text/<slug:ie_id>', views.extract_text, name='extract_text'),
     
     path(get_data + 'get_susttags/', views.load_sust_tags, name = 'get_sust_tags'),
     path(load_data + '<slug:modelname>', views.load_names, name = 'load_jsondata'),
@@ -24,9 +25,7 @@ urlpatterns = [
     path(export + 'base', views.export_csv_base, name = 'export_csv_base'),
     
     path('logout/', views.logout_view, name='logout'),
-    #path(load_data + 'reference.json', views.load_references, name = 'load_references'),
-    #path(load_data + 'country.json', views.load_countries, name = 'load_countries'),
-    #path(get_data + 'get_sustcagories/', views.load_sustcategories, name = 'get_sustcagories'),
+
     
 
     

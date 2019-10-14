@@ -5,16 +5,11 @@ Created on 26.8.2019
 '''
 
 from django.core.cache import cache #default cache in locmem
-import json
 
-from etilog.models import Country, Company, Reference
 
-from etilog.ViewLogic.ViewDatetime import get_dateframe
 
 def get_filterdict(request):
     reqdict =  request.GET 
-    tag_dict ={}
-    btn_dict = {}
     def set_value(keyname):
         filter_dict[keyname] = reqdict.get(keyname,'')
     

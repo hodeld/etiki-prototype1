@@ -124,8 +124,8 @@ class ImpevOverviewFForm(forms.Form):
             RowTagsInput('country',  'col-12', field_class = cls_filterinput),
             RowTagsInput('reference',  'col-12', field_class = cls_filterinput),
             
-            Field('sust_domain', '', id='id_sust_domain', css_class=cls_filterinput), #, id='id_sust_domain' ),
-            Field('sust_tendency', '', id='id_sust_tendency', css_class=cls_filterinput), 
+            Field('sust_domain', id='id_sust_domain', css_class=cls_filterinput), #, id='id_sust_domain' ),
+            Field('sust_tendency', id='id_sust_tendency', css_class=cls_filterinput), 
             Row(ColDomainBtnSelect(labelname = 'Category'),ColTendencyBtnSelect(labelname = 'Which Tendency')),
             
          

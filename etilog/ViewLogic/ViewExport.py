@@ -13,7 +13,7 @@ from etilog.models  import  Reference
 
 def exp_csv_nlp(response):
     
-    writer = csv.writer(response)
+    writer = get_csvwriter(response)
     header = ['ID', 
               'date_published', 
               'CompanyID',  
@@ -22,7 +22,8 @@ def exp_csv_nlp(response):
               'ReferenceName', 
               'URL', 
               'pub_text', 
-              'date_text'
+              'date_text',
+              'article_title'
               ]
     val_names = ['id', 
                  'date_published',
@@ -32,19 +33,27 @@ def exp_csv_nlp(response):
                  'reference__name',
                  'source_url',
                  'article_text',
-                 'date_text'
+                 'date_text',
+                 'article_title'
                  ]
-    
-    val_ie = ImpactEvent.objects.exclude(article_text__isnull = True).exclude(article_text__exact = '').values_list(*val_names)
+    nr_ok = [1]
+    val_ie = ImpactEvent.objects.filter(result_parse_html__in = nr_ok
+                                        ).exclude(article_text__isnull = True
+                                         ).exclude(article_text__exact = ''
+                                                   ).values_list(*val_names)
     writer.writerow(header)
     for ie in val_ie:
+        
+        if len(ie[7]) > 60000: #length libreoffice
+            print ('length ', ie[0])
+            continue
         writer.writerow(ie)
 
     return response
 
 def exp_csv_basedata(response):
     
-    writer = csv.writer(response)
+    writer = get_csvwriter(response)
     
     def writerow(modelname, header, vallist):
         writer.writerow(modelname)
@@ -117,3 +126,9 @@ def exp_csv_basedata(response):
     writerow(modelname, header, vallist)
 
     return response
+
+def get_csvwriter(response):
+    DELIMITER = 'ÿ'
+    writer = csv.writer(response, delimiter=DELIMITER)
+    return writer
+

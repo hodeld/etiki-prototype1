@@ -95,6 +95,6 @@ class ImpevOverviewFilter(FilterSet):
     
     class Meta:
         model = ImpactEvent
-        fields = ['date_from', 'date_to', 'company', 'country', 'reference', 'sust_domain', 'sust_category', 'summary']
+        fields = ['date_from', 'date_to', 'company', 'country', 'reference', 'sust_domain', 'summary']
         form = ImpevOverviewFForm
  

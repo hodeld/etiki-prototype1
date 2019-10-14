@@ -121,6 +121,21 @@ class SustainabilityTag (models.Model):
         ordering = ['name', ]
       
 class ImpactEvent (models.Model):
+    choices_res_html = [(0, 'not parsed'), 
+                        (1, 'success'),
+                        (2, 'error'),
+                        (3, 'PDF'),
+                        (4, 'ConnErr'),
+                        (5, 'readabErr'),
+                        (6, 'emptyText'), 
+                        (7, 'timeout'), 
+                        (8, 'doublepara'), 
+                        (9, 'longtext'),
+                        (10, 'inlongp'),
+                         
+                       ]
+    
+    
     created_at = models.DateTimeField(auto_now_add=True) #tz aware datetime
     updated_at = models.DateTimeField(auto_now=True) 
     user = models.ForeignKey(get_user_model(), models.SET_NULL, blank=True,null=True)
@@ -147,6 +162,9 @@ class ImpactEvent (models.Model):
                                help_text = 'abstract, title or first part of text')
     comment = models.CharField(max_length=500, blank=True,null=True)
     article_text = models.TextField(blank=True, null=True)
+    article_title = models.CharField(max_length=150, blank=True, null=True)
+    article_html = models.TextField(blank=True, null=True)
+    result_parse_html = models.PositiveSmallIntegerField(choices = choices_res_html, default = 0)
     
     
     def __str__(self):

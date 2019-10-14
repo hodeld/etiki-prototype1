@@ -96,7 +96,7 @@ WSGI_APPLICATION = 'etikiptype1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'etiki-local',
+        'NAME': 'etikiprtype-1-prealpha', #'etikiprtype-1-prealpha', # 'etiki-local',
         'USER': db_user,
         'PASSWORD': db_password,
         'HOST': db_host,
@@ -167,6 +167,12 @@ STATIC_URL = '/static/'
 
 #needed for debug = False -> test if needs to under heroku setting
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
+if db_host == '127.0.0.1': 
+    #in order to find node (in readabilipy), wkhtmltopdf executable
+    os.environ['PATH']='/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
+
+
 #at the end -> overrates settings, eg logger
 django_heroku.settings(locals())
 
