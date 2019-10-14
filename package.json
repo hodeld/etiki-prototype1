@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/hodeld/etiki-prototype1#readme",
   "dependencies": {
-    "ReadabiliPy": "git+https://github.com/alan-turing-institute/ReadabiliPy.git"
+    "ReadabiliPy": "git+https://github.com/hodeld/ReadabiliPy.git"
   }
 }

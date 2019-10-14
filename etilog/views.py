@@ -27,7 +27,7 @@ from etilog.ViewLogic.ViewMain import get_filterdict, set_cache, get_cache
 from etilog.ViewLogic.ViewExport import exp_csv_nlp, exp_csv_basedata
 from etilog.ViewLogic.ViewDatetime import get_now
 
-from etilog.ViewLogic.ViewAccessURL import parse_url, parse_url_readabilipy
+from etilog.ViewLogic.ViewAccessURL import parse_url, parse_url_all
 
 # Create your views here.
 def startinfo(request):
@@ -142,9 +142,21 @@ def export_csv_base(request):
     
     
 @permission_required('etilog.impactevent')   
-def import_dbdata(request):
-    parse_url_readabilipy() # -> to get pdfs / test
-    #parse_xcl()
+def import_dbdata(request):#
+    parse_xcl()
+    return HttpResponseRedirect(reverse('etilog:home'))
+
+@permission_required('etilog.impactevent')   
+def extract_text(request, ie_id = None):
+    if ie_id == 'all':
+        parse_url_all()        
+    else:
+        try:
+            ie = ImpactEvent.objects.get(id = ie_id)
+        except ImpactEvent.DoesNotExist:
+            return HttpResponseRedirect(reverse('etilog:home'))           
+        parse_url(ie) 
+        
     return HttpResponseRedirect(reverse('etilog:home'))
 
 @permission_required('etilog.impactevent') 

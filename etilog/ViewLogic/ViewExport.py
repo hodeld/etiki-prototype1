@@ -36,7 +36,7 @@ def exp_csv_nlp(response):
                  'date_text',
                  'article_title'
                  ]
-    nr_ok = [1, 8, 10]
+    nr_ok = [1]
     val_ie = ImpactEvent.objects.filter(result_parse_html__in = nr_ok
                                         ).exclude(article_text__isnull = True
                                          ).exclude(article_text__exact = ''
