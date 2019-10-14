@@ -96,7 +96,7 @@ WSGI_APPLICATION = 'etikiptype1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'etikiprtype-1-prealpha', #'etikiprtype-1-prealpha', # 'etiki-local',
+        'NAME': 'etiki-local', #'etikiprtype-1-prealpha', # 'etiki-local',
         'USER': db_user,
         'PASSWORD': db_password,
         'HOST': db_host,
