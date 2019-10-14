@@ -3,9 +3,6 @@ Created on23.08.19
 
 @author: daim
 '''
-import csv
-
-from etilog.ViewLogic.ViewDatetime import get_now
 
 from readabilipy import simple_json_from_html_string
 import requests
@@ -31,10 +28,8 @@ def parse_url(ie):
     def save_ie(ie, parse_nr):
         ie.result_parse_html = parse_nr
         ie.save()
-    
 
-    #try:
-    if 1 == 1:
+    try:
         parse_res = 1 
         ieid = ie.id 
         
@@ -99,8 +94,7 @@ def parse_url(ie):
         save_ie(ie, parse_res)
         print ('success: ', ieid)
             
-    #except:
-    else:
+    except:
         save_ie(ie, 2)
 
 def parse_textli(txtdic_li, parse_res):
