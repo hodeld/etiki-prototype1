@@ -41,6 +41,8 @@ def parse_url_readabilipy():
     def save_ie(ie, parse_nr):
         ie.result_parse_html = parse_nr
         ie.save()
+    
+    
     #q_ie = ImpactEvent.objects.all()
     #filter impevs which already have article_text
     
@@ -51,8 +53,8 @@ def parse_url_readabilipy():
                                         ).exclude(source_url__isnull = True
                                         ).exclude(source_url__exact = '')
     #for statistics
-    #q_ie =  ImpactEvent.objects.exclude(source_url__isnull = True).exclude(source_url__exact = '')
-    q_ie = q_ie
+    q_ie =  ImpactEvent.objects.exclude(source_url__isnull = True).exclude(source_url__exact = '')
+    #q_ie = q_ie[60:100]#.filter(id = 81)
     
     now = get_now()
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -114,8 +116,15 @@ def parse_url_readabilipy():
                 stitle = ''
             txt_str, parse_res = parse_textli(text_list, parse_res)
             text_str = stitle + '\n' + txt_str
+            len_n = len(text_str)
             
-                       
+            oldtext =  ie.article_text
+            len_o = len(oldtext)
+            
+            if abs((len_n-len_o)/len_o) > .1:
+                print('great difference')    
+            if parse_res == 8 or    parse_res == 10  :
+                print ('still double stuff')
             ie.article_text = text_str
             ie.article_title = stitle[:150] #max length
 
