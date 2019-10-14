@@ -17,7 +17,7 @@ import requests
 from etilog.models import ImpactEvent
 
 import os
-#in order to find wkhtmltopdf executable
+#in order to find node, wkhtmltopdf executable
 os.environ['PATH']='/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
 
 
