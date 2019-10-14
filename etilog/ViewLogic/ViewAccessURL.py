@@ -40,7 +40,7 @@ def check_ifexist():
 def parse_url_readabilipy():
     def save_ie(ie, parse_nr):
         ie.result_parse_html = parse_nr
-        ie.save()
+        #ie.save()
     
     
     #q_ie = ImpactEvent.objects.all()
@@ -48,12 +48,12 @@ def parse_url_readabilipy():
     
     
     #todo_li = [0, 4] #ConnErr: also if no internet connection
-    todo_li = [8, 9]
+    todo_li = [0]
     q_ie =  ImpactEvent.objects.filter(result_parse_html__in = todo_li
                                         ).exclude(source_url__isnull = True
                                         ).exclude(source_url__exact = '')
     #for statistics
-    q_ie =  ImpactEvent.objects.exclude(source_url__isnull = True).exclude(source_url__exact = '')
+    #q_ie =  ImpactEvent.objects.exclude(source_url__isnull = True).exclude(source_url__exact = '')
     #q_ie = q_ie[60:100]#.filter(id = 81)
     
     now = get_now()
