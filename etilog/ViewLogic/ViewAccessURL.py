@@ -87,7 +87,7 @@ def parse_url(ie):
             if parse_res == 8 or    parse_res == 10  :
                 print ('still double stuff')
         
-        #ie.article_text = text_str
+        ie.article_text = text_str
         ie.article_html = html_simple
         ie.article_title = stitle[:150] #max length
 
