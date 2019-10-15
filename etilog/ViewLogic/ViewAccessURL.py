@@ -3,11 +3,11 @@ Created on23.08.19
 
 @author: daim
 '''
-
 from readabilipy import simple_json_from_html_string
 import requests
 
 from etilog.models import ImpactEvent
+
 
             
 def parse_url_all():

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import sys
 
 import django_heroku 
 
@@ -166,6 +167,9 @@ if db_host == '127.0.0.1':
     #in order to find node (in readabilipy), wkhtmltopdf executable
     os.environ['PATH']='/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
 
+base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+spath_sys = os.path.join(base_dir, 'node_modules/ReadabiliPy')
+sys.path.append(spath_sys)
 
 #at the end -> overrates settings, eg logger
 django_heroku.settings(locals())
