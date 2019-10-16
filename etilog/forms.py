@@ -15,7 +15,7 @@ from crispy_forms.bootstrap import  FormActions, FieldWithButtons
 
 #models
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
-from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn
+from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn
 from .fields import DateYearPicker, DateYearPickerField
 from .fields import RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics
 
@@ -153,8 +153,10 @@ class NewImpactEvent(forms.ModelForm):
         #crispy form layout:
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            'source_url',
-            
+            Row(
+                Column(UrlWBtn('source_url'), 
+                       css_class='col-12', )
+                ),            
             Row(
                 Column(DateYearPickerField('date_published'), css_class=CSS_COL_CLS),
                 Column(DateYearPickerField('date_impact'), css_class=CSS_COL_CLS)

@@ -27,7 +27,7 @@ from etilog.ViewLogic.ViewMain import get_filterdict, set_cache, get_cache
 from etilog.ViewLogic.ViewExport import exp_csv_nlp, exp_csv_basedata
 from etilog.ViewLogic.ViewDatetime import get_now
 
-from etilog.ViewLogic.ViewAccessURL import parse_url, parse_url_all
+from etilog.ViewLogic.ViewAccessURL import parse_url, parse_url_all, extract_text_rpy
 
 # Create your views here.
 def startinfo(request):
@@ -159,76 +159,58 @@ def extract_text(request, ie_id = None):
         
     return HttpResponseRedirect(reverse('etilog:home'))
 
+@permission_required('etilog.impactevent')   
+def extract_text_from_url(request, url, ieid = None):
+    save_article, parse_res, article = extract_text_rpy(url)
+    if save_article == True:
+        text_str, stitle, sdate, html_simple = article
+        d_dict = {}
+        d_dict['stext'] = text_str
+        d_dict['stitle'] = stitle
+        d_dict['sdate'] = sdate
+        d_dict['shtml'] = html_simple
+
+        return HttpResponse(json.dumps(d_dict), content_type='application/json')
+    return HttpResponse("/")
+
+
+
 @permission_required('etilog.impactevent') 
 def impact_event_create(request, ie_id = None):
-    if request.method == 'POST':
-
-        data_dict = request.POST.dict()
-        company_names = ['company']
-        data_dict = upd_datadict_company(company_names, data_dict)
-
-        data_dict = upd_datadict_reference(data_dict)
-
-        
-        sust_tags_list = request.POST.getlist('sust_tags')
-        data_dict ['sust_tags'] = sust_tags_list
-        form = NewImpactEvent(data_dict)
-
-        if form.is_valid():
-            form.save() 
-            print('valid', form.cleaned_data)
-            message = 'Impact Event saved'
-        else:
-            message = form.errors
-            form = NewImpactEvent(request.POST)
-            return render(request, 'etilog/newimpactevent.html', {'form': form,
-                                                          'message': message,
-                                                             })
-    
+    if ie_id:
+        ietype = 'copy'
     else:
-        message = ''
+        ietype = 'new'
+    response = impact_event_change(request, ietype = ietype, ie_id = ie_id)
+    return response 
     
-    if ie_id: #copy
-        init_data = {}
-        impev = ImpactEvent.objects.get(id = ie_id)
-        init_data ['company'] = impev.company.name
-        init_data ['sust_domain'] = impev.sust_domain.id
-        init_data ['sust_tendency'] = impev.sust_tendency.id
-        init_data ['sust_tags'] = list(impev.sust_tags.all())
-        init_data ['summary'] = impev.summary
-        
-        form = NewImpactEvent(initial = init_data)
-            
-    else:
-        form = NewImpactEvent()
-    
-    return render(request, 'etilog/newimpactevent.html', {'form': form,
-                                                          'message': message,
-                                                             })
 @permission_required('etilog.impactevent') 
-def impact_event_update(request, ie_id = None):
+def impact_event_update(request, ietype = 'new', ie_id = None):
+    ietype = 'update'
+    response = impact_event_change(request, ietype = ietype, ie_id = ie_id)
+    return response 
+    
+def impact_event_change(request, ietype = 'new', ie_id = None):
     if request.method == 'POST':
         data_dict = get_ie_form_data(request)
-
-        ie = ImpactEvent.objects.get(id = ie_id)
-        form = NewImpactEvent(data_dict, instance = ie) #todoonly updated data
+        if ietype == 'update':
+            message = 'Impact Event updated' 
+            ie = ImpactEvent.objects.get(id = ie_id)
+            form = NewImpactEvent(data_dict, instance = ie) #if ie = None
+        else: #new / new from copy
+            message = 'Impact Event saved' 
+            form = NewImpactEvent(data_dict)
             
             
         to_json = {}
         if form.is_valid():
-            form.save()
-            message = 'Impact Event updated' 
+            form.save()            
             to_json['is_valid'] = 'true'
             to_json['message'] = message            
             
         else:
             message = form.errors.__html__() #html
             err_items = list(form.errors.keys())
-            
-            #not used
-            #form = NewImpactEvent(request.POST)
-            #rendered = render_to_string('etilog/impev_upd_form.html', {'form': form }, request) #request needed for RequestContext -> csrf
-            #to_json['form'] = rendered
             
             to_json['is_valid'] = 'false'
             to_json['err_items'] = err_items
@@ -237,17 +219,23 @@ def impact_event_update(request, ie_id = None):
     
     else:
         message = ''
-        form = get_ie_init_data(ie_id, update = True)
-        next_id = ImpactEvent.objects.filter(id__gt = ie_id).order_by('id').values_list('id', flat = True).first()
-        next_id_url = reverse_lazy('etilog:impactevent_update', kwargs={'ie_id': next_id})
+        if ietype == 'update':
+            form = get_ie_init_data(ie_id, update = True)
+            next_id = ImpactEvent.objects.filter(id__gt = ie_id).order_by('id').values_list('id', flat = True).first()
+            next_id_url = reverse_lazy('etilog:impactevent_update', kwargs={'ie_id': next_id})
+        else:
+            if ietype == 'copy':
+                form = get_ie_init_data(ie_id, update = False)
+            else:
+                form = NewImpactEvent()
+            first_id = ImpactEvent.objects.order_by('id').values_list('id', flat = True).first()
+            next_id_url = reverse_lazy('etilog:impactevent_update', kwargs={'ie_id': first_id})
          
-
-
     return render(request, 'etilog/impev_upd_base.html', {'form': form, #for form.media
                                                           'message': message   ,
                                                           'next_id_url': next_id_url                                                  
                                                             })
-    
+        
 def get_ie_form_data(request):
     data_dict = request.POST.dict()
     company_names = ['company']
@@ -276,9 +264,7 @@ def get_ie_init_data(ie_id, update = False):
         init_data ['date_text'] = impev.date_text
         init_data ['comment'] = impev.comment
         init_data ['reference'] = impev.reference.name
-        
-    
-    
+       
     form = NewImpactEvent(initial = init_data)
     return form
     
