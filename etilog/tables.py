@@ -169,7 +169,8 @@ class ImpEvTable(tables.Table):
                              attrs = get_attrs(hover = True, sort = True))
     reference = tables.Column(linkify = lambda record: record.source_url,  
                               verbose_name = 'Published in', 
-                              attrs = get_attrs(sort = True, datasort = 'reference_sort')
+                              attrs = get_attrs(sort = True, hide_mobile = True,
+                                                 datasort = 'reference_sort')
                               )
     reference_sort = tables.Column(accessor='reference', attrs = get_attrs(hide = True))
 
@@ -179,8 +180,8 @@ class ImpEvTable(tables.Table):
         
         exclude = ('created_at', 'updated_at', )
         #defines also order of columns
-        fields = ('date_published', 'company',
-                  'sust_domain', 'country', 'topics',  'reference', 'summary')
+        fields = ('sust_domain', 'topics', 'company', 'date_published', 
+                   'country',   'reference', 'summary')
         #orderable = False #for all columns
         attrs = {'class': 'table table-hover table-sm', #bootstrap4 classes ;table-responsive: not working with sticky
                 }

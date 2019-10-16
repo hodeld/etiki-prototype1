@@ -3,11 +3,11 @@ Created on23.08.19
 
 @author: daim
 '''
-
 from readabilipy import simple_json_from_html_string
 import requests
 
 from etilog.models import ImpactEvent
+
 
             
 def parse_url_all():
@@ -87,7 +87,7 @@ def parse_url(ie):
             if parse_res == 8 or    parse_res == 10  :
                 print ('still double stuff')
         
-        #ie.article_text = text_str
+        ie.article_text = text_str
         ie.article_html = html_simple
         ie.article_title = stitle[:150] #max length
 
