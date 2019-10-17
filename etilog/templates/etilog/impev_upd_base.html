@@ -47,9 +47,17 @@
 				{% include 'etilog/impev_upd_form.html' %}
 			</div> 
 		</div>
-
-
 	</div>
+	<div class="row justify-content-center">
+		<div class="col-10">
+		</br>
+			<h6 >extracted HTML of article </h6>
+			<hr class="mt-0 mb-4">
+			<div id="id_articleshow" class="col-10 bg-dark text-white">
+				{{ shtml |safe }}
+			</div>
+		</div>
+	</div>	
 </div>
 
 

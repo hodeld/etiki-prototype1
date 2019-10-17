@@ -56,6 +56,41 @@ function next_ie(){
 	window.location.href = next_id_url; //as user clicked on a link
 }
 	
+function extract_text(ele){	
+	var source_url = $("#id_source_url").val();
+	var get_url = $(ele).attr("url-get"); // get
+	
+	$.ajax({ // initialize an AJAX request
+		url : get_url, // set the url of the request (= '')
+		data : {
+			// both can be null
+			'sourceurl' : source_url
+		},
+		success : function(response) { // `data` is the return of the
+			var msg = response.message;
+			if (response.is_valid == "true") {
+				var text_str = response.stext;				
+				var stitle = response.stitle;
+		        var sdate = response.sdate;
+		        var shtml = response.shtml;
+		        var parse_res = response.parse_res;
+		        
+		        $("#id_date_text").val(sdate); 
+		        $("#id_article_text").html(text_str); 
+		        $("#id_article_title").val(stitle);
+		        $("#id_article_html").val(shtml);
+		        $("#id_result_parse_html").val(parse_res);		        
+		        $("#id_articleshow").html(shtml);
+		        window.scrollTo(0, 1000);
+			}			
+			$("#id_impev_msg").html(msg);
+
+		}
+
+	});
+	
+}
+
 
 function load_tags(){
 	var url = $("#id_sust_tags").attr("data-url"); // get

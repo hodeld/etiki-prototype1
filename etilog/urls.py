@@ -19,9 +19,10 @@ urlpatterns = [
     path('<slug:main_model>/add/<slug:foreign_model>', views.add_foreignmodel, name='add_foreignmodel'),
     path('importdbdata/', views.import_dbdata),
     path('extract_text/<slug:ie_id>', views.extract_text, name='extract_text'),
-    path('extract_text/<slug:ieid>/<slug:url>', views.extract_text_from_url, name='extract_text_url'),
+    path('extract_text_url/', views.extract_text_from_url, name='extract_text_url'),
     
-    
+    path(impev + 'html/', views.article_html, name='article_html'),
+     
     path(get_data + 'get_susttags/', views.load_sust_tags, name = 'get_sust_tags'),
     path(load_data + '<slug:modelname>', views.load_names, name = 'load_jsondata'),
     path(export + 'nlp', views.export_csv_nlp, name = 'export_csv_nlp'),

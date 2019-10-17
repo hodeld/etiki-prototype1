@@ -17,7 +17,7 @@ from etilog.models import SustainabilityTag
 #tables
 from .tables import ImpEvTable, ImpEvTablePrivat
 #forms
-from .forms import NewImpactEvent, NewSource, CompanyForm, ReferenceForm, SearchForm, FreetextForm
+from .forms import ImpactEventForm, NewSource, CompanyForm, ReferenceForm, SearchForm, FreetextForm
 #forms
 from .filters import ImpevOverviewFilter
 
@@ -160,18 +160,32 @@ def extract_text(request, ie_id = None):
     return HttpResponseRedirect(reverse('etilog:home'))
 
 @permission_required('etilog.impactevent')   
-def extract_text_from_url(request, url, ieid = None):
-    save_article, parse_res, article = extract_text_rpy(url)
+def article_html(request):
+    shtml = request.GET.get('shtml')
+    d_dict = {}
+    
+@permission_required('etilog.impactevent')   
+def extract_text_from_url(request):
+    url = request.GET.get('sourceurl')
+    d_dict = {}
+    if url is not '':
+        save_article, parse_res, article = extract_text_rpy(url)
+    else:
+        save_article = False
     if save_article == True:
+        msg = 'extracted'
         text_str, stitle, sdate, html_simple = article
-        d_dict = {}
+        d_dict['is_valid'] = 'true'
         d_dict['stext'] = text_str
         d_dict['stitle'] = stitle
         d_dict['sdate'] = sdate
         d_dict['shtml'] = html_simple
+        d_dict['parse_res'] = parse_res
 
-        return HttpResponse(json.dumps(d_dict), content_type='application/json')
-    return HttpResponse("/")
+    else:
+        msg = 'not extracted'
+    d_dict['message'] = msg
+    return HttpResponse(json.dumps(d_dict), content_type='application/json')
 
 
 
@@ -191,15 +205,16 @@ def impact_event_update(request, ietype = 'new', ie_id = None):
     return response 
     
 def impact_event_change(request, ietype = 'new', ie_id = None):
+    shtml = ''
     if request.method == 'POST':
         data_dict = get_ie_form_data(request)
         if ietype == 'update':
             message = 'Impact Event updated' 
             ie = ImpactEvent.objects.get(id = ie_id)
-            form = NewImpactEvent(data_dict, instance = ie) #if ie = None
+            form = ImpactEventForm(data_dict, instance = ie) #if ie = None
         else: #new / new from copy
             message = 'Impact Event saved' 
-            form = NewImpactEvent(data_dict)
+            form = ImpactEventForm(data_dict)
             
             
         to_json = {}
@@ -219,21 +234,24 @@ def impact_event_change(request, ietype = 'new', ie_id = None):
     
     else:
         message = ''
+        init_data = {}
         if ietype == 'update':
-            form = get_ie_init_data(ie_id, update = True)
+            init_data = get_ie_init_data(ie_id, update = True)
             next_id = ImpactEvent.objects.filter(id__gt = ie_id).order_by('id').values_list('id', flat = True).first()
             next_id_url = reverse_lazy('etilog:impactevent_update', kwargs={'ie_id': next_id})
         else:
             if ietype == 'copy':
-                form = get_ie_init_data(ie_id, update = False)
-            else:
-                form = NewImpactEvent()
+                init_data = get_ie_init_data(ie_id, update = False)
+            #else:
+                #form = ImpactEventForm()
             first_id = ImpactEvent.objects.order_by('id').values_list('id', flat = True).first()
             next_id_url = reverse_lazy('etilog:impactevent_update', kwargs={'ie_id': first_id})
-         
+        form = form = ImpactEventForm(initial = init_data)
+        shtml = init_data.get('article_html', '') 
     return render(request, 'etilog/impev_upd_base.html', {'form': form, #for form.media
                                                           'message': message   ,
-                                                          'next_id_url': next_id_url                                                  
+                                                          'next_id_url': next_id_url ,
+                                                          'shtml': shtml                                                 
                                                             })
         
 def get_ie_form_data(request):
@@ -258,15 +276,19 @@ def get_ie_init_data(ie_id, update = False):
     init_data ['summary'] = impev.summary
     if update:
         init_data ['article_text'] = impev.article_text
+        init_data ['article_title'] = impev.article_title
+        init_data ['article_html'] = impev.article_html
+        init_data ['result_parse_html'] = impev.result_parse_html
         init_data ['source_url'] = impev.source_url
         init_data ['date_published'] = impev.date_published
         init_data ['date_impact'] = impev.date_impact
         init_data ['date_text'] = impev.date_text
         init_data ['comment'] = impev.comment
         init_data ['reference'] = impev.reference.name
+        
        
-    form = NewImpactEvent(initial = init_data)
-    return form
+    #form = ImpactEventForm(initial = init_data)
+    return init_data
     
     
 @permission_required('etilog.impactevent')           

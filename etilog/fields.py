@@ -91,12 +91,11 @@ class UrlWBtn(Layout):
         super(UrlWBtn, self).__init__(
             FieldWithButtons(fieldname, 
                                         StrictButton('get', css_class='btn btn-light',
-                                        #css_id='add_id_reference',                                       
-                                        url_get=reverse_lazy('etilog:extract_text_url', 
-                                                             kwargs={'url': None,'ieid': None})
+                                        onclick="extract_text(this);",                                      
+                                        url_get=reverse_lazy('etilog:extract_text_url',)
                                             ))                                       
-                        )                            
-                                    
+                        )                                                     
+                                          
 class DateYearPicker(DatePickerInput):
     def __init__(self, *args, **kwargs):
         super(DateYearPicker, self).__init__(
