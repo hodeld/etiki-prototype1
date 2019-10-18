@@ -34,49 +34,14 @@ def parse_url(ie):
         ieid = ie.id 
         
         print ('startparsing ', ieid)
+        
         url = ie.source_url  
-        try:  
-            response = requests.get(url, timeout = 5)
-        except requests.exceptions.ConnectionError:                              
-            save_ie(ie, 4)
+        save_article, parse_res, article = extract_text_rpy(url)
+        if save_article == False:
+            save_ie(ie, parse_res)
             return
-        except TimeoutError:                              
-            save_ie(ie, 7)
-            return
-
-        if 'pdf' in url[-4:]:
-            save_ie(ie, 3)
-            return
-                        
-        # Extracting the source code of the page.
-        html_string = response.text  
-        if 'pdf' in html_string.lower()[:5]: #%pdf
-            save_ie(ie, 3)
-            return
-        #use_readability=True -> Mozilla's Readability.js
-        article = simple_json_from_html_string(html_string, use_readability=True)
-        try:
-            article = simple_json_from_html_string(html_string, use_readability=True)
-        except:
-            save_ie(ie, 5)
-            return
-        
-        html_simple = article.get('content', None)
-        text_list = article.get('plain_text', None) 
-        if text_list == None or text_list == []:
-            save_ie(ie, 6)
-            return
-        
-        stitle = article.get('title', '') 
-        
-        date = article.get('date', None)
-        if date:
-            ie.date_text = str(date)[:100]
-                    
-        if stitle == None:
-            stitle = ''
-        txt_str, parse_res = parse_textli(text_list, parse_res)
-        text_str = stitle + '\n' + txt_str
+        (text_str, stitle, sdate, html_simple) = article
+                
         len_n = len(text_str)
         
         oldtext =  ie.article_text
@@ -89,7 +54,8 @@ def parse_url(ie):
         
         ie.article_text = text_str
         ie.article_html = html_simple
-        ie.article_title = stitle[:150] #max length
+        ie.article_title = stitle
+        ie.date_text = sdate        
 
         save_ie(ie, parse_res)
         print ('success: ', ieid)
@@ -97,6 +63,59 @@ def parse_url(ie):
     except:
         save_ie(ie, 2)
 
+def extract_text_rpy(url):  
+    save_article = False 
+    parse_res = 1
+    article = None
+    try:  
+        response = requests.get(url, timeout = 5)
+    except requests.exceptions.ConnectionError:                              
+        parse_res = 4
+        return save_article, parse_res, article
+    except TimeoutError:                              
+        parse_res = 7
+        return save_article, parse_res, article
+    
+    if 'pdf' in url[-4:]:
+        parse_res = 3
+        return save_article, parse_res, article
+                    
+    # Extracting the source code of the page.
+    html_string = response.text  
+    if 'pdf' in html_string.lower()[:5]: #%pdf
+        parse_res = 3
+        return save_article, parse_res, article
+    #use_readability=True -> Mozilla's Readability.js
+    try:
+        article = simple_json_from_html_string(html_string, use_readability=True)
+    except:
+        parse_res = 5
+        return save_article, parse_res, article
+    
+    html_simple = article.get('content', None)
+    text_list = article.get('plain_text', None) 
+    if text_list == None or text_list == []:
+        parse_res = 6
+        return save_article, parse_res, article
+    
+    stitle = article.get('title', '') 
+    
+    sdate = article.get('date', None)
+    
+    if sdate:
+        sdate = str(sdate)[:100]
+                
+    if stitle == None:
+        stitle_art = ''
+    else:
+        stitle_art = stitle
+        stitle = stitle[:150] #max length
+    txt_str, parse_res = parse_textli(text_list, parse_res)
+    text_str = stitle_art + '\n' + txt_str
+    article = (text_str, stitle, sdate, html_simple)
+    save_article = True
+    return save_article, parse_res, article
+    
 def parse_textli(txtdic_li, parse_res):
     txtstr = ''  
     
@@ -148,6 +167,6 @@ def parse_textli(txtdic_li, parse_res):
     if len(txtstr) > 50000:
         parse_res = 9
         
-    return txtstr, parse_res
-        
+    return txtstr, parse_res   
+         
 

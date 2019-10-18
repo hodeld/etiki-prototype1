@@ -15,7 +15,7 @@ from crispy_forms.bootstrap import  FormActions, FieldWithButtons
 
 #models
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
-from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn
+from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn
 from .fields import DateYearPicker, DateYearPickerField
 from .fields import RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics
 
@@ -138,23 +138,27 @@ class ImpevOverviewFForm(forms.Form):
     
   
 CSS_COL_CLS = 'col-12 col-lg-6'
-class NewImpactEvent(forms.ModelForm):
+class ImpactEventForm(forms.ModelForm):
     '''
     form to create an impact event
     '''
 
     def __init__(self, *args, **kwargs):
-        super (NewImpactEvent,self ).__init__(*args,**kwargs) 
+        super (ImpactEventForm,self ).__init__(*args,**kwargs) 
               
         self.fields['company'].widget = CompanyWidget()
         self.fields['reference'].widget = ReferenceWidget()
+        self.fields['article_html'].widget = forms.TextInput() 
+
            
         
         #crispy form layout:
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            'source_url',
-            
+            Row(
+                Column(UrlWBtn('source_url'), 
+                       css_class='col-12', )
+                ),            
             Row(
                 Column(DateYearPickerField('date_published'), css_class=CSS_COL_CLS),
                 Column(DateYearPickerField('date_impact'), css_class=CSS_COL_CLS)
@@ -183,7 +187,10 @@ class NewImpactEvent(forms.ModelForm):
             Field('comment', rows= 3),
             
             Row(Column(Field('date_text'), css_class=CSS_COL_CLS)),
+            Field('article_title'),
             Field('article_text'),
+            Field('article_html'),
+            Field('result_parse_html'),
             
             ButtonHolder(
                 Submit('submit', 'Save Impact Event', css_class='btn btn-secondary' ),
@@ -197,7 +204,7 @@ class NewImpactEvent(forms.ModelForm):
         fields = ['source_url', 'date_published', 'date_impact', 'company', 'reference', 
                   'sust_domain', 'sust_tendency', 'sust_tags',
                   'summary', 'comment',
-                  'article_text', 'date_text', 
+                  'article_text', 'article_title', 'date_text', 'article_html', 'result_parse_html'
                   ]
     
 

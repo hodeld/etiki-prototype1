@@ -86,8 +86,16 @@ class ReferenceWBtn(Layout):
                                                                  'foreign_model': 'reference'})
                                             ))                                       
                         )
-                            
-                                    
+class UrlWBtn(Layout):
+    def __init__(self, fieldname, *args, **kwargs):
+        super(UrlWBtn, self).__init__(
+            FieldWithButtons(fieldname, 
+                                        StrictButton('get', css_class='btn btn-light',
+                                        onclick="extract_text(this);",                                      
+                                        url_get=reverse_lazy('etilog:extract_text_url',)
+                                            ))                                       
+                        )                                                     
+                                          
 class DateYearPicker(DatePickerInput):
     def __init__(self, *args, **kwargs):
         super(DateYearPicker, self).__init__(
