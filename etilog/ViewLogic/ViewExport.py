@@ -137,13 +137,20 @@ def extract_err_file(response):
     q_ie_err = ImpactEvent.objects.exclude(result_parse_html__in = nonerr_li
                                            ).order_by('updated_at'
                                                       ).values_list('id', 'result_parse_html', 'updated_at')
-    q_ie_nonparse = ImpactEvent.objects.filter(result_parse_html_ = 0
+    q_ie_nonparse = ImpactEvent.objects.filter(result_parse_html = 0
+                                               ).values_list('id', 'result_parse_html', 'updated_at')
+    
+    q_ie_success = ImpactEvent.objects.filter(result_parse_html = 1
                                                ).values_list('id', 'result_parse_html', 'updated_at')
     
     rows = [('id', 'errornr', 'updated_at')]
     rows.extend(q_ie_err)
-    rows = [('id', 'nonparsed')]
+    header = [('id', 'nonparsed', 'updated_at')]
+    rows.extend(header)
     rows.extend(q_ie_nonparse)
+    header = [('id', 'success', 'updated_at')]
+    rows.extend(header)
+    rows.extend(q_ie_success)
     
     DELIMITER = ';'
     csvwriter = csv.writer(response, delimiter=DELIMITER)

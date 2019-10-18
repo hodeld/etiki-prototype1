@@ -218,3 +218,6 @@ button.sort.desc .caret { display:inline-block; }
 	background-color: lightgreen;
 }
 
+.whitehr{
+	border-color: #eeeeee;
+}

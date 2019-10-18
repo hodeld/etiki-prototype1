@@ -56,8 +56,12 @@
 			<p>		
 			original link: <a id="id_url_link" href="{{ form.initial.source_url  }}">{{ form.initial.source_url  }}</a>		
 			</p>	
-			<div id="id_articleshow" class="col-12 bg-dark text-white">
-				{{ form.initial.article_html |safe }}
+			<div id="id_articleshowdiv" class="col-12 bg-dark text-white">
+				<h3 id="id_titleshow">{{ form.initial.article_title }}</h3>
+				<hr class = "whitehr">
+				<div id="id_articleshow" >
+					{{ form.initial.article_html |safe }}
+				</div>
 			</div>
 		</div>
 	</div>	
