@@ -5,7 +5,7 @@ Created on 26.8.2019
 '''
 
 from django.core.cache import cache #default cache in locmem
-
+from threading import Thread
 
 
 def get_filterdict(request):
@@ -61,3 +61,10 @@ def get_cache(name, request):
     key_name = str(request.user.id) + name
     value = cache.get(key_name, None)
     return value
+
+def postpone(function): #connection needs to be closed in function if db connection
+    def decorator(*args, **kwargs):
+        t = Thread(target = function, args=args, kwargs=kwargs)
+        t.daemon = True
+        t.start()
+    return decorator     
