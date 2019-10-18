@@ -49,6 +49,7 @@ $(document).ready(function() {
 		$('#id_date_published').data("DateTimePicker").defaultDate(date_str);
 
 	});
+	$('img').hide() //hide img from html text
 
 });
 
@@ -81,6 +82,7 @@ function extract_text(ele){
 		        $("#id_article_html").val(shtml);
 		        $("#id_result_parse_html").val(parse_res);		        
 		        $("#id_articleshow").html(shtml);
+		        $('img').hide()
 		        window.scrollTo(0, 1000);
 			}			
 			$("#id_impev_msg").html(msg);
