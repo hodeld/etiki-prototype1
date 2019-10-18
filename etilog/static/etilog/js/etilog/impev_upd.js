@@ -84,9 +84,11 @@ function extract_text(ele){
 		        $("#id_article_html").val(shtml);
 		        $("#id_result_parse_html").val(parse_res);		        
 		        $("#id_articleshow").html(shtml);
+		        $('img').hide()
 		        $("#id_url_link").html(source_url);
 		        $("#id_url_link").attr("href", source_url)
-		        $('img').hide()
+		        $("#id_titleshow").html(stitle);
+		        
 			}			
 			$("#id_impev_msg").html(msg);
 
