@@ -5,18 +5,17 @@ Created on23.08.19
 '''
 from readabilipy import simple_json_from_html_string
 import requests
-from etilog.ViewLogic.ViewDatetime import get_now
-from etilog.ViewLogic.ViewExport import extract_err_file
 from etilog.models import ImpactEvent
+from etilog.ViewLogic.ViewMain import postpone
+from django.db import connection
 
 
-            
-def parse_url_all(response):
+@postpone           
+def parse_url_all():
     def save_ie(ie, parse_nr):
         ie.result_parse_html = parse_nr
         ie.save()
-    
-    now = get_now()
+
     todo_li = [0, 4] #ConnErr: also if no internet connection
     q_ie =  ImpactEvent.objects.filter(result_parse_html__in = todo_li
                                         ).exclude(source_url__isnull = True
@@ -24,9 +23,9 @@ def parse_url_all(response):
     print('remaining impevs: ', len(q_ie))
     for ie in q_ie:
         parse_url(ie)
-    
-    response = extract_err_file(response, now)
-    return response
+    #in request connection is closed by django, but with postpone its a new one.
+    #which needs to be closed manually
+    connection.close()
             
 def parse_url(ie):
     def save_ie(ie, parse_nr):

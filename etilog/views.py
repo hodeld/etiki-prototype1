@@ -24,7 +24,7 @@ from .filters import ImpevOverviewFilter
 #viewlogic
 from etilog.ViewLogic.ViewImportDB import parse_xcl
 from etilog.ViewLogic.ViewMain import get_filterdict, set_cache, get_cache
-from etilog.ViewLogic.ViewExport import exp_csv_nlp, exp_csv_basedata
+from etilog.ViewLogic.ViewExport import exp_csv_nlp, exp_csv_basedata, extract_err_file
 from etilog.ViewLogic.ViewDatetime import get_now
 
 from etilog.ViewLogic.ViewAccessURL import parse_url, parse_url_all, extract_text_rpy
@@ -140,7 +140,16 @@ def export_csv_base(request):
     
     return response
     
+def export_csv_extr(request):
+    response = HttpResponse(content_type='text/csv')
+    now = get_now()
+    date_str = now.strftime('%Y%m%d')
+    filename ='extracterr_' + date_str
+    response['Content-Disposition'] = 'attachment; filename="%s.csv"' % filename
+    response = extract_err_file(response)
+    return response  
     
+       
 @permission_required('etilog.impactevent')   
 def import_dbdata(request):#
     parse_xcl()
@@ -148,27 +157,21 @@ def import_dbdata(request):#
 
 @permission_required('etilog.impactevent')   
 def extract_text(request, ie_id = None):
-    if ie_id == 'all':
-        response = HttpResponse(content_type='text/csv')
-        now = get_now()
-        date_str = now.strftime('%Y%m%d')
-        filename ='extracterr_' + date_str
-        response['Content-Disposition'] = 'attachment; filename="%s.csv"' % filename
-        parse_url_all(response)  
-        return response    
-    else:
-        try:
-            ie = ImpactEvent.objects.get(id = ie_id)
-        except ImpactEvent.DoesNotExist:
-            return HttpResponseRedirect(reverse('etilog:home'))           
-        parse_url(ie) 
+
+    try:
+        ie = ImpactEvent.objects.get(id = ie_id)
+    except ImpactEvent.DoesNotExist:
+        return HttpResponseRedirect(reverse('etilog:home'))           
+    parse_url(ie) 
         
     return HttpResponseRedirect(reverse('etilog:home'))
 
 @permission_required('etilog.impactevent')   
-def article_html(request):
-    shtml = request.GET.get('shtml')
-    d_dict = {}
+def extract_text_all(request):
+    parse_url_all()
+    return HttpResponseRedirect(reverse('etilog:home'))
+        
+        
     
 @permission_required('etilog.impactevent')   
 def extract_text_from_url(request):
