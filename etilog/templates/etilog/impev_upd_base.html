@@ -38,7 +38,7 @@
 <div class="container">
 </br>
 	<div class="row justify-content-center">
-		<div class="col-8">
+		<div class="col-12 col-lg-8">
 
 			<h6 id="id_impev_msg">{{ message }}</h6>
 
@@ -49,12 +49,15 @@
 		</div>
 	</div>
 	<div class="row justify-content-center">
-		<div class="col-10">
+		<div class="col-12 col-lg-10">
 		</br>
 			<h6 >extracted HTML of article </h6>
-			<hr class="mt-0 mb-4">
+			<hr class="mt-0 mb-4">	
+			<p>		
+			original link: <a id="id_url_link" href="{{ form.initial.source_url  }}">{{ form.initial.source_url  }}</a>		
+			</p>	
 			<div id="id_articleshow" class="col-12 bg-dark text-white">
-				{{ shtml |safe }}
+				{{ form.initial.article_html |safe }}
 			</div>
 		</div>
 	</div>	

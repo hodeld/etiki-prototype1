@@ -5,24 +5,28 @@ Created on23.08.19
 '''
 from readabilipy import simple_json_from_html_string
 import requests
-
+from etilog.ViewLogic.ViewDatetime import get_now
+from etilog.ViewLogic.ViewExport import extract_err_file
 from etilog.models import ImpactEvent
 
 
             
-def parse_url_all():
+def parse_url_all(response):
     def save_ie(ie, parse_nr):
         ie.result_parse_html = parse_nr
         ie.save()
     
+    now = get_now()
     todo_li = [0, 4] #ConnErr: also if no internet connection
     q_ie =  ImpactEvent.objects.filter(result_parse_html__in = todo_li
                                         ).exclude(source_url__isnull = True
-                                        ).exclude(source_url__exact = '')
-       
+                                        ).exclude(source_url__exact = '')  
     print('remaining impevs: ', len(q_ie))
     for ie in q_ie:
         parse_url(ie)
+    
+    response = extract_err_file(response, now)
+    return response
             
 def parse_url(ie):
     def save_ie(ie, parse_nr):
@@ -167,6 +171,7 @@ def parse_textli(txtdic_li, parse_res):
     if len(txtstr) > 50000:
         parse_res = 9
         
-    return txtstr, parse_res   
-         
+    return txtstr, parse_res  
+
+
 

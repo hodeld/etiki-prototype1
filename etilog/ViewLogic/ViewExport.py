@@ -132,3 +132,26 @@ def get_csvwriter(response):
     writer = csv.writer(response, delimiter=DELIMITER)
     return writer
 
+def extract_err_file(response, now):
+    nonerr_li =[0, 1]
+    q_ie_err = ImpactEvent.objects.exclude(result_parse_html__in = nonerr_li).values_list('id', 'result_parse_html')
+    
+    
+    q_ie_nderr = ImpactEvent.objects.filter(updated_at__gt = now
+                                            ).exclude(result_parse_html__in = nonerr_li
+                                            ).values_list('id', 'result_parse_html')
+
+    rows = [('id', 'errornr')]
+    rows.extend(q_ie_err)
+    header = ['id', 'errornr-new-date']
+    rows.append(header)
+    rows.extend(q_ie_nderr)
+    
+    DELIMITER = ';'
+    csvwriter = csv.writer(response, delimiter=DELIMITER)
+    for row in rows:
+        csvwriter.writerow(row) 
+    
+    return response
+         
+
