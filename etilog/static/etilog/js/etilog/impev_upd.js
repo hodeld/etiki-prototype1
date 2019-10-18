@@ -61,6 +61,8 @@ function extract_text(ele){
 	var source_url = $("#id_source_url").val();
 	var get_url = $(ele).attr("url-get"); // get
 	
+	$("#id_impev_msg").html('reads text from website …');
+	window.scrollTo(0, 0);
 	$.ajax({ // initialize an AJAX request
 		url : get_url, // set the url of the request (= '')
 		data : {
@@ -82,8 +84,9 @@ function extract_text(ele){
 		        $("#id_article_html").val(shtml);
 		        $("#id_result_parse_html").val(parse_res);		        
 		        $("#id_articleshow").html(shtml);
+		        $("#id_url_link").html(source_url);
+		        $("#id_url_link").attr("href", source_url)
 		        $('img').hide()
-		        window.scrollTo(0, 1000);
 			}			
 			$("#id_impev_msg").html(msg);
 

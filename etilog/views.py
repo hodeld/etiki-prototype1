@@ -149,7 +149,13 @@ def import_dbdata(request):#
 @permission_required('etilog.impactevent')   
 def extract_text(request, ie_id = None):
     if ie_id == 'all':
-        parse_url_all()        
+        response = HttpResponse(content_type='text/csv')
+        now = get_now()
+        date_str = now.strftime('%Y%m%d')
+        filename ='extracterr_' + date_str
+        response['Content-Disposition'] = 'attachment; filename="%s.csv"' % filename
+        parse_url_all(response)  
+        return response    
     else:
         try:
             ie = ImpactEvent.objects.get(id = ie_id)
