@@ -114,6 +114,8 @@ def extract_text_rpy(url):
         stitle_art = stitle
         stitle = stitle[:150] #max length
     txt_str, parse_res = parse_textli(text_list, parse_res)
+    #included *textContent and "siteName" in article which could be used instead.
+    txt_str = article['textContent']
     text_str = stitle_art + '\n' + txt_str
     article = (text_str, stitle, sdate, html_simple)
     save_article = True
