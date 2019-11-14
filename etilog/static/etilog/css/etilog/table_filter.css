@@ -1,0 +1,55 @@
+
+
+.hidden-label{
+	visibility: hidden;
+}
+
+.row_tags_class{
+	/*can be shown with jquery later on*/
+	display: none;
+}
+.searchform_old{
+	/*max-width: 500px;*/
+	padding: 10px 20px;
+	background: #f4f7f8;
+	margin: 10px auto;
+	padding: 20px;
+	background: #f4f7f8;
+	border-radius: 8px;
+	/*display: None;
+	z-index: 10;
+	position: fixed;*/
+}
+
+.searchform{
+	/*max-width: 500px;*/
+	padding: 10px 20px;
+	margin: 10px auto;
+	padding: 20px;
+	border-radius: 8px;
+	/*display: None;
+	z-index: 10;
+	position: fixed;*/
+}
+
+
+ .btnselect{
+ 
+    margin-bottom: 3px;
+}
+.div_topic_li{
+	max-width: 100%;
+	
+}
+.topic-link{
+	max-width: 100%;
+	display:block;
+	padding-right: 10px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 14px;
+	color: #3E7480;
+	text-decoration: underline;	
+	
+}

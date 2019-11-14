@@ -1,0 +1,100 @@
+{# HTML5 declaration #}
+<!DOCTYPE html>
+{% load static %}
+{% block djangoadmin %} {% endblock djangoadmin %}
+{#import bootstrap4#} {% load bootstrap4 %} {# Embed Bootstrap CSS #}
+{% bootstrap_css %} {# Embed Bootstrap JS+jQuery #} {% bootstrap_javascript jquery='full' %} 
+{% block head_css %} {% endblock head_css %}
+{% load crispy_forms_tags %}
+
+<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
+
+{#import scripts need to be under url to scripts (loaded by bootstrap4) #}
+<script src="{% static 'etilog/js/base_script.js' %}"></script> 
+<script src="{% static 'etilog/js/etilog/startpage.js' %}"></script> 
+{% block script %} {% endblock script %}
+
+<!-- Required meta tags for example for responsivity -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+<head>
+<title>{% block title %}etiki.org | it's coming {%endblock title%} </title> 
+
+<link rel="stylesheet" type="text/css"
+	href="{% static 'etilog/css/style_startpage.css' %}">
+<link rel="stylesheet" type="text/css"
+	href="{% static 'etilog/css/base_style.css' %}">
+<link rel="stylesheet" type="text/css"
+href="{% static 'etilog/css/tagsinput.css' %}">
+<link rel="stylesheet" type="text/css"
+href="{% static 'etilog/css/typeaheadjs.css' %}">
+
+</head>
+<body>
+<noscript>To use etiki please enable JavaScript!</noscript>
+<div class="fullsite-wrapper container">
+	<div class="topleft changepos">
+		<img alt="" border="0" src="{% static 'etilog/img/logoetiki.png' %}" />
+	</div>
+	<div  id="id_navigation">
+		{# include 'navigation.html' #}
+	</div> 
+	<div class="row h-100 justify-content-center align-items-center">
+		{# in small screens (sm) different column separation #}
+		<div class="col-sm-1 col-md-3"></div>
+		<div class="col-10">
+			<div class="middle">
+				<div id ="startinfo" class="collapse show">
+				<h1>etiki - it's coming</h1>
+				<hr>
+				<h6>
+					<br>We are collecting articles regarding ethical behaviour of
+					any company.<br>Any help appreciated!
+				</h6>
+				</div>
+				
+				<div class="row justify-content-center">
+					<div class="col-12 col-lg-10"> 
+						<div class="searchform" id="mainsearchform"> {# for testing  class="collapse" #}
+							{% crispy searchform %} {# important: not filter.form|crispy #}
+							
+							<a href="#" onclick="toggle_visibility('#filterform');">show/hide Filter options &#11022</a>
+							<br>
+				
+							<div class="collapse" id="filterform"> {#   class="collapse" or "collapse show" #}
+							{% crispy filter.form %} {# important: not filter.form|crispy #} 
+							</div>
+						</div>
+					</div>
+					
+			
+				</div>
+
+			</div>
+
+
+		</div>
+
+
+		<div class="col-sm-1 col-md-3"></div>
+		
+		<div  class="collapse" id="id_oviewtable">
+		{% block content %} 
+		{% endblock content %}
+		</div>
+	</div>
+	
+			
+	<div class="bottomleft changepos">
+		<p>prealpha; © etiki 2019</p>
+	</div>
+</div>
+
+
+	
+
+
+
+{% block bottomscript %} {% endblock bottomscript %}
+</body>
+

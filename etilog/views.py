@@ -49,7 +49,7 @@ def startinfo(request):
                                                              })
 
 def overview_impevs(request):
-    
+    form = NewSource() #for testing
     key_totnr = 'cnties'
     cnt_tot = get_cache(key_totnr, request)
     if cnt_tot == None:
@@ -115,7 +115,8 @@ def overview_impevs(request):
                                                                  'countries_url': countries_url,
                                                                  'references_url': references_url,
                                                                  'tags_url': tags_url,
-                                                                 'message': msg_results
+                                                                 'message': msg_results,
+                                                                 'form': form
                                                                  })
 
 def export_csv_nlp(request):
@@ -189,10 +190,10 @@ def extract_text_from_url(request):
         d_dict['stitle'] = stitle
         d_dict['sdate'] = sdate
         d_dict['shtml'] = html_simple
-        d_dict['parse_res'] = parse_res
 
     else:
         msg = 'not extracted'
+    d_dict['parse_res'] = parse_res
     d_dict['message'] = msg
     return HttpResponse(json.dumps(d_dict), content_type='application/json')
 
