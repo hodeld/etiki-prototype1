@@ -101,10 +101,15 @@ def overview_impevs(request):
     msg_results = msg_results + ' of %d in total' % cnt_tot
     
     if filter_dict:
-        return render(request, 'etilog/impactevents_overview_table.html', {'table': table,
-                                                                           'message': msg_results
+        d_dict = {}
+        rend =  render_to_string( 'etilog/impactevents_overview_table.html', {'table': table,
                                                                            }
                                                                            )
+        d_dict['data'] = rend
+        d_dict['message'] = msg_results
+        return HttpResponse(json.dumps(d_dict), content_type='application/json')
+
+                                                                           
       
         
     return render(request, 'etilog/impactevents_overview.html', {'table': table,

@@ -14,11 +14,20 @@ $(document).ready(function() {
 		});
 	
 	//form ajax options
-	var options = {			
-			  success: function(data) {
-			    $("#id_ovtable").html(data);
-			    prepare_list()
-			  }
+	var options = {		
+			beforeSubmit: function() {
+					$("#id_message").html('calculating results …');
+			},
+			success : function(response) {
+					var data = response.data;
+					var msg = response.message;
+					$("#id_message").html(msg);
+					$("#id_ovtable").html(data);
+					
+					prepare_list();
+					startanimation(); // only first time
+
+				}
 			};
 	// pass options to ajaxForm
 	$('#id_filterform').ajaxForm(options);
@@ -143,6 +152,7 @@ $(document).ready(function() {
 
 	$('#id_search').bind('typeahead:select', function(ev, suggestion) {
 		  	//var val_str = suggestion;
+			
 		  	var val_str = suggestion['name'];
 		  	var val_id = suggestion['id'];
 		  	

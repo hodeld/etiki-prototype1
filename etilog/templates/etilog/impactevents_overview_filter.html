@@ -1,0 +1,25 @@
+{% load crispy_forms_tags %}
+
+
+<div class = "sticky-top">
+<div class="container">
+
+	<div class="row justify-content-center">
+		<div class="col-12 col-lg-10"> 
+			<div class="searchform" id="mainsearchform"> {# for testing  class="collapse" #}
+				{% crispy searchform %} {# important: not filter.form|crispy #}
+
+				
+				<a href="#" onclick="toggle_visibility('#filterform');">show/hide Filter options &#11022</a>
+				<br>
+	
+				<div class="collapse" id="filterform"> {#   class="collapse" or "collapse show" #}
+				{% crispy filter.form %} {# important: not filter.form|crispy #} 
+				</div>
+		</div>
+		</div>
+		
+
+	</div>
+</div>
+</div>

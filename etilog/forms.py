@@ -10,7 +10,7 @@ import json
 
 from bootstrap_datepicker_plus import DatePickerInput
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Column, Submit, ButtonHolder, Button
+from crispy_forms.layout import Layout, Field, Row, Column, Submit, ButtonHolder, Button, HTML
 from crispy_forms.bootstrap import  FormActions, FieldWithButtons
 
 #models
@@ -46,14 +46,15 @@ class SearchForm(forms.Form):
         self.helper = FormHelper()
         
         self.helper.layout = Layout(
-            
+        
+        
         Row(
                 Column(Field('search', id = 'id_search', autocomplete="off", 
                              placeholder = 'Search Companies, Countries, Topics, Newspaper …'
                        ),
                         css_class='col-12'                             
                     )
-                ),
+                ),  
         RowTopics(),
         )
         
