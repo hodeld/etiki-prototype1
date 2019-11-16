@@ -37,10 +37,12 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 		<img alt="" border="0" src="{% static 'etilog/img/logoetiki.png' %}" />
 	</div>
 	
-		{% include 'navigation.html' %}
+		{# include 'navigation.html' #}
 	
-	<div class="row h-100 justify-content-center align-items-center">
+	<div class="row h-100 d-flex align-content-center justify-content-center">
 		{# in small screens (sm) different column separation #}
+		<div class = "row justify-content-center"> 
+		
 		<div class="col-sm-1 col-md-3"></div>
 			<div class="col-10">
 
@@ -55,14 +57,19 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 					</div>
 					</div>
 
-					{% include 'etilog/impactevents_overview_filter.html' %}
-				<div class= "row justify-content-center">
-				<h5 id="id_message"></h5>
-				</div>
+					
+
 				
 			</div>
 		<div class="col-sm-1 col-md-3"></div>
-		<div  class="collapse" id="id_oviewtable">
+		</div>
+		{% include 'etilog/impactevents_overview_filter.html' %}
+		<div class = "container">
+		<div class= "row justify-content-center">
+				<h5 id="id_message"></h5>
+		</div>
+		</div>
+		<div  class="collapse bckground" id="id_oviewtable">
 		{% block content %} 
 		{% endblock content %}
 		</div>

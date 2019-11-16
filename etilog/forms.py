@@ -36,7 +36,6 @@ datefiltername = 'datefilter'
 class SearchForm(forms.Form):
 
     search = forms.CharField(label = '', required=False)
-    freetext = forms.CharField(label = 'freetext', required=False)
 
     def __init__(self, *args, **kwargs):
         super(SearchForm, self).__init__(*args, **kwargs)
@@ -55,10 +54,22 @@ class SearchForm(forms.Form):
                         css_class='col-12'                             
                     )
                 ),  
-        RowTopics(),
         )
         
+class TopicForm(forms.Form):
 
+
+    def __init__(self, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+            
+
+        
+        self.helper = FormHelper()
+        
+        self.helper.layout = Layout(
+ 
+        RowTopics(),
+        )
 class FreetextForm(forms.Form):
 
     freetext = forms.CharField(label = 'freetext', required=False)
