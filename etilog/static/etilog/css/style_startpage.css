@@ -85,11 +85,30 @@ hr {
 	/*max-width: 500px;*/
 	padding: 10px 20px;
 	margin: 10px auto;
-	padding: 20px;
 	border-radius: 8px;
 	background-color: rgba(38, 33, 32, 0.8);
 	/*display: None;
 	z-index: 10;
 	position: fixed;*/
+}
+#div_id_search{
+	/* overwrite form-group css */
+	margin-bottom: 1rem;
+}
+#id_contsearch{
+	/*max-width: 500px;*/
+	padding: 10px 20px;
+	margin: 0;
+	border-radius: 8px;
+	background-color: rgba(38, 33, 32, 0);
+	-webkit-transition: background-color 700ms linear;
+    transition: background-color 700ms linear;
+    z-index: 800; 
+	/*display: None;
+	z-index: 10;
+	position: fixed;*/
+}
+#id_contsearch.scrolled {
+    background-color: rgba(38, 33, 32, 1);
 }
 

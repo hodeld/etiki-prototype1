@@ -279,7 +279,7 @@ function prepare_list(){
  	}); 	
 }
 function set_topheadaer(){
-	let hi = $('#id_navbar').outerHeight() - 2; //smaller than navbar
+	let hi = $('#id_contsearch').outerHeight() - 2; //smaller than navbar id_navbar
 	$('th').css({ top: hi }); 	
 }
 

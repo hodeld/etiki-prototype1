@@ -52,15 +52,15 @@ td:nth-child(9){
 }
 
 th {
-  background: white;
+
   position: sticky;
   position: -webkit-sticky;  /* required for Safari */
   z-index: 800; /* navbar 1020; date widget : 1000?? typeahed dropdown */
-  top: 56px;
-  box-shadow: 0 10px 10px -3px #eee; 
+  top: 36px;
   height: 40px;
-  color: #3E7480;
+  background-color: rgba(38, 33, 32, 1);
 }
+
 	
 .center_div {
 	margin: 0 auto;
