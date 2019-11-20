@@ -1,17 +1,28 @@
 {% load crispy_forms_tags %}
-
+{% load static %}
 
 
 <div class="container sticky-top" id="id_contsearch">
 
 	<div class="row justify-content-center">
-		<div class="col-sm-1 col-md-3"></div>
-		<div class="col-10">
+		<div class="col-4 col-md-1" >
+			<div class="d-none" id="small_logo">
+				<span class="helper"></span>
+			 	<img id="img_sm" alt=""  src="{% static 'etilog/img/logo_sm.png' %}" /> 
+
+			</div>
+
+		</div>
+
+								
+
+		
+		<div class="col-sm-12 col-md-10">
 			<div class="searchform" id="mainsearchform">{# for testing class="collapse" #} 
 			{% crispy searchform %} {# important: not filter.form|crispy #}
 				</div>
 		</div>
-		<div class="col-sm-1 col-md-3"></div>
+		<div class="col-1"></div>
 
 
 	</div>

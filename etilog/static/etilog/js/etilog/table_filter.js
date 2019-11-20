@@ -34,19 +34,7 @@ $(document).ready(function() {
 	
 	
 
-    var timeout = false, // holder for timeout id
-	    delay = 400; // delay after event is "complete" to run callback
     
-    // call once when page is initialized
-	set_topheadaer()
-	
-	// call once to initialize page
-	$(window).resize(function(){ //window changes-> a lot need to be handled
-		// clear the timeout
-		clearTimeout(timeout);
-		// start timing for event "completion"
-		timeout = setTimeout(set_topheadaer, delay);
-    });
 	
 	//directly submit on filterinputs:
 	$('.f_input').change(function(ev){
@@ -278,10 +266,7 @@ function prepare_list(){
  		impevList.search(''); //to clear List search 		
  	}); 	
 }
-function set_topheadaer(){
-	let hi = $('#id_contsearch').outerHeight() - 2; //smaller than navbar id_navbar
-	$('th').css({ top: hi }); 	
-}
+
 
 
 function set_filterbtns(){

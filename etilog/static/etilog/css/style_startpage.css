@@ -93,7 +93,7 @@ hr {
 }
 #div_id_search{
 	/* overwrite form-group css */
-	margin-bottom: 1rem;
+	margin-bottom:0;
 }
 #id_contsearch{
 	/*max-width: 500px;*/
@@ -104,6 +104,7 @@ hr {
 	-webkit-transition: background-color 700ms linear;
     transition: background-color 700ms linear;
     z-index: 800; 
+    
 	/*display: None;
 	z-index: 10;
 	position: fixed;*/
@@ -111,4 +112,20 @@ hr {
 #id_contsearch.scrolled {
     background-color: rgba(38, 33, 32, 1);
 }
+#small_logo {
+    height: 100%; 
+    white-space: nowrap; /* This is required unless you put the helper span closely near the img */
+    text-align: center;
+}
 
+
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+#img_sm {
+    vertical-align: middle; /* is already in bootstrap img class */
+    max-height: 25px; /* to define img size */
+}
