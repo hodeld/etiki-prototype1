@@ -53,7 +53,7 @@ class ImpevOverviewFilter(FilterSet):
                          label = 'Country',
                          method = 'filter_country_idlist')
     summary = CharFilter(field_name = 'summary', #can be country
-                         label = 'Pure Text',
+                         label = 'Text only',
                          lookup_expr='icontains')
     
     tags = ModelMultipleChoiceFilter(field_name = 'sust_tags',

@@ -124,7 +124,7 @@ class ImpevOverviewFForm(forms.Form):
             #RowTagsInput('summary',  'col-12', field_class = cls_filterinput),
             Row(
                 Column(Field('summary', id = 'id_f_summary', 
-                             css_class = cls_filterinput,                          
+                             css_class =  ' '.join([cls_filterinput, 'f_tagsinput']), #f_tagsinput for removing div                          
                              data_role='tagsinput'
                        ),
                         css_class='col-12'                             

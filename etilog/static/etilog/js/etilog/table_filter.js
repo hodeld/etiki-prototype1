@@ -6,13 +6,7 @@ $(document).ready(function() {
 	$('.btnselect').on('click', set_val_from_btn);
 	
 	$('#link_filter').click(function() {
-		toggle_visibility('#filterform')
-		if ($('#div_filterform').hasClass('transp')){
-			$('#div_filterform').removeClass('transp');		
-		}
-		else {
-			$('#div_filterform').addClass('transp');	
-		}
+		toggle_filter()
 	});
 	
 	//$('.row_tags_class').hide(); -> done in css
@@ -319,7 +313,16 @@ function set_tag(id, tagname) {
 	var elt = $('#id_f_tags');
 	var el_id = '#id_row_f_tags';
 	elt.tagsinput('add', suggestion);	//adds tag	
-	$(el_id).show();
+	$(el_id).show();	
 	
-	
+}
+
+function toggle_filter() {
+	toggle_visibility('#filterform')
+	if ($('#div_filterform').hasClass('transp')){
+		$('#div_filterform').removeClass('transp');		
+	}
+	else {
+		$('#div_filterform').addClass('transp');	
+	}
 }

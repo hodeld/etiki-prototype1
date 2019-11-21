@@ -42,7 +42,7 @@ function startanimation(){
 		$('.changepos').addClass('position-relative');
 		// call once when page is initialized; table must be 
 	
-		
+		toggle_filter()
 		set_topheadaer()
 		
 	}	
