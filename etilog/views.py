@@ -17,7 +17,8 @@ from etilog.models import SustainabilityTag
 #tables
 from .tables import ImpEvTable, ImpEvTablePrivat
 #forms
-from .forms import ImpactEventForm, NewSource, CompanyForm, ReferenceForm, SearchForm, FreetextForm
+from .forms import (ImpactEventForm, NewSource, CompanyForm, ReferenceForm, 
+                    SearchForm, FreetextForm, TopicForm)
 #forms
 from .filters import ImpevOverviewFilter
 
@@ -92,6 +93,7 @@ def overview_impevs(request):
     RequestConfig(request, paginate=False).configure(table) 
     
     searchform = SearchForm() #Filter ServerSide
+    topicform = TopicForm()
     freetextform = FreetextForm()
     companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
@@ -115,6 +117,7 @@ def overview_impevs(request):
     return render(request, 'etilog/impactevents_overview.html', {'table': table,
                                                                  'filter': filt,
                                                                  'searchform': searchform,
+                                                                 'topicform': topicform,
                                                                  'freetextform': freetextform,
                                                                  'companies_url': companies_url,
                                                                  'countries_url': countries_url,

@@ -20,20 +20,35 @@
 		<div class="col-sm-12 col-md-10">
 			<div class="searchform" id="mainsearchform">{# for testing class="collapse" #} 
 			{% crispy searchform %} {# important: not filter.form|crispy #}
-				</div>
+			</div>
 		</div>
 		<div class="col-1"></div>
 
 
 	</div>
 </div>
+<div class="container">
+
+	<div class="row justify-content-center">
+		<div class="col-4 col-md-1" ></div>
+		
+		<div class="col-sm-12 col-md-10">
+			
+			<div  id="id_topics">{# for testing class="collapse" #} 
+			{% crispy topicform %} {# important: not filter.form|crispy #}
+			</div>
+		</div>
+		<div class="col-1"></div>
+	</div>
+</div>
 
 <div class="container">
 <div class="row justify-content-center">
 	<div class="col-12 col-lg-10 bckground transp" id="div_filterform">
-
+		
+			
 		<div class="text-center">
-			 <button class="btn btn-sm btn-link" type="button" id="link_filter" >show/hide
+			 <button class="btn btn-sm btn-link collapse" type="button" id="link_filter" >show/hide
 			Filter options &#11022</button> 
 			
 		</div>

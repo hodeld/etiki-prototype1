@@ -98,15 +98,15 @@ hr {
 	z-index: 10;
 	position: fixed;*/
 }
-.bckground.transp{
+.bckground.transp{ 
 	background-color: transparent;
-
 }
 
 #div_id_search{
 	/* overwrite form-group css */
 	margin-bottom:0;
 }
+
 #id_contsearch{
 	/*max-width: 500px;*/
 	padding: 10px 20px;

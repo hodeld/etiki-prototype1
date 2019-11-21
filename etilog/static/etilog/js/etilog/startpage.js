@@ -4,9 +4,7 @@
 
 // jquery
 $(document).ready(function() {
-	//$('#id_search').on('click', startanimation);
-	$('.topic-link').on('click', startanimation);
-	
+
 	//add class to change background
 	//TODO use waypoints in future, also for background at top which will be behind thead
 	$(window).scroll(function () {
@@ -35,7 +33,9 @@ $(document).ready(function() {
 
 function startanimation(){
 	if ($('#id_oviewtable').css('display') == 'none'){
-		$('#id_oviewtable').show(); //duration
+		$('#link_filter').show();
+		
+		$('#id_oviewtable').show(); 
 		//$('#id_oviewtable').slideDown(); //duration
 		$('.fullsite-wrapper').css('height', 'auto');
 		$('.bottomleft').removeClass('bottomleft');

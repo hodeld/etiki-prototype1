@@ -16,6 +16,9 @@
 }
 .div_topic_li{
 	max-width: 100%;
+	padding: 2px;
+	
+    
 	
 }
 .topic-link{
@@ -26,9 +29,14 @@
     text-overflow: ellipsis;
 	white-space: nowrap;
 	font-size: 14px;
-	color: #3E7480;
-	text-decoration: underline;	
+	color: white;
+	background-color: var(--light_bckgrnd); 
 	
+}
+.topic-link:hover {
+    background-color: var(--trans_bckgrnd); 
+    color: white;
+    text-decoration: none;
 }
 
 #link_filter{

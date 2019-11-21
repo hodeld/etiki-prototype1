@@ -184,27 +184,41 @@ class ColTendencyBtnSelect(Layout):
             )   
 
 class RowTopics(Layout):
-    def __init__(self, col_class= 'col-12', labelname= 'Topics', *args, **kwargs): #distribute buttons
+    def __init__(self, col_class= 'col-12', labelname= '', *args, **kwargs): #distribute buttons
         #q = SustainabilityTag.objects.all()[:5]
         nr_tags = 2
         li_vals = []
+        li_sustagsid = []
         for i in range(1,6):
             vals = ImpactEvent.objects.filter(
                         sust_domain = i).values_list(
                             'sust_tags__id', 'sust_tags__name').annotate(
                                 tag_count=Count('sust_tags')).order_by(
                                     '-tag_count')[:nr_tags]
+            
+
             li_vals.extend(vals)
         
         #val_people = ImpactEvent.objects.filter(sust_domain = 1).values_list('sust_tags__id', 'sust_tags__name').annotate(tag_count=Count('sust_tags')).order_by('-tag_count')[:5]
        
         topics_list = []
         a_str = '''<a href="#" class="topic-link" onclick="set_tag(%d, '%s');">%s</a>'''
+        k = nr_tags
         for tag in li_vals:
-            html_str = a_str % (tag[0], tag[1], tag[1]) #(tag.id, tag.name, tag.name)           
+            stag_id = tag[0]           
+            if stag_id in li_sustagsid: #no double entries
+                k +=  1
+                continue
+            li_sustagsid.append(stag_id)
+            if k%nr_tags == 0:
+                addclass = '' 
+            else:
+                addclass = ' d-none d-md-block' #only show on larger screens
+            html_str = a_str % (stag_id, tag[1], tag[1]) #(tag.id, tag.name, tag.name)           
             a_link = HTML(html_str)
-            div_a = Div(a_link, css_class = 'div_topic_li')
+            div_a = Div(a_link, css_class = 'div_topic_li' + addclass)
             topics_list.append(div_a)
+            k += 1
             
         html_str = '<label class="col-form-label">%s</label>' % labelname
         super(RowTopics, self).__init__( 
