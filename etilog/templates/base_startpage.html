@@ -12,6 +12,7 @@
 {#import scripts need to be under url to scripts (loaded by bootstrap4) #}
 <script src="{% static 'etilog/js/base_script.js' %}"></script> 
 <script src="{% static 'etilog/js/etilog/startpage.js' %}"></script> 
+
 {% block script %} {% endblock script %}
 
 <!-- Required meta tags for example for responsivity -->
@@ -43,16 +44,15 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 		{# in small screens (sm) different column separation #}
 		<div class = "row justify-content-center"> 
 		
-		<div class="col-sm-1 col-md-3"></div>
-			<div class="col-10">
+		<div class= "col-1 col-lg-3"></div>
+			<div class="col-10 col-lg-6">
 
 				<div id="startinfo" class="collapse show">
 					<div class="middle">
 						<h1>etiki - it's coming</h1>
 						<hr>
 						<h6>
-							<br>We are collecting articles regarding ethical behaviour
-							of any company.<br>Any help appreciated!
+							<br>Welcome! On etiki you can lookup publications about ethical behaviour of companies and other organisations.
 						</h6>
 					</div>
 					</div>
@@ -61,7 +61,7 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 
 				
 			</div>
-		<div class="col-sm-1 col-md-3"></div>
+		<div class="col-1 col-lg-3"></div>
 		</div>
 		{% include 'etilog/impactevents_overview_filter.html' %}
 		<div class = "container">

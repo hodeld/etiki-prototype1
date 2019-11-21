@@ -199,10 +199,8 @@ class RowTopics(Layout):
 
             li_vals.extend(vals)
         
-        #val_people = ImpactEvent.objects.filter(sust_domain = 1).values_list('sust_tags__id', 'sust_tags__name').annotate(tag_count=Count('sust_tags')).order_by('-tag_count')[:5]
-       
         topics_list = []
-        a_str = '''<a href="#" class="topic-link" onclick="set_tag(%d, '%s');">%s</a>'''
+        a_str = '''<a href="#" class="topic-link" tagid = "%d" tagname = "%s" >%s</a>'''
         k = nr_tags
         for tag in li_vals:
             stag_id = tag[0]           

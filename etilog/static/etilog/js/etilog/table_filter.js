@@ -39,7 +39,7 @@ $(document).ready(function() {
 					var msg = response.message;
 					$("#id_message").html(msg);
 					$("#id_ovtable").html(data);
-					
+					set_topheadaer()//new th elements
 					prepare_list();
 					startanimation(); // only first time
 
@@ -207,6 +207,12 @@ $(document).ready(function() {
 		
 		
 	});
+	$('.topic-link').click(function(){
+		var tagname = $(this).attr('tagname');
+		var tagid = $(this).attr('tagid');
+		set_tag(tagid, tagname)
+		
+	});
 	
 	$("#id_search").keyup(function(event) {
 	    if (event.keyCode === 13) { //enter
@@ -307,6 +313,7 @@ function toggle_visibility(jqid) {
     }
  }
 
+//set tags from topics
 function set_tag(id, tagname) {
 	var suggestion = {'id': id, 'name': tagname};
 	var elt = $('#id_f_tags');
