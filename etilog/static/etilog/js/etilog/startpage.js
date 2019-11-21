@@ -35,11 +35,14 @@ $(document).ready(function() {
 
 function startanimation(){
 	if ($('#id_oviewtable').css('display') == 'none'){
-		$('#id_oviewtable').slideDown(); //duration
+		$('#id_oviewtable').show(); //duration
+		//$('#id_oviewtable').slideDown(); //duration
 		$('.fullsite-wrapper').css('height', 'auto');
 		$('.bottomleft').removeClass('bottomleft');
 		$('.changepos').addClass('position-relative');
 		// call once when page is initialized; table must be 
+	
+		
 		set_topheadaer()
 		
 	}	

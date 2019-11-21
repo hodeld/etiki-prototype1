@@ -1,3 +1,10 @@
+:root {
+  --full_bckgrnd: rgba(38, 33, 32, 1);
+  --trans_bckgrnd: rgba(38, 33, 32, .8);
+  --light_bckgrnd: rgba(255, 255, 255, .3); /*on top */
+  --etikigreen: var(--info) /*#3E7480; */
+}
+
 
 body, html {
   background:  url("/static/etilog/img/background.gif")no-repeat center center fixed;
@@ -86,11 +93,16 @@ hr {
 	padding: 10px 20px;
 	margin: 10px auto;
 	border-radius: 8px;
-	background-color: rgba(38, 33, 32, 0.8);
+	background-color: var(--trans_bckgrnd);
 	/*display: None;
 	z-index: 10;
 	position: fixed;*/
 }
+.bckground.transp{
+	background-color: transparent;
+
+}
+
 #div_id_search{
 	/* overwrite form-group css */
 	margin-bottom:0;
@@ -110,7 +122,7 @@ hr {
 	position: fixed;*/
 }
 #id_contsearch.scrolled {
-    background-color: rgba(38, 33, 32, 1);
+    background-color: var(--full_bckgrnd);
 }
 #small_logo {
     height: 100%; 
@@ -128,4 +140,9 @@ hr {
 #img_sm {
     vertical-align: middle; /* is already in bootstrap img class */
     max-height: 25px; /* to define img size */
+}
+
+.center_div_notused {
+	margin: 0 auto;
+	width: 80% /* value of your choice which suits your alignment */
 }

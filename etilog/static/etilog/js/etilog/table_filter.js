@@ -5,12 +5,28 @@ $(document).ready(function() {
 	//button select for categories
 	$('.btnselect').on('click', set_val_from_btn);
 	
+	$('#link_filter').click(function() {
+		toggle_visibility('#filterform')
+		if ($('#div_filterform').hasClass('transp')){
+			$('#div_filterform').removeClass('transp');		
+		}
+		else {
+			$('#div_filterform').addClass('transp');	
+		}
+	});
+	
 	//$('.row_tags_class').hide(); -> done in css
 	
 	//add tagsinput on hidden fields
 	$('.f_tagsinput').tagsinput({
 		  	itemValue: 'id',
 			itemText: 'name',
+			
+		});
+	$('.f_tagsinput').on('itemRemoved', function(event) {
+		var modname = $(this).attr('name');
+		var el_id = '#id_row_f_' + modname;
+		$(el_id).hide();
 		});
 	
 	//form ajax options

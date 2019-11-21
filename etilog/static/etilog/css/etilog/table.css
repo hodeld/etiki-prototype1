@@ -55,16 +55,15 @@ th {
 
   position: sticky;
   position: -webkit-sticky;  /* required for Safari */
-  z-index: 800; /* navbar 1020; date widget : 1000?? typeahed dropdown */
+  z-index: 700; /* navbar 1020; date widget : 1000?? typeahed dropdown */
   top: 36px;
   height: 40px;
-  background-color: rgba(38, 33, 32, 1);
+  background-color: var(--full_bckgrnd);
 }
 
-	
-.center_div {
-	margin: 0 auto;
-	width: 80% /* value of your choice which suits your alignment */
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color:  var(--light_bckgrnd); 
 }
 
 /* sort styles: */
@@ -94,7 +93,7 @@ button.sort .bullet { margin-top:13px; }
   height: 0;
   border-left: 3px solid transparent;
   border-right: 3px solid transparent;
-  border-top: 3px solid #808080;
+  border-top: 3px solid white;
   content: "";
   position: relative;
   top: -3px;
@@ -105,7 +104,7 @@ button.sort .bullet { margin-top:13px; }
   height: 0;
   border-left: 3px solid transparent;
   border-right: 3px solid transparent;
-  border-bottom: 3px solid #808080;
+  border-bottom: 3px solid white;
   content: "";
   position: relative;
   top: -4px;
