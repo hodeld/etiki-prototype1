@@ -116,6 +116,7 @@ hr {
 	-webkit-transition: background-color 700ms linear;
     transition: background-color 700ms linear;
     z-index: 800; 
+    display: block; /*because navbar has flex
     
 	/*display: None;
 	z-index: 10;

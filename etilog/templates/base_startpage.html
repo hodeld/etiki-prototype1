@@ -38,12 +38,13 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 		<img alt="" border="0" src="{% static 'etilog/img/logoetiki.png' %}" />
 	</div>
 	
-		{# include 'navigation.html' #}
+		
 	
 	<div class="row h-100 d-flex align-content-center justify-content-center">
+	
 		{# in small screens (sm) different column separation #}
 		<div class = "row justify-content-center"> 
-		
+		{# include 'navigation.html' #}
 		<div class= "col-1 col-lg-3"></div>
 			<div class="col-10 col-lg-6">
 
@@ -63,6 +64,7 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 			</div>
 		<div class="col-1 col-lg-3"></div>
 		</div>
+		{% include 'nav_search_bar.html' %}
 		{% include 'etilog/impactevents_overview_filter.html' %}
 		<div class = "container">
 		<div class= "row justify-content-center">
