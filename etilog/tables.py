@@ -143,7 +143,7 @@ class BtnTendencyColumn(tables.TemplateColumn):
 
 
     
-        
+etiki_table_classes =  'table table-hover table-sm table-etiki' #bootstrap classes, plus own tbl class   
 class ImpEvTable(tables.Table):
     '''
     basic table for impact events
@@ -183,7 +183,7 @@ class ImpEvTable(tables.Table):
         fields = ('sust_domain', 'topics', 'company', 'date_published', 
                    'country',   'reference', 'summary')
         #orderable = False #for all columns
-        attrs = {'class': 'table table-hover table-sm', #bootstrap4 classes ;table-responsive: not working with sticky
+        attrs = {'class': etiki_table_classes, #bootstrap4 classes ;table-responsive: not working with sticky
                 }
         template_name = 'etilog/etilog_djangotable.html'
         
@@ -231,7 +231,7 @@ class ImpEvTablePrivat(ImpEvTable):
     
     class Meta:
         #css stuff needed in inherited table as well!
-        attrs = {'class': 'table table-hover table-sm', #bootstrap4 classes ;table-responsive: not working with sticky
+        attrs = {'class': etiki_table_classes, #bootstrap4 classes ;table-responsive: not working with sticky
                 }
         template_name = 'etilog/etilog_djangotable.html'  
         sequence = ('id', 'copy', '...')

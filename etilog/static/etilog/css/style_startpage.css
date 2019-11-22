@@ -147,3 +147,37 @@ hr {
 	margin: 0 auto;
 	width: 80% /* value of your choice which suits your alignment */
 }
+/*REST TODO */
+
+.navbar-dark {
+	background-color: #3E7480;
+}
+.navbar-etilog a {
+	color: #3E7480;
+}
+body {
+	/* default is 1rem or 16px -> for table*/
+	font-size: 12px;
+	font-family: "Courier New", Courier, monospace;
+}
+
+.text-primary {
+	color: #3E7480;
+}
+
+
+
+
+
+.hidden-label{
+	visibility: hidden;
+}
+
+
+#id_impev_msg {
+	background-color: lightgreen;
+}
+
+.whitehr{
+	border-color: #eeeeee;
+}
