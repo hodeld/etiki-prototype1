@@ -1,12 +1,15 @@
-{# ... #} {% extends 'base.html' %} 
+{# ... #} {% extends 'base_startpage.html' %} 
 {% load static %}
 {% block djangoadmin %} 
 
 {% endblock djangoadmin %}
-{% load crispy_forms_tags %}
 
 {% load render_table from django_tables2 %} 
 {% block head_css %} 
+<link rel="stylesheet" type="text/css"
+	href="{% static 'etilog/css/etilog/table_filter.css' %}">
+<link rel="stylesheet" type="text/css"
+href="{% static 'etilog/css/etilog/table.css' %}">
 {{ filter.form.media }} {# Adds date-picker required JS and CSS #}
 
 {% endblock head_css %} 
@@ -24,29 +27,8 @@
 {% block cls_overview %}active{%endblock cls_overview %}
 
 {% block content %}
-<div class="container">
-
-	<div class="row justify-content-center">
-		<div class="col-12 col-lg-10"> 
-			<div class="searchform" id="mainsearchform"> {# for testing  class="collapse" #}
-				{% crispy searchform %} {# important: not filter.form|crispy #}
-				
-				<a href="#" onclick="toggle_visibility('#filterform');">show/hide Filter options &#11022</a>
-				<br>
-	
-				<div class="collapse show" id="filterform"> {#   class="collapse" or "collapse show" #}
-				{% crispy filter.form %} {# important: not filter.form|crispy #} 
-				</div>
-		</div>
-		</div>
-		
-
-	</div>
-</div>
 <br>
-
 <div  id="id_ovtable">
-	<h5>{{ message }}</h5>
 	{% render_table table %}
 </div>         	
 

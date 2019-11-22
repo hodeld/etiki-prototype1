@@ -1,0 +1,44 @@
+
+
+.hidden-label{
+	visibility: hidden;
+}
+
+.row_tags_class{
+	/*can be shown with jquery later on*/
+	display: none;
+}
+
+
+ .btnselect{
+ 
+    margin-bottom: 3px;
+}
+.div_topic_li{
+	max-width: 100%;
+	padding: 2px;
+	
+    
+	
+}
+.topic-link{
+	max-width: 100%;
+	display:block;
+	padding-right: 10px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 14px;
+	color: white;
+	background-color: var(--light_bckgrnd); 
+	
+}
+.topic-link:hover {
+    background-color: var(--trans_bckgrnd); 
+    color: white;
+    text-decoration: none;
+}
+
+#link_filter{
+	color: white !important;
+}

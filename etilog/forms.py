@@ -10,7 +10,7 @@ import json
 
 from bootstrap_datepicker_plus import DatePickerInput
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Column, Submit, ButtonHolder, Button
+from crispy_forms.layout import Layout, Field, Row, Column, Submit, ButtonHolder, Button, HTML
 from crispy_forms.bootstrap import  FormActions, FieldWithButtons
 
 #models
@@ -36,7 +36,6 @@ datefiltername = 'datefilter'
 class SearchForm(forms.Form):
 
     search = forms.CharField(label = '', required=False)
-    freetext = forms.CharField(label = 'freetext', required=False)
 
     def __init__(self, *args, **kwargs):
         super(SearchForm, self).__init__(*args, **kwargs)
@@ -46,18 +45,31 @@ class SearchForm(forms.Form):
         self.helper = FormHelper()
         
         self.helper.layout = Layout(
-            
+        
+        
         Row(
                 Column(Field('search', id = 'id_search', autocomplete="off", 
                              placeholder = 'Search Companies, Countries, Topics, Newspaper …'
                        ),
                         css_class='col-12'                             
                     )
-                ),
-        RowTopics(),
+                ),  
         )
         
+class TopicForm(forms.Form):
 
+
+    def __init__(self, *args, **kwargs):
+        super(TopicForm, self).__init__(*args, **kwargs)
+            
+
+        
+        self.helper = FormHelper()
+        
+        self.helper.layout = Layout(
+ 
+        RowTopics(),
+        )
 class FreetextForm(forms.Form):
 
     freetext = forms.CharField(label = 'freetext', required=False)
@@ -112,7 +124,7 @@ class ImpevOverviewFForm(forms.Form):
             #RowTagsInput('summary',  'col-12', field_class = cls_filterinput),
             Row(
                 Column(Field('summary', id = 'id_f_summary', 
-                             css_class = cls_filterinput,                          
+                             css_class =  ' '.join([cls_filterinput, 'f_tagsinput']), #f_tagsinput for removing div                          
                              data_role='tagsinput'
                        ),
                         css_class='col-12'                             

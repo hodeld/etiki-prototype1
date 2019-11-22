@@ -13,125 +13,6 @@ body {
 .text-primary {
 	color: #3E7480;
 }
-/*TABLE*/
-.table-sm {
-	font-size: 1em;
-	table-layout: fixed; /* total width according to container, width of column acc. to first row*/
-}
-
-.table-sm .orderable a {
-	color: #3E7480;
-}
-
-/*#impev-list > table > tbody > tr:nth-child(1) > td.badge.badge-danger.sust_category*/
-
-.table-sm .sustbtn { /* button within cell */
-	display: block; /*centers in horizontally  */
-	margin:auto;	
-	overflow: hidden;
-    white-space: normal;
-    text-overflow: ellipsis;
-    font-size: 1em;
-    line-height: .8em;
-}  
-    
-.table-sm .sustcl	 {
-	vertical-align: middle;	
-}	
-.copy, .id {
-	width: 3%;
-	white-space: normal;
-}
-.table-sm td	 {
-	overflow: hidden;
-    white-space: nowrap;
-    word-break: normal;
-    text-overflow: ellipsis;
-    height: 40px;
-	/* vertical-align: middle; */	
-}
-/* date_published: */
-td:nth-child(3){	
-	white-space: normal;
-	text-overflow: unset;	
-}
-th:nth-child(3){	
-	width: 10%;
-}
-/* summary: */
-th:nth-child(9){	
-	width: 25%;
-}
-td:nth-child(9){	
-	white-space: normal;
-}
-
-th {
-  background: white;
-  position: sticky;
-  position: -webkit-sticky;  /* required for Safari */
-  z-index: 800; /* navbar 1020; date widget : 1000?? typeahed dropdown */
-  top: 56px;
-  box-shadow: 0 10px 10px -3px #eee; 
-  height: 40px;
-  color: #3E7480;
-}
-	
-.center_div {
-	margin: 0 auto;
-	width: 80% /* value of your choice which suits your alignment */
-}
-
-/* sort styles: */
-th button.sort {
-  text-align:left; 
-  padding:0 10px;
-  line-height: $input-height;
-  border: none; background: none; 
-  display: block; width:100%; 
-  font-size: 12px; color: #888; 
-  border-bottom: 1px solid transparent;  
-}
-
-th button.sort.textcenter,
-th button.sort.text-center { text-align:center; }
-
-th button.sort.textright,
-th button.sort.text-right { text-align:right; }
-
-button.sort .bullet { margin-top:13px; }
-
-
-/* sort caret: */
-.table-list .caret:after { content:""; }
-.asc .caret:after {
-  width: 0;
-  height: 0;
-  border-left: 3px solid transparent;
-  border-right: 3px solid transparent;
-  border-top: 3px solid #808080;
-  content: "";
-  position: relative;
-  top: -3px;
-  right: -4px;
-  font-size:0; }
-.desc .caret:after {
-  width: 0;
-  height: 0;
-  border-left: 3px solid transparent;
-  border-right: 3px solid transparent;
-  border-bottom: 3px solid #808080;
-  content: "";
-  position: relative;
-  top: -4px;
-  right: -4px;
-  font-size:0; }
-
-button.sort .caret { display:none; }
-button.sort.asc .caret { display:inline-block; }
-button.sort.desc .caret { display:inline-block; }
-
-
 
 /*DATEINPUT*/
 .date {
@@ -141,79 +22,13 @@ button.sort.desc .caret { display:inline-block; }
   width: 30px;
 }
 
-/*AUTOCOMPLETE*/
-.autocomplete-items {
-  position: absolute;
-  border: 1px solid #d4d4d4;
-  border-bottom: none;
-  border-top: none;
-  z-index: 99;
-  /*position the autocomplete items to be the same width as the container:*/
-  top: 100%;
-  left: 0;
-  right: 0;
-}
-.autocomplete-items div {
-  padding: 10px;
-  cursor: pointer;
-  background-color: #fff;
-  border-bottom: 1px solid #d4d4d4;
-}
-.autocomplete-items div:hover {
-  /*when hovering an item:*/
-  background-color: #e9e9e9;
-}
-.autocomplete-active {
-  /*when navigating through the items using the arrow keys:*/
-  background-color: DodgerBlue !important;
-  color: #ffffff;
-}
+
 
 .hidden-label{
 	visibility: hidden;
 }
 
-.row_tags_class{
-	/*can be shown with jquery later on*/
-	display: none;
-}
-.searchform{
-	/*max-width: 500px;*/
-	padding: 10px 20px;
-	background: #f4f7f8;
-	margin: 10px auto;
-	padding: 20px;
-	background: #f4f7f8;
-	border-radius: 8px;
-	/*display: None;
-	z-index: 10;
-	position: fixed;*/
-}
 
-
-
- .btnselect{
- 
-    margin-bottom: 3px;
-}
-.div_topic_li{
-	max-width: 100%;
-	
-}
-.topic-link{
-	max-width: 100%;
-	display:block;
-	padding-right: 10px;
-	overflow: hidden;
-    text-overflow: ellipsis;
-	white-space: nowrap;
-	font-size: 14px;
-	color: #3E7480;
-	text-decoration: underline;
-		
-	
-	
-}
 #id_impev_msg {
 	background-color: lightgreen;
 }

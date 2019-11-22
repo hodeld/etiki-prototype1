@@ -1,0 +1,90 @@
+{# HTML5 declaration #}
+<!DOCTYPE html>
+{% load static %}
+{% block djangoadmin %} {% endblock djangoadmin %}
+{#import bootstrap4#} {% load bootstrap4 %} {# Embed Bootstrap CSS #}
+{% bootstrap_css %} {# Embed Bootstrap JS+jQuery #} {% bootstrap_javascript jquery='full' %} 
+{% block head_css %} {% endblock head_css %}
+{% load crispy_forms_tags %}
+
+<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
+
+{#import scripts need to be under url to scripts (loaded by bootstrap4) #}
+<script src="{% static 'etilog/js/base_script.js' %}"></script> 
+<script src="{% static 'etilog/js/etilog/startpage.js' %}"></script> 
+
+{% block script %} {% endblock script %}
+
+<!-- Required meta tags for example for responsivity -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+<head>
+<title>{% block title %}etiki.org | it's coming {%endblock title%} </title> 
+
+<link rel="stylesheet" type="text/css"
+	href="{% static 'etilog/css/style_startpage.css' %}">
+<link rel="stylesheet" type="text/css"
+	href="{% static 'etilog/css/base_style.css' %}">
+<link rel="stylesheet" type="text/css"
+href="{% static 'etilog/css/tagsinput.css' %}">
+<link rel="stylesheet" type="text/css"
+href="{% static 'etilog/css/typeaheadjs.css' %}">
+
+</head>
+<body>
+<noscript>To use etiki please enable JavaScript!</noscript>
+<div class="fullsite-wrapper container">
+	<div class="topleft changepos">
+		<img alt="" border="0" src="{% static 'etilog/img/logoetiki.png' %}" />
+	</div>
+	
+		
+	
+	<div class="row h-100 d-flex align-content-center justify-content-center">
+	
+		{# in small screens (sm) different column separation #}
+		<div class = "row justify-content-center"> 
+		{# include 'navigation.html' #}
+		<div class= "col-1 col-lg-3"></div>
+			<div class="col-10 col-lg-6">
+
+				<div id="startinfo" class="collapse show">
+					<div class="middle">
+						<h1>etiki - it's coming</h1>
+						<hr>
+						<h6>
+							<br>Welcome! On etiki you can lookup publications about ethical behaviour of companies and other organisations.
+						</h6>
+					</div>
+					</div>
+
+					
+
+				
+			</div>
+		<div class="col-1 col-lg-3"></div>
+		</div>
+		{% include 'nav_search_bar.html' %}
+		{% include 'etilog/impactevents_overview_filter.html' %}
+		<div class = "container">
+		<div class= "row justify-content-center">
+				<h5 id="id_message"></h5>
+		</div>
+		</div>
+		<div  class="collapse bckground" id="id_oviewtable">
+		{% block content %} 
+		{% endblock content %}
+		</div>
+		
+
+	</div>
+	
+	<div class = "bottomleft changepos">
+		<p>prealpha; © etiki 2019</p>
+	</div>
+</div>
+
+
+{% block bottomscript %} {% endblock bottomscript %}
+</body>
+

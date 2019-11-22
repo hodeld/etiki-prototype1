@@ -76,20 +76,20 @@ function extract_text(ele){
 				var stitle = response.stitle;
 		        var sdate = response.sdate;
 		        var shtml = response.shtml;
-		        var parse_res = response.parse_res;
 		        
 		        $("#id_date_text").val(sdate); 
 		        $("#id_article_text").html(text_str); 
 		        $("#id_article_title").val(stitle);
-		        $("#id_article_html").val(shtml);
-		        $("#id_result_parse_html").val(parse_res);		        
+		        $("#id_article_html").val(shtml);	        
 		        $("#id_articleshow").html(shtml);
 		        $('img').hide()
 		        $("#id_url_link").html(source_url);
 		        $("#id_url_link").attr("href", source_url)
 		        $("#id_titleshow").html(stitle);
 		        
-			}			
+			}	
+			var parse_res = response.parse_res;
+			$("#id_result_parse_html").val(parse_res);
 			$("#id_impev_msg").html(msg);
 
 		}

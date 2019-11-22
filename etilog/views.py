@@ -17,7 +17,8 @@ from etilog.models import SustainabilityTag
 #tables
 from .tables import ImpEvTable, ImpEvTablePrivat
 #forms
-from .forms import ImpactEventForm, NewSource, CompanyForm, ReferenceForm, SearchForm, FreetextForm
+from .forms import (ImpactEventForm, NewSource, CompanyForm, ReferenceForm, 
+                    SearchForm, FreetextForm, TopicForm)
 #forms
 from .filters import ImpevOverviewFilter
 
@@ -49,7 +50,7 @@ def startinfo(request):
                                                              })
 
 def overview_impevs(request):
-    
+    form = NewSource() #for testing
     key_totnr = 'cnties'
     cnt_tot = get_cache(key_totnr, request)
     if cnt_tot == None:
@@ -92,6 +93,7 @@ def overview_impevs(request):
     RequestConfig(request, paginate=False).configure(table) 
     
     searchform = SearchForm() #Filter ServerSide
+    topicform = TopicForm()
     freetextform = FreetextForm()
     companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
@@ -101,21 +103,28 @@ def overview_impevs(request):
     msg_results = msg_results + ' of %d in total' % cnt_tot
     
     if filter_dict:
-        return render(request, 'etilog/impactevents_overview_table.html', {'table': table,
-                                                                           'message': msg_results
+        d_dict = {}
+        rend =  render_to_string( 'etilog/impactevents_overview_table.html', {'table': table,
                                                                            }
                                                                            )
+        d_dict['data'] = rend
+        d_dict['message'] = msg_results
+        return HttpResponse(json.dumps(d_dict), content_type='application/json')
+
+                                                                           
       
         
     return render(request, 'etilog/impactevents_overview.html', {'table': table,
                                                                  'filter': filt,
                                                                  'searchform': searchform,
+                                                                 'topicform': topicform,
                                                                  'freetextform': freetextform,
                                                                  'companies_url': companies_url,
                                                                  'countries_url': countries_url,
                                                                  'references_url': references_url,
                                                                  'tags_url': tags_url,
-                                                                 'message': msg_results
+                                                                 'message': msg_results,
+                                                                 'form': form
                                                                  })
 
 def export_csv_nlp(request):
@@ -189,10 +198,10 @@ def extract_text_from_url(request):
         d_dict['stitle'] = stitle
         d_dict['sdate'] = sdate
         d_dict['shtml'] = html_simple
-        d_dict['parse_res'] = parse_res
 
     else:
         msg = 'not extracted'
+    d_dict['parse_res'] = parse_res
     d_dict['message'] = msg
     return HttpResponse(json.dumps(d_dict), content_type='application/json')
 

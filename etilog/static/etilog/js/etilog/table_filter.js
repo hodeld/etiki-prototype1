@@ -5,39 +5,46 @@ $(document).ready(function() {
 	//button select for categories
 	$('.btnselect').on('click', set_val_from_btn);
 	
+	$('#link_filter').click(function() {
+		toggle_filter()
+	});
+	
 	//$('.row_tags_class').hide(); -> done in css
 	
 	//add tagsinput on hidden fields
 	$('.f_tagsinput').tagsinput({
 		  	itemValue: 'id',
 			itemText: 'name',
+			
+		});
+	$('.f_tagsinput').on('itemRemoved', function(event) {
+		var modname = $(this).attr('name');
+		var el_id = '#id_row_f_' + modname;
+		$(el_id).hide();
 		});
 	
 	//form ajax options
-	var options = {			
-			  success: function(data) {
-			    $("#id_ovtable").html(data);
-			    prepare_list()
-			  }
+	var options = {		
+			beforeSubmit: function() {
+					$("#id_message").html('calculating results …');
+			},
+			success : function(response) {
+					var data = response.data;
+					var msg = response.message;
+					$("#id_message").html(msg);
+					$("#id_ovtable").html(data);
+					set_topheadaer()//new th elements
+					prepare_list();
+					startanimation(); // only first time
+
+				}
 			};
 	// pass options to ajaxForm
 	$('#id_filterform').ajaxForm(options);
 	
 	
 
-    var timeout = false, // holder for timeout id
-	    delay = 400; // delay after event is "complete" to run callback
     
-    // call once when page is initialized
-	set_topheadaer()
-	
-	// call once to initialize page
-	$(window).resize(function(){ //window changes-> a lot need to be handled
-		// clear the timeout
-		clearTimeout(timeout);
-		// start timing for event "completion"
-		timeout = setTimeout(set_topheadaer, delay);
-    });
 	
 	//directly submit on filterinputs:
 	$('.f_input').change(function(ev){
@@ -143,6 +150,7 @@ $(document).ready(function() {
 
 	$('#id_search').bind('typeahead:select', function(ev, suggestion) {
 		  	//var val_str = suggestion;
+			
 		  	var val_str = suggestion['name'];
 		  	var val_id = suggestion['id'];
 		  	
@@ -191,6 +199,12 @@ $(document).ready(function() {
 		//$(this).val(''); 
 		$(this).typeahead('val', ''); //typeahead input
 		
+		
+	});
+	$('.topic-link').click(function(){
+		var tagname = $(this).attr('tagname');
+		var tagid = $(this).attr('tagid');
+		set_tag(tagid, tagname)
 		
 	});
 	
@@ -268,10 +282,7 @@ function prepare_list(){
  		impevList.search(''); //to clear List search 		
  	}); 	
 }
-function set_topheadaer(){
-	let hi = $('#id_navbar').outerHeight() - 2; //smaller than navbar
-	$('th').css({ top: hi }); 	
-}
+
 
 
 function set_filterbtns(){
@@ -296,12 +307,22 @@ function toggle_visibility(jqid) {
     }
  }
 
+//set tags from topics
 function set_tag(id, tagname) {
 	var suggestion = {'id': id, 'name': tagname};
 	var elt = $('#id_f_tags');
 	var el_id = '#id_row_f_tags';
 	elt.tagsinput('add', suggestion);	//adds tag	
-	$(el_id).show();
+	$(el_id).show();	
 	
-	
+}
+
+function toggle_filter() {
+	toggle_visibility('#filterform')
+	if ($('#div_filterform').hasClass('transp')){
+		$('#div_filterform').removeClass('transp');		
+	}
+	else {
+		$('#div_filterform').addClass('transp');	
+	}
 }
