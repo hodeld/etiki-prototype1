@@ -19,7 +19,8 @@ href="{% static 'etilog/css/etilog/table.css' %}">
     var companies_url = "{{companies_url}}";  
     var countries_url = "{{countries_url}}";  
     var references_url = "{{references_url}}"; 
-    var tags_url = "{{tags_url}}";  
+    var tags_url = "{{tags_url}}"; 
+    var list_url = "{% url 'etilog:home' %}";
 
 </script>
 {% endblock script %}

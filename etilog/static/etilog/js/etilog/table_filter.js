@@ -18,15 +18,22 @@ $(document).ready(function() {
 			
 		});
 	$('.f_tagsinput').on('itemRemoved', function(event) {
-		var modname = $(this).attr('name');
-		var el_id = '#id_row_f_' + modname;
-		$(el_id).hide();
+		if ($(this).tagsinput('items').length == 0 ){
+			var modname = $(this).attr('name');
+			var el_id = '#id_row_f_' + modname;
+			$(el_id).hide();				
+		}
+
 		});
 	
 	//form ajax options
 	var options = {		
+			
 			beforeSubmit: function() {
 					$("#id_message").html('calculating results …');
+					var acturl = $('#id_filterform').serialize(); //
+					var searchurl = list_url +  'search?' + acturl; //list_url: etilog:home
+					//window.history.pushState("", "", searchurl); //TODO direct url search
 			},
 			success : function(response) {
 					var data = response.data;
@@ -36,8 +43,10 @@ $(document).ready(function() {
 					set_topheadaer()//new th elements
 					prepare_list();
 					startanimation(); // only first time
+					
 
-				}
+				},
+			url: list_url, //needed due to search url
 			};
 	// pass options to ajaxForm
 	$('#id_filterform').ajaxForm(options);
