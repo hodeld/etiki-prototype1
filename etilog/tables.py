@@ -148,10 +148,11 @@ class ImpEvTable(tables.Table):
     '''
     basic table for impact events
     '''
-    
-    date_published = tables.DateColumn(verbose_name='Date', format = 'M Y', 
+    #names of columns need to be in prepare_list as valueNames
+    date = tables.DateColumn(verbose_name='Date', accessor='date_display', format = 'M Y', 
                                        attrs = get_attrs(sort = True, datasort = 'date_sort'))
-    date_sort = tables.DateColumn(accessor='date_published', format = 'Ymd',
+
+    date_sort = tables.DateColumn(accessor='date_display', format = 'Ymd',
                                   attrs = get_attrs(hide = True)
                                   )
     
@@ -159,7 +160,7 @@ class ImpEvTable(tables.Table):
                                attrs = get_attrs(sort = True, datasort = 'sudom_sort'))
     sudom_sort = tables.Column(accessor='sust_domain', attrs = get_attrs(hide = True))
     
-    summary = tables.Column(attrs = get_attrs(hide_mobile = True, hover = True))
+    summary = tables.Column(accessor = 'summary_display', attrs = get_attrs(hide_mobile = True, hover = True))
     
     country = tables.Column(accessor = 'country_display', 
                             attrs = get_attrs(hide_mobile = True, sort = True))
@@ -180,7 +181,7 @@ class ImpEvTable(tables.Table):
         
         exclude = ('created_at', 'updated_at', )
         #defines also order of columns
-        fields = ('sust_domain', 'topics', 'company', 'date_published', 
+        fields = ('sust_domain', 'topics', 'company', 'date', 
                    'country',   'reference', 'summary')
         #orderable = False #for all columns
         attrs = {'class': etiki_table_classes, #bootstrap4 classes ;table-responsive: not working with sticky
@@ -195,19 +196,11 @@ class ImpEvTable(tables.Table):
     
     def render_copy(self):
         return 'copy!'
-    def render_summary(self, value):
+    def render_summary(self, value, record):
+        #if record.summara
         val_short = str(value)[:40]
         return  val_short + '…'
-    
-    def value_date_published(self, value, record): #only value changed, rendering normal
-        if record.date_impact:
-            value = record.date_impact
-        return  value
-    
-    def render_country(self, value, record): #render_foo works only if there is a value
-        if record.country:
-            value = record.country
-        return  value
+
     
     #adds column name as css class in td tag -> for List.js:
     def get_column_class_names(self, classes_set, bound_column):
