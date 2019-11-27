@@ -132,7 +132,7 @@ class ImpactEvent (models.Model):
                         (8, 'doublepara'), 
                         (9, 'longtext'),
                         (10, 'inlongp'),
-                         
+                        (11, 'parsed manually')                        
                        ]
     
     

@@ -4,20 +4,17 @@ Created on 2.8.2019
 @author: daim
 '''
 from django import forms
-from django.db.models import OuterRef
 from django.urls import reverse_lazy
-import json
 
-from bootstrap_datepicker_plus import DatePickerInput
+
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Column, Submit, ButtonHolder, Button, HTML
-from crispy_forms.bootstrap import  FormActions, FieldWithButtons
+from crispy_forms.layout import Layout, Field, Row, Column, Submit
 
 #models
 from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
 from .fields import ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn
 from .fields import DateYearPicker, DateYearPickerField
-from .fields import RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics
+from .fields import RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, ImpactEventBtns
 
 
     
@@ -170,7 +167,9 @@ class ImpactEventForm(forms.ModelForm):
         
         #crispy form layout:
         self.helper = FormHelper()
+        self.helper.form_id = 'id_impevform'
         self.helper.layout = Layout(
+            ImpactEventBtns(),
             Row(
                 Column(UrlWBtn('source_url'), 
                        css_class='col-12', )
@@ -179,6 +178,10 @@ class ImpactEventForm(forms.ModelForm):
                 Column(DateYearPickerField('date_published'), css_class=CSS_COL_CLS),
                 Column(DateYearPickerField('date_impact'), css_class=CSS_COL_CLS)
             ),
+            Row(
+                Column(Field('country'), 
+                       css_class='col-12', )
+                ), 
             Row(
                 Column(CompanyWBtn(fieldname = 'company',
                                    mainmodel = 'impev'), 
@@ -208,16 +211,14 @@ class ImpactEventForm(forms.ModelForm):
             Field('article_html'),
             Field('result_parse_html'),
             
-            ButtonHolder(
-                Submit('submit', 'Save Impact Event', css_class='btn btn-secondary' ),
-                Button('next', 'Next', css_class='btn btn-light', onclick="next_ie();" )
-                )
+            ImpactEventBtns(),
         )
         
                   
     class Meta: #only for model fields
         model = ImpactEvent
         fields = ['source_url', 'date_published', 'date_impact', 'company', 'reference', 
+                  'country',
                   'sust_domain', 'sust_tendency', 'sust_tags',
                   'summary', 'comment',
                   'article_text', 'article_title', 'date_text', 'article_html', 'result_parse_html'
@@ -239,6 +240,7 @@ class ImpactEventForm(forms.ModelForm):
             'date_impact': ('when did it happen'),
             'reference': ('where was it published'),
             'company': ('which company was concerned'),
+            'country': ('where did it happen'),
         }
         help_texts = {
            'date_published': (''),

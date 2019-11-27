@@ -17,18 +17,20 @@ $(document).ready(function() {
 					var el_id = '#id_' + item;
 					$(el_id).addClass('is-invalid') //django class
 					}); 
+
 				//$("#id_impevform").html(response.form); // to show errors
 			}
 			else {
 				$("#id_impev_msg").html(msg);
 				$('.is-invalid').removeClass('is-invalid') //django class
+				window.history.pushState("", "", response.upd_url);
 				window.scrollTo(0, 0);
 			}
 		}
 	
 	};
 	// pass options to ajaxForm
-	$('#id_impevform').ajaxForm(formoptions);
+	$('#id_impevform').ajaxForm(formoptions); //id_div_impevform
 	
 	
 
@@ -56,6 +58,19 @@ $(document).ready(function() {
 function next_ie(){
 	window.location.href = next_id_url; //as user clicked on a link
 }
+function new_ie(){
+	$('#id_impevform').trigger("reset");
+	//$('.autocompwidget').val(''); $('textarea').val('');
+	
+	$('#id_article_text').val('') ;       
+    $("#id_articleshow").html('');
+    $("#id_titleshow").html('');
+    $("#id_url_link").html('');
+    $("#id_url_link").attr("href", '');
+	load_tags()
+	window.history.pushState("", "", new_ie_url);
+}
+
 	
 function extract_text(ele){	
 	var source_url = $("#id_source_url").val();
@@ -82,9 +97,14 @@ function extract_text(ele){
 		        $("#id_article_title").val(stitle);
 		        $("#id_article_html").val(shtml);	        
 		        $("#id_articleshow").html(shtml);
-		        $('img').hide()
+		        $('img').hide();
+		        $( "iframe" ).each(function( index ) { //to hide videos
+		        	  $( this ).parent().hide();
+		        });
+		        
+		        
 		        $("#id_url_link").html(source_url);
-		        $("#id_url_link").attr("href", source_url)
+		        $("#id_url_link").attr("href", source_url);
 		        $("#id_titleshow").html(stitle);
 		        
 			}	

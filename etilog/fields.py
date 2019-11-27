@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.db.models import Count
 
 #crispoy
-from crispy_forms.layout import Layout, Field, Row, Column, Div, Button, HTML, ButtonHolder
+from crispy_forms.layout import Layout, Field, Row, Column, Div, Button, HTML, ButtonHolder, Submit
 from crispy_forms.bootstrap import  InlineRadios, FieldWithButtons, StrictButton
 #datepicker
 from bootstrap_datepicker_plus import DatePickerInput
@@ -227,3 +227,14 @@ class RowTopics(Layout):
                     css_class = col_class  )  
                 )
             )                           
+
+class ImpactEventBtns(Layout):
+    def __init__(self):
+        super(ImpactEventBtns, self).__init__( 
+            ButtonHolder(
+                Submit('submit', 'Save Impact Event', css_class='btn btn-secondary' ),
+                Button('new', 'New', css_class='btn btn-secondary', onclick="new_ie();" ),
+                Button('next', 'Next', css_class='btn btn-light', onclick="next_ie();" )
+                )
+            ) 
+        

@@ -237,9 +237,13 @@ def impact_event_change(request, ietype = 'new', ie_id = None):
             
         to_json = {}
         if form.is_valid():
-            form.save()            
+            newie = form.save()  
+            newie_id = newie.pk          
             to_json['is_valid'] = 'true'
-            to_json['message'] = message            
+            to_json['message'] = message  
+            update_url = reverse('etilog:impactevent_update', kwargs={'ie_id': newie_id} ) 
+            to_json['upd_url'] = update_url           
+                 
             
         else:
             message = form.errors.__html__() #html
