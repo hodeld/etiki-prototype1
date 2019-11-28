@@ -237,4 +237,13 @@ class ImpactEventBtns(Layout):
                 Button('next', 'Next', css_class='btn btn-light', onclick="next_ie();" )
                 )
             ) 
+class Readonly(Layout):
+
+    
+    def __init__(self, fieldname,  *args, **kwargs):
+        html_str = '<p class="rdonly">{{ form.initial.reference }}</p>' #% fieldname
+        super(Readonly, self).__init__(
+            HTML(html_str)           
+            )
+            #)
         

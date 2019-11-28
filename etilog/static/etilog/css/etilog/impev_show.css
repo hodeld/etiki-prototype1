@@ -1,0 +1,26 @@
+:root {
+  --full_bckgrnd: rgba(38, 33, 32, 1);
+  --trans_bckgrnd: rgba(38, 33, 32, .8);
+  --light_bckgrnd: rgba(255, 255, 255, .3); /*on top */
+  --etikigreen: var(--info) /*#3E7480; */
+}
+
+
+.div_rdonly{
+	margin: .3rem;
+	padding: .3rem;
+    vertical-align: top;
+    background-color:var(--light_bckgrnd);
+    color: black;
+	
+}
+
+
+#impact_show_form{
+	background-color: var(--full_bckgrnd);
+	color: white;
+	/* Add a font */
+	font-family: "Courier New", Courier, monospace;
+	/* Set the font-size to 25 pixels */
+	font-size: 1em; /*25px;*/
+}

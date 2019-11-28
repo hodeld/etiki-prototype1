@@ -5,6 +5,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth import logout
+from django.forms.models import model_to_dict
 import json
 
 #from 3rd apps
@@ -18,7 +19,8 @@ from etilog.models import SustainabilityTag
 from .tables import ImpEvTable, ImpEvTablePrivat
 #forms
 from .forms import (ImpactEventForm, NewSource, CompanyForm, ReferenceForm, 
-                    SearchForm, FreetextForm, TopicForm)
+                    SearchForm, FreetextForm, TopicForm,
+                    ImpEvShow)
 #forms
 from .filters import ImpevOverviewFilter
 
@@ -127,6 +129,24 @@ def overview_impevs(request):
                                                                  'form': form
                                                                  })
 
+def impact_event_show(request, ie_id):
+    if request.user.is_authenticated:
+        limit_filt = 1000
+        Table = ImpEvTablePrivat
+    else:
+        limit_filt = 50
+        Table = ImpEvTable
+    table_qs = ImpactEvent.objects.filter(id = ie_id)   
+    table = Table(table_qs)
+    row = table.paginated_rows[0]
+    items = row.items
+    ie = ImpactEvent.objects.get(id = ie_id)
+    ie_dict = model_to_dict(ie)
+    
+    return render(request, 'etilog/impev_show.html', {'ie_dict': ie_dict,
+                                                      'items': items})
+
+    
 def export_csv_nlp(request):
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')

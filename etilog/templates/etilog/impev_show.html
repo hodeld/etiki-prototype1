@@ -1,0 +1,21 @@
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %}
+{% load static %}
+{% block head_css %} 
+
+<link rel="stylesheet" type="text/css"
+href="{% static 'etilog/css/etilog/impev_show.css' %}">
+
+
+{% endblock head_css %} 
+
+{% block content %} 
+<div class="row justify-content-center">
+
+	<div class="col-12 d-flex flex-wrap" id="impact_show_form">
+		{% include 'etilog/impev_show_fields.html' %} 
+	</div>
+
+</div>
+{% endblock content %} 
+
