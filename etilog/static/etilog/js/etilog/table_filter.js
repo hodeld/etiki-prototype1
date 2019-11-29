@@ -38,15 +38,18 @@ $(document).ready(function() {
 			success : function(response) {
 					var data = response.data;
 					var msg = response.message;
+					var iedels = response.ie_details;
+					
+					//ie_details = JSON.parse("{{ ie_details |escapejs }}"); 
 					$("#id_message").html(msg);
 					$("#id_ovtable").html(data);
 					set_topheadaer()//new th elements
 					prepare_list();
-					startanimation(); // only first time
+					startanimation(); // only first time when table is hidden
 					
 
 				},
-			url: list_url, //needed due to search url
+			url: list_url, //needed to be defined due to searchurl
 			};
 	// pass options to ajaxForm
 	$('#id_filterform').ajaxForm(options);

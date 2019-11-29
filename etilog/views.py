@@ -90,8 +90,6 @@ def overview_impevs(request):
     table = Table(table_qs)
     table.order_by = '-date_published' #needed?
     #cnt_ies = filt.qs.count() 
-    
-    
     RequestConfig(request, paginate=False).configure(table) 
     
     searchform = SearchForm() #Filter ServerSide
@@ -102,6 +100,8 @@ def overview_impevs(request):
     references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
     tags_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'tags'})
     
+    ie_details = load_ie_details(table)
+    
     msg_results = msg_results + ' of %d in total' % cnt_tot
     
     if filter_dict:
@@ -111,6 +111,7 @@ def overview_impevs(request):
                                                                            )
         d_dict['data'] = rend
         d_dict['message'] = msg_results
+        d_dict['ie_details'] = ie_details
         return HttpResponse(json.dumps(d_dict), content_type='application/json')
 
                                                                            
@@ -126,25 +127,24 @@ def overview_impevs(request):
                                                                  'references_url': references_url,
                                                                  'tags_url': tags_url,
                                                                  'message': msg_results,
-                                                                 'form': form
+                                                                 'form': form,
+                                                                 'ie_details': ie_details,
                                                                  })
 
 def impact_event_show(request, ie_id):
     if request.user.is_authenticated:
-        limit_filt = 1000
         Table = ImpEvTablePrivat
     else:
-        limit_filt = 50
         Table = ImpEvTable
     table_qs = ImpactEvent.objects.filter(id = ie_id)   
     table = Table(table_qs)
     row = table.paginated_rows[0]
-    items = row.items
+
     ie = ImpactEvent.objects.get(id = ie_id)
     ie_dict = model_to_dict(ie)
     
     return render(request, 'etilog/impev_show.html', {'ie_dict': ie_dict,
-                                                      'items': items})
+                                                      'row': row})
 
     
 def export_csv_nlp(request):
@@ -434,6 +434,20 @@ def load_names(request, modelname):
     data = json.dumps(list(q_names))
     return HttpResponse(data, content_type='application/json')
 
+def load_ie_details(table):
+    ie_dt_dict = {}
+    for row in table.paginated_rows:
+        html_str = render_to_string( 'etilog/impev_show_fields.html', {'row': row})
+        id_ie  = row.record.pk
+        ie_dt_dict[id_ie] = html_str
+        
+    #data = json.dumps(list(q_names))
+    data = json.dumps(ie_dt_dict)
+    return data
+
+class App(dict):
+    def __str__(self):
+        return json.dumps(self)
 
 #used in New IE Form     
 def load_sustcategories_notusedanymore(request): #, 

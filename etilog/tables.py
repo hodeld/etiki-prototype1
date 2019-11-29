@@ -39,7 +39,9 @@ def get_attrs(hide_mobile = False, hide = False, hover = False, sort = False, da
         return attr_hide_always
     td_class = ''
     th_class = ''
-    attrs_dic = {'td': {'class': ''}, 
+    attrs_dic = {'td': {'class': '',
+                        'onclick': lambda record:  'show_details(this, %d)' %record.pk
+                        }, 
                  'th': {'class': ''}
                  }
     if hide_mobile:
@@ -63,6 +65,8 @@ def get_attrs(hide_mobile = False, hide = False, hover = False, sort = False, da
     attrs_dic['th']['class'] =  th_class
     if th_datasort:
         attrs_dic['th']['data-sort'] =  th_datasort
+    
+    #attrs_dic['td']['onclick'] =  'show_details(this)'
 
     return attrs_dic
         
