@@ -9,11 +9,12 @@ $(document).ready(function() {
 	//TODO use waypoints in future, also for background at top which will be behind thead
 	$(window).scroll(function () {
 		if ($(document).scrollTop() > 100) {
+			var cssclass = "d-block"; //"d-md-block";
 	        $('#id_contsearch').addClass("scrolled");
-	        $('#small_logo').addClass("d-md-block") //only on large displays shown
+	        $('#small_logo').addClass(cssclass) //only on large displays shown
 	    } else {
 	        $('#id_contsearch').removeClass("scrolled");
-	        $('#small_logo').removeClass("d-md-block")
+	        $('#small_logo').removeClass(cssclass)
 	    }
 	});
 	
