@@ -38,9 +38,8 @@ $(document).ready(function() {
 			success : function(response) {
 					var data = response.data;
 					var msg = response.message;
-					var iedels = response.ie_details;
 					
-					//ie_details = JSON.parse("{{ ie_details |escapejs }}"); 
+					ie_details = JSON.parse(response.ie_details); 
 					$("#id_message").html(msg);
 					$("#id_ovtable").html(data);
 					set_topheadaer()//new th elements

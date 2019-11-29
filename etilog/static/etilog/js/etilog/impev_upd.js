@@ -51,7 +51,7 @@ $(document).ready(function() {
 		$('#id_date_published').data("DateTimePicker").defaultDate(date_str);
 
 	});
-	$('img').hide() //hide img from html text
+	hide_img_vid();
 
 });
 
@@ -97,10 +97,9 @@ function extract_text(ele){
 		        $("#id_article_title").val(stitle);
 		        $("#id_article_html").val(shtml);	        
 		        $("#id_articleshow").html(shtml);
-		        $('img').hide();
-		        $( "iframe" ).each(function( index ) { //to hide videos
-		        	  $( this ).parent().hide();
-		        });
+		        
+		        hide_img_vid() 
+		        
 		        
 		        
 		        $("#id_url_link").html(source_url);
@@ -149,6 +148,16 @@ function load_tags(){
 			// server
 		}
 
-	});
+	});	
+}
+
+function hide_img_vid(){
+	$('img').hide();
+    var vidtags = ["iframe", "video"];
+    vidtags.forEach(function (item, index) { //to hide videos
+    	$( item ).each(function( index ) { 
+        	  $( this ).parent().hide();
+        });
+    });
 	
 }

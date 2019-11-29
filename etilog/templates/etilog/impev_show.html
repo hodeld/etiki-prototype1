@@ -9,13 +9,23 @@ href="{% static 'etilog/css/etilog/impev_show.css' %}">
 
 {% endblock head_css %} 
 
+
+
 {% block content %} 
 <div class="row justify-content-center">
 
-	<div class="col-12 d-flex flex-wrap" id="impact_show_form">
-		{% include 'etilog/impev_show_fields.html' %} 
+
+	<div class="col-12 bckground" id="table_false">
+	<br>
+	<br>
+	<br>
+		<div class="col-12 d-flex flex-wrap detailrow" id="impact_show_row">
+		"{{ ie_details | safe }}" 
+		</div>
+	<br>
+	<br>
+	<br>
 	</div>
 
 </div>
 {% endblock content %} 
-

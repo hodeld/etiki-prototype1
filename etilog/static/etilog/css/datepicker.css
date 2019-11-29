@@ -1,11 +1,11 @@
 /*DATEINPUT*/
-.date {
+.datepicker .date {
 	width: 15em;
 	margin-right: 2em !important;
 }
 
 
-.dateyearpicker {
+.datepicker .dateyearpicker {
 	height: 20%;
 	color : white;
 	background-color: transparent;

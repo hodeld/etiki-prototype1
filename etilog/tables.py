@@ -232,4 +232,18 @@ class ImpEvTablePrivat(ImpEvTable):
                 }
         template_name = 'etilog/etilog_djangotable.html'  
         sequence = ('id', 'copy', '...')
+
+class ImpEvDetails(ImpEvTable):
+    '''
+    fields for impact events details
+    subclassing from public table
+    '''
+    sudom_sort = None
+    reference_sort = None
+    date_sort = None
+    
+    def render_summary(self, value, record):
+        #if record.summara
+        val_long = str(value)[:300]
+        return  val_long 
     

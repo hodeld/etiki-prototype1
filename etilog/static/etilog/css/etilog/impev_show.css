@@ -6,19 +6,36 @@
 }
 
 
-.div_rdonly{
+.div_iedetail{
 	margin: .3rem;
 	padding: .3rem;
     vertical-align: top;
-    background-color:var(--light_bckgrnd);
+    background-color:var(--full_bckgrnd);
     color: black;
 	
 }
 
-
-#impact_show_form{
-	background-color: var(--full_bckgrnd);
+.iedetail{
+	white-space: normal;
 	color: white;
+}
+.detail_label{
+	color: var(--light_bckgrnd);
+
+}
+
+.bckground{
+	/*max-width: 500px;*/
+	padding: 10px 20px;
+	margin: 10px auto;
+	border-radius: 8px;
+	background-color: var(--trans_bckgrnd);
+	/*display: None;
+	z-index: 10;
+	position: fixed;*/
+}
+.detailrow{
+	background-color: var(--light_bckgrnd);
 	/* Add a font */
 	font-family: "Courier New", Courier, monospace;
 	/* Set the font-size to 25 pixels */

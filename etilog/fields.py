@@ -109,7 +109,7 @@ class DateYearPicker(DatePickerInput):
 class DateYearPickerField(Layout):
     def __init__(self, field_name,  *args, **kwargs):
         super(DateYearPickerField, self).__init__(           
-            Field(field_name, autocomplete='off')
+            Field(field_name, autocomplete='off', wrapper_class='datepicker')
             )
         
                 
