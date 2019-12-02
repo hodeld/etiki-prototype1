@@ -21,15 +21,13 @@ function numOfVisibleCols(tableid) {
 }
 
 function show_details(ele, ie_id) {
-	$('.detailrow').hide(); //oder open will be hidden
+	toggle_details();
 	var tableid = '#impev-list';
 	var parele = $(ele).parent(); //original row
 	var rowid =   ie_id + '_row';
 	var detail_id = rowid + '_detail';
-	$(parele).attr('id', rowid )
-	
+	$(parele).addClass('parentrow' )
 
-	
 	var colcnt = numOfVisibleCols(tableid) //6; //TODO
 	var rowstr1 = 'tr scope="row" class="detailrow" id="%%detailid" ';
 	var rowstr3 ='<td colspan = "%%colcnt" > %%htmlstr </td> ';	
@@ -41,13 +39,19 @@ function show_details(ele, ie_id) {
 	$(parele).hide();
 	$(parele).after(rowstr);
 	$('#'+ detail_id).click(function(){
-		hide_details(this,  rowid )		
+		toggle_details()		
 	});
 	
 }
 
-function hide_details(ele, pare_id) {
-	$(ele).hide();
-	$('#'+ pare_id).show();
+function toggle_details() {
+	$('.detailrow').hide(); //oder open will be hidden
+	$('.parentrow').show(); //oder open will be hidden
+	
+}
+function show_fulldetails(ie_id) {
+	$('.fullsite-wrapper').hide()
+	var html_str = ie_details[ie_id];
+	$('#impev_full_detail').html(html_str)
 	
 }
