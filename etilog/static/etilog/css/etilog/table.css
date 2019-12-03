@@ -23,10 +23,15 @@
 .table-etiki .sustcl	 {
 	vertical-align: middle;	
 }	
-.copy, .id {
+.table-etiki .copy, .id{
 	width: 3%;
 	white-space: normal;
 }
+.table-etiki .details {
+	width: 6%;
+	white-space: normal;
+}
+
 .table-etiki td	 {
 	overflow: hidden;
     white-space: nowrap;
@@ -115,4 +120,11 @@ button.sort .caret { display:none; }
 button.sort.asc .caret { display:inline-block; }
 button.sort.desc .caret { display:inline-block; }
 
+/*DETAILS*/
+
+.detailrow{
+	background-color: var(--light_bckgrnd);
+	/* Add a font */
+
+}
 

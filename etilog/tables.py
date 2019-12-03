@@ -179,6 +179,11 @@ class ImpEvTable(tables.Table):
                               )
     reference_sort = tables.Column(accessor='reference', attrs = get_attrs(hide = True))
 
+    details = tables.Column(verbose_name= '',
+                            accessor = 'id',
+                            attrs = get_attrs()
+                            )
+
     
     class Meta:
         model = ImpactEvent
@@ -200,6 +205,9 @@ class ImpEvTable(tables.Table):
     
     def render_copy(self):
         return 'copy!'
+    def render_details(self):
+        return '…'
+    
     def render_summary(self, value, record):
         #if record.summara
         val_short = str(value)[:40]
@@ -241,9 +249,17 @@ class ImpEvDetails(ImpEvTable):
     sudom_sort = None
     reference_sort = None
     date_sort = None
+    details = None
+
     
     def render_summary(self, value, record):
         #if record.summara
         val_long = str(value)[:300]
         return  val_long 
+    
+    class Meta:
+
+        sequence = ('sust_domain', 'company', 'date', 
+                   'country',   'reference', 'topics', 'summary', '...')
+
     

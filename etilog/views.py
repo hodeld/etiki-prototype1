@@ -133,7 +133,7 @@ def overview_impevs(request):
 
 def impact_event_show(request, ie_id):
     table_qs = ImpactEvent.objects.filter(id = ie_id) 
-    html_str = load_ie_details(table_qs, testonly = True) #same as in table
+    html_str = load_ie_details(table_qs, single_ie = True) #same as in table
     ie = table_qs[0]
     
     
@@ -430,14 +430,21 @@ def load_names(request, modelname):
     data = json.dumps(list(q_names))
     return HttpResponse(data, content_type='application/json')
 
-def load_ie_details(qs, testonly = False):
+def load_ie_details(qs, single_ie = False):
     ie_fields = ImpEvDetails(qs)
     ie_dt_dict = {}
     for row in ie_fields.paginated_rows:
-        html_str = render_to_string( 'etilog/impev_show_fields.html', {'row': row})
         id_ie  = row.record.pk
+        if single_ie == False:
+            detail_url = reverse('etilog:impactevent_show', args=(id_ie,))
+        else:
+            detail_url = None
+        html_str = render_to_string( 'etilog/impev_show_fields.html', {'row': row,
+                                                                       'detail_url': detail_url
+                                                                       })
+        
         ie_dt_dict[id_ie] = html_str
-        if testonly == True:
+        if single_ie == True:
             return html_str
         
     #data = json.dumps(list(q_names))
