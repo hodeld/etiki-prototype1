@@ -1,31 +1,4 @@
-:root {
-  --full_bckgrnd: rgba(38, 33, 32, 1);
-  --trans_bckgrnd: rgba(38, 33, 32, .8);
-  --light_bckgrnd: rgba(255, 255, 255, .3); /*on top */
-  --etikigreen: var(--info) /*#3E7480; */
-}
 
-
-body, html {
-  background:  url("/static/etilog/img/background.gif")no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  background-size: cover;
-  -o-background-size: cover;
-  height: 100%;
-}
-noscript {
-	position: absolute;
-	text-align: center;
-	top: 100px;
-	left: 15px;
-	color: black;
-	/* Add a font */
-	font-family: "Courier New", Courier, monospace;
-	/* Set the font-size to 25 pixels */
-	font-size: 1.5em; /*25px;*/
-	font-weight: bold;
-}
 .fullsite-wrapper{
 	/* Background image */
 	/*background-image: url("/static/etilog/img/background.gif"); */
@@ -38,11 +11,6 @@ noscript {
 	/* Add position: relative to enable absolutely positioned elements inside the image (place text) position: relative; */
 	
 	/* Add a white text color to all elements inside the .bgimg container */
-	color: white;
-	/* Add a font */
-	font-family: "Courier New", Courier, monospace;
-	/* Set the font-size to 25 pixels */
-	font-size: 1em; /*25px;*/
 }
 
 /* Position text in the top-left corner */
@@ -125,59 +93,8 @@ hr {
 #id_contsearch.scrolled {
     background-color: var(--full_bckgrnd);
 }
-#small_logo {
+#small_logo_notused {
     height: 100%; 
     white-space: nowrap; /* This is required unless you put the helper span closely near the img */
     text-align: center;
-}
-
-
-.helper {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-}
-
-#img_sm {
-    vertical-align: middle; /* is already in bootstrap img class */
-    max-height: 25px; /* to define img size */
-}
-
-.center_div_notused {
-	margin: 0 auto;
-	width: 80% /* value of your choice which suits your alignment */
-}
-/*REST TODO */
-
-.navbar-dark {
-	background-color: #3E7480;
-}
-.navbar-etilog a {
-	color: #3E7480;
-}
-body {
-	/* default is 1rem or 16px -> for table*/
-	font-size: 12px;
-	font-family: "Courier New", Courier, monospace;
-}
-
-.text-primary {
-	color: #3E7480;
-}
-
-
-
-
-
-.hidden-label{
-	visibility: hidden;
-}
-
-
-#id_impev_msg {
-	background-color: lightgreen;
-}
-
-.whitehr{
-	border-color: #eeeeee;
 }

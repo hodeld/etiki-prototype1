@@ -1,6 +1,6 @@
 /*TABLE*/
 .table-etiki {
-	font-size: 1em;
+	font-size: 12px;
 	table-layout: fixed; /* total width according to container, width of column acc. to first row*/
 }
 

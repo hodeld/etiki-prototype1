@@ -1,9 +1,3 @@
-:root {
-  --full_bckgrnd: rgba(38, 33, 32, 1);
-  --trans_bckgrnd: rgba(38, 33, 32, .8);
-  --light_bckgrnd: rgba(255, 255, 255, .3); /*on top */
-  --etikigreen: var(--info) /*#3E7480; */
-}
 
 
 .div_iedetail{
@@ -24,20 +18,3 @@
 
 }
 
-.bckground{
-	/*max-width: 500px;*/
-	padding: 10px 20px;
-	margin: 10px auto;
-	border-radius: 8px;
-	background-color: var(--trans_bckgrnd);
-	/*display: None;
-	z-index: 10;
-	position: fixed;*/
-}
-.detailrow{
-	background-color: var(--light_bckgrnd);
-	/* Add a font */
-	font-family: "Courier New", Courier, monospace;
-	/* Set the font-size to 25 pixels */
-	font-size: 1em; /*25px;*/
-}

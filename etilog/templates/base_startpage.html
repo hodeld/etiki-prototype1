@@ -22,7 +22,9 @@
 <title>{% block title %}etiki.org | it's coming {%endblock title%} </title> 
 
 <link rel="stylesheet" type="text/css"
-	href="{% static 'etilog/css/style_startpage.css' %}">
+	href="{% static 'etilog/css/style_prototype.css' %}">
+<link rel="stylesheet" type="text/css"
+	href="{% static 'etilog/css/etilog/startpage.css' %}">
 <link rel="stylesheet" type="text/css"
 	href="{% static 'etilog/css/datepicker.css' %}">
 <link rel="stylesheet" type="text/css"
@@ -69,7 +71,7 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 			</div>
 		<div class="col-1 col-lg-3"></div>
 		</div>
-		{% include 'nav_search_bar.html' %}
+		{% include 'nav_search_bar_hidden.html' %}
 		{% include 'etilog/impactevents_overview_filter.html' %}
 		<div class = "container">
 		<div class= "row justify-content-center">

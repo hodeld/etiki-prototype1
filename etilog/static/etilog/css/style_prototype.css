@@ -1,0 +1,99 @@
+:root {
+  --full_bckgrnd: rgba(38, 33, 32, 1);
+  --trans_bckgrnd: rgba(38, 33, 32, .8);
+  --light_bckgrnd: rgba(255, 255, 255, .3); /*on top */
+  --etikigreen: var(--info) /*#3E7480; */
+}
+
+
+body, html {
+  background:  url("/static/etilog/img/background.gif")no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+  height: 100%;
+  	/* default is 1rem or 16px -> for table*/
+	font-family: "Courier New", Courier, monospace;
+}
+noscript {
+	position: absolute;
+	text-align: center;
+	top: 100px;
+	left: 15px;
+	color: black;
+	/* Add a font */
+	font-family: "Courier New", Courier, monospace;
+	/* Set the font-size to 25 pixels */
+	font-size: 1.5em; /*25px;*/
+	font-weight: bold;
+}
+.fullsite-wrapper{
+
+	/* Add a white text color to all elements inside the .bgimg container */
+	color: white;
+	/* Add a font */
+}
+
+
+
+
+.bckground{
+	/*max-width: 500px;*/
+	padding: 10px 20px;
+	margin: 10px auto;
+	border-radius: 8px;
+	background-color: var(--trans_bckgrnd);
+	/*display: None;
+	z-index: 10;
+	position: fixed;*/
+}
+.bckground.transp{ 
+	background-color: transparent;
+}
+.bckground.fullbg{ 
+	background-color: var(--full_bckgrnd);
+}
+.navbar-dark {
+    background-color: var(--full_bckgrnd);
+    padding: 10px 20px;
+	margin: 0;
+	border-radius: 8px;
+    z-index: 800; 
+    display: block; /*because navbar has flex*/
+}
+
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+#img_sm {
+    vertical-align: middle; /* is already in bootstrap img class */
+    max-height: 25px; /* to define img size */
+}
+
+label, .nav-link{
+	font-size: 12px!important;
+}
+
+#div_id_search{
+	/* overwrite form-group css, also needed that navbar not heigher*/
+	margin-bottom:0;
+}
+
+/*white line */
+.whitehr{
+	border-color: #eeeeee;
+}
+.smfont{
+	font-size: 12px; /*25px;*/	
+}
+
+.txtellipsis {
+	overflow: hidden;
+    white-space: nowrap;
+    word-break: normal;
+    text-overflow: ellipsis;
+}

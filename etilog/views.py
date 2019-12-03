@@ -133,9 +133,14 @@ def overview_impevs(request):
 
 def impact_event_show(request, ie_id):
     table_qs = ImpactEvent.objects.filter(id = ie_id) 
-    html_str = load_ie_details(table_qs, testonly = True)
+    html_str = load_ie_details(table_qs, testonly = True) #same as in table
+    ie = table_qs[0]
     
-    return render(request, 'etilog/impev_show.html', {'ie_details': html_str,})
+    
+    
+    return render(request, 'etilog/impev_show.html', {'ie_details': html_str,
+                                                      'ie': ie
+                                                      })
 
     
 def export_csv_nlp(request):

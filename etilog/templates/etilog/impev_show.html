@@ -1,4 +1,4 @@
-{% extends 'base.html' %} 
+{% extends 'base_prototype.html' %} 
 {% load crispy_forms_tags %}
 {% load static %}
 {% block head_css %} 
@@ -10,22 +10,37 @@ href="{% static 'etilog/css/etilog/impev_show.css' %}">
 {% endblock head_css %} 
 
 
+{% block script %} 
+<script src="{% static 'etilog/js/etilog/impev_show.js' %}"></script> 
+{% endblock script %}
 
-{% block content %} 
+{% block header %} 
 <div class="row justify-content-center">
 
 
-	<div class="col-12 bckground" id="table_false">
-	<br>
-	<br>
-	<br>
-		<div class="col-12 d-flex flex-wrap detailrow" id="impact_show_row">
-		"{{ ie_details | safe }}" 
+		<div class="col-12 col-lg-10 d-flex flex-wrap detailrow" id="impact_show_row">
+		{{ ie_details | safe }}
 		</div>
-	<br>
-	<br>
-	<br>
-	</div>
+
+
 
 </div>
+
+{% endblock header %} 
+
+{% block content %} 
+<div class="row justify-content-center">
+		<div class="col-12 col-lg-10">
+			<p class="smfont txtellipsis">		
+			original link: <a id="id_url_link" href="{{ ie.source_url  }}">{{ie.source_url  }}</a>		
+			</p>	
+			<div id="id_articleshowdiv" class="">
+				<h3 id="id_titleshow">{{ ie.article_title }}</h3>
+				<hr class = "whitehr">
+				<div id="id_articleshow" >
+					{{ ie.article_html |safe }}
+				</div>
+			</div>
+		</div>
+	</div>	
 {% endblock content %} 
