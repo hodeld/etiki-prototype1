@@ -46,9 +46,9 @@
 	padding-bottom: 15px;
 }
 /* Style the <hr> element */
-hr {
+.start_hr {
 	margin: auto;
-	width: 40%;
+	width: 40%; 
 }
 
 }

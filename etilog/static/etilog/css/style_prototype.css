@@ -97,3 +97,8 @@ label, .nav-link{
     word-break: normal;
     text-overflow: ellipsis;
 }
+
+
+.btn-link{
+	color: white !important;
+}

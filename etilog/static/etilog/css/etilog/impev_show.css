@@ -5,7 +5,7 @@
 	padding: .3rem;
     vertical-align: top;
     background-color:var(--full_bckgrnd);
-    color: black;
+	
 	
 }
 
@@ -16,5 +16,12 @@
 .detail_label{
 	color: var(--light_bckgrnd);
 
+}
+.iearticle{
+	/* needed as in table */
+	white-space: normal; 
+	word-break: normal;
+	font-size: 16px;
+	background-color:var(--full_bckgrnd);
 }
 

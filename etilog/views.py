@@ -434,13 +434,11 @@ def load_ie_details(qs, single_ie = False):
     ie_fields = ImpEvDetails(qs)
     ie_dt_dict = {}
     for row in ie_fields.paginated_rows:
-        id_ie  = row.record.pk
-        if single_ie == False:
-            detail_url = reverse('etilog:impactevent_show', args=(id_ie,))
-        else:
-            detail_url = None
+        rec = row.record
+        id_ie  = rec.pk
+        
         html_str = render_to_string( 'etilog/impev_show_fields.html', {'row': row,
-                                                                       'detail_url': detail_url
+                                                                       'rec': rec
                                                                        })
         
         ie_dt_dict[id_ie] = html_str
