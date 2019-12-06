@@ -22,44 +22,87 @@ function numOfVisibleCols(tableid) {
 
 function show_details(ele, ie_id) {
 	toggle_details(event);
+	toggle_article(event);
 	var tableid = '#impev-list';
 	var parele = $(ele).parent(); //original row
 	var rowid =   ie_id + '_row';
 	var detail_id = rowid + '_detail';
 	$(parele).addClass('parentrow' )
 
-	var colcnt = numOfVisibleCols(tableid) //6; //TODO
-	var rowstr1 = 'tr scope="row" class="detailrow" id="%%detailid" ';
+	var colcnt = numOfVisibleCols(tableid) 
+	var rowstr1 = 'tr scope="row" class="detailrow darkbg" id="%%detailid" ';
 	var rowstr3 ='<td colspan = "%%colcnt" > %%htmlstr </td> ';	
 	var rowstr = '<' + rowstr1 + '>' +  rowstr3;	
-	rowstr = rowstr.replace("%%htmlstr", ie_details[ie_id]);
+	var html_str = ie_details[ie_id][0];
+	rowstr = rowstr.replace("%%htmlstr", html_str);
 	rowstr = rowstr.replace("%%colcnt", colcnt);
 	rowstr = rowstr.replace("%%detailid", detail_id);
+	
+
 	
 	$(parele).hide();
 	$(parele).after(rowstr);
 	$('#'+ detail_id).click(function(){
 		toggle_details(event)		
 	});
+
+
+	
 	
 }
 
 function toggle_details(event) {
 	var target = $( event.target );
-	if ( target.is( "button" ) ) {
+	if ( target.is( "button" ) || target.is( "a" ) ) {
 		return;
 	}
 	else {
 	$('.detailrow').hide(); //oder open will be hidden
 	$('.parentrow').show(); //oder open will be hidden
+	toggle_article(event);
 	}
 	
 }
 
-function full_article(div_id, ele_id){
-	$(div_id).hide();
-	$(ele_id).show();
+function full_article(ele, ie_id){
+	var parele = $(ele).parent('.showbtn'); //parent div of button
+	var detrow = $(ele).parents('.detailrow'); //several levels up
+	var detcell = $(ele).parents('td'); //several levels up
+	var colcnt = $(detcell).attr('colspan');
+	
+	var rowstr1 = 'tr scope="row" class="headerrow fullartrow"  ';
+	var rowstr2 ='<td class="sticky-top darkbg headertd" colspan = "%%colcnt" > %%htmlstr </td> ';	
+	var rowstr = '<' + rowstr1 + '>' +  rowstr2;
+	var html_str = ie_details[ie_id][1]; //header row
+	rowstr = rowstr.replace("%%htmlstr", html_str);
+	rowstr = rowstr.replace("%%colcnt", colcnt);
+	$headerrow= $(rowstr);
+	
+	var rowstr1 = 'tr scope="row" class="articlerow fullartrow darkbg"  ';
+	var rowstr2 ='<td class="articletd" colspan = "%%colcnt" > %%htmlstr </td> ';	
+	var rowstr = '<' + rowstr1 + '>' +  rowstr2;
+	var html_str = ie_details[ie_id][2]; //article row
+	rowstr = rowstr.replace("%%htmlstr", html_str);
+	rowstr = rowstr.replace("%%colcnt", colcnt);
+	$artrow = $(rowstr);
+	
+	$(parele).hide();
+	$(detrow).after($headerrow);
+	
+	$headerrow.after($artrow);
 	hide_img_vid();	
+	let hi = $('#id_contsearch').outerHeight() - 2; //smaller than navbar id_navbar
+	$('.headertd').css({ top: hi }); 
+	
+	$headerrow.click(function(){
+		toggle_article(event)		
+	});
+}
+function toggle_article(event) {
+	
+	$('.fullartrow').hide(); //oder open will be hidden
+	$('.showbtn').show(); //oder open will be hidden
+	
 }
 
 function hide_full_article(self_id, ele_id){

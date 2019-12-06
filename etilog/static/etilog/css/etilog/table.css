@@ -68,7 +68,7 @@ td:nth-child(9){
 
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-  background-color:  var(--light_bckgrnd); 
+  background-color:  black; /*var(--light_bckgrnd);  */
 }
 
 /* sort styles: */
@@ -120,11 +120,4 @@ button.sort .caret { display:none; }
 button.sort.asc .caret { display:inline-block; }
 button.sort.desc .caret { display:inline-block; }
 
-/*DETAILS*/
-
-.detailrow{
-	background-color: var(--light_bckgrnd);
-	/* Add a font */
-
-}
 

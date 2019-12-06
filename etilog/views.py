@@ -433,17 +433,23 @@ def load_names(request, modelname):
 def load_ie_details(qs, single_ie = False):
     ie_fields = ImpEvDetails(qs)
     ie_dt_dict = {}
+
     for row in ie_fields.paginated_rows:
         rec = row.record
         id_ie  = rec.pk
         
-        html_str = render_to_string( 'etilog/impev_show_fields.html', {'row': row,
-                                                                       'rec': rec
+        html_fields = render_to_string( 'etilog/impev_show_fields.html', {'row': row,
+                                                                       'rec': rec #can be deleted
                                                                        })
-        
-        ie_dt_dict[id_ie] = html_str
+
         if single_ie == True:
-            return html_str
+            return html_fields
+        html_article = render_to_string( 'etilog/impev_show_article.html', {'rec': rec
+                                                                       } )       
+        
+        html_header = render_to_string( 'etilog/impev_show_article_hd.html', {'rec': rec
+                                                                       } )       
+        ie_dt_dict[id_ie] = (html_fields, html_header, html_article)
         
     #data = json.dumps(list(q_names))
     data = json.dumps(ie_dt_dict)
