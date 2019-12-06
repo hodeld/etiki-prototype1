@@ -21,6 +21,8 @@ urlpatterns = [
     path('extract_text/<slug:ie_id>', views.extract_text, name='extract_text'),
     path('extract_text_all', views.extract_text_all, name='extract_text_all'),
     path('extract_text_url/', views.extract_text_from_url, name='extract_text_url'),
+    
+    path(impev + '<slug:ie_id>', views.impact_event_show, name='impactevent_show'),
      
     path(get_data + 'get_susttags/', views.load_sust_tags, name = 'get_sust_tags'),
     path(load_data + '<slug:modelname>', views.load_names, name = 'load_jsondata'),

@@ -132,7 +132,7 @@ class ImpactEvent (models.Model):
                         (8, 'doublepara'), 
                         (9, 'longtext'),
                         (10, 'inlongp'),
-                         
+                        (11, 'parsed manually')                        
                        ]
     
     
@@ -193,6 +193,14 @@ class ImpactEvent (models.Model):
             value = self.country
         else:
             value = self.company.country
+        return  value
+    
+    @property
+    def summary_display(self):
+        if self.summary:
+            value = self.summary
+        else:
+            value = self.article_title
         return  value
     
     

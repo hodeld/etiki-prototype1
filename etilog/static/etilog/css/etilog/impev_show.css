@@ -1,0 +1,45 @@
+
+
+.div_iedetail{
+	margin: .3rem;
+	padding: .3rem;
+    vertical-align: top; 
+    border-color: white;
+    border-style: solid;
+    border-width: thin;
+    /*background-color:var(--full_bckgrnd); */
+	
+	
+}
+
+.iedetail{
+	white-space: normal;
+	color: white;
+}
+.detail_label{
+	/*color: var(--light_bckgrnd); */
+
+}
+.iearticle{
+	/* needed as in table */
+	white-space: normal; 
+	word-break: normal;
+	font-size: 16px;
+	background-color: black;
+}
+
+/*DETAILS*/
+.darkbg{
+	background-color: black;
+	
+}
+
+
+.headertd{
+	background-color: black; /*var(--light_bckgrnd); */
+
+	/* Add a font */
+}
+.articletd{
+		border-top: none!important;
+}

@@ -1,16 +1,16 @@
 /*TABLE*/
-.table-sm {
-	font-size: 1em;
+.table-etiki {
+	font-size: 12px;
 	table-layout: fixed; /* total width according to container, width of column acc. to first row*/
 }
 
-.table-sm .orderable a {
+.table-etiki.orderable a {
 	color: #3E7480;
 }
 
 /*#impev-list > table > tbody > tr:nth-child(1) > td.badge.badge-danger.sust_category*/
 
-.table-sm .sustbtn { /* button within cell */
+.table-etiki .sustbtn { /* button within cell */
 	display: block; /*centers in horizontally  */
 	margin:auto;	
 	overflow: hidden;
@@ -20,14 +20,19 @@
     line-height: .8em;
 }  
     
-.table-sm .sustcl	 {
+.table-etiki .sustcl	 {
 	vertical-align: middle;	
 }	
-.copy, .id {
+.table-etiki .copy, .id{
 	width: 3%;
 	white-space: normal;
 }
-.table-sm td	 {
+.table-etiki .details {
+	width: 6%;
+	white-space: normal;
+}
+
+.table-etiki td	 {
 	overflow: hidden;
     white-space: nowrap;
     word-break: normal;
@@ -51,7 +56,7 @@ td:nth-child(9){
 	white-space: normal;
 }
 
-th {
+.table-etiki th {
 
   position: sticky;
   position: -webkit-sticky;  /* required for Safari */
@@ -63,7 +68,7 @@ th {
 
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-  background-color:  var(--light_bckgrnd); 
+  background-color:  black; /*var(--light_bckgrnd);  */
 }
 
 /* sort styles: */

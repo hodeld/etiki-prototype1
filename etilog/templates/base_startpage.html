@@ -22,9 +22,11 @@
 <title>{% block title %}etiki.org | it's coming {%endblock title%} </title> 
 
 <link rel="stylesheet" type="text/css"
-	href="{% static 'etilog/css/style_startpage.css' %}">
+	href="{% static 'etilog/css/style_prototype.css' %}">
 <link rel="stylesheet" type="text/css"
-	href="{% static 'etilog/css/base_style.css' %}">
+	href="{% static 'etilog/css/etilog/startpage.css' %}">
+<link rel="stylesheet" type="text/css"
+	href="{% static 'etilog/css/datepicker.css' %}">
 <link rel="stylesheet" type="text/css"
 href="{% static 'etilog/css/tagsinput.css' %}">
 <link rel="stylesheet" type="text/css"
@@ -33,7 +35,12 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 </head>
 <body>
 <noscript>To use etiki please enable JavaScript!</noscript>
+<div class="container" id="impev_full_detail">
+</div>
 <div class="fullsite-wrapper container">
+	
+	
+	
 	<div class="topleft changepos">
 		<img alt="" border="0" src="{% static 'etilog/img/logoetiki.png' %}" />
 	</div>
@@ -51,7 +58,7 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 				<div id="startinfo" class="collapse show">
 					<div class="middle">
 						<h1>etiki - it's coming</h1>
-						<hr>
+						<hr class= "start_hr">
 						<h6>
 							<br>Welcome! On etiki you can lookup publications about ethical behaviour of companies and other organisations.
 						</h6>
@@ -64,7 +71,7 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 			</div>
 		<div class="col-1 col-lg-3"></div>
 		</div>
-		{% include 'nav_search_bar.html' %}
+		{% include 'nav_search_bar_hidden.html' %}
 		{% include 'etilog/impactevents_overview_filter.html' %}
 		<div class = "container">
 		<div class= "row justify-content-center">

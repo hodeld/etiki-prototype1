@@ -18,26 +18,37 @@ $(document).ready(function() {
 			
 		});
 	$('.f_tagsinput').on('itemRemoved', function(event) {
-		var modname = $(this).attr('name');
-		var el_id = '#id_row_f_' + modname;
-		$(el_id).hide();
+		if ($(this).tagsinput('items').length == 0 ){
+			var modname = $(this).attr('name');
+			var el_id = '#id_row_f_' + modname;
+			$(el_id).hide();				
+		}
+
 		});
 	
 	//form ajax options
 	var options = {		
+			
 			beforeSubmit: function() {
 					$("#id_message").html('calculating results …');
+					var acturl = $('#id_filterform').serialize(); //
+					var searchurl = list_url +  'search?' + acturl; //list_url: etilog:home
+					//window.history.pushState("", "", searchurl); //TODO direct url search
 			},
 			success : function(response) {
 					var data = response.data;
 					var msg = response.message;
+					
+					ie_details = JSON.parse(response.ie_details); 
 					$("#id_message").html(msg);
 					$("#id_ovtable").html(data);
 					set_topheadaer()//new th elements
 					prepare_list();
-					startanimation(); // only first time
+					startanimation(); // only first time when table is hidden
+					
 
-				}
+				},
+			url: list_url, //needed to be defined due to searchurl
 			};
 	// pass options to ajaxForm
 	$('#id_filterform').ajaxForm(options);
@@ -259,7 +270,7 @@ function prepare_list(){
  	
  	var impevopts = {
  			  valueNames: [ 'company', 'country', 'reference', 'sust_domain', 'topics',
- 				  'date_published', 'date_sort', 'reference_sort', 'sudom_sort',
+ 				  'date', 'date_sort', 'reference_sort', 'sudom_sort',
  				  'id'],
  			  page: 20,
  			  pagination: {

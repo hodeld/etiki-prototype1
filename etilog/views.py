@@ -5,6 +5,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth import logout
+from django.forms.models import model_to_dict
 import json
 
 #from 3rd apps
@@ -15,10 +16,11 @@ from .models import ImpactEvent, Company, SustainabilityCategory, Reference, Cou
 from etilog.models import SustainabilityTag
 
 #tables
-from .tables import ImpEvTable, ImpEvTablePrivat
+from .tables import ImpEvTable, ImpEvTablePrivat, ImpEvDetails
 #forms
 from .forms import (ImpactEventForm, NewSource, CompanyForm, ReferenceForm, 
-                    SearchForm, FreetextForm, TopicForm)
+                    SearchForm, FreetextForm, TopicForm
+                    )
 #forms
 from .filters import ImpevOverviewFilter
 
@@ -88,8 +90,6 @@ def overview_impevs(request):
     table = Table(table_qs)
     table.order_by = '-date_published' #needed?
     #cnt_ies = filt.qs.count() 
-    
-    
     RequestConfig(request, paginate=False).configure(table) 
     
     searchform = SearchForm() #Filter ServerSide
@@ -100,6 +100,8 @@ def overview_impevs(request):
     references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
     tags_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'tags'})
     
+    ie_details = load_ie_details(table_qs)
+    
     msg_results = msg_results + ' of %d in total' % cnt_tot
     
     if filter_dict:
@@ -109,6 +111,7 @@ def overview_impevs(request):
                                                                            )
         d_dict['data'] = rend
         d_dict['message'] = msg_results
+        d_dict['ie_details'] = ie_details
         return HttpResponse(json.dumps(d_dict), content_type='application/json')
 
                                                                            
@@ -124,9 +127,22 @@ def overview_impevs(request):
                                                                  'references_url': references_url,
                                                                  'tags_url': tags_url,
                                                                  'message': msg_results,
-                                                                 'form': form
+                                                                 'form': form,
+                                                                 'ie_details': ie_details,
                                                                  })
 
+def impact_event_show(request, ie_id):
+    table_qs = ImpactEvent.objects.filter(id = ie_id) 
+    html_str = load_ie_details(table_qs, single_ie = True) #same as in table
+    ie = table_qs[0]
+    
+    
+    
+    return render(request, 'etilog/impev_show.html', {'ie_details': html_str,
+                                                      'ie': ie
+                                                      })
+
+    
 def export_csv_nlp(request):
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
@@ -237,9 +253,13 @@ def impact_event_change(request, ietype = 'new', ie_id = None):
             
         to_json = {}
         if form.is_valid():
-            form.save()            
+            newie = form.save()  
+            newie_id = newie.pk          
             to_json['is_valid'] = 'true'
-            to_json['message'] = message            
+            to_json['message'] = message  
+            update_url = reverse('etilog:impactevent_update', kwargs={'ie_id': newie_id} ) 
+            to_json['upd_url'] = update_url           
+                 
             
         else:
             message = form.errors.__html__() #html
@@ -409,6 +429,31 @@ def load_names(request, modelname):
     #data = json.dumps(list(q_names))
     data = json.dumps(list(q_names))
     return HttpResponse(data, content_type='application/json')
+
+def load_ie_details(qs, single_ie = False):
+    ie_fields = ImpEvDetails(qs)
+    ie_dt_dict = {}
+
+    for row in ie_fields.paginated_rows:
+        rec = row.record
+        id_ie  = rec.pk
+        
+        html_fields = render_to_string( 'etilog/impev_show_fields.html', {'row': row,
+                                                                       'rec': rec #can be deleted
+                                                                       })
+
+        if single_ie == True:
+            return html_fields
+        html_article = render_to_string( 'etilog/impev_show_article.html', {'rec': rec
+                                                                       } )       
+        
+        html_header = render_to_string( 'etilog/impev_show_article_hd.html', {'rec': rec
+                                                                       } )       
+        ie_dt_dict[id_ie] = (html_fields, html_header, html_article)
+        
+    #data = json.dumps(list(q_names))
+    data = json.dumps(ie_dt_dict)
+    return data
 
 
 #used in New IE Form     

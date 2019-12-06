@@ -1,0 +1,54 @@
+{# HTML5 declaration #}
+<!DOCTYPE html>
+{% load static %}
+{% block djangoadmin %} {% endblock djangoadmin %}
+{#import bootstrap4#} {% load bootstrap4 %} {# Embed Bootstrap CSS #}
+{% bootstrap_css %} {# Embed Bootstrap JS+jQuery #} {% bootstrap_javascript jquery='full' %} 
+{% block head_css %} {% endblock head_css %}
+{% load crispy_forms_tags %}
+
+<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
+
+{#import scripts need to be under url to scripts (loaded by bootstrap4) #}
+<script src="{% static 'etilog/js/etilog/startpage.js' %}"></script> 
+
+{% block script %} {% endblock script %}
+
+<!-- Required meta tags for example for responsivity -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+<head>
+<title>{% block title %}etiki.org | it's coming {%endblock title%} </title> 
+
+<link rel="stylesheet" type="text/css"
+	href="{% static 'etilog/css/style_prototype.css' %}">
+
+</head>
+<body>
+<noscript>To use etiki please enable JavaScript!</noscript>
+
+<div class="fullsite-wrapper container">
+
+	{% include 'nav_search_bar.html' %}
+
+<div  class="bckground transp" id="id_header">
+{% block header %} 
+{% endblock header %}
+</div>
+<div  class="bckground fullbg" id="id_content">
+{% block content %} 
+{% endblock content %}
+</div>
+		
+
+
+	
+	<div class = "footer">
+		<p>prealpha; © etiki 2019</p>
+	</div>
+</div>
+
+
+{% block bottomscript %} {% endblock bottomscript %}
+</body>
+

@@ -10,6 +10,8 @@
 	href="{% static 'etilog/css/etilog/table_filter.css' %}">
 <link rel="stylesheet" type="text/css"
 href="{% static 'etilog/css/etilog/table.css' %}">
+<link rel="stylesheet" type="text/css"
+href="{% static 'etilog/css/etilog/impev_show.css' %}">
 {{ filter.form.media }} {# Adds date-picker required JS and CSS #}
 
 {% endblock head_css %} 
@@ -19,7 +21,9 @@ href="{% static 'etilog/css/etilog/table.css' %}">
     var companies_url = "{{companies_url}}";  
     var countries_url = "{{countries_url}}";  
     var references_url = "{{references_url}}"; 
-    var tags_url = "{{tags_url}}";  
+    var tags_url = "{{tags_url}}"; 
+    var list_url = "{% url 'etilog:home' %}";
+    var ie_details = JSON.parse("{{ ie_details |escapejs }}"); 
 
 </script>
 {% endblock script %}
@@ -45,6 +49,9 @@ href="{% static 'etilog/css/etilog/table.css' %}">
 <!--following needs to be below body due to reference to the table -->
 <!--under tagsinput due to reference to tagsinput -->
 <script src="{% static 'etilog/js/etilog/table_filter.js' %}"></script>
+
+<!--no dependency so far -->
+<script src="{% static 'etilog/js/etilog/table_action.js' %}"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
   
