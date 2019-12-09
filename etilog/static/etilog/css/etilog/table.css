@@ -59,7 +59,7 @@ td:nth-child(9){
 .table-etiki th {
 
   position: sticky;
-  position: -webkit-sticky;  /* required for Safari */
+  position: -webkit-sticky;  /* required for Safari but calculates top different than in chrome! */
   z-index: 700; /* navbar 1020; date widget : 1000?? typeahed dropdown */
   top: 36px;
   height: 40px;
