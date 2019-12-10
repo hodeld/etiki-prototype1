@@ -47,6 +47,7 @@ function startanimation(){
 		$([document.documentElement, document.body]).animate({
 		    scrollTop: $('#id_oviewtable').offset().top - hi 
 		}, 2000);
+		prepare_list();
 		
 	}	
 }

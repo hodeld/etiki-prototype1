@@ -88,17 +88,10 @@ def overview_impevs(request):
         msg_results = msg_base % cnt_ies
          
     table = Table(table_qs)
-    table.order_by = '-date_published' #needed?
     #cnt_ies = filt.qs.count() 
     RequestConfig(request, paginate=False).configure(table) 
     
-    searchform = SearchForm() #Filter ServerSide
-    topicform = TopicForm()
-    freetextform = FreetextForm()
-    companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
-    countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
-    references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
-    tags_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'tags'})
+    
     
     ie_details = load_ie_details(table_qs)
     
@@ -115,7 +108,13 @@ def overview_impevs(request):
         return HttpResponse(json.dumps(d_dict), content_type='application/json')
 
                                                                            
-      
+    searchform = SearchForm() #Filter ServerSide
+    topicform = TopicForm()
+    freetextform = FreetextForm()
+    companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
+    countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
+    references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
+    tags_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'tags'})  
         
     return render(request, 'etilog/impactevents_overview.html', {'table': table,
                                                                  'filter': filt,

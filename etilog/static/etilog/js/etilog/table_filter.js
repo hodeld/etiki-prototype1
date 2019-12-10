@@ -320,7 +320,8 @@ function prepare_list(){
  		});
  	$('#id_search').bind('typeahead:select', function() {
  		impevList.search(''); //to clear List search 		
- 	}); 	
+ 	}); 
+ 	impevList.sort('date_sort', { order: "asc" }); //as to start
 }
 
 
