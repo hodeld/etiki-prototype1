@@ -56,19 +56,7 @@
 	width: 20em;
 }
 
-.bckground{
-	/*max-width: 500px;*/
-	padding: 10px 20px;
-	margin: 10px auto;
-	border-radius: 8px;
-	background-color: var(--trans_bckgrnd);
-	/*display: None;
-	z-index: 10;
-	position: fixed;*/
-}
-.bckground.transp{ 
-	background-color: transparent;
-}
+
 
 #div_id_search{
 	/* overwrite form-group css */
