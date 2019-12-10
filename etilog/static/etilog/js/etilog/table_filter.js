@@ -31,6 +31,32 @@ $(document).ready(function() {
 			
 			beforeSubmit: function() {
 					$("#id_message").html('calculating results …');
+					
+					var validate= false;
+					$('.f_input').each(function(){
+					    if($(this).val() != '')
+					        validate = true;
+					});
+					if(!validate){
+						
+						$('#icon_filter_active').hide();
+						$('#icon_filter').show();				
+					}
+					else { 
+						$('#icon_filter').hide();
+						$( '#icon_filter_active' ).show();	
+						var $el = $('#btn_filter_toggle'),
+					    	originalColor = $el.css("background");
+
+						$el.css("background", "#ffff99");
+						setTimeout(function(){
+							$el.animate({
+								backgroundColor: originalColor
+							}, 50 );
+						}, 100);
+						//$( '#btn_filter_toggle' ).show( "highlight" );	//jquery UI				
+					}
+					startanimation(); // only first time when table is hidden
 					var acturl = $('#id_filterform').serialize(); //
 					var searchurl = list_url +  'search?' + acturl; //list_url: etilog:home
 					//window.history.pushState("", "", searchurl); //TODO direct url search
@@ -41,10 +67,13 @@ $(document).ready(function() {
 					
 					ie_details = JSON.parse(response.ie_details); 
 					$("#id_message").html(msg);
+					
 					$("#id_ovtable").html(data);
 					set_topheadaer()//new th elements
 					prepare_list();
-					startanimation(); // only first time when table is hidden
+					
+					
+					
 					
 
 				},
@@ -326,6 +355,17 @@ function set_tag(id, tagname) {
 	elt.tagsinput('add', suggestion);	//adds tag	
 	$(el_id).show();	
 	
+}
+
+
+function toggle_filter_frombtn() {
+	
+	$('#filterform').addClass('show'); //show always
+	$('#div_filterform').removeClass('transp');
+	var hi = $('#id_contsearch').outerHeight() + 10; //smaller than navbar id_navbar
+	$([document.documentElement, document.body]).animate({
+	    scrollTop: $("#div_filterform").offset().top - hi
+	}, 'slow');
 }
 
 function toggle_filter() {

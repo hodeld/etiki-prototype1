@@ -41,13 +41,19 @@ function startanimation(){
 		$('.fullsite-wrapper').css('height', 'auto');
 		$('.bottomleft').removeClass('bottomleft');
 		$('.changepos').addClass('position-relative');
-		// call once when page is initialized; table must be 
-	
+		// call once when page is initialized; table must be 				
 		toggle_filter()
-		set_topheadaer()
+		let hi = $('#id_contsearch').outerHeight() ; //smaller than navbar id_navbar
+		$([document.documentElement, document.body]).animate({
+		    scrollTop: $('#id_oviewtable').offset().top - hi 
+		}, 2000);
 		
 	}	
 }
+
+
+
+
 function set_topheadaer(){
 	let hi = $('#id_contsearch').outerHeight() - 2; //smaller than navbar id_navbar
 	$('th').css({ top: hi }); 	

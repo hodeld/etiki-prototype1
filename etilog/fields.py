@@ -20,22 +20,6 @@ from etilog.models import ImpactEvent
 D_FORMAT = '%d.%m.%Y'
 D_YEARFORMAT = '%Y'
 
-class ListTextWidget(forms.TextInput):
-    def __init__(self, data_list, name, *args, **kwargs):
-        super(ListTextWidget, self).__init__(*args, **kwargs)
-        self._name = name
-        self._list = data_list
-        self.attrs.update({'list':'list__%s' % self._name})
-
-    def render(self, name, value, attrs=None, renderer=None):
-        text_html = super(ListTextWidget, self).render(name, value, attrs=attrs)
-        data_list = '<datalist id="list__%s">' % self._name
-        for item in self._list:
-            data_list += '<option value="%s">' % item
-        data_list += '</datalist>'
-
-        return (text_html + data_list)
-
 class AutocompleteWidget(forms.TextInput):
     def __init__(self, data_list, placeholder, *args, **kwargs):
         super(AutocompleteWidget, self).__init__(*args, **kwargs)
@@ -246,4 +230,20 @@ class Readonly(Layout):
             HTML(html_str)           
             )
             #)
+class SearchWBtn(Layout):
+    def __init__(self, fieldname,  *args, **kwargs):
         
+        img_1 = '<img class="icon collapse" id="icon_filter_active" alt="icon-filter" src="/static/etilog/img/icon/filter_active.png">'
+        img_2 = '<img class="icon collapse show" id="icon_filter" alt="icon-filter" src="/static/etilog/img/icon/filter_nonact.png">'
+        
+        super(SearchWBtn, self).__init__(           
+            FieldWithButtons(
+                Field(fieldname, *args, **kwargs),
+                StrictButton(img_1+img_2, css_class='btn btn-dark', 
+                             css_id='btn_filter_toggle', 
+                             onclick="toggle_filter_frombtn()"),
+                css_id='div_id_search'
+                #for prepend: change template -> span before, prepend-class
+                )
+            )
+

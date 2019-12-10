@@ -15,7 +15,7 @@ from .models import Source, Company, ImpactEvent, SustainabilityDomain, Referenc
 from .fields import (ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn,
                      DateYearPicker, DateYearPickerField,
                      RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, ImpactEventBtns,
-                     Readonly
+                     Readonly, SearchWBtn
                      )
 
 
@@ -44,15 +44,14 @@ class SearchForm(forms.Form):
         self.helper = FormHelper()
         
         self.helper.layout = Layout(
-        
-        
         Row(
-                Column(Field('search', id = 'id_search', autocomplete="off", 
+                Column(SearchWBtn('search', id = 'id_search', autocomplete="off", 
                              placeholder = 'Search Companies, Countries, Topics, Newspaper …'
                        ),
                         css_class='col-12'                             
                     )
                 ),  
+        
         )
         
 class TopicForm(forms.Form):
