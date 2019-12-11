@@ -33,14 +33,16 @@ $(document).ready(function() {
 });
 
 function startanimation(){
-	if ($('#id_oviewtable').css('display') == 'none'){
+	var ele = $('#tabContent');
+	if (ele.css('display') == 'none'){
 		$('#link_filter').show();
 		
-		$('#id_oviewtable').show(); 
+		
 		//$('#id_oviewtable').slideDown(); //duration
 		$('.fullsite-wrapper').css('height', 'auto');
 		$('.bottomleft').removeClass('bottomleft');
 		$('.changepos').addClass('position-relative');
+		ele.show(); 
 		// call once when page is initialized; table must be 				
 		toggle_filter()
 		let hi = $('#id_contsearch').outerHeight() ; //smaller than navbar id_navbar
@@ -56,7 +58,7 @@ function startanimation(){
 
 
 function set_topheadaer(){
-	let hi = $('#id_contsearch').outerHeight() - 2; //smaller than navbar id_navbar
+	let hi = $('#id_contsearch').outerHeight() - 4; //smaller than navbar id_navbar
 	$('th').css({ top: hi }); 	
 }
 	

@@ -35,7 +35,9 @@ noscript {
 	/* Add a font */
 }
 
+.content-wrapper{
 
+}
 
 
 .bckground{
@@ -54,13 +56,15 @@ noscript {
 .bckground.fullbg{ 
 	background-color: var(--full_bckgrnd);
 }
+.navbar{
+    display: block; /*because navbar has flex*/
+}
 .navbar-dark {
     background-color: var(--full_bckgrnd);
     padding: 10px 20px;
 	margin: 0;
 	border-radius: 8px;
     z-index: 800; 
-    display: block; /*because navbar has flex*/
 }
 .navbar-toggler {
     border: none;
@@ -112,3 +116,26 @@ label, .nav-link{
     color: #fff;
     background-color: var(--full_bckgrnd);
     border-color: var(--full_bckgrnd);
+}
+
+/* NAV-TABS */
+.nav-tabs .nav-link.active {
+    color: white;
+    font-weight: bold;
+    background-color: var(--full_bckgrnd);
+    border-color: white white transparent;
+}
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+    border-color: white white transparent;
+    background-color: var(--full_bckgrnd);
+}
+.nav-tabs .nav-link {
+    border: 1px solid transparent;
+    border-radius: 0;
+    color: white;
+}
+.fas{
+	font-size: 1.5em; /* sets size of font awesome */
+	
+	
+}
