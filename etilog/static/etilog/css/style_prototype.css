@@ -36,6 +36,7 @@ noscript {
 }
 
 .content-wrapper{
+	width: 100%; /*so all start at the same width, container does the same, but adds padding*/
 
 }
 
@@ -117,6 +118,11 @@ label, .nav-link{
     background-color: var(--full_bckgrnd);
     border-color: var(--full_bckgrnd);
 }
+.btn-dark:hover, .btn-dark:focus, .btn-dark:active, .btn-dark.active, .open>.dropdown-toggle.btn-dark {
+    color: #fff;
+    background-color: var(--light_bckgrnd); 
+    border-color: var(--light_bckgrnd); 
+}
 
 /* NAV-TABS */
 .nav-tabs .nav-link.active {
@@ -136,6 +142,31 @@ label, .nav-link{
 }
 .fas{
 	font-size: 1.5em; /* sets size of font awesome */
+		
+}
+.img-fullwidth {
+	width: 100%;
+    height: auto;
+    margin-top: 20%;
+}
+.img-wrapper{
+	position: relative;
+}
+.text-ovarlay{
+	position: absolute;
+    background-color: var(--trans_bckgrnd);
+    top:200px;
+    left: 0;
+    box-sizing: border-box;
+    color: #fff;
+    margin: 0;
 	
-	
+}
+.img-ovarlay{
+	width: 40%;
+    height: auto;
+    position: absolute;
+    margin: 0;
+    right: 20px;
+    top: 20px;
 }

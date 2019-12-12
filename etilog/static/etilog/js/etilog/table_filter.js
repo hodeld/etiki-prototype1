@@ -52,8 +52,11 @@ $(document).ready(function() {
 						setTimeout(function(){
 							$el.animate({
 								backgroundColor: originalColor
-							}, 50 );
+							}, 50, function() {
+								$el.removeAttr('style');
+							  });													
 						}, 100);
+						
 						//$( '#btn_filter_toggle' ).show( "highlight" );	//jquery UI				
 					}
 					startanimation(); // only first time when table is hidden
@@ -321,7 +324,7 @@ function prepare_list(){
  	$('#id_search').bind('typeahead:select', function() {
  		impevList.search(''); //to clear List search 		
  	}); 
- 	impevList.sort('date_sort', { order: "asc" }); //as to start
+ 	impevList.sort('date_sort', { order: "desc" }); //as to start
 }
 
 
