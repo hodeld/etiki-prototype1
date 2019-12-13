@@ -31,6 +31,8 @@ urlpatterns = [
     path(export + 'extracterrs', views.export_csv_extr, name = 'export_csv_exterrs'),
     
     path('logout/', views.logout_view, name='logout'),
+    
+    path('overview_md/', views.md_overview_impevs, name='home_md'),
 
     
 

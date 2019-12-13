@@ -1,0 +1,49 @@
+{# HTML5 declaration #}
+<!DOCTYPE html>
+{%extends 'base_comingsoon.html'%} {%load static%} {%block content%}
+
+<div class="bgimg">
+	<div class="topleft">
+		<img alt="" border="0" src="{% static 'etilog/img/logoetiki.png' %}" />
+	</div>
+	<div class="row h-100 justify-content-center align-items-center">
+		{# in small screens (sm) different column separation #}
+		<div class="col-sm-1 col-md-3"></div>
+		<div class="col-sm-10 col-md-6">
+			<div class="middle">
+				<h1>etiki - it's coming</h1>
+				<hr>
+				<h6>
+					<br>We are collecting articles regarding ethical behaviour of
+					any company.<br>Any help appreciated!
+				</h6>
+				<form action="" method="post">
+					{% csrf_token %}
+					<div class="input-group mb-3">
+						{{form}}
+						<div class="input-group-append">
+							<button class="btn btn-dark" type="submit">Save</button>
+						</div>
+					</div>
+				</form>
+
+			</div>
+
+			<h6>{{ message }}</h6>
+
+		</div>
+
+
+		<div class="col-sm-1 col-md-3"></div>
+	</div>
+	<div class="bottomleft">
+		<p>prealpha; © etiki 2019</p>
+	</div>
+</div>
+
+{% endblock content %}
+
+
+
+
+

@@ -1,5 +1,5 @@
 :root {
-  --full_bckgrnd: rgba(38, 33, 32, 1);
+  --full_bckgrnd: rgba(33, 37, 41, 1);  /*rgba(38, 33, 32, 1); /*rgb(33,37,41)*/
   --trans_bckgrnd: rgba(38, 33, 32, .8);
   --light_bckgrnd: rgba(255, 255, 255, .3); /*on top */
   --etikigreen: var(--info) /*#3E7480; */

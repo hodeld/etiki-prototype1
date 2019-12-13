@@ -6,9 +6,9 @@
 
 	<div class="row d-flex justify-content-center">
 		
-		<div class="col-2 col-lg-2 d-flex justify-content-start justify-content-md-center" >
+		<div class="order-0 col-6 col-md-1 col-lg-2 d-flex justify-content-start justify-content-md-center" >
 			<a class="navbar-brand" href="/overview">
-				<div class="" id="small_logo">
+				<div class="d-none" id="small_logo">
 					<span class="helper"></span>
 				 	<img id="img_sm" alt=""  src="{% static 'etilog/img/logo_sm.png' %}" /> 
 	
@@ -18,15 +18,13 @@
 
 		</div>
 
-		<div class="col-8 col-lg-8 d-flex justify-content-center">
-		
-			<h6 class="my-auto text-center">
-			Impact Event Details
-			</h6>
-
+		<div class="col-12 col-md-10 col-lg-8 order-2 order-md-1">
+			<div class="searchform" id="mainsearchform">{# for testing class="collapse" #} 
+			{% crispy searchform %} {# important: not filter.form|crispy #}
+			</div>
 		</div>
 		
-		<div class="col-2 col-lg-2 d-flex justify-content-end justify-content-md-center ">
+		<div class="col-6 col-md-1 col-lg-2 order-md-2 d-flex justify-content-end justify-content-md-center ">
 			{% if user.is_authenticated %}
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#collapsenav">
