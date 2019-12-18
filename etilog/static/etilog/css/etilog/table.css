@@ -68,6 +68,7 @@
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color:  black; /*var(--light_bckgrnd);  */
+  cursor: pointer; /* hand pointer */
 }
 
 /* sort styles: */
