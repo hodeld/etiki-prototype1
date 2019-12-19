@@ -13,6 +13,7 @@
 .company-rate{
 	/* needs defined height */
 	height: 100%;
+	
 }
 .square{
 	/* needs defined width */
@@ -34,8 +35,13 @@
 	padding-left: 0;
 }
 .chart-wrapper{
-	height: 75% /* or fill with parent flex-column und flex-grow-1*/
-}
+	position: absolute;
+	/*making chart bigger and a bit to right-bottom*/
+    bottom: -15%;
+    right: -15%;
+    width: 120%;
+    height: 120%; /* or fill with parent flex-column und flex-grow-1*/
+} 
 .company-name{
 	overflow: hidden;
     white-space: nowrap;
