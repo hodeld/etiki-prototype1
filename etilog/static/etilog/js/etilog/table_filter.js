@@ -1,7 +1,6 @@
 
 
 $(document).ready(function() {
-	
 	//button select for categories
 	$('.btnselect').on('click', set_val_from_btn);
 	
@@ -65,13 +64,18 @@ $(document).ready(function() {
 					//window.history.pushState("", "", searchurl); //TODO direct url search
 			},
 			success : function(response) {
-					var data = response.data;
+					var tblData = response.table_data;
+					var compData = response.comp_details;
 					var msg = response.message;
 					
 					ie_details = JSON.parse(response.ie_details); 
-					$("#id_message").html(msg);
+					comp_ratings = JSON.parse(response.comp_ratings); 
 					
-					$("#id_ovtable").html(data);
+					$("#id_message").html(msg);
+					$("#company-details").html(compData);
+					drawCharts();
+					$("#id_ovtable").html(tblData);
+
 					set_topheadaer()//new th elements
 					prepare_list();
 					

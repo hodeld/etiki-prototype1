@@ -12,7 +12,7 @@ import json
 from django_tables2 import RequestConfig
 
 #models
-from .models import ImpactEvent, Company, SustainabilityCategory, Reference, Country
+from etilog.models import ImpactEvent, Company, SustainabilityCategory, Reference, Country
 from etilog.models import SustainabilityTag
 
 #tables
@@ -26,7 +26,7 @@ from .filters import ImpevOverviewFilter
 
 #viewlogic
 from etilog.ViewLogic.ViewImportDB import parse_xcl
-from etilog.ViewLogic.ViewMain import get_filterdict, set_cache, get_cache
+from etilog.ViewLogic.ViewMain import get_filterdict, get_cache, query_comp_details
 from etilog.ViewLogic.ViewExport import exp_csv_nlp, exp_csv_basedata, extract_err_file
 from etilog.ViewLogic.ViewDatetime import get_now
 
@@ -93,18 +93,27 @@ def overview_impevs(request):
     
     
     
+    #takes about 4 of 12 seconds to load! (when 200 loaded) -> better load them indiv.
     ie_details = load_ie_details(table_qs)
+    comp_details, comp_ratings = get_comp_details(table_qs)
     
     msg_results = msg_results + ' of %d in total' % cnt_tot
     
     if filter_dict:
         d_dict = {}
-        rend =  render_to_string( 'etilog/impactevents_overview_table.html', {'table': table,
+        rend_table =  render_to_string( 'etilog/impactevents_overview_table.html', {'table': table,
                                                                            }
                                                                            )
-        d_dict['data'] = rend
+        rend_comp =  render_to_string( 'etilog/company_show.html', {'comp_details': comp_details,
+                                                                           }
+                                                                           )
+        
+        d_dict['table_data'] = rend_table
         d_dict['message'] = msg_results
         d_dict['ie_details'] = ie_details
+        d_dict['comp_ratings'] = comp_ratings
+        d_dict['comp_details'] = rend_comp
+        
         return HttpResponse(json.dumps(d_dict), content_type='application/json')
 
                                                                            
@@ -128,86 +137,11 @@ def overview_impevs(request):
                                                                  'message': msg_results,
                                                                  'form': form,
                                                                  'ie_details': ie_details,
+                                                                 'comp_details': comp_details,
+                                                                 'comp_ratings': comp_ratings,
                                                                  })
 
-def md_overview_impevs(request):
-    form = NewSource() #for testing
-    key_totnr = 'cnties'
-    cnt_tot = get_cache(key_totnr, request)
-    if cnt_tot == None:
-        cnt_tot = ImpactEvent.objects.all().count()
-    filter_dict = get_filterdict(request) #hiddencompany
-    limit_start = 21
-    
-    if request.user.is_authenticated:
-        limit_filt = 1000
-        Table = ImpEvTablePrivat
-    else:
-        limit_filt = 50
-        Table = ImpEvTable
-        
-    if  filter_dict:
-        q_ie = ImpactEvent.objects.all()
-        msg_base =  'shows %d filtered impact events'
-    else: #newly loaded time on site
-        last_ies = ImpactEvent.objects.all().order_by('-updated_at')[:limit_start]
-        dt = list(last_ies)[-1].updated_at
-        q_ie = ImpactEvent.objects.filter(updated_at__gte = dt)
-        msg_base = 'shows %d most recent added impact events'
-    
-    filt = ImpevOverviewFilter(filter_dict, queryset=q_ie) 
-    table_qs =  filt.qs 
-    cnt_ies = table_qs.count() #one query too much
-    if cnt_ies > limit_filt:
-        last_ies = table_qs.order_by('-date_published')[:limit_filt]
-        dt = list(last_ies)[-1].date_published
-        table_qs = table_qs.filter(date_published__gte = dt)
-        msg_results = 'more than %d results! shows %d newest impact events' % (limit_filt, limit_filt)
-    else:
-        msg_results = msg_base % cnt_ies
-         
-    table = Table(table_qs)
-    #cnt_ies = filt.qs.count() 
-    RequestConfig(request, paginate=False).configure(table) 
-    
-    
-    
-    ie_details = load_ie_details(table_qs)
-    
-    msg_results = msg_results + ' of %d in total' % cnt_tot
-    
-    if filter_dict:
-        d_dict = {}
-        rend =  render_to_string( 'etilog_md/impactevents_overview_table.html', {'table': table,
-                                                                           }
-                                                                           )
-        d_dict['data'] = rend
-        d_dict['message'] = msg_results
-        d_dict['ie_details'] = ie_details
-        return HttpResponse(json.dumps(d_dict), content_type='application/json')
 
-                                                                           
-    searchform = SearchForm() #Filter ServerSide
-    topicform = TopicForm()
-    freetextform = FreetextForm()
-    companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
-    countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
-    references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
-    tags_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'tags'})  
-        
-    return render(request, 'etilog_md/impactevents_overview.html', {'table': table,
-                                                                 'filter': filt,
-                                                                 'searchform': searchform,
-                                                                 'topicform': topicform,
-                                                                 'freetextform': freetextform,
-                                                                 'companies_url': companies_url,
-                                                                 'countries_url': countries_url,
-                                                                 'references_url': references_url,
-                                                                 'tags_url': tags_url,
-                                                                 'message': msg_results,
-                                                                 'form': form,
-                                                                 'ie_details': ie_details,
-                                                                 })
 
 def impact_event_show(request, ie_id):
     table_qs = ImpactEvent.objects.filter(id = ie_id) 
@@ -533,6 +467,13 @@ def load_ie_details(qs, single_ie = False):
     data = json.dumps(ie_dt_dict)
     return data
 
+def get_comp_details(q_impev):
+    details, ratings  = query_comp_details(q_impev)
+        
+    jsdata = json.dumps(ratings) 
+    return details, jsdata
+     
+
 
 #used in New IE Form     
 def load_sustcategories_notusedanymore(request): #, 
@@ -573,4 +514,83 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('login'))
     # Redirect to a success page.
+
+def md_overview_impevs(request):
+    form = NewSource() #for testing
+    key_totnr = 'cnties'
+    cnt_tot = get_cache(key_totnr, request)
+    if cnt_tot == None:
+        cnt_tot = ImpactEvent.objects.all().count()
+    filter_dict = get_filterdict(request) #hiddencompany
+    limit_start = 21
+    
+    if request.user.is_authenticated:
+        limit_filt = 1000
+        Table = ImpEvTablePrivat
+    else:
+        limit_filt = 50
+        Table = ImpEvTable
+        
+    if  filter_dict:
+        q_ie = ImpactEvent.objects.all()
+        msg_base =  'shows %d filtered impact events'
+    else: #newly loaded time on site
+        last_ies = ImpactEvent.objects.all().order_by('-updated_at')[:limit_start]
+        dt = list(last_ies)[-1].updated_at
+        q_ie = ImpactEvent.objects.filter(updated_at__gte = dt)
+        msg_base = 'shows %d most recent added impact events'
+    
+    filt = ImpevOverviewFilter(filter_dict, queryset=q_ie) 
+    table_qs =  filt.qs 
+    cnt_ies = table_qs.count() #one query too much
+    if cnt_ies > limit_filt:
+        last_ies = table_qs.order_by('-date_published')[:limit_filt]
+        dt = list(last_ies)[-1].date_published
+        table_qs = table_qs.filter(date_published__gte = dt)
+        msg_results = 'more than %d results! shows %d newest impact events' % (limit_filt, limit_filt)
+    else:
+        msg_results = msg_base % cnt_ies
+         
+    table = Table(table_qs)
+    #cnt_ies = filt.qs.count() 
+    RequestConfig(request, paginate=False).configure(table) 
+    
+    
+    
+    ie_details = load_ie_details(table_qs)
+    
+    msg_results = msg_results + ' of %d in total' % cnt_tot
+    
+    if filter_dict:
+        d_dict = {}
+        rend =  render_to_string( 'etilog_md/impactevents_overview_table.html', {'table': table,
+                                                                           }
+                                                                           )
+        d_dict['data'] = rend
+        d_dict['message'] = msg_results
+        d_dict['ie_details'] = ie_details
+        return HttpResponse(json.dumps(d_dict), content_type='application/json')
+
+                                                                           
+    searchform = SearchForm() #Filter ServerSide
+    topicform = TopicForm()
+    freetextform = FreetextForm()
+    companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
+    countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
+    references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
+    tags_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'tags'})  
+        
+    return render(request, 'etilog_md/impactevents_overview.html', {'table': table,
+                                                                 'filter': filt,
+                                                                 'searchform': searchform,
+                                                                 'topicform': topicform,
+                                                                 'freetextform': freetextform,
+                                                                 'companies_url': companies_url,
+                                                                 'countries_url': countries_url,
+                                                                 'references_url': references_url,
+                                                                 'tags_url': tags_url,
+                                                                 'message': msg_results,
+                                                                 'form': form,
+                                                                 'ie_details': ie_details,
+                                                                 })
     

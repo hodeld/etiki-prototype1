@@ -1,0 +1,20 @@
+{% load static %}
+<div class="bckground fullbg" id=div-companies>
+	<div class="row"> <!--needed for correct margins, cols without margins -->
+	{% for company in comp_details %}
+	<div class="col-6 col-md-3 nopadding ">
+		
+		<div class="square">		
+			<div class="div_iedetail square_content" id="div-company-{{company.pk}}">         
+		            <div class=""> <h6 class="company-name">{{ company.name }} </h6>
+		            </div> 
+		            <div class="chart-wrapper">  
+		            	<div class="company-rate" id="company-rate-{{company.pk}}">           
+		     			</div>          
+		     		</div>  
+		     </div>
+	     </div>
+     </div>
+     {% endfor %}
+     </div>
+</div>
