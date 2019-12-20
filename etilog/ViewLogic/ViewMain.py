@@ -84,14 +84,15 @@ def query_comp_details(q_impev):
     
     
     #list of dicts:   
-    comp_details = q_comp.values('pk', 'name', 'num_pos', 'num_neg', 'num_con') #  select_related('num_pos', 'num_neg', 'num_con'
+    comp_details = q_comp.values('pk', 'name', 'num_pos', 'num_neg', 'num_con', 'domain') #  select_related('num_pos', 'num_neg', 'num_con'
     
     rating_dict = {}
     rating_list = list(comp_details)
     
     for co in comp_details:
-        sname = strip_accents(str(co['name']))   
-        co['website'] = sname + '.com'
+        if co['domain'] == None:
+            sname = strip_accents(str(co['name']))   
+            co['domain'] = sname + '.com'
         rating_dict[co['pk']] = co #co as dict
 
         
