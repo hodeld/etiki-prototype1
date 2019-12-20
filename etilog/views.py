@@ -361,9 +361,7 @@ def add_foreignmodel(request, main_model, foreign_model):
             form = CompanyForm(data_dict)
         
         if form.is_valid():
-            instance = form.save(commit = False) 
-            instance.save()
-            form.save_m2m() #due to many2many
+            instance = form.save()#(commit false) only needed if changes are done afterwards
             
             #handles the result of the foreign model in the original one
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
