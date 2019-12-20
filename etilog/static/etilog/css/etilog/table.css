@@ -4,9 +4,6 @@
 	table-layout: fixed; /* total width according to container, width of column acc. to first row*/
 }
 
-.table-etiki.orderable a {
-	color: #3E7480;
-}
 
 /*#impev-list > table > tbody > tr:nth-child(1) > td.badge.badge-danger.sust_category*/
 
@@ -40,26 +37,28 @@
     height: 40px;
 	/* vertical-align: middle; */	
 }
-/* date_published: */
-td:nth-child(3){	
+
+/* date_published: td:nth-child(3) #impev-list > table > thead > tr > th.orderable.sort.sust_domain */
+
+.table-etiki td.date	{	
 	white-space: normal;
 	text-overflow: unset;	
 }
-th:nth-child(3){	
+.table-etiki th.date{	
 	width: 10%;
 }
 /* summary: */
-th:nth-child(9){	
+.table-etiki th.summary{	
 	width: 25%;
 }
-td:nth-child(9){	
+.table-etiki td.summary{	
 	white-space: normal;
 }
 
 .table-etiki th {
 
   position: sticky;
-  position: -webkit-sticky;  /* required for Safari */
+  position: -webkit-sticky;  /* required for Safari but calculates top different than in chrome! */
   z-index: 700; /* navbar 1020; date widget : 1000?? typeahed dropdown */
   top: 36px;
   height: 40px;
@@ -69,6 +68,7 @@ td:nth-child(9){
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color:  black; /*var(--light_bckgrnd);  */
+  cursor: pointer; /* hand pointer */
 }
 
 /* sort styles: */

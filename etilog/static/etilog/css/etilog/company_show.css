@@ -1,0 +1,69 @@
+
+
+.img-rate{
+	width: 100%;
+	
+}
+.img-company-rate{
+	min-width:10%;
+	/* for charts */
+	width: 900px;
+	height: 500px;
+}
+.company-rate{
+	/* needs defined height */
+	height: 100%;
+	
+}
+.square{
+	/* needs defined width */
+	position: relative;
+	width: 100%;
+	padding-top: 100% /* 1:1 aspect ratio */
+}
+.square_content{
+	position: absolute; 
+	top: 0; 
+	left: 0; 
+	bottom: 0; 
+	right: 0; 
+	
+}
+.nopadding{
+
+	padding-right: 0; /* 1:1 aspect ratio */
+	padding-left: 0;
+}
+.chart-wrapper{
+	position: absolute;
+	/*making chart bigger and a bit to right-bottom*/
+    bottom: -15%;
+    right: -15%;
+    width: 120%;
+    height: 120%; /* or fill with parent flex-column und flex-grow-1*/
+} 
+.company-name{
+	overflow: hidden;
+    white-space: nowrap;
+    word-break: normal;
+    text-overflow: ellipsis;	
+    margin-left: .5rem;
+    margin-bottom: 0;
+}
+.company-name-wrapper{
+	overflow: hidden;
+}
+.company-logo{
+	/*max-width: 15%; */
+	width: 1.5rem;
+    height: 1.5rem;
+	background-color: white;
+}
+.company-logo-img{
+	max-width: 100%;
+    max-height: 100%;
+}
+.company-logo-alt{
+	color: black;
+	
+}

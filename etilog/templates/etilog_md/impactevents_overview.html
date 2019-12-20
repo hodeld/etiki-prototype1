@@ -1,4 +1,4 @@
-{# ... #} {% extends 'base_startpage.html' %} 
+{# ... #} {% extends 'etilog_md/base_startpage.html' %} 
 {% load static %}
 {% block djangoadmin %} 
 
@@ -12,8 +12,6 @@
 href="{% static 'etilog/css/etilog/table.css' %}">
 <link rel="stylesheet" type="text/css"
 href="{% static 'etilog/css/etilog/impev_show.css' %}">
-<link rel="stylesheet" type="text/css"
-href="{% static 'etilog/css/etilog/company_show.css' %}">
 {{ filter.form.media }} {# Adds date-picker required JS and CSS #}
 
 {% endblock head_css %} 
@@ -26,7 +24,6 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
     var tags_url = "{{tags_url}}"; 
     var list_url = "{% url 'etilog:home' %}";
     var ie_details = JSON.parse("{{ ie_details |escapejs }}"); 
-    var comp_ratings = JSON.parse("{{ comp_ratings |escapejs }}"); 
 
 </script>
 {% endblock script %}
@@ -49,23 +46,15 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
 <script src="{% static 'etilog/js/etilog/tagsinput.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script> <!-- jquery.min -->
-
-
 <!--following needs to be below body due to reference to the table -->
 <!--under tagsinput due to reference to tagsinput -->
 <script src="{% static 'etilog/js/etilog/table_filter.js' %}"></script>
-
 
 <!--no dependency so far -->
 <script src="{% static 'etilog/js/etilog/table_action.js' %}"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
-
-<!-- for charts -> todo, separate; do not load jquery again (removes prev plugins -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="{% static 'etilog/js/etilog/company_show.js' %}"></script>
-
- 
+  
  
 {% endblock bottomscript %}
 

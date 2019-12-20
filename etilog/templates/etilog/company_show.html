@@ -1,0 +1,33 @@
+{% load static %}
+<div class="bckground fullbg" id=div-companies>
+	<div class="row"> <!--needed for correct margins, cols without margins -->
+	{% for company in comp_details %}
+	<div class="col-6 col-md-3 nopadding ">
+		
+		<div class="square">		
+			<div class="div_iedetail square_content" id="div-company-{{company.pk}}">  
+					             
+		            <div class="d-flex flex-row"> 
+			            		<div class="company-logo text-center"> 
+			            			 <span class="collapse company-logo-alt" id="company-alt-{{company.pk}}">{{ company.name|slice:1 }} </span>
+			            			<img class="company-logo-img" src="//logo.clearbit.com/{{company.domain}}?size=50" 
+			            				id="company-logo-{{company.pk}}" altid="company-alt-{{company.pk}}" onerror="imgError(this);">                  
+			     				</div>  
+
+		     			
+		     			<div class="company-name-wrapper">
+		     				<h6 class="company-name">{{ company.name }} </h6>
+		     			</div> 
+		            </div> 
+		            <div class="chart-wrapper"> 
+		            	
+		            	<div class="company-rate" id="company-rate-{{company.pk}}">           
+		     			</div>    	     			
+		     		</div> 
+		     		
+		     </div>
+	     </div>
+     </div>
+     {% endfor %}
+     </div>
+</div>

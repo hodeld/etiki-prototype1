@@ -32,7 +32,7 @@ function show_details(ele, ie_id) {
 	var colcnt = numOfVisibleCols(tableid) 
 	var rowstr1 = 'tr scope="row" class="detailrow darkbg" id="%%detailid" ';
 	var rowstr3 ='<td colspan = "%%colcnt" > %%htmlstr </td> ';	
-	var rowstr = '<' + rowstr1 + '>' +  rowstr3;	
+	var rowstr = '<' + rowstr1 + '>' +  rowstr3 + '</tr>';	
 	var html_str = ie_details[ie_id][0];
 	rowstr = rowstr.replace("%%htmlstr", html_str);
 	rowstr = rowstr.replace("%%colcnt", colcnt);
@@ -72,7 +72,8 @@ function full_article(ele, ie_id){
 	
 	var rowstr1 = 'tr scope="row" class="headerrow fullartrow"  ';
 	var rowstr2 ='<td class="sticky-top darkbg headertd" colspan = "%%colcnt" > %%htmlstr </td> ';	
-	var rowstr = '<' + rowstr1 + '>' +  rowstr2;
+
+	var rowstr = '<' + rowstr1 + '>' +  rowstr2 + '</tr>';
 	var html_str = ie_details[ie_id][1]; //header row
 	rowstr = rowstr.replace("%%htmlstr", html_str);
 	rowstr = rowstr.replace("%%colcnt", colcnt);
@@ -80,7 +81,7 @@ function full_article(ele, ie_id){
 	
 	var rowstr1 = 'tr scope="row" class="articlerow fullartrow darkbg"  ';
 	var rowstr2 ='<td class="articletd" colspan = "%%colcnt" > %%htmlstr </td> ';	
-	var rowstr = '<' + rowstr1 + '>' +  rowstr2;
+	var rowstr = '<' + rowstr1 + '>' +  rowstr2 + '</tr>';
 	var html_str = ie_details[ie_id][2]; //article row
 	rowstr = rowstr.replace("%%htmlstr", html_str);
 	rowstr = rowstr.replace("%%colcnt", colcnt);
@@ -99,8 +100,7 @@ function full_article(ele, ie_id){
 	});
 }
 function toggle_article(event) {
-	
-	$('.fullartrow').hide(); //oder open will be hidden
+	$('.fullartrow').hide(); //oder open will be hidden	
 	$('.showbtn').show(); //oder open will be hidden
 	
 }

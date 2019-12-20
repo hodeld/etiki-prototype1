@@ -17,7 +17,14 @@
 			  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
 			  crossorigin="anonymous"></script>
 
-			  
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/js/mdb.min.js"></script>			  
 
 {% block script %} {% endblock script %}
 
@@ -43,6 +50,12 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 <link rel="stylesheet" 
 	href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">	
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
 
 </head>
 <body>
@@ -94,8 +107,8 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 				<nav class= "navbar">
 				  <div class="nav nav-tabs" id="nav-tab" role="tablist">
 				    <a class="nav-item nav-link active" id="table-tab" data-toggle="tab" href="#id_oviewtable" role="tab" aria-controls="id_oviewtable" aria-selected="true"><i class="fas fa-list"></i></a>
-				    <a class="nav-item nav-link" id="wordcloud-tab" data-toggle="tab" href="#wordcloud" role="tab" aria-controls="wordcloud" aria-selected="false"><i class="fas fa-industry"></i> </a>
-				    <a class="nav-item nav-link" id="company-tab" data-toggle="tab" href="#company-details" role="tab" aria-controls="company-details" aria-selected="false" onclick="drawCharts()"><i class="fas fa-globe"></i></a>
+				    <a class="nav-item nav-link" id="#wordcloud-tab" data-toggle="tab" href="#wordcloud" role="tab" aria-controls="globe" aria-selected="false"><i class="fas fa-industry"></i> </a>
+				    <a class="nav-item nav-link" id="globe-tab" data-toggle="tab" href="#globe" role="tab" aria-controls="wordcloud" aria-selected="false"><i class="fas fa-globe"></i></a>
 				    <a class="nav-item nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="false"><i class="fas fa-question"></i></a>
 				  
 				  
@@ -112,12 +125,10 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 				  <div class="tab-pane fade" id="wordcloud" role="tabpanel" aria-labelledby="wordcloud-tab">
 					  	<div class="bckground fullbg img-wrapper col-md-8">
 					  	<img src="{% static 'etilog/img/mockup.svg' %}" class="img-ovarlay" alt="mockup image">			  	 
-					  	<img src="{% static 'etilog/img/wordcloud.svg' %}" class="img-fullwidth" alt="company wordcloud image" >
+					  	<img src="{% static 'etilog/img/wordcloud.svg' %}" class="img-fullwidth" alt="wordcloud image">
 					  	</div>
 					</div>
-				  <div class="tab-pane fade" id="company-details" role="tabpanel" aria-labelledby="company-tab" >
-				  		{% include 'etilog/company_show.html' %}
-				  </div>
+				  <div class="tab-pane fade" id="globe" role="tabpanel" aria-labelledby="globe-tab">...</div>
 				  <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
 					  <h5>What it is about</h5>
 					  <hr class="whitehr">

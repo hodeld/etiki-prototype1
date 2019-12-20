@@ -1,7 +1,6 @@
 
 
 $(document).ready(function() {
-	
 	//button select for categories
 	$('.btnselect').on('click', set_val_from_btn);
 	
@@ -31,20 +30,57 @@ $(document).ready(function() {
 			
 			beforeSubmit: function() {
 					$("#id_message").html('calculating results …');
+					
+					var validate= false;
+					$('.f_input').each(function(){
+					    if($(this).val() != '')
+					        validate = true;
+					});
+					if(!validate){
+						
+						$('#icon_filter_active').hide();
+						$('#icon_filter').show();				
+					}
+					else { 
+						$('#icon_filter').hide();
+						$( '#icon_filter_active' ).show();	
+						var $el = $('#btn_filter_toggle'),
+					    	originalColor = $el.css("background");
+
+						$el.css("background", "#ffff99");
+						setTimeout(function(){
+							$el.animate({
+								backgroundColor: originalColor
+							}, 50, function() {
+								$el.removeAttr('style');
+							  });													
+						}, 100);
+						
+						//$( '#btn_filter_toggle' ).show( "highlight" );	//jquery UI				
+					}
+					startanimation(); // only first time when table is hidden
 					var acturl = $('#id_filterform').serialize(); //
 					var searchurl = list_url +  'search?' + acturl; //list_url: etilog:home
 					//window.history.pushState("", "", searchurl); //TODO direct url search
 			},
 			success : function(response) {
-					var data = response.data;
+					var tblData = response.table_data;
+					var compData = response.comp_details;
 					var msg = response.message;
 					
 					ie_details = JSON.parse(response.ie_details); 
+					comp_ratings = JSON.parse(response.comp_ratings); 
+					
 					$("#id_message").html(msg);
-					$("#id_ovtable").html(data);
+					$("#company-details").html(compData);
+					drawCharts();
+					$("#id_ovtable").html(tblData);
+
 					set_topheadaer()//new th elements
 					prepare_list();
-					startanimation(); // only first time when table is hidden
+					
+					
+					
 					
 
 				},
@@ -291,7 +327,8 @@ function prepare_list(){
  		});
  	$('#id_search').bind('typeahead:select', function() {
  		impevList.search(''); //to clear List search 		
- 	}); 	
+ 	}); 
+ 	impevList.sort('date_sort', { order: "desc" }); //as to start
 }
 
 
@@ -326,6 +363,17 @@ function set_tag(id, tagname) {
 	elt.tagsinput('add', suggestion);	//adds tag	
 	$(el_id).show();	
 	
+}
+
+
+function toggle_filter_frombtn() {
+	
+	$('#filterform').addClass('show'); //show always
+	$('#div_filterform').removeClass('transp');
+	var hi = $('#id_contsearch').outerHeight() + 10; //smaller than navbar id_navbar
+	$([document.documentElement, document.body]).animate({
+	    scrollTop: $("#div_filterform").offset().top - hi
+	}, 'slow');
 }
 
 function toggle_filter() {
