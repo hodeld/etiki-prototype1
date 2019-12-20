@@ -10,6 +10,7 @@ from django.db.models import Count, Q
 
 #models
 from etilog.models import  Company
+import unicodedata
 
 
 def get_filterdict(request):
@@ -59,6 +60,11 @@ def get_filterdict(request):
 
 #view queries
 def query_comp_details(q_impev):
+    def strip_accents(text):        
+        noacc =  ''.join(c for c in unicodedata.normalize('NFKD', text) if unicodedata.category(c) != 'Mn')
+        nowhite = noacc.lower().replace(' ', '') 
+        return nowhite
+
     company_ids = q_impev.values_list('company', flat=True).distinct()
     
     num_pos = Count('impevents', filter=Q(impevents__sust_tendency__impnr=1)) 
@@ -73,7 +79,8 @@ def query_comp_details(q_impev):
                             id__in = company_ids).annotate(
                                     num_pos=num_pos).annotate(
                                     num_neg=num_neg).annotate(
-                                    num_con=num_con)
+                                    num_con=num_con).annotate(
+                                        )
     
     
     #list of dicts:   
@@ -81,7 +88,10 @@ def query_comp_details(q_impev):
     
     rating_dict = {}
     rating_list = list(comp_details)
+    
     for co in comp_details:
+        sname = strip_accents(str(co['name']))   
+        co['website'] = sname + '.com'
         rating_dict[co['pk']] = co #co as dict
 
         

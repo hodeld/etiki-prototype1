@@ -47,4 +47,23 @@
     white-space: nowrap;
     word-break: normal;
     text-overflow: ellipsis;	
+    margin-left: .5rem;
+    margin-bottom: 0;
+}
+.company-name-wrapper{
+	overflow: hidden;
+}
+.company-logo{
+	/*max-width: 15%; */
+	width: 1.5rem;
+    height: 1.5rem;
+	background-color: white;
+}
+.company-logo-img{
+	max-width: 100%;
+    max-height: 100%;
+}
+.company-logo-alt{
+	color: black;
+	
 }

@@ -12,7 +12,7 @@ $(document).ready(function() {
 	$('#company-tab[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		drawCharts();
 		});
-
+	
 
 
 
@@ -96,6 +96,10 @@ function get_colors(){
 	});
 	return cols
 	
-	
-	
+}
+
+function imgError(ele){
+	$(ele).hide();
+	var altId = $(ele).attr('altid')
+	$('#'+altId).show();
 }
