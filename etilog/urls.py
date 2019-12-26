@@ -17,6 +17,7 @@ urlpatterns = [
     path(impev + 'newfrom/<slug:ie_id>', views.impact_event_create, name='impactevent_copy'),
     path(impev + 'update/<slug:ie_id>', views.impact_event_update, name='impactevent_update'),
     path('<slug:main_model>/add/<slug:foreign_model>', views.add_foreignmodel, name='add_foreignmodel'),
+    
     path('importdbdata/', views.import_dbdata, name='import_dbdata'),
     path('extract_text/<slug:ie_id>', views.extract_text, name='extract_text'),
     path('extract_text_all', views.extract_text_all, name='extract_text_all'),

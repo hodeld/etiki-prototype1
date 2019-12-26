@@ -50,17 +50,58 @@ class Company (models.Model):
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
     activity = models.ForeignKey(ActivityCategory, on_delete=models.PROTECT)
     domain = models.CharField(max_length=255, validators=[full_domain_validator], blank = True, null = True, help_text = 'companydomain.com')
-    subsidiary = models.ManyToManyField('self', blank=True, verbose_name='owns')
-    owner = models.ManyToManyField('self', blank=True, verbose_name='owned by')    
-    supplier = models.ManyToManyField('self', blank=True, verbose_name='delivers to')
-    recipient = models.ManyToManyField('self', blank=True, verbose_name='supplied by')
+    subsidiary_old = models.ManyToManyField('self', blank=True, verbose_name='owns', related_name = 'owner2')
+    owner_old = models.ManyToManyField('self', blank=True, verbose_name='owned by')    
+    supplier_old = models.ManyToManyField('self', blank=True, verbose_name='supplied by')  #verbose name was wrong
+    recipient_old = models.ManyToManyField('self', blank=True, verbose_name='delivers to') #verbose name was wrong
+    
+    subsidiary_to_owner = models.ManyToManyField('self', blank=True, 
+                                                 through='SubsidiaryOwner',
+                                                 through_fields=('subsidiary_company', 'owner_company'),
+                                                 symmetrical=False,
+                                                 related_name='owner_to_subsidiary'
+                                                 )
+    supplier_to_recipient = models.ManyToManyField('self', blank=True, 
+                                                 through='SupplierRecipient',
+                                                 through_fields=('supplier_company', 'recipient_company'),
+                                                 symmetrical=False,
+                                                 related_name='recipient_to_supplier'
+                                                 )
+    
     comment = models.CharField(max_length=200, blank=True,null=True)
     def __str__(self):
         return self.name
     class Meta:
         ordering = ['name', ]
         verbose_name = 'Organisation'
+
+class SubsidiaryOwner(models.Model):   
+    created_at = models.DateTimeField(auto_now_add=True) #tz aware datetime
+    active = models.BooleanField(default = True)
+    owner_company = models.ForeignKey(Company, on_delete=models.CASCADE, 
+                                      related_name='owner_company',
+                                      verbose_name='owned by')    
+    subsidiary_company = models.ForeignKey(Company, on_delete=models.CASCADE, 
+                                           related_name='subsidiary_company',                                          
+                                          verbose_name='owns')
     
+    def __str__(self):
+        return self.subsidiary_company.name+'_ownedby_'+self.owner_company.name
+
+class SupplierRecipient(models.Model):   
+    created_at = models.DateTimeField(auto_now_add=True) #tz aware datetime
+    active = models.BooleanField(default = True)
+    recipient_company = models.ForeignKey(Company, on_delete=models.CASCADE, 
+                                      related_name='recipient_company',
+                                      verbose_name='delivers to')    
+    supplier_company = models.ForeignKey(Company, on_delete=models.CASCADE, 
+                                           related_name='supplier_company',                                          
+                                          verbose_name='supplied by')
+    
+    def __str__(self):
+        return self.supplier_company.name+'_suppliesto_'+self.recipient_company.name
+    
+     
 class Media (models.Model):
     name = models.CharField(unique = True, verbose_name='MediaType', max_length=50)
     def __str__(self):

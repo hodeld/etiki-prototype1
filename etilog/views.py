@@ -5,7 +5,6 @@ from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth import logout
-from django.forms.models import model_to_dict
 import json
 
 #from 3rd apps
@@ -292,11 +291,10 @@ def impact_event_change(request, ietype = 'new', ie_id = None):
         else:
             if ietype == 'copy':
                 init_data = get_ie_init_data(ie_id, update = False)
-            #else:
-                #form = ImpactEventForm()
+
             first_id = ImpactEvent.objects.order_by('id').values_list('id', flat = True).first()
             next_id_url = reverse_lazy('etilog:impactevent_update', kwargs={'ie_id': first_id})
-        form = form = ImpactEventForm(initial = init_data)
+        form =  ImpactEventForm(initial = init_data)
         shtml = init_data.get('article_html', '') 
     return render(request, 'etilog/impev_upd_base.html', {'form': form, #for form.media
                                                           'message': message   ,
@@ -381,10 +379,6 @@ def add_foreignmodel(request, main_model, foreign_model):
     
     modelname = foreign_model[0].upper() + foreign_model[1:]
 
-    
-            #message = form.errors
-
-    
     return render(request, 'etilog/addforeign_form.html', {'form' : form,
                                                            'modelname': modelname})
 

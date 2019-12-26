@@ -4,12 +4,12 @@ Created on 25 Jul 2019
 @author: daim
 '''
 
-from datetime import timedelta
 
-from etilog.models import Country, SustainabilityCategory, SustainabilityDomain, SustainabilityTag
-from etilog.models import SustainabilityTendency, ImpactEvent
-from openpyxl import Workbook, load_workbook
-from openpyxl.utils import column_index_from_string
+from etilog.models import (Country, SustainabilityCategory, SustainabilityDomain, SustainabilityTag, 
+                           SustainabilityTendency, ImpactEvent,
+                           Company, SubsidiaryOwner, SupplierRecipient
+                           )
+from openpyxl import load_workbook
 import warnings
 import os
 
@@ -25,7 +25,10 @@ def parse_xcl(): #, eventlist, eventtype_dict):
 
     warnings.simplefilter("default")
     
-    imp_originalmodel(wb)
+    parse_companies_relations()
+    
+    #imp_originalmodel(wb)
+    
     
     #not needed anymore as already parsed
     #parse_tags_domain_tendency() #after parse tags
@@ -242,5 +245,54 @@ def get_domain_tendency(st_db):
     
     return dom_db, ten_db
     
-                                               
+def parse_companies_relations():
+    def create_relobj(q, cls):
+        wrong_relations = []
+        for obj in q.order_by('pk'): #all relations are doubled, first is correct one
+            objid = obj.pk
+            if objid in wrong_relations:
+                continue
+            
+            fcomp= obj.from_company
+            tcomp = obj.to_company
+            #get wrong ones where its the opposite way with higher pk
+            wrong_obj = q.get(from_company = tcomp, to_company = fcomp)
+            wrong_relations.append(wrong_obj.pk)
+            
+            #create if not exist
+            if cls == 'sub':              
+                #target is a subsidiary
+                SubsidiaryOwner.objects.update_or_create(owner_company = fcomp, 
+                                                         subsidiary_company = tcomp)
+            
+            elif cls == 'owner':
+                #target is a owner
+                SubsidiaryOwner.objects.update_or_create(owner_company = tcomp, 
+                                                         subsidiary_company = fcomp)
+            
+            elif cls == 'suppliers':              
+                #target is a supplier
+                SupplierRecipient.objects.update_or_create(recipient_company = fcomp, 
+                                                           supplier_company = tcomp)
+            
+            elif cls == 'recipients':              
+                #target is a recipient
+                SupplierRecipient.objects.update_or_create(recipient_company = tcomp, 
+                                                           supplier_company = fcomp)
+            
+            
     
+    co1 = Company.objects.first()
+    
+    #get all subsidiary of through model
+    subs = co1.subsidiary_old.through.objects.all()
+    create_relobj(subs, 'sub')
+    
+    owners = co1.owner_old.through.objects.all()
+    create_relobj(owners, 'owner')
+    
+    owners = co1.supplier_old.through.objects.all()
+    create_relobj(owners, 'suppliers')
+    
+    owners = co1.recipient_old.through.objects.all()
+    create_relobj(owners, 'recipients')
