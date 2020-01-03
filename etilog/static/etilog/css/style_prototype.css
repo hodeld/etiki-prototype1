@@ -3,9 +3,17 @@
   --trans_bckgrnd: rgba(38, 33, 32, .8);
   --light_bckgrnd: rgba(255, 255, 255, .3); /*on top */
   --etikigreen: var(--info);/*#3E7480; */
-  --positive: var(--success) ; 
+  --positive: #7b8776; 
+  --controversial: #d8a47f; 
+  --negative: #db5461;
+  /* 
+  --positive: #7b8776; 
+  --controversial: #87767b; 
+  --negative: #827687;
+  
+  /*--positive: var(--success) ; 
   --controversial: var(--warning) ; 
-  --negative: var(--danger) ; 
+  --negative: var(--danger) ; */
 }
 
 
