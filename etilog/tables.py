@@ -31,7 +31,7 @@ def get_sortname(*args, **kwargs):
         colname = col.name
     return colname
     
-def get_attrs(hide_mobile = False, hide = False, hover = False, sort = False, datasort = None, *args, **kwargs):
+def get_attrs(hide_mobile = False, hide = False, hover = False, sort = False, datasort = None, add_attrs = {}, *args, **kwargs):
     if hide:
         attr_hide_always = {'td': {'class': 'd-none'}, #hide on screens smaller than ...
                  'th': {'class': 'd-none '}
@@ -65,9 +65,9 @@ def get_attrs(hide_mobile = False, hide = False, hover = False, sort = False, da
     attrs_dic['th']['class'] =  th_class
     if th_datasort:
         attrs_dic['th']['data-sort'] =  th_datasort
-    
-    #attrs_dic['td']['onclick'] =  'show_details(this)'
 
+    
+    attrs_dic.update(add_attrs)
     return attrs_dic
         
     
@@ -175,7 +175,9 @@ class ImpEvTable(tables.Table):
     reference = tables.Column(linkify = lambda record: record.source_url,  
                               verbose_name = 'Published in', 
                               attrs = get_attrs(sort = True, hide_mobile = True,
-                                                 datasort = 'reference_sort')
+                                                 datasort = 'reference_sort',
+                                                 add_attrs = {'a':{'target':'_blank'}},
+                                                 )
                               )
     reference_sort = tables.Column(accessor='reference', attrs = get_attrs(hide = True))
 
