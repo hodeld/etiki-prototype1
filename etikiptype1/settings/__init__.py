@@ -145,7 +145,16 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 BOOTSTRAP4 = {
     #already includes jquery:
-    'include_jquery': True,
+    'include_jquery': 'full',
+    "css_url": {
+        "href": "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+        },
+    "javascript_url": {
+        "url": "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+        },
+    "jquery_url": {
+        "url": "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+        },
     #default:
     #"css_url": {
     #    "href": "https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css",

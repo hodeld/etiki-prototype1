@@ -47,14 +47,14 @@ $(document).ready(function() {
 						var $el = $('#btn_filter_toggle'),
 					    	originalColor = $el.css("background");
 
-						$el.css("background", "#ffff99");
+						$el.attr('style', "background: #ffff99 !important"); //due to mdb
 						setTimeout(function(){
 							$el.animate({
 								backgroundColor: originalColor
-							}, 50, function() {
+							}, 100, function() {
 								$el.removeAttr('style');
 							  });													
-						}, 100);
+						}, 200);
 						
 						//$( '#btn_filter_toggle' ).show( "highlight" );	//jquery UI				
 					}

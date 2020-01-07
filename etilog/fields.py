@@ -6,6 +6,7 @@ Created on 15 Mar 2019
 from django import forms
 from django.urls import reverse_lazy
 from django.db.models import Count
+from django.template.loader import render_to_string
 
 #crispoy
 from crispy_forms.layout import Layout, Field, Row, Column, Div, Button, HTML, ButtonHolder, Submit
@@ -144,26 +145,34 @@ class ColTendencyBtnSelect(Layout):
         q = SustainabilityTendency.objects.all()
         btn_list = []
         for tend in q:
-            bntclass = 'btnselect btn-sm btn-outline-'
             if 'negativ' in tend.name :
-                csscls =  bntclass + 'danger'
+                csscls =  'danger'
             
             elif 'positiv' in tend.name :
-                csscls =  bntclass + 'success'
+                csscls =   'success'
             else: # 'controv' in tend.name :
-                csscls =  bntclass +'warning'
-            btn = Button(tend.id, tend.name, css_class=csscls,  #'active btn-light',  
-                               css_id = 'id-sust_tendency-btn-' + str(tend.id),
-                               data_toggle='button',
-                               aria_pressed = "false",
-                               targfield = 'id_sust_tendency') 
-            btn_list.append(btn)
+                csscls = 'warning'
+            
+            onstyle = csscls
+            offstyle = 'outline-' + csscls
+            css_id =  'id-sust_tendency-btn-' + str(tend.id)
+            
+            #field = HTML('<div class="custom-control custom-switch"> <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>  <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label> </div>')
+            
+            html_str = render_to_string( 'elements/switch.html', {'onstyle': onstyle,
+                                                                     'offstyle': offstyle,
+                                                                     'css_id': css_id,
+                                                                     })
+            html_str = '<input type="checkbox" checked  data-toggle="toggle" data-onstyle="info" data-offstyle="outline-info"data-on="Ready" data-off="Not Ready" data-size="sm">'
+                                                                              
+            field = HTML(html_str)
+            btn_list.append(field)
             
         html_str = '<label class="col-form-label">%s</label>' % labelname
         super(ColTendencyBtnSelect, self).__init__( 
                            
             Column(HTML(html_str),
-                   ButtonHolder(*btn_list),
+                   Div(btn_list[0]), #*btn_list),
                 css_class = col_class  ) 
             )   
 
@@ -239,7 +248,7 @@ class SearchWBtn(Layout):
         super(SearchWBtn, self).__init__(           
             FieldWithButtons(
                 Field(fieldname, *args, **kwargs),
-                StrictButton(img_1+img_2, css_class='btn btn-dark', 
+                StrictButton(img_1+img_2, css_class='btn-dark m-0 px-3 py-0 z-depth-0', 
                              css_id='btn_filter_toggle', 
                              onclick="toggle_filter_frombtn()"),
                 css_id='div_id_search'
