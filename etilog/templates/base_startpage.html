@@ -12,12 +12,17 @@
 {#import scripts need to be under url to scripts (loaded by bootstrap4) #}
 <script src="{% static 'etilog/js/base_script.js' %}"></script> 
 <script src="{% static 'etilog/js/etilog/startpage.js' %}"></script> 
+
 <script
 			  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
 			  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
 			  crossorigin="anonymous"></script>
 
-			  
+<!-- MDB -->
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/js/mdb.min.js"></script>			  
 
 {% block script %} {% endblock script %}
 
@@ -40,9 +45,16 @@
 href="{% static 'etilog/css/tagsinput.css' %}">
 <link rel="stylesheet" type="text/css"
 href="{% static 'etilog/css/typeaheadjs.css' %}">
+<!-- so far only for filter button -->
 <link rel="stylesheet" 
 	href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">	
+
+<!-- MDB -->
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
+
 
 </head>
 <body>
