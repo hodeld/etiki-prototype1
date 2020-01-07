@@ -1,10 +1,12 @@
 /*TABLE*/
 .table-etiki {
-	font-size: 12px;
 	table-layout: fixed; /* total width according to container, width of column acc. to first row*/
 }
 
-
+.table-etiki td, .table-etiki th {
+	font-size: 12px;
+	color: white;
+}
 /*#impev-list > table > tbody > tr:nth-child(1) > td.badge.badge-danger.sust_category*/
 
 .table-etiki .sustbtn { /* button within cell */
@@ -13,7 +15,6 @@
 	overflow: hidden;
     white-space: normal;
     text-overflow: ellipsis;
-    font-size: 1em;
     line-height: .8em;
 }  
     
@@ -65,10 +66,14 @@
   background-color: var(--full_bckgrnd);
 }
 
+.table-etiki.table a {
+	color: var(--etikigreen) ;
+}
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color:  black; /*var(--light_bckgrnd);  */
   cursor: pointer; /* hand pointer */
+  color: white !important;
 }
 
 /* sort styles: */

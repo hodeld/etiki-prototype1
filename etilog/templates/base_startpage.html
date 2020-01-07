@@ -4,7 +4,7 @@
 {% block djangoadmin %} {% endblock djangoadmin %}
 {#import bootstrap4#} {% load bootstrap4 %} {# Embed Bootstrap CSS #}
 {% bootstrap_css %} {# Embed Bootstrap JS+jQuery #} {% bootstrap_javascript jquery='full' %} 
-{% block head_css %} {% endblock head_css %}
+
 {% load crispy_forms_tags %}
 
 <!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
@@ -34,6 +34,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>{% block title %}etiki.org | it's coming {%endblock title%} </title> 
+<!-- MDB -->
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
+
 
 <link rel="stylesheet" type="text/css"
 	href="{% static 'etilog/css/style_prototype.css' %}">
@@ -49,12 +55,7 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 <link rel="stylesheet" 
 	href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
 
-<!-- MDB -->
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-<!-- Material Design Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
-
+{% block head_css %} {% endblock head_css %}
 
 </head>
 <body>

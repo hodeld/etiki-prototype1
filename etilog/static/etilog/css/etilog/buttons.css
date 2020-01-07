@@ -1,0 +1,59 @@
+
+
+ .btnselect{
+ 
+    margin-bottom: 3px;
+}
+
+/* buttons select outline colors */
+.btnselect.btn-outline-info:not([disabled]):not(.disabled).active{
+	background-color:  var(--etikigreen) !important;
+	color: white !important;
+}
+
+.btnselect.btn-outline-danger:not([disabled]):not(.disabled){
+	border-color:  var(--negative) !important;
+	color: var(--negative) !important;
+}
+.btnselect.btn-outline-danger:not([disabled]):not(.disabled).active{
+	background-color:  var(--negative) !important;
+	border-color:  var(--negative) !important;
+	color: white !important;
+}
+
+.btnselect.btn-outline-warning:not([disabled]):not(.disabled){
+	border-color:  var(--controversial) !important;
+	color: var(--controversial) !important;
+}
+.btnselect.btn-outline-warning:not([disabled]):not(.disabled).active{
+	background-color:  var(--controversial) !important;
+	border-color:  var(--controversial) !important;
+	color: white !important;
+}
+
+.btnselect.btn-outline-success:not([disabled]):not(.disabled){
+	border-color:  var(--positive) !important;
+	color: var(--positive) !important;
+}
+.btnselect.btn-outline-success:not([disabled]):not(.disabled).active{
+	background-color:  var(--positive) !important;
+	border-color:  var(--positive) !important;
+	color: white !important;
+}
+
+
+.sustbtn.btn.disabled, .btn:disabled {
+    opacity: .9 !important;
+}
+.sustbtn.btn-danger.disabled, .btn-danger:disabled {
+    background-color: var(--negative) !important;
+    border-color: var(--negative) !important;
+}
+.sustbtn.btn-success.disabled, .btn-success:disabled {
+    background-color: var(--positive) !important;
+    border-color: var(--positive) !important;
+}
+.sustbtn.btn-warning.disabled, .btn-warning:disabled {
+    background-color: var(--controversial) !important;
+    border-color: var(--controversial) !important;
+}

@@ -2,7 +2,7 @@
   --full_bckgrnd: rgba(33, 37, 41, 1);  /*rgba(38, 33, 32, 1); /*rgb(33,37,41)*/
   --trans_bckgrnd: rgba(38, 33, 32, .8);
   --light_bckgrnd: rgba(255, 255, 255, .3); /*on top */
-  --etikigreen: var(--info);/*#3E7480; */
+  --etikigreen: #33b5e5; /* mdb info colour; var(--info); #3E7480; */
   --positive: #7b8776; 
   --controversial: #d8a47f; 
   --negative: #db5461;
@@ -25,7 +25,7 @@ body, html {
   -o-background-size: cover;
   height: 100%;
   	/* default is 1rem or 16px -> for table*/
-	font-family: "Courier New", Courier, monospace;
+	font-family: "Roboto",sans-serif; /*"Courier New", Courier, monospace; */
 }
 noscript {
 	position: absolute;
@@ -42,7 +42,7 @@ noscript {
 .fullsite-wrapper{
 
 	/* Add a white text color to all elements inside the .bgimg container */
-	color: white;
+	color: white !important;
 	/* Add a font */
 }
 
@@ -133,12 +133,12 @@ label, .nav-link{
 }
 .btn-dark {
     color: #fff;
-    background-color: var(--full_bckgrnd);
+    background-color: var(--full_bckgrnd) !important;
     border-color: var(--full_bckgrnd);
 }
 .btn-dark:hover, .btn-dark:focus, .btn-dark:active, .btn-dark.active, .open>.dropdown-toggle.btn-dark {
     color: #fff;
-    background-color: var(--light_bckgrnd); 
+    background-color: var(--light_bckgrnd) !important; 
     border-color: var(--light_bckgrnd); 
 }
 
@@ -188,3 +188,4 @@ label, .nav-link{
     right: 20px;
     top: 20px;
 }
+
