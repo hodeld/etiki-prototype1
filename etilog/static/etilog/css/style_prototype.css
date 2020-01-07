@@ -91,6 +91,13 @@ noscript {
 #img_sm {
     vertical-align: middle; /* is already in bootstrap img class */
     max-height: 25px; /* to define img size */
+    height: 25px;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    
 }
 .icon {
   	height: 25px; /* should be square image */
