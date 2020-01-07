@@ -158,7 +158,7 @@ label, .nav-link{
     border-radius: 0;
     color: white;
 }
-.fas{
+.nav-tabs .fas{
 	font-size: 1.5em; /* sets size of font awesome */
 		
 }

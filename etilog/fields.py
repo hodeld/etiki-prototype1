@@ -118,13 +118,24 @@ class RowTagsInput(Layout):
                 id = row_id
                 )
             )
-                   
+
+dom_icon_dict ={1: 'fa-users',  #People
+                2:  'fa-hippo', #   Animals
+                3: 'fa-tree', #  Environment
+                4: 'fa-balance-scale-left', #   Politics
+                5: 'fa-store',#   Products& Services                
+                }  
+              
 class ColDomainBtnSelect(Layout):
     def __init__(self, col_class= 'col-12 col-lg-6', labelname= 'Category', *args, **kwargs): #distribute buttons
         q = SustainabilityDomain.objects.all()
         btn_list = []
+        icon_str = '<i class="fas %s mr-1"></i>' 
         for dom in q:
-            btn = Button(dom.id, dom.name, css_class='btnselect btn-outline-info btn-sm',  #'active btn-light',  
+            
+            icon_name = dom_icon_dict[dom.id]
+            cont = icon_str % icon_name + dom.name 
+            btn = StrictButton(cont, name = dom.id, value = dom.name, css_class='btnselect btn-outline-info btn-sm',  #'active btn-light',  
                                css_id = 'id-sust_domain-btn-' + str(dom.id),
                                data_toggle='button',
                                aria_pressed = "false",

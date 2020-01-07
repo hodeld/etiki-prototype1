@@ -6,10 +6,14 @@ Created on 24 Jul 2019
 #django 
 from django.utils.html import mark_safe
 from django.urls import reverse
+from django.template.loader import render_to_string
+
 #3rd app
 import django_tables2 as tables
 #models
 from .models import ImpactEvent
+from .fields import dom_icon_dict
+
 
 def get_hovertitle(*args, **kwargs):
     col = kwargs.get('bound_column', None) #value already changed through rendering
@@ -108,7 +112,32 @@ class SustcatColumn2(tables.Column):
         sustdomain = sustcat.sust_domain.name
         return sustdomain
 
-class BtnTendencyColumn(tables.TemplateColumn):
+
+tendency_id_dict = {1: 'success',
+                         2: 'danger',
+                         3: 'warning',
+                         }
+
+class BtnTendencyColumn(tables.Column):
+
+    
+        
+    def render(self, value, record):
+        
+        btn_color = tendency_id_dict[record.sust_tendency.impnr]
+        btnclass = 'sustbtn btn btn-sm disabled btn-block btn-' + btn_color
+        iconname = dom_icon_dict[record.sust_domain.id]
+        html_str = render_to_string('etilog/cell_button.html', 
+                                    {'btnclass': btnclass,
+                                     'iconname': iconname,
+                                     'value': value
+                                    })
+        
+        
+        return html_str
+    
+
+class BtnTendencyColumn2(tables.TemplateColumn):
 
     def __init__(self, *args, **kwargs):
         
@@ -119,6 +148,7 @@ class BtnTendencyColumn(tables.TemplateColumn):
                       'clscon': bntclass + 'warning',
                       }
         attrs = kwargs.get('attrs', None) #value already changed through rendering
+        
         if attrs:
             td = attrs.get('td', None)
             if td:
@@ -135,16 +165,14 @@ class BtnTendencyColumn(tables.TemplateColumn):
         else:
             kwargs['attrs'] = {'td': {'class':'sustcl'}}
 
-        super(BtnTendencyColumn, self).__init__(  
+        super(BtnTendencyColumn2, self).__init__(  
                                              template_name= 'etilog/cell_button.html',
                                              extra_context=extra_dict,
                                              #attrs=attrs,
                                              *args, **kwargs,
                                              )
-          
+        
     
-
-
 
     
 etiki_table_classes =  'table table-hover table-sm table-etiki' #bootstrap classes, plus own tbl class   

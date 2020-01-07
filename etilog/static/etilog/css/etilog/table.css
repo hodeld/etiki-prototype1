@@ -4,7 +4,7 @@
 }
 
 .table-etiki td, .table-etiki th {
-	font-size: 12px;
+	font-size: .75rem;
 	color: white;
 }
 /*#impev-list > table > tbody > tr:nth-child(1) > td.badge.badge-danger.sust_category*/
@@ -13,9 +13,13 @@
 	display: block; /*centers in horizontally  */
 	margin:auto;	
 	overflow: hidden;
-    white-space: normal;
-    text-overflow: ellipsis;
+    white-space: nowrap;
     line-height: .8em;
+    
+    /* word-wrap: normal;
+    text-overflow: ellipsis;
+    
+    */
 }  
     
 .table-etiki .sustcl	 {
@@ -46,7 +50,7 @@
 	text-overflow: unset;	
 }
 .table-etiki th.date{	
-	width: 10%;
+	width: 12%;
 }
 /* summary: */
 .table-etiki th.summary{	
