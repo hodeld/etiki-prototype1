@@ -1,12 +1,18 @@
 :root {
-  --full_bckgrnd: rgba(33, 37, 41, 1);  /*rgba(38, 33, 32, 1); /*rgb(33,37,41)*/
-  --trans_bckgrnd: rgba(38, 33, 32, .8);
+  --full_bckgrnd: rgba(33, 37, 41, 1);  /* = #33b5e5 rgba(38, 33, 32, 1);*rgb(33,37,41)*/
+  --trans_bckgrnd: rgba(33, 37, 41, .8);
   --light_bckgrnd: rgba(255, 255, 255, .3); /*on top */
-  --etikigreen: #33b5e5; /* mdb info colour; var(--info); #3E7480; */
+  --etikigreen: #37718e ; /* #33b5e5 mdb info colour; var(--info); #3E7480; */
+  --positive: #66a182; 
+  --controversial: #aeab98; 
+  --negative: #e78680;
+  /* 
+  --etikigreen: #33b5e5; 
   --positive: #7b8776; 
   --controversial: #d8a47f; 
   --negative: #db5461;
-  /* 
+  
+  
   --positive: #7b8776; 
   --controversial: #87767b; 
   --negative: #827687;
