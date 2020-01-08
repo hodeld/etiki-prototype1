@@ -73,7 +73,10 @@ $(document).ready(function() {
 					
 					$("#id_message").html(msg);
 					$("#company-details").html(compData);
+					
+					drawcharts = true;
 					drawCharts();
+					
 					$("#id_ovtable").html(tblData);
 
 					set_topheadaer()//new th elements
@@ -265,7 +268,7 @@ $(document).ready(function() {
 
 });
 
-
+var drawcharts = false; 
 
 function set_val_from_btn(event) {
 	var el_id = '#' + event.target.id;

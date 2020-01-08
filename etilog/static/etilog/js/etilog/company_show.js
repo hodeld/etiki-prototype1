@@ -20,14 +20,15 @@ $(document).ready(function() {
 	
 });
 
-
-
 function drawCharts(){
-	comp_ratings.forEach(function (item, index) {
-		drawChart(item);
-	});
+	//if visible and new data
+	if ($('#company-tab').attr("aria-selected") === "true" && drawcharts) {
+		drawcharts = false;
+		comp_ratings.forEach(function (item, index) {
+			drawChart(item);
+		});
+	}	
 }
-
 
 function drawChart(co) {
 	var etiki_colors = get_colors();
