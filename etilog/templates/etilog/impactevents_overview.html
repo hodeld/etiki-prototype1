@@ -27,8 +27,10 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
     var references_url = "{{references_url}}"; 
     var tags_url = "{{tags_url}}"; 
     var list_url = "{% url 'etilog:home' %}";
-    var ie_details = JSON.parse("{{ ie_details |escapejs }}"); 
-    var comp_ratings = JSON.parse("{{ comp_ratings |escapejs }}"); 
+    
+    var jsData = JSON.parse("{{ jsondata | escapejs }}"); 
+  
+    var showpage = "{{showpage}}"; 
 
 </script>
 {% endblock script %}
@@ -38,7 +40,6 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
 {% block content %}
 <br>
 <div  id="id_ovtable">
-	{% render_table table %}
 </div>         	
 
 
@@ -46,9 +47,11 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
 {% endblock content %}  
 
 {% block bottomscript %}
+
 <script src="{% static 'etilog/js/etilog/tagsinput.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script> <!-- jquery.min -->
+
 
 <!--following needs to be below body due to reference to the table -->
 <!--under tagsinput due to reference to tagsinput -->

@@ -55,37 +55,17 @@ $(document).ready(function() {
 								$el.removeAttr('style');
 							  });													
 						}, 200);
-						
-						//$( '#btn_filter_toggle' ).show( "highlight" );	//jquery UI				
+			
 					}
 					startanimation(); // only first time when table is hidden
+					
 					var acturl = $('#id_filterform').serialize(); //
 					var searchurl = list_url +  'search?' + acturl; //list_url: etilog:home
-					//window.history.pushState("", "", searchurl); //TODO direct url search
+					window.history.pushState("", "", searchurl); //TODO direct url search
 			},
 			success : function(response) {
-					var tblData = response.table_data;
-					var compData = response.comp_details;
-					var msg = response.message;
+				setData(response)
 					
-					ie_details = JSON.parse(response.ie_details); 
-					comp_ratings = JSON.parse(response.comp_ratings); 
-					
-					$("#id_message").html(msg);
-					$("#company-details").html(compData);
-					
-					drawcharts = true;
-					drawCharts();
-					
-					$("#id_ovtable").html(tblData);
-
-					set_topheadaer()//new th elements
-					prepare_list();
-					
-					
-					
-					
-
 				},
 			url: list_url, //needed to be defined due to searchurl
 			};
@@ -263,8 +243,6 @@ $(document).ready(function() {
 	        $(this).blur();
 	    }
 	});
-     //for List.js
-     prepare_list()
 
 });
 
@@ -387,4 +365,27 @@ function toggle_filter() {
 	else {
 		$('#div_filterform').addClass('transp');	
 	}
+}
+
+var ie_details = ''; 
+var comp_ratings = ''; 
+
+function setData(response) {
+	var tblData = response.table_data;
+	var compData = response.comp_details;
+	var msg = response.message;
+	
+	ie_details = JSON.parse(response.ie_details); 
+	comp_ratings = JSON.parse(response.comp_ratings); 
+	
+	$("#id_message").html(msg);
+	$("#company-details").html(compData);
+	
+	drawcharts = true;
+	drawCharts();
+	
+	$("#id_ovtable").html(tblData);
+
+	set_topheadaer()//new th elements
+	prepare_list();
 }
