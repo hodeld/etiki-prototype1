@@ -33,9 +33,11 @@ $(document).ready(function() {
 	
 });
 function startsettings(){
-	if (showpage == 'True'){	
+	if (showpage == 'True'){
+		setFilterVisually();
 		setData(jsData);
 		showElements();
+		
 	}	
 }
 function showElements(){

@@ -93,7 +93,7 @@ class DateYearPicker(DatePickerInput):
 class DateYearPickerField(Layout):
     def __init__(self, field_name,  *args, **kwargs):
         super(DateYearPickerField, self).__init__(           
-            Field(field_name, autocomplete='off', wrapper_class='datepicker')
+            Field(field_name, autocomplete='off', wrapper_class='datepicker', *args, **kwargs)
             )
         
                 
@@ -107,10 +107,8 @@ class RowTagsInput(Layout):
         super(RowTagsInput, self).__init__(           
             Row(
                     Column(Field(field_name, id = field_id,
-                            #data_role='tagsinput',  
-                             #disabled=True, 
-                             #readonly=True,
-                             css_class = ' '.join([cls_taginp, field_class]) 
+                                 parfield = '#id_row_f_',
+                                 css_class = ' '.join([cls_taginp, field_class]) 
                            ),
                             css_class = col_class                             
                         ),
@@ -136,7 +134,7 @@ class ColDomainBtnSelect(Layout):
             icon_name = dom_icon_dict[dom.id]
             cont = icon_str % icon_name + dom.name 
             btn = StrictButton(cont, name = dom.id, value = dom.name, css_class='btnselect btn-outline-info btn-sm',  #'active btn-light',  
-                               css_id = 'id-sust_domain-btn-' + str(dom.id),
+                               css_id = 'id_sust_domain-btn-' + str(dom.id),
                                data_toggle='button',
                                aria_pressed = "false",
                                targfield = 'id_sust_domain') 
@@ -164,7 +162,7 @@ class ColTendencyBtnSelect(Layout):
             else: # 'controv' in tend.name :
                 csscls =  bntclass +'warning'
             btn = Button(tend.id, tend.name, css_class=csscls,  #'active btn-light',  
-                               css_id = 'id-sust_tendency-btn-' + str(tend.id),
+                               css_id = 'id_sust_tendency-btn-' + str(tend.id),
                                data_toggle='button',
                                aria_pressed = "false",
                                targfield = 'id_sust_tendency') 

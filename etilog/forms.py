@@ -137,14 +137,18 @@ class ImpevOverviewFForm(forms.Form):
             RowTagsInput('country',  'col-12', field_class = cls_filterinput),
             RowTagsInput('reference',  'col-12', field_class = cls_filterinput),
             
-            Field('sust_domain', id='id_sust_domain', css_class=cls_filterinput), #, id='id_sust_domain' ),
-            Field('sust_tendency', id='id_sust_tendency', css_class=cls_filterinput), 
-            Row(ColDomainBtnSelect(labelname = 'Category'),ColTendencyBtnSelect(labelname = 'Which Tendency')),
+            Field('sust_domain', id='id_sust_domain', 
+                  css_class=cls_filterinput + 'btninput', parfield='#id_sust_domain-btn-' ),
+            Field('sust_tendency', id='id_sust_tendency', 
+                  css_class=cls_filterinput + 'btninput', parfield='#id_sust_domain-btn-'), 
+            Row(ColDomainBtnSelect(labelname = 'Category'),
+                ColTendencyBtnSelect(labelname = 'Which Tendency')
+                ),
             
             Row(
                 Column(
-                    DateYearPickerField('date_from'),
-                    DateYearPickerField('date_to'),
+                    DateYearPickerField('date_from', css_class=cls_filterinput),
+                    DateYearPickerField('date_to', css_class=cls_filterinput),
                     css_class = 'col-12 d-flex flex-wrap' #wraps if needed
                     )
 
