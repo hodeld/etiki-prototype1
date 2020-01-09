@@ -11,7 +11,10 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Row, Column, Submit, HTML
 
 #models
-from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
+from .models import (Source, Company, ImpactEvent, SustainabilityDomain, Reference,
+                     SubsidiaryOwner, SupplierRecipient
+                     )
+            
 from .fields import (ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn,
                      DateYearPicker, DateYearPickerField,
                      RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, ImpactEventBtns,
@@ -134,14 +137,18 @@ class ImpevOverviewFForm(forms.Form):
             RowTagsInput('country',  'col-12', field_class = cls_filterinput),
             RowTagsInput('reference',  'col-12', field_class = cls_filterinput),
             
-            Field('sust_domain', id='id_sust_domain', css_class=cls_filterinput), #, id='id_sust_domain' ),
-            Field('sust_tendency', id='id_sust_tendency', css_class=cls_filterinput), 
-            Row(ColDomainBtnSelect(labelname = 'Category'),ColTendencyBtnSelect(labelname = 'Which Tendency')),
+            Field('sust_domain', id='id_sust_domain', 
+                  css_class=cls_filterinput + 'btninput', parfield='#id_sust_domain-btn-' ),
+            Field('sust_tendency', id='id_sust_tendency', 
+                  css_class=cls_filterinput + 'btninput', parfield='#id_sust_domain-btn-'), 
+            Row(ColDomainBtnSelect(labelname = 'Category'),
+                ColTendencyBtnSelect(labelname = 'Which Tendency')
+                ),
             
             Row(
                 Column(
-                    DateYearPickerField('date_from'),
-                    DateYearPickerField('date_to'),
+                    DateYearPickerField('date_from', css_class=cls_filterinput),
+                    DateYearPickerField('date_to', css_class=cls_filterinput),
                     css_class = 'col-12 d-flex flex-wrap' #wraps if needed
                     )
 
@@ -248,11 +255,20 @@ class ImpactEventForm(forms.ModelForm):
            'date_impact': (''),
         }
         
-        
+
+
 class CompanyForm(forms.ModelForm):
     '''
     form to create a company
     '''
+    owner = forms.ModelMultipleChoiceField(queryset=Company.objects.all(),
+                                           required = False) #for validation
+    subsidiary = forms.ModelMultipleChoiceField(queryset=Company.objects.all(),
+                                                required = False)
+    supplier = forms.ModelMultipleChoiceField(queryset=Company.objects.all(),
+                                              required = False)
+    recipient = forms.ModelMultipleChoiceField(queryset=Company.objects.all(),
+                                               required = False)
     def __init__(self, *args, **kwargs):
         super (CompanyForm,self ).__init__(*args,**kwargs) 
         
@@ -261,7 +277,6 @@ class CompanyForm(forms.ModelForm):
         self.fields['supplier'].widget = CompanyWidget()
         self.fields['recipient'].widget = CompanyWidget()
         
-        #self.helper = FormHelper(self)
         self.helper = FormHelper(self)
         self.helper['owner'].wrap(CompanyWBtn,  #fieldname is passed as arg
                         mainmodel = 'company')
@@ -277,12 +292,39 @@ class CompanyForm(forms.ModelForm):
         self.helper.layout.append(
             Row(Submit('submit', 'Save', css_class='btn btn-light' ))
         )           
-
-                  
+    
+    def save(self, commit=True):
+        main = self.instance
+        main.save() #save main instance
+        #add relations:
+        if self.cleaned_data['subsidiary'] is not None:
+            for comp in self.cleaned_data['subsidiary']: #comes as queryset
+                SubsidiaryOwner.objects.update_or_create(owner_company = main, 
+                                                         subsidiary_company = comp )
+        if self.cleaned_data['owner'] is not None:
+            for comp in self.cleaned_data['owner']: #comes as queryset
+                SubsidiaryOwner.objects.update_or_create(owner_company = comp, 
+                                                         subsidiary_company = main)
+        if self.cleaned_data['supplier'] is not None:
+            for comp in self.cleaned_data['supplier']: #comes as queryset
+                SupplierRecipient.objects.update_or_create(recipient_company = main, 
+                                                         supplier_company = comp)
+        if self.cleaned_data['recipient'] is not None:
+            for comp in self.cleaned_data['recipient']: #comes as queryset
+                SupplierRecipient.objects.update_or_create(recipient_company = comp, 
+                                                         supplier_company = main)
+        return main
+    
     class Meta: #only for model fields
         model = Company
-        exclude = ['',]
-        
+        exclude = ['owner_old', 'subsidiary_old', 'supplier_old', 'recipient_old',
+                   'subsidiary_to_owner', 'supplier_to_recipient'
+                   ]
+
+
+
+
+
 class ReferenceForm(forms.ModelForm):
     '''
     form to create a reference

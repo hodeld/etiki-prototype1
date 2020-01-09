@@ -30,59 +30,18 @@ $(document).ready(function() {
 			
 			beforeSubmit: function() {
 					$("#id_message").html('calculating results …');
+					setFilterBtn();
 					
-					var validate= false;
-					$('.f_input').each(function(){
-					    if($(this).val() != '')
-					        validate = true;
-					});
-					if(!validate){
-						
-						$('#icon_filter_active').hide();
-						$('#icon_filter').show();				
-					}
-					else { 
-						$('#icon_filter').hide();
-						$( '#icon_filter_active' ).show();	
-						var $el = $('#btn_filter_toggle'),
-					    	originalColor = $el.css("background");
-
-						$el.css("background", "#ffff99");
-						setTimeout(function(){
-							$el.animate({
-								backgroundColor: originalColor
-							}, 50, function() {
-								$el.removeAttr('style');
-							  });													
-						}, 100);
-						
-						//$( '#btn_filter_toggle' ).show( "highlight" );	//jquery UI				
-					}
+					
 					startanimation(); // only first time when table is hidden
+					
 					var acturl = $('#id_filterform').serialize(); //
 					var searchurl = list_url +  'search?' + acturl; //list_url: etilog:home
-					//window.history.pushState("", "", searchurl); //TODO direct url search
+					window.history.pushState("", "", searchurl); //TODO direct url search
 			},
 			success : function(response) {
-					var tblData = response.table_data;
-					var compData = response.comp_details;
-					var msg = response.message;
+				setData(response)
 					
-					ie_details = JSON.parse(response.ie_details); 
-					comp_ratings = JSON.parse(response.comp_ratings); 
-					
-					$("#id_message").html(msg);
-					$("#company-details").html(compData);
-					drawCharts();
-					$("#id_ovtable").html(tblData);
-
-					set_topheadaer()//new th elements
-					prepare_list();
-					
-					
-					
-					
-
 				},
 			url: list_url, //needed to be defined due to searchurl
 			};
@@ -95,61 +54,23 @@ $(document).ready(function() {
 	
 	//directly submit on filterinputs:
 	$('.f_input').change(function(ev){
-		var foid = '#' + ev.target.form.id;
-		$(foid).submit();		
-		
+		submitFilterForm(ev)
 	});
 	
 	//directly submit on datetimeinput
 	$(".dateyearpicker").on('dp.change', function(ev) { // e = event
-		var foid = '#' + ev.target.form.id;
-		$(foid).submit();
-
+		submitFilterForm(ev)
 	});
 
 	
-	//initialize bloodhound
-	var companies = new Bloodhound({
-		  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
-		  queryTokenizer: Bloodhound.tokenizers.whitespace, 
-		  prefetch: {
-			  url: companies_url, // url set in html
-			  cache: false // defaults to true -> for testing	        
-		        }		  
-		});
-	//initialize bloodhound
-	var countries = new Bloodhound({
-		  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),//obj.whitespace('name') -> data needs to be transformed
-		  queryTokenizer: Bloodhound.tokenizers.whitespace, 
-		  prefetch: {
-			  url: countries_url, // url set in html   
-			  cache: false // 
-		        }		  
-		});
-	//initialize bloodhound
-	var references = new Bloodhound({
-		  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
-		  queryTokenizer: Bloodhound.tokenizers.whitespace, 
-		  prefetch: {
-			  url: references_url, // url set in html  
-			  cache: false // 
-		        }		  
-		});
-	//initialize bloodhound
-	var tags = new Bloodhound({
-		  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
-		  queryTokenizer: Bloodhound.tokenizers.whitespace, 
-		  prefetch: {
-			  url: tags_url, // url set in html  
-			  cache: false // 
-		        }		  
-		});
+	
 	
 	var elttag = $('.f_tagsinput') //array of elements
 	
 	var multitemplate_st = '<h5 class="category-name text-primary">';
 	var multitemplate_et = '</h5>';
 	var limit_sugg = 3;
+	
 	//initialize typehead -> needs to be below source (assignment is in order in js!
 	$('#id_search').typeahead(
 		{
@@ -260,12 +181,10 @@ $(document).ready(function() {
 	        $(this).blur();
 	    }
 	});
-     //for List.js
-     prepare_list()
 
 });
 
-
+var drawcharts = false; 
 
 function set_val_from_btn(event) {
 	var el_id = '#' + event.target.id;
@@ -290,8 +209,6 @@ function set_val_from_btn(event) {
 			val_list.splice(index, 1);
 		    }
 	}
-	
-
 	$(input_id).val(val_list)
 				.trigger('change'); //needed for hidden input fields
 }
@@ -333,7 +250,7 @@ function prepare_list(){
 
 
 
-function set_filterbtns(){
+function set_filterbtns_notused(){
 	$.each(btns_dict, function( k, v ) {
 		var part_id = '#id-' + k + '-btn-';	//k = sust_domain or sust_tendency
 		$.each(v, function(index, val_i){
@@ -385,3 +302,138 @@ function toggle_filter() {
 		$('#div_filterform').addClass('transp');	
 	}
 }
+
+var ie_details = ''; 
+var comp_ratings = ''; 
+
+function setData(response) {
+	var tblData = response.table_data;
+	var compData = response.comp_details;
+	var msg = response.message;
+	
+	ie_details = JSON.parse(response.ie_details); 
+	comp_ratings = JSON.parse(response.comp_ratings); 
+	
+	$("#id_message").html(msg);
+	$("#company-details").html(compData);
+	
+	drawcharts = true;
+	drawCharts();
+	
+	$("#id_ovtable").html(tblData);
+
+	set_topheadaer()//new th elements
+	prepare_list();
+}
+function submitFilterForm(ev){
+	var target = $(ev.target);
+	if (target.hasClass('nosubmit')){
+		target.removeClass('nosubmit');
+	}
+	else {
+		var foid = '#' + ev.target.form.id;
+		$(foid).submit();
+	}	
+}
+
+function setFilterBtn(){
+	var validate= false;
+	$('.f_input').each(function(){
+	    if($(this).val() != '')
+	        validate = true;
+	});
+	if(!validate){
+		
+		$('#icon_filter_active').hide();
+		$('#icon_filter').show();				
+	}
+	else { 
+		$('#icon_filter').hide();
+		$( '#icon_filter_active' ).show();	
+		var $el = $('#btn_filter_toggle'),
+	    	originalColor = $el.css("background");
+
+		$el.attr('style', "background: #ffff99 !important"); //due to mdb
+		setTimeout(function(){
+			$el.animate({
+				backgroundColor: originalColor
+			}, 100, function() {
+				$el.removeAttr('style');
+			  });													
+		}, 200);
+
+	}
+}
+
+function setFilterVisually(){
+	$('.f_input').each(function(){
+		var ele = $(this);
+	    if (ele.val() != ''){
+	    	var val = ele.val();
+	    	var parfield =  ele.attr('parfield');
+
+	    	if (ele.hasClass('btninput')){
+	    		//var el_id = ele.attr('id');
+	    		var targetId =  parfield + val;
+	    		
+	    		$(targetId).attr('aria-pressed', 'true');
+	    	} else if (ele.hasClass('f_tagsinput')) {
+	    		var el_name =  ele.attr('name');
+	    		var targetId =  parfield + el_name; //company
+	    		var source = sourcesDict[el_name];
+	    		var source_dict = source.index.datums ;
+	    		var suggestion = source_dict[val] ;
+	    		ele.addClass('nosubmit');
+	    		ele.tagsinput('add', suggestion);
+	    		$(targetId).show();	
+	    	
+	    	} else if (ele.hasClass('dateyearpicker')){
+	    		
+	    		//ele.data("DateTimePicker").date(val);
+	    		
+	    	}
+	    	
+	    	
+	    	$('#icon_filter').hide();
+			$( '#icon_filter_active' ).show();	
+
+	    	//if class btnselect id-sust_domain-btn-2 ; id-sust_tendency -> ...-btn- ; 
+	    	//if class f_tagsinput id_f_reference -> id_row_f_reference
+	    	// fi class dateyearpicker 
+	    	    	
+	    }
+	});
+}
+
+//initialize BLOODHOUND
+function getBloodhoundOpt(field_url){
+	optDict = {
+			  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
+			  queryTokenizer: Bloodhound.tokenizers.whitespace, 
+			  identify: function(obj) { return obj.id; },
+			  prefetch: {
+				  url: field_url, // url set in html
+				  cache: false // defaults to true -> for testing	        
+			        },
+	}
+	return optDict
+}
+var bldhndOptComp = new getBloodhoundOpt(companies_url);
+var companies = new Bloodhound(bldhndOptComp);
+
+var optCountries = new getBloodhoundOpt(countries_url);
+var countries = new Bloodhound(optCountries);
+
+var optReferences = new getBloodhoundOpt(references_url);
+var references = new Bloodhound(optReferences);
+
+var optTopics = new getBloodhoundOpt(tags_url);
+var tags = new Bloodhound(optTopics);
+
+var sourcesDict = {'company': companies,
+		'country': countries,
+		'reference': references,
+		'tags': tags,
+		}
+
+

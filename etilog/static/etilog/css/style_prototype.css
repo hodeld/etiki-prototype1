@@ -1,11 +1,25 @@
 :root {
-  --full_bckgrnd: rgba(33, 37, 41, 1);  /*rgba(38, 33, 32, 1); /*rgb(33,37,41)*/
-  --trans_bckgrnd: rgba(38, 33, 32, .8);
+  --full_bckgrnd: rgba(33, 37, 41, 1);  /* = #33b5e5 rgba(38, 33, 32, 1);*rgb(33,37,41)*/
+  --trans_bckgrnd: rgba(33, 37, 41, .8);
   --light_bckgrnd: rgba(255, 255, 255, .3); /*on top */
-  --etikigreen: var(--info);/*#3E7480; */
-  --positive: var(--success) ; 
+  --etikigreen: #37718e ; /* #33b5e5 mdb info colour; var(--info); #3E7480; */
+  --positive: #66a182; 
+  --controversial: #aeab98; 
+  --negative: #e78680;
+  /* 
+  --etikigreen: #33b5e5; 
+  --positive: #7b8776; 
+  --controversial: #d8a47f; 
+  --negative: #db5461;
+  
+  
+  --positive: #7b8776; 
+  --controversial: #87767b; 
+  --negative: #827687;
+  
+  /*--positive: var(--success) ; 
   --controversial: var(--warning) ; 
-  --negative: var(--danger) ; 
+  --negative: var(--danger) ; */
 }
 
 
@@ -17,7 +31,7 @@ body, html {
   -o-background-size: cover;
   height: 100%;
   	/* default is 1rem or 16px -> for table*/
-	font-family: "Courier New", Courier, monospace;
+	font-family: "Roboto",sans-serif; /*"Courier New", Courier, monospace; */
 }
 noscript {
 	position: absolute;
@@ -34,7 +48,7 @@ noscript {
 .fullsite-wrapper{
 
 	/* Add a white text color to all elements inside the .bgimg container */
-	color: white;
+	color: white !important;
 	/* Add a font */
 }
 
@@ -83,6 +97,13 @@ noscript {
 #img_sm {
     vertical-align: middle; /* is already in bootstrap img class */
     max-height: 25px; /* to define img size */
+    height: 25px;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    
 }
 .icon {
   	height: 25px; /* should be square image */
@@ -118,12 +139,12 @@ label, .nav-link{
 }
 .btn-dark {
     color: #fff;
-    background-color: var(--full_bckgrnd);
+    background-color: var(--full_bckgrnd) !important;
     border-color: var(--full_bckgrnd);
 }
 .btn-dark:hover, .btn-dark:focus, .btn-dark:active, .btn-dark.active, .open>.dropdown-toggle.btn-dark {
     color: #fff;
-    background-color: var(--light_bckgrnd); 
+    background-color: var(--light_bckgrnd) !important; 
     border-color: var(--light_bckgrnd); 
 }
 
@@ -143,7 +164,7 @@ label, .nav-link{
     border-radius: 0;
     color: white;
 }
-.fas{
+.nav-tabs .fas{
 	font-size: 1.5em; /* sets size of font awesome */
 		
 }
@@ -173,3 +194,4 @@ label, .nav-link{
     right: 20px;
     top: 20px;
 }
+

@@ -93,7 +93,7 @@ class DateYearPicker(DatePickerInput):
 class DateYearPickerField(Layout):
     def __init__(self, field_name,  *args, **kwargs):
         super(DateYearPickerField, self).__init__(           
-            Field(field_name, autocomplete='off', wrapper_class='datepicker')
+            Field(field_name, autocomplete='off', wrapper_class='datepicker', *args, **kwargs)
             )
         
                 
@@ -107,10 +107,8 @@ class RowTagsInput(Layout):
         super(RowTagsInput, self).__init__(           
             Row(
                     Column(Field(field_name, id = field_id,
-                            #data_role='tagsinput',  
-                             #disabled=True, 
-                             #readonly=True,
-                             css_class = ' '.join([cls_taginp, field_class]) 
+                                 parfield = '#id_row_f_',
+                                 css_class = ' '.join([cls_taginp, field_class]) 
                            ),
                             css_class = col_class                             
                         ),
@@ -118,14 +116,25 @@ class RowTagsInput(Layout):
                 id = row_id
                 )
             )
-                   
+
+dom_icon_dict ={1: 'fa-users',  #People
+                2:  'fa-hippo', #   Animals
+                3: 'fa-tree', #  Environment
+                4: 'fa-balance-scale-left', #   Politics
+                5: 'fa-store',#   Products& Services                
+                }  
+              
 class ColDomainBtnSelect(Layout):
     def __init__(self, col_class= 'col-12 col-lg-6', labelname= 'Category', *args, **kwargs): #distribute buttons
         q = SustainabilityDomain.objects.all()
         btn_list = []
+        icon_str = '<i class="fas %s mr-1"></i>' 
         for dom in q:
-            btn = Button(dom.id, dom.name, css_class='btnselect btn-outline-info btn-sm',  #'active btn-light',  
-                               css_id = 'id-sust_domain-btn-' + str(dom.id),
+            
+            icon_name = dom_icon_dict[dom.id]
+            cont = icon_str % icon_name + dom.name 
+            btn = StrictButton(cont, name = dom.id, value = dom.name, css_class='btnselect btn-outline-info btn-sm',  #'active btn-light',  
+                               css_id = 'id_sust_domain-btn-' + str(dom.id),
                                data_toggle='button',
                                aria_pressed = "false",
                                targfield = 'id_sust_domain') 
@@ -153,7 +162,7 @@ class ColTendencyBtnSelect(Layout):
             else: # 'controv' in tend.name :
                 csscls =  bntclass +'warning'
             btn = Button(tend.id, tend.name, css_class=csscls,  #'active btn-light',  
-                               css_id = 'id-sust_tendency-btn-' + str(tend.id),
+                               css_id = 'id_sust_tendency-btn-' + str(tend.id),
                                data_toggle='button',
                                aria_pressed = "false",
                                targfield = 'id_sust_tendency') 
@@ -239,10 +248,10 @@ class SearchWBtn(Layout):
         super(SearchWBtn, self).__init__(           
             FieldWithButtons(
                 Field(fieldname, *args, **kwargs),
-                StrictButton(img_1+img_2, css_class='btn btn-dark', 
-                             css_id='btn_filter_toggle', 
-                             onclick="toggle_filter_frombtn()"),
-                css_id='div_id_search'
+                            StrictButton(img_1+img_2, css_class='btn-dark m-0 px-3 py-0 z-depth-0', 
+                            css_id='btn_filter_toggle', 
+                            onclick="toggle_filter_frombtn()"),
+                            css_id='div_id_search'
                 #for prepend: change template -> span before, prepend-class
                 )
             )

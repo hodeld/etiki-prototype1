@@ -4,20 +4,27 @@
 {% block djangoadmin %} {% endblock djangoadmin %}
 {#import bootstrap4#} {% load bootstrap4 %} {# Embed Bootstrap CSS #}
 {% bootstrap_css %} {# Embed Bootstrap JS+jQuery #} {% bootstrap_javascript jquery='full' %} 
-{% block head_css %} {% endblock head_css %}
+
 {% load crispy_forms_tags %}
 
 <!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
 
 {#import scripts need to be under url to scripts (loaded by bootstrap4) #}
+<!--base_script for datepicker -->
 <script src="{% static 'etilog/js/base_script.js' %}"></script> 
+
 <script src="{% static 'etilog/js/etilog/startpage.js' %}"></script> 
+
 <script
 			  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
 			  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
 			  crossorigin="anonymous"></script>
 
-			  
+<!-- MDB -->
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/js/mdb.min.js"></script>			  
 
 {% block script %} {% endblock script %}
 
@@ -29,6 +36,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>{% block title %}etiki.org | it's coming {%endblock title%} </title> 
+<!-- MDB -->
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+<!-- Material Design Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
+
 
 <link rel="stylesheet" type="text/css"
 	href="{% static 'etilog/css/style_prototype.css' %}">
@@ -40,9 +53,9 @@
 href="{% static 'etilog/css/tagsinput.css' %}">
 <link rel="stylesheet" type="text/css"
 href="{% static 'etilog/css/typeaheadjs.css' %}">
-<link rel="stylesheet" 
-	href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">	
+
+
+{% block head_css %} {% endblock head_css %}
 
 </head>
 <body>
@@ -52,7 +65,7 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 	
 	
 	<div class="topleft changepos">
-		<img alt="" border="0" src="{% static 'etilog/img/logoetiki.png' %}" />
+		<img alt="logo etiki" border="0" src="{% static 'etilog/img/logoetiki.svg' %}" />
 	</div>
 	
 		
@@ -95,7 +108,7 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 				  <div class="nav nav-tabs" id="nav-tab" role="tablist">
 				    <a class="nav-item nav-link active" id="table-tab" data-toggle="tab" href="#id_oviewtable" role="tab" aria-controls="id_oviewtable" aria-selected="true"><i class="fas fa-list"></i></a>
 				    <a class="nav-item nav-link" id="wordcloud-tab" data-toggle="tab" href="#wordcloud" role="tab" aria-controls="wordcloud" aria-selected="false"><i class="fas fa-industry"></i> </a>
-				    <a class="nav-item nav-link" id="company-tab" data-toggle="tab" href="#company-details" role="tab" aria-controls="company-details" aria-selected="false" onclick="drawCharts()"><i class="fas fa-globe"></i></a>
+				    <a class="nav-item nav-link" id="company-tab" data-toggle="tab" href="#company-details" role="tab" aria-controls="company-details" aria-selected="false"><i class="fas fa-globe"></i></a>
 				    <a class="nav-item nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="false"><i class="fas fa-question"></i></a>
 				  
 				  

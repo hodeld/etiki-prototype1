@@ -5,7 +5,6 @@ from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth import logout
-from django.forms.models import model_to_dict
 import json
 
 #from 3rd apps
@@ -51,55 +50,53 @@ def startinfo(request):
                                                  'message': message
                                                              })
 
-def overview_impevs(request):
-    form = NewSource() #for testing
+def overview_impevs(request, reqtype = None):
     key_totnr = 'cnties'
     cnt_tot = get_cache(key_totnr, request)
     if cnt_tot == None:
         cnt_tot = ImpactEvent.objects.all().count()
-    filter_dict = get_filterdict(request) #hiddencompany
-    limit_start = 21
     
-    if request.user.is_authenticated:
-        limit_filt = 1000
-        Table = ImpEvTablePrivat
+    if  len(request.GET) == 0: #firsttime
+        filt = ImpevOverviewFilter({}, queryset=ImpactEvent.objects.none()) #needed, as should be shown imm.
+        #table_qs =  filt.qs 
+        jsondata = json.dumps(False) #False #Table(table_qs)
+        showpage = False
+    
     else:
-        limit_filt = 50
-        Table = ImpEvTable
-        
-    if  filter_dict:
+        filter_dict = get_filterdict(request) 
+            
+        if request.user.is_authenticated:
+            limit_filt = 1000
+            Table = ImpEvTablePrivat
+        else:
+            limit_filt = 50
+            Table = ImpEvTable
+            
         q_ie = ImpactEvent.objects.all()
         msg_base =  'shows %d filtered impact events'
-    else: #newly loaded time on site
-        last_ies = ImpactEvent.objects.all().order_by('-updated_at')[:limit_start]
-        dt = list(last_ies)[-1].updated_at
-        q_ie = ImpactEvent.objects.filter(updated_at__gte = dt)
-        msg_base = 'shows %d most recent added impact events'
     
-    filt = ImpevOverviewFilter(filter_dict, queryset=q_ie) 
-    table_qs =  filt.qs 
-    cnt_ies = table_qs.count() #one query too much
-    if cnt_ies > limit_filt:
-        last_ies = table_qs.order_by('-date_published')[:limit_filt]
-        dt = list(last_ies)[-1].date_published
-        table_qs = table_qs.filter(date_published__gte = dt)
-        msg_results = 'more than %d results! shows %d newest impact events' % (limit_filt, limit_filt)
-    else:
-        msg_results = msg_base % cnt_ies
+        filt = ImpevOverviewFilter(filter_dict, queryset=q_ie) 
+        table_qs =  filt.qs 
+        cnt_ies = table_qs.count() #one query too much
+        if cnt_ies > limit_filt:
+            last_ies = table_qs.order_by('-date_published')[:limit_filt]
+            dt = list(last_ies)[-1].date_published
+            table_qs = table_qs.filter(date_published__gte = dt)
+            msg_results = 'more than %d results! shows %d newest impact events' % (limit_filt, limit_filt)
+        else:
+            msg_results = msg_base % cnt_ies
          
-    table = Table(table_qs)
-    #cnt_ies = filt.qs.count() 
-    RequestConfig(request, paginate=False).configure(table) 
+        table = Table(table_qs)
+        #cnt_ies = filt.qs.count() 
+        RequestConfig(request, paginate=False).configure(table) 
+           
+        #takes about 4 of 12 seconds to load! (when 200 loaded) -> better load them indiv.
+        ie_details = load_ie_details(table_qs)
+        comp_details, comp_ratings = get_comp_details(table_qs)
+        
+        msg_results = msg_results + ' of %d in total' % cnt_tot
     
-    
-    
-    #takes about 4 of 12 seconds to load! (when 200 loaded) -> better load them indiv.
-    ie_details = load_ie_details(table_qs)
-    comp_details, comp_ratings = get_comp_details(table_qs)
-    
-    msg_results = msg_results + ' of %d in total' % cnt_tot
-    
-    if filter_dict:
+        
         d_dict = {}
         rend_table =  render_to_string( 'etilog/impactevents_overview_table.html', {'table': table,
                                                                            }
@@ -114,9 +111,10 @@ def overview_impevs(request):
         d_dict['comp_ratings'] = comp_ratings
         d_dict['comp_details'] = rend_comp
         
-        return HttpResponse(json.dumps(d_dict), content_type='application/json')
-
-                                                                           
+        jsondata = json.dumps(d_dict)
+        if reqtype == None: #load directly data           
+            return HttpResponse(jsondata, content_type='application/json')
+                                                            
     searchform = SearchForm() #Filter ServerSide
     topicform = TopicForm()
     freetextform = FreetextForm()
@@ -124,8 +122,11 @@ def overview_impevs(request):
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
     references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
     tags_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'tags'})  
-        
-    return render(request, 'etilog/impactevents_overview.html', {'table': table,
+    
+    if reqtype:
+        showpage = True
+    
+    return render(request, 'etilog/impactevents_overview.html', {
                                                                  'filter': filt,
                                                                  'searchform': searchform,
                                                                  'topicform': topicform,
@@ -134,12 +135,12 @@ def overview_impevs(request):
                                                                  'countries_url': countries_url,
                                                                  'references_url': references_url,
                                                                  'tags_url': tags_url,
-                                                                 'message': msg_results,
-                                                                 'form': form,
-                                                                 'ie_details': ie_details,
-                                                                 'comp_details': comp_details,
-                                                                 'comp_ratings': comp_ratings,
+                                                                 
+                                                                 'showpage': showpage,
+                                                                 'jsondata': jsondata,
                                                                  })
+
+        
 
 
 
@@ -292,11 +293,10 @@ def impact_event_change(request, ietype = 'new', ie_id = None):
         else:
             if ietype == 'copy':
                 init_data = get_ie_init_data(ie_id, update = False)
-            #else:
-                #form = ImpactEventForm()
+
             first_id = ImpactEvent.objects.order_by('id').values_list('id', flat = True).first()
             next_id_url = reverse_lazy('etilog:impactevent_update', kwargs={'ie_id': first_id})
-        form = form = ImpactEventForm(initial = init_data)
+        form =  ImpactEventForm(initial = init_data)
         shtml = init_data.get('article_html', '') 
     return render(request, 'etilog/impev_upd_base.html', {'form': form, #for form.media
                                                           'message': message   ,
@@ -361,9 +361,7 @@ def add_foreignmodel(request, main_model, foreign_model):
             form = CompanyForm(data_dict)
         
         if form.is_valid():
-            instance = form.save(commit = False) 
-            instance.save()
-            form.save_m2m() #due to many2many
+            instance = form.save()#(commit false) only needed if changes are done afterwards
             
             #handles the result of the foreign model in the original one
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
@@ -383,10 +381,6 @@ def add_foreignmodel(request, main_model, foreign_model):
     
     modelname = foreign_model[0].upper() + foreign_model[1:]
 
-    
-            #message = form.errors
-
-    
     return render(request, 'etilog/addforeign_form.html', {'form' : form,
                                                            'modelname': modelname})
 

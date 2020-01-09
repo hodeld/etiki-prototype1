@@ -5,10 +5,14 @@ from django import forms
 from django.urls import reverse_lazy
 
 #models
-from .models import ImpactEvent 
-from .models import SustainabilityDomain, SustainabilityTendency, SustainabilityCategory, SustainabilityTag
-from .models import Company, Country,  ActivityCategory
-from .models import Media, Reference, Source
+from .models import (ImpactEvent, 
+                    SustainabilityDomain, SustainabilityTendency, 
+                    SustainabilityCategory, SustainabilityTag, 
+                    Company, Country,  ActivityCategory,
+                    Media, Reference, Source,
+                    SubsidiaryOwner, SupplierRecipient
+                    )
+
 
 class EtilogAdminSite(AdminSite):
     site_header = 'Etiki Admin'
@@ -16,17 +20,6 @@ class EtilogAdminSite(AdminSite):
 
 
 
-class SourceInLine (admin.TabularInline):
-
-    model = Source.impevents.through
-    fieldsets = (
-        (None, {
-            'fields': (('url', 'di_vm', 'mi_vm', 'do_vm', 'fr_vm'),),
-            }),
-        (None, {
-            'fields': (('comment', 'di_nm', 'mi_nm', 'do_nm', 'fr_nm'),),
-            }),
-        )
     
 class ImpactEventAdminForm(forms.ModelForm):
     
@@ -50,6 +43,45 @@ class TagsAdmin(admin.ModelAdmin):
     model = SustainabilityTag
     list_display = ('name', 'get_categories', 'get_domains', 'sust_tendency' )
 
+class SubsidiaryInLine (admin.TabularInline):
+    model = SubsidiaryOwner
+    fk_name = 'owner_company'
+    extra = 1
+    verbose_name_plural = 'Subsidiaries'
+    
+
+class OwnerInLine (admin.TabularInline):
+    model = SubsidiaryOwner
+    fk_name = 'subsidiary_company'
+    extra = 1
+    verbose_name_plural = 'Owners'
+
+class SupplierInLine (admin.TabularInline):
+    model = SupplierRecipient
+    fk_name = 'recipient_company'
+    extra = 1
+    verbose_name_plural = 'Suppliers'
+    
+
+class RecipientInLine (admin.TabularInline):
+    model = SupplierRecipient
+    fk_name = 'supplier_company'
+    extra = 1
+    verbose_name_plural = 'Recipients'
+       
+    
+class CompanyAdmin (admin.ModelAdmin):
+    inlines = (SubsidiaryInLine, OwnerInLine, SupplierInLine, RecipientInLine)
+
+class SubsidiaryOwnerAdmin (admin.ModelAdmin):
+    model = SubsidiaryOwner
+    list_display = ('owner_company', 'subsidiary_company', 'active', 'created_at' )
+
+class SupplierRecipientAdmin (admin.ModelAdmin):
+    model = SupplierRecipient
+    list_display = ('recipient_company', 'supplier_company', 'active', 'created_at' )
+
+
     
 
 
@@ -66,7 +98,9 @@ admin_site.register(SustainabilityTendency)
 admin_site.register(SustainabilityTag, TagsAdmin)
 admin_site.register(Source)
 admin_site.register(Reference)
-admin_site.register(Company)
+admin_site.register(Company, CompanyAdmin)
+admin_site.register(SubsidiaryOwner, SubsidiaryOwnerAdmin)
+admin_site.register(SupplierRecipient, SupplierRecipientAdmin)
 
 admin_site.register(Media)
 admin_site.register(ActivityCategory)

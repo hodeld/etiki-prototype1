@@ -14,7 +14,9 @@ href="{% static 'etilog/css/etilog/table.css' %}">
 href="{% static 'etilog/css/etilog/impev_show.css' %}">
 <link rel="stylesheet" type="text/css"
 href="{% static 'etilog/css/etilog/company_show.css' %}">
-{{ filter.form.media }} {# Adds date-picker required JS and CSS #}
+<link rel="stylesheet" type="text/css"
+	href="{% static 'etilog/css/etilog/buttons.css' %}">
+{{ filter.form.media }} {# Adds date-picker required and specific JS and CSS #}
 
 {% endblock head_css %} 
 {% block script %} 
@@ -25,8 +27,10 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
     var references_url = "{{references_url}}"; 
     var tags_url = "{{tags_url}}"; 
     var list_url = "{% url 'etilog:home' %}";
-    var ie_details = JSON.parse("{{ ie_details |escapejs }}"); 
-    var comp_ratings = JSON.parse("{{ comp_ratings |escapejs }}"); 
+    
+    var jsData = JSON.parse("{{ jsondata | escapejs }}"); 
+  
+    var showpage = "{{showpage}}"; 
 
 </script>
 {% endblock script %}
@@ -36,7 +40,6 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
 {% block content %}
 <br>
 <div  id="id_ovtable">
-	{% render_table table %}
 </div>         	
 
 
@@ -44,7 +47,6 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
 {% endblock content %}  
 
 {% block bottomscript %}
-
 
 <script src="{% static 'etilog/js/etilog/tagsinput.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script> 
@@ -55,7 +57,6 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
 <!--under tagsinput due to reference to tagsinput -->
 <script src="{% static 'etilog/js/etilog/table_filter.js' %}"></script>
 
-
 <!--no dependency so far -->
 <script src="{% static 'etilog/js/etilog/table_action.js' %}"></script>
 
@@ -64,8 +65,6 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
 <!-- for charts -> todo, separate; do not load jquery again (removes prev plugins -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="{% static 'etilog/js/etilog/company_show.js' %}"></script>
-
- 
  
 {% endblock bottomscript %}
 

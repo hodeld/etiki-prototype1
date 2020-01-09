@@ -10,7 +10,7 @@
 	width: 900px;
 	height: 500px;
 }
-.company-rate{
+.company-chart{
 	/* needs defined height */
 	height: 100%;
 	
@@ -21,6 +21,13 @@
 	width: 100%;
 	padding-top: 100% /* 1:1 aspect ratio */
 }
+
+.company-rate:hover .img-description {
+	visibility: visible;
+	opacity: .9;
+	
+}
+
 .square_content{
 	position: absolute; 
 	top: 0; 
@@ -29,6 +36,11 @@
 	right: 0; 
 	
 }
+.company-logo-wrapper{
+	width: 40%;
+	height: 40%;
+}
+
 .nopadding{
 
 	padding-right: 0; /* 1:1 aspect ratio */
@@ -42,28 +54,79 @@
     width: 120%;
     height: 120%; /* or fill with parent flex-column und flex-grow-1*/
 } 
-.company-name{
+.company-logo .company-name{
 	overflow: hidden;
-    white-space: nowrap;
-    word-break: normal;
-    text-overflow: ellipsis;	
-    margin-left: .5rem;
-    margin-bottom: 0;
+    width: 100%;
+    max-height: 100%;
+    word-break: break-word;
+    font-size:.5rem;  /* for small screens, larger media breakpoints */
+   
 }
 .company-name-wrapper{
 	overflow: hidden;
 }
 .company-logo{
-	/*max-width: 15%; */
-	width: 1.5rem;
-    height: 1.5rem;
-	background-color: white;
-}
-.company-logo-img{
+	position: relative;
 	max-width: 100%;
     max-height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+	background-color: white;
+	overflow: hidden;
 }
-.company-logo-alt{
-	color: black;
+
+
+.company-logo img{
+	/* so black images cover background */
+	max-width: 101%;
+    max-height: 101%;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.company-logo .img-description {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: black;
+	color: #fff;
+	visibility: hidden;
+	opacity: 0;
+	margin-left: .2;
+	margin-left: .2;
 	
+	transition: opacity .2s, visibility .2s;
+
 }
+
+
+/*
+####################################################
+M E D I A  Q U E R I E S
+####################################################
+*/
+ 
+/*
+::::::::::::::::::::::::::::::::::::::::::::::::::::
+Bootstrap 4 breakpoints
+*/
+/* Small devices (landscape phones, 544px and up) */
+@media (min-width: 544px) {  
+  .company-logo .company-name {font-size:.5rem;} /*1rem = 16px*/
+}
+ 
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {  
+  .company-logo .company-name {font-size:.8rem;} /*1rem = 16px*/
+}
+ 
+/*
+::::::::::::::::::::::::::::::::::::::::::::::::::::
+Custom media queries
+*/
+ 
+￼

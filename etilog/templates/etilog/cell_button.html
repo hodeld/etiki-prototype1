@@ -1,8 +1,7 @@
-<!-- for table value css class depending on value  -->
-{% if  'negativ' in record.sust_tendency.name %}
-<button class="{{clsneg }}">{{ value }}</button>
-{% elif   'positiv' in record.sust_tendency.name %}
-<button class="{{clspos }}">{{ value}}</button>
-{% else %}
-<button class="{{clscon }}">{{ value }}</button>
-{% endif %}
+
+<button class="{{btnclass }} ">
+	<i class="fas {{iconname}}"></i> 
+	<span class="d-none d-md-inline d-lg-none ml-1" >{{ value }} </span>
+
+
+</button>

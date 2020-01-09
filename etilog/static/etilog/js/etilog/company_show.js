@@ -6,6 +6,7 @@ $(document).ready(function() {
 	google.charts.load("current", {packages:["corechart"]});
     //google.charts.setOnLoadCallback(drawChart);
 	$(window).resize(function(){
+		drawcharts = true;
 		drawCharts();
 		});
 	
@@ -20,18 +21,19 @@ $(document).ready(function() {
 	
 });
 
-
-
 function drawCharts(){
-	comp_ratings.forEach(function (item, index) {
-		drawChart(item);
-	});
+	//if visible and new data
+	if ($('#company-tab').attr("aria-selected") === "true" && drawcharts) {
+		drawcharts = false;
+		comp_ratings.forEach(function (item, index) {
+			drawChart(item);
+		});
+	}	
 }
-
 
 function drawChart(co) {
 	var etiki_colors = get_colors();
-	var eleId = 'company-rate-' + co.pk;
+	var eleId = 'company-chart-' + co.pk;
 	var ele = document.getElementById(eleId);
 	
 	
@@ -57,7 +59,7 @@ function drawChart(co) {
 	
 	
 function size_ratings(ie_id) {
-	var parId = '#company-rate '; //ie_id
+	var parId = '#company-chart '; //ie_id
 	var fullwid = $(parId).width();
 	var pos_num = Number(comp_details[ie_id][0]);
 	var neg_num = Number(comp_details[ie_id][1]);
@@ -100,6 +102,7 @@ function get_colors(){
 
 function imgError(ele){
 	$(ele).hide();
-	var altId = $(ele).attr('altid')
-	$('#'+altId).show();
+	var altId = $(ele).attr('altid');
+	$('#'+altId).css('visibility', 'visible');
+	$('#'+altId).css('opacity', '1');
 }

@@ -31,7 +31,9 @@
 		
 
 		<div class="collapse" id="filterform">
-		{% crispy filter.form %} 
+		{% if filter %} 
+			{% crispy filter.form %} 
+		{% endif %} 
 		</div>
 
 </div>
