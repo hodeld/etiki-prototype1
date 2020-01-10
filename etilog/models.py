@@ -154,7 +154,7 @@ class SustainabilityTendency (models.Model):
         ordering = ['-name', ]
            
 class SustainabilityCategory (models.Model):
-    
+    #not needed anymore
     impnr = models.PositiveSmallIntegerField(verbose_name='Import Number', blank=True,null=True)
     name = models.CharField(unique = True,  max_length=40)
     name_long = models.CharField(unique = True,  max_length=50)

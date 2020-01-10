@@ -8,11 +8,11 @@ from django.db.models import Q
 
 #filter
 from django_filters import FilterSet, DateFilter, CharFilter, ModelMultipleChoiceFilter
-from django_filters import MultipleChoiceFilter
 
 #models
-from .models import Source, Company, ImpactEvent, SustainabilityDomain, Reference
-from etilog.models import SustainabilityTendency, SustainabilityTag
+from etilog.models import (Company, ImpactEvent, SustainabilityDomain, Reference, 
+                            SustainabilityTendency, SustainabilityTag, Country
+                            )
 #forms
 from .forms import ImpevOverviewFForm
 
@@ -43,16 +43,18 @@ class ImpevOverviewFilter(FilterSet):
                          lookup_expr='lt',
                          label = 'Date to')
     
-    #company, reference, country could be done like sust_domain -> but handling error messages needed
-    company = CharFilter(field_name = 'company',
-                         method = 'filter_idlist')
-    reference = CharFilter(field_name = 'reference',
+    #todo (evtl needed): handling error messages needed
+    company = ModelMultipleChoiceFilter(field_name = 'company', #ModelMultiple... -> accepts list
+                         label = 'Company',
+                         queryset=Company.objects.all())
+    reference = ModelMultipleChoiceFilter(field_name = 'reference',
                            label = 'Where was it published',
-                         method = 'filter_idlist')
-    country = CharFilter(field_name = 'country_display', #can be country
+                         queryset=Reference.objects.all())
+    country = ModelMultipleChoiceFilter(field_name = 'country_display', #can be country
                          label = 'Country',
+                         queryset= Country.objects.all(),
                          method = 'filter_country_idlist')
-    summary = CharFilter(field_name = 'summary', #can be country
+    summary = CharFilter(field_name = 'summary', 
                          label = 'Text only',
                          lookup_expr='icontains')
     
@@ -62,24 +64,14 @@ class ImpevOverviewFilter(FilterSet):
     
     sust_domain = ModelMultipleChoiceFilter(field_name = 'sust_domain', #ModelMultiple... -> accepts list
                          label = '',
-                         queryset=SustainabilityDomain.objects.all()) #any queryset
+                         queryset=SustainabilityDomain.objects.all()) 
     sust_tendency = ModelMultipleChoiceFilter(field_name = 'sust_tendency', #ModelMultiple... -> accepts list
                          label = '',
-                         queryset=SustainabilityTendency.objects.all()) #any queryset
-
-    def filter_idlist(self,queryset, name, value):
-        #value = value.replace('[','') #comes as "['3',]"
-        #value = value.replace(']','')
-        id_list = list(value.split(',')) #1,2,4"
-        if len(id_list) > 0:
-            lookup = '__'.join([name, 'in'])   
-            qs = queryset.filter(**{lookup: id_list}) #"name__in = id_list
-        else:
-            qs = queryset
-        return qs
+                         queryset=SustainabilityTendency.objects.all())
     
     def filter_country_idlist(self,queryset, name, value):
-        id_list = list(value.split(',')) #1,2,4"
+        #id_list = list(value.split(',')) #1,2,4"
+        id_list = value
         if len(id_list) > 0:
             qs = queryset.filter(Q(country__in = id_list)
                                  | Q(company__country__in = id_list, country__isnull = True)
@@ -88,11 +80,6 @@ class ImpevOverviewFilter(FilterSet):
             qs = queryset
         return qs
 
-    def filter_sust_domains(self,queryset, name, value):
-        pass
-        
-                            
-    
     class Meta:
         model = ImpactEvent
         fields = ['date_from', 'date_to', 'company', 'country', 'reference', 'sust_domain', 'summary']

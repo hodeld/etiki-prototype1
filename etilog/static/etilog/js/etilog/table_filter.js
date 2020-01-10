@@ -30,9 +30,8 @@ $(document).ready(function() {
 			
 			beforeSubmit: function() {
 					$("#id_message").html('calculating results …');
-					setFilterBtn();
-					
-					
+					setFilterIcon();
+
 					startanimation(); // only first time when table is hidden
 					
 					var acturl = $('#id_filterform').serialize(); //
@@ -191,10 +190,9 @@ function set_val_from_btn(event) {
 	var id_val = Number(event.target.name);
 	var input_id = '#' + $(event.target).attr('targfield');
 	var pressed = event.target.attributes['aria-pressed'].value; // true or false
-	//var el_val = $('#id_sust_domain').val();
+
 	var el_val = $(input_id).val();
 	var val_list = JSON.parse("[" + el_val + "]"); 
-	//var val_list = el_val.split();
 
 	if (pressed  == "false"){ //means was pressed now
 		
@@ -336,7 +334,7 @@ function submitFilterForm(ev){
 	}	
 }
 
-function setFilterBtn(){
+function setFilterIcon(){
 	var validate= false;
 	$('.f_input').each(function(){
 	    if($(this).val() != '')
@@ -365,41 +363,48 @@ function setFilterBtn(){
 	}
 }
 
-function setFilterVisually(){
+function setFilterVisually(filterDict){
 	$('.f_input').each(function(){
+		
 		var ele = $(this);
 	    if (ele.val() != ''){
 	    	var val = ele.val();
 	    	var parfield =  ele.attr('parfield');
-
+	    	var el_name =  ele.attr('name');
+	    	var valList = filterDict[el_name];
 	    	if (ele.hasClass('btninput')){
-	    		//var el_id = ele.attr('id');
-	    		var targetId =  parfield + val;
-	    		
-	    		$(targetId).attr('aria-pressed', 'true');
+	    		ele.val(valList); //value set from filter is string incl. [
+	    		$.each(valList, function(index, value ){
+	    			//todo check but should only ids
+		    		var targetId =  parfield + value;	    		
+		    		$(targetId).attr('aria-pressed', 'true');
+		    		$(targetId).addClass('active');
+	    		});
 	    	} else if (ele.hasClass('f_tagsinput')) {
-	    		var el_name =  ele.attr('name');
-	    		var targetId =  parfield + el_name; //company
-	    		var source = sourcesDict[el_name];
-	    		var source_dict = source.index.datums ;
-	    		var suggestion = source_dict[val] ;
-	    		ele.addClass('nosubmit');
-	    		ele.tagsinput('add', suggestion);
-	    		$(targetId).show();	
-	    	
+	    		function addTag(suggestion){
+	        		ele.addClass('nosubmit');
+	        		ele.tagsinput('add', suggestion);	
+	    		}
+	    		
+	    		var targetId =  parfield + el_name; //eg company
+	    		if (el_name == 'summary'){
+	    			addTag(val)		    			
+	    		} else {
+		    		
+	    			$.each(valList, function(index, value ){
+	    				var suggestion = value; //filterDict[value] ;   		
+	    				addTag(suggestion)	    				
+			    		});
+	    		}
+	    		$(targetId).show();		
 	    	} else if (ele.hasClass('dateyearpicker')){
 	    		
 	    		//ele.data("DateTimePicker").date(val);
 	    		
 	    	}
-	    	
-	    	
+
 	    	$('#icon_filter').hide();
 			$( '#icon_filter_active' ).show();	
-
-	    	//if class btnselect id-sust_domain-btn-2 ; id-sust_tendency -> ...-btn- ; 
-	    	//if class f_tagsinput id_f_reference -> id_row_f_reference
-	    	// fi class dateyearpicker 
 	    	    	
 	    }
 	});
@@ -410,7 +415,7 @@ function getBloodhoundOpt(field_url){
 	optDict = {
 			  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
 			  queryTokenizer: Bloodhound.tokenizers.whitespace, 
-			  identify: function(obj) { return obj.id; },
+			  identify: function(obj) { return obj.id; }, //to get suggestion by ID -> not used
 			  prefetch: {
 				  url: field_url, // url set in html
 				  cache: false // defaults to true -> for testing	        
@@ -429,11 +434,5 @@ var references = new Bloodhound(optReferences);
 
 var optTopics = new getBloodhoundOpt(tags_url);
 var tags = new Bloodhound(optTopics);
-
-var sourcesDict = {'company': companies,
-		'country': countries,
-		'reference': references,
-		'tags': tags,
-		}
 
 

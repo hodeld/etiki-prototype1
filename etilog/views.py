@@ -63,7 +63,8 @@ def overview_impevs(request, reqtype = None):
         showpage = False
     
     else:
-        filter_dict = get_filterdict(request) 
+        filter_dict, filter_name_dict = get_filterdict(request) 
+        filt_data_json = json.dumps(filter_name_dict)
             
         if request.user.is_authenticated:
             limit_filt = 1000
@@ -110,6 +111,8 @@ def overview_impevs(request, reqtype = None):
         d_dict['ie_details'] = ie_details
         d_dict['comp_ratings'] = comp_ratings
         d_dict['comp_details'] = rend_comp
+        d_dict['filter_dict'] = filt_data_json
+        
         
         jsondata = json.dumps(d_dict)
         if reqtype == None: #load directly data           

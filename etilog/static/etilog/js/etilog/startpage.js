@@ -34,7 +34,8 @@ $(document).ready(function() {
 });
 function startsettings(){
 	if (showpage == 'True'){
-		setFilterVisually();
+		var filterDict = JSON.parse(jsData.filter_dict); 
+		setFilterVisually(filterDict);
 		setData(jsData);
 		showElements();
 		
