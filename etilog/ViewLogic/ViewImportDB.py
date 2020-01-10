@@ -5,7 +5,7 @@ Created on 25 Jul 2019
 '''
 
 
-from etilog.models import (Country, SustainabilityCategory, SustainabilityDomain, SustainabilityTag, 
+from etilog.models import (Country, SustainabilityDomain, SustainabilityTag, 
                            SustainabilityTendency, ImpactEvent,
                            Company, SubsidiaryOwner, SupplierRecipient
                            )
@@ -38,7 +38,6 @@ def imp_originalmodel(wb):
     parse_country(wb)
     
     parse_domain(wb)
-    parse_sustcateg(wb)
     
     parse_tags(wb) #after sustcateg and domains
     
@@ -109,41 +108,6 @@ def parse_domain(wb):
         domain_db.save()         
         i += 1 
 
-def parse_sustcateg(wb):
-    
-    sheet = wb['SustCat']
-    rowcount = sheet.max_row 
-
-
-            
-    for cell in sheet [1]:
-        col_strs = ['Nr', 'Name', 'Name_long', 'Sust_Domain']
-        col_dict = {}
-        for col_str in col_strs:   
-            for cell in sheet [1]:               
-                if cell.value ==  col_str:
-                    col_dict[col_str] = cell.column
-
-    i = 3 #without header
-   
-    while i < rowcount + 1: #sheet_iter = sheet.iter_rows
-        
-        name_str = sheet.cell(row = i, column = col_dict['Name']).value
-        num_int = int(sheet.cell(row = i, column = col_dict['Nr']).value)
-        namelong_str = sheet.cell(row = i, column = col_dict['Name_long']).value
-        num_domian = int(sheet.cell(row = i, column = col_dict['Sust_Domain']).value)
-        
-        domain = SustainabilityDomain.objects.get(impnr = num_domian)
-        
-        default_data={'name': name_str, 
-                      'name_long': namelong_str, 
-                      'sust_domain': domain
-                      }
-        
-        sustcat_db , created = SustainabilityCategory.objects.update_or_create(impnr = num_int, 
-                                                                            defaults = default_data) 
-        sustcat_db.save()         
-        i += 1 
 
 
 def parse_tags(wb):
