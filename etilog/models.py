@@ -50,11 +50,6 @@ class Company (models.Model):
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
     activity = models.ForeignKey(ActivityCategory, on_delete=models.PROTECT)
     domain = models.CharField(max_length=255, validators=[full_domain_validator], blank = True, null = True, help_text = 'companydomain.com')
-    subsidiary_old = models.ManyToManyField('self', blank=True, verbose_name='owns', related_name = 'owner2')
-    owner_old = models.ManyToManyField('self', blank=True, verbose_name='owned by')    
-    supplier_old = models.ManyToManyField('self', blank=True, verbose_name='supplied by')  #verbose name was wrong
-    recipient_old = models.ManyToManyField('self', blank=True, verbose_name='delivers to') #verbose name was wrong
-    
     subsidiary_to_owner = models.ManyToManyField('self', blank=True, 
                                                  through='SubsidiaryOwner',
                                                  through_fields=('subsidiary_company', 'owner_company'),
