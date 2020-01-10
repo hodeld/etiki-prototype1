@@ -11,7 +11,7 @@ import json
 from django_tables2 import RequestConfig
 
 #models
-from etilog.models import ImpactEvent, Company, SustainabilityCategory, Reference, Country
+from etilog.models import ImpactEvent, Company, Reference, Country
 from etilog.models import SustainabilityTag
 
 #tables
@@ -63,7 +63,8 @@ def overview_impevs(request, reqtype = None):
         showpage = False
     
     else:
-        filter_dict = get_filterdict(request) 
+        filter_dict, filter_name_dict = get_filterdict(request) 
+        filt_data_json = json.dumps(filter_name_dict)
             
         if request.user.is_authenticated:
             limit_filt = 1000
@@ -110,6 +111,8 @@ def overview_impevs(request, reqtype = None):
         d_dict['ie_details'] = ie_details
         d_dict['comp_ratings'] = comp_ratings
         d_dict['comp_details'] = rend_comp
+        d_dict['filter_dict'] = filt_data_json
+        
         
         jsondata = json.dumps(d_dict)
         if reqtype == None: #load directly data           
@@ -467,17 +470,6 @@ def get_comp_details(q_impev):
     jsdata = json.dumps(ratings) 
     return details, jsdata
      
-
-
-#used in New IE Form     
-def load_sustcategories_notusedanymore(request): #, 
-    domain_id_str = request.GET.get('domainId')
-    domain_id = int(domain_id_str)
-    sustcategories = SustainabilityCategory.objects.filter(sust_domain = domain_id)
-
-    
-    return render(request, 'etilog/select_sustcateg.html', {'susts': sustcategories})       
-
 #used in New IE Form  
 def load_sust_tags(request): #, 
     tendency_id_str = request.GET.get('categoryId')

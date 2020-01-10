@@ -125,7 +125,9 @@ class ImpevOverviewFForm(forms.Form):
             #RowTagsInput('summary',  'col-12', field_class = cls_filterinput),
             Row(
                 Column(Field('summary', id = 'id_f_summary', 
-                             css_class =  ' '.join([cls_filterinput, 'f_tagsinput']), #f_tagsinput for removing div                          
+                             css_class =  ' '.join([cls_filterinput, 
+                                                    'f_tagsinput']), #f_tagsinput for removing div    
+                             parfield = '#id_row_f_',                       
                              data_role='tagsinput'
                        ),
                         css_class='col-12'                             
@@ -138,9 +140,9 @@ class ImpevOverviewFForm(forms.Form):
             RowTagsInput('reference',  'col-12', field_class = cls_filterinput),
             
             Field('sust_domain', id='id_sust_domain', 
-                  css_class=cls_filterinput + 'btninput', parfield='#id_sust_domain-btn-' ),
+                  css_class=cls_filterinput + ' btninput', parfield='#id_sust_domain-btn-' ),
             Field('sust_tendency', id='id_sust_tendency', 
-                  css_class=cls_filterinput + 'btninput', parfield='#id_sust_domain-btn-'), 
+                  css_class=cls_filterinput + ' btninput', parfield='#id_sust_tendency-btn-'), 
             Row(ColDomainBtnSelect(labelname = 'Category'),
                 ColTendencyBtnSelect(labelname = 'Which Tendency')
                 ),

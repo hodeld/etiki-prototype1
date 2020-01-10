@@ -50,11 +50,6 @@ class Company (models.Model):
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
     activity = models.ForeignKey(ActivityCategory, on_delete=models.PROTECT)
     domain = models.CharField(max_length=255, validators=[full_domain_validator], blank = True, null = True, help_text = 'companydomain.com')
-    subsidiary_old = models.ManyToManyField('self', blank=True, verbose_name='owns', related_name = 'owner2')
-    owner_old = models.ManyToManyField('self', blank=True, verbose_name='owned by')    
-    supplier_old = models.ManyToManyField('self', blank=True, verbose_name='supplied by')  #verbose name was wrong
-    recipient_old = models.ManyToManyField('self', blank=True, verbose_name='delivers to') #verbose name was wrong
-    
     subsidiary_to_owner = models.ManyToManyField('self', blank=True, 
                                                  through='SubsidiaryOwner',
                                                  through_fields=('subsidiary_company', 'owner_company'),
@@ -152,33 +147,16 @@ class SustainabilityTendency (models.Model):
         return self.name
     class Meta:
         ordering = ['-name', ]
-           
-class SustainabilityCategory (models.Model):
-    
-    impnr = models.PositiveSmallIntegerField(verbose_name='Import Number', blank=True,null=True)
-    name = models.CharField(unique = True,  max_length=40)
-    name_long = models.CharField(unique = True,  max_length=50)
-    sust_domain = models.ForeignKey(SustainabilityDomain, on_delete=models.CASCADE)
-    comment = models.CharField(max_length=200, blank=True,null=True)
-    def __str__(self):
-        return self.name
-    class Meta:
-        ordering = ['name', ]
 
 class SustainabilityTag (models.Model):
     impnr = models.PositiveSmallIntegerField(verbose_name='Import Number', blank=True,null=True)
     name = models.CharField(unique = True,  max_length=35)
-    sust_categories = models.ManyToManyField('SustainabilityCategory', blank=True)
     sust_domains = models.ManyToManyField('SustainabilityDomain', blank=True)
     sust_tendency = models.ForeignKey(SustainabilityTendency, on_delete=models.SET_NULL, blank=True, null=True)
     description = models.CharField(max_length=200, blank=True,null=True)
     comment = models.CharField(max_length=200, blank=True,null=True)
     def __str__(self):
         return self.name
-    
-    @property
-    def get_categories(self):
-        return '; '.join([x.name for x in self.sust_categories.all()])
     
     @property
     def get_domains(self):
@@ -215,7 +193,6 @@ class ImpactEvent (models.Model):
     company = models.ForeignKey(Company, on_delete=models.PROTECT, related_name = 'impevents')   
        
     reference = models.ForeignKey(Reference, on_delete=models.PROTECT)
-    sust_category = models.ForeignKey(SustainabilityCategory, on_delete=models.SET_NULL, blank=True,null=True) #will be deleted
     sust_tags = models.ManyToManyField('SustainabilityTag', blank=True)
     sust_domain = models.ForeignKey(SustainabilityDomain, on_delete=models.PROTECT) 
     sust_tendency = models.ForeignKey(SustainabilityTendency, on_delete=models.PROTECT) #todo:on_delete=models.CASCADE)
