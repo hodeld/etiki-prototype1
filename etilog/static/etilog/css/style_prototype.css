@@ -24,11 +24,6 @@
 
 
 body, html {
-	background:  url("/static/etilog/img/background.gif")no-repeat center center fixed;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	background-size: cover;
-	-o-background-size: cover;
 	height: 100%;
 		/* default is 1rem or 16px -> for table*/
 	font-family: "Roboto",sans-serif; /*"Courier New", Courier, monospace; */

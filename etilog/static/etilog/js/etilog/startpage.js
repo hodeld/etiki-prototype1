@@ -14,7 +14,7 @@ $(document).ready(function() {
 	        $('.fullscreen-wrapper').addClass("scrolled");
 	        $('#small_logo').addClass(cssclass) //only on large displays shown
 	    } else {
-	    	$('#id_contsearch').addClass("scrolled");
+	    	$('#id_contsearch').removeClass("scrolled");
 	        $('.fullscreen-wrapper').removeClass("scrolled");
 	        $('#small_logo').removeClass(cssclass);
 	    }
