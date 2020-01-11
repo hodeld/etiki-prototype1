@@ -11,9 +11,11 @@ $(document).ready(function() {
 		var cssclass = "d-block"; //"d-md-block";
 		if ($(document).scrollTop() > 100) {			
 	        $('#id_contsearch').addClass("scrolled");
+	        $('.fullscreen-wrapper').addClass("scrolled");
 	        $('#small_logo').addClass(cssclass) //only on large displays shown
 	    } else {
-	        $('#id_contsearch').removeClass("scrolled");
+	    	$('#id_contsearch').addClass("scrolled");
+	        $('.fullscreen-wrapper').removeClass("scrolled");
 	        $('#small_logo').removeClass(cssclass);
 	    }
 	});

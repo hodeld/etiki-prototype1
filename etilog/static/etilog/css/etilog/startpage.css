@@ -1,18 +1,4 @@
 
-.fullsite-wrapper{
-	/* Background image */
-	/*background-image: url("/static/etilog/img/background.gif"); */
-	/* Full-screen height: 100%; */
-	height: 100%;
-	/* Center the background image background-position: center; */
-	
-	/* Scale and zoom in the image background-size: cover; */
-	
-	/* Add position: relative to enable absolutely positioned elements inside the image (place text) position: relative; */
-	
-	/* Add a white text color to all elements inside the .bgimg container */
-}
-
 /* Position text in the top-left corner */
 .topleft {
 	position: absolute;
@@ -62,7 +48,15 @@
 	/* overwrite form-group css */
 	margin-bottom:0;
 }
+.fullscreen-wrapper{
+	-webkit-transition: background-color 700ms linear;
+    transition: background-color 700ms linear;
+}
 
+.fullscreen-wrapper.scrolled{
+	background-color: var(--full_bckgrnd);
+
+}
 #id_contsearch{
 	/*max-width: 500px;*/
 	padding: 10px 20px;
