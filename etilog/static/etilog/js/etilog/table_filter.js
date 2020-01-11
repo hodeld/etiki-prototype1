@@ -284,21 +284,21 @@ function set_tag(id, tagname) {
 function toggle_filter_frombtn() {
 	
 	$('#filterform').addClass('show'); //show always
-	$('#div_filterform').removeClass('transp');
+	$('#div_filterform').removeClass('noshadow');
 	var hi = $('#id_contsearch').outerHeight() + 10; //smaller than navbar id_navbar
 	$([document.documentElement, document.body]).animate({
 	    scrollTop: $("#div_filterform").offset().top - hi
 	}, 'slow');
 }
 
-function toggle_filter() {
-	toggle_visibility('#filterform')
-	if ($('#div_filterform').hasClass('transp')){
-		$('#div_filterform').removeClass('transp');		
+function toggle_filter() {	
+	if ($('#filterform').hasClass('show')){
+		$('#div_filterform').addClass('noshadow');		
 	}
 	else {
-		$('#div_filterform').addClass('transp');	
+		$('#div_filterform').removeClass('noshadow');	
 	}
+	toggle_visibility('#filterform');
 }
 
 var ie_details = ''; 

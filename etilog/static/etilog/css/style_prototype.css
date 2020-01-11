@@ -54,7 +54,11 @@ noscript {
 
 }
 
-
+.noshadow {
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
+	}
 .bckground{
 	/*max-width: 500px;*/
 	padding: 10px 20px;
@@ -191,4 +195,7 @@ label, .nav-link{
     right: 20px;
     top: 20px;
 }
-
+ a {
+    color: var(--etikigreen);
+    font-size: 0.75rem;
+}

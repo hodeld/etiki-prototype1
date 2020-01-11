@@ -500,7 +500,10 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('login'))
     # Redirect to a success page.
-
+def legal(request):
+    return render(request, 'legal.html', )
+    
+    
 def md_overview_impevs(request):
     form = NewSource() #for testing
     key_totnr = 'cnties'
