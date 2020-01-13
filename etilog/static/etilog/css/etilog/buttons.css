@@ -6,7 +6,7 @@
 }
 
 /* buttons select outline colors */
-btnselect.btn-outline-info{
+.btnselect.btn-outline-info{
 	color: var(--etikigreen) !important;
 	border-color: var(--etikigreen) !important;
 }
