@@ -2,14 +2,16 @@
   --full_bckgrnd: rgba(33, 37, 41, 1);  /* = #33b5e5 rgba(38, 33, 32, 1);*rgb(33,37,41)*/
   --trans_bckgrnd: rgba(33, 37, 41, .8);
   --light_bckgrnd: rgba(255, 255, 255, .3); /*on top */
+  --read_bckgrnd: #111213 ;
+  --dark_bckgrnd : #111213 ;
   --etikigreen: #37718e ; /* #33b5e5 mdb info colour; var(--info); #3E7480; */
   --positive: #66a182; 
-  --controversial: #aeab98; 
+  --controversial: #dfc983 ; 
   --negative: #e78680;
   /* 
   --etikigreen: #33b5e5; 
   --positive: #7b8776; 
-  --controversial: #d8a47f; 
+  --controversial: #d8a47f; #aeab98;  #d4aa7d
   --negative: #db5461;
   
   
@@ -24,15 +26,11 @@
 
 
 body, html {
-  background:  url("/static/etilog/img/background.gif")no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  background-size: cover;
-  -o-background-size: cover;
-  height: 100%;
-  	/* default is 1rem or 16px -> for table*/
+	height: 100%;
+		/* default is 1rem or 16px -> for table*/
 	font-family: "Roboto",sans-serif; /*"Courier New", Courier, monospace; */
 }
+
 noscript {
 	position: absolute;
 	text-align: center;
@@ -45,10 +43,11 @@ noscript {
 	font-size: 1.5em; /*25px;*/
 	font-weight: bold;
 }
+
 .fullsite-wrapper{
 
-	/* Add a white text color to all elements inside the .bgimg container */
 	color: white !important;
+	height: 100%;
 	/* Add a font */
 }
 
@@ -57,7 +56,11 @@ noscript {
 
 }
 
-
+.noshadow {
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
+	}
 .bckground{
 	/*max-width: 500px;*/
 	padding: 10px 20px;
@@ -194,4 +197,7 @@ label, .nav-link{
     right: 20px;
     top: 20px;
 }
-
+ a {
+    color: var(--etikigreen);
+    font-size: 0.75rem;
+}

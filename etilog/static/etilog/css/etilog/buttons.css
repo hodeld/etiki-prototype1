@@ -6,10 +6,17 @@
 }
 
 /* buttons select outline colors */
+btnselect.btn-outline-info{
+	color: var(--etikigreen) !important;
+	border-color: var(--etikigreen) !important;
+}
+
 .btnselect.btn-outline-info:not([disabled]):not(.disabled).active{
 	background-color:  var(--etikigreen) !important;
 	color: white !important;
+	border-color: var(--etikigreen) !important;
 }
+
 
 .btnselect.btn-outline-danger:not([disabled]):not(.disabled){
 	border-color:  var(--negative) !important;
@@ -56,4 +63,8 @@
 .sustbtn.btn-warning.disabled, .btn-warning:disabled {
     background-color: var(--controversial) !important;
     border-color: var(--controversial) !important;
+}
+
+.badge-info{
+	background-color: var(--etikigreen) !important;
 }

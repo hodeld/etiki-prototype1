@@ -25,18 +25,18 @@
 	white-space: normal; 
 	word-break: normal;
 	font-size: 16px;
-	background-color: black;
+	background-color: var(--read_bckgrnd);
 }
 
 /*DETAILS*/
-.darkbg{
-	background-color: black;
+.darkbg {
+	background-color: var(--dark_bckgrnd);  
 	
 }
 
 
 .headertd{
-	background-color: black; /*var(--light_bckgrnd); */
+	background-color: var(--read_bckgrnd); /*var(--light_bckgrnd); */
 
 	/* Add a font */
 }

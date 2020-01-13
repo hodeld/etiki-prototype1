@@ -75,7 +75,7 @@
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-  background-color:  black; /*var(--light_bckgrnd);  */
+  background-color:  var(--dark_bckgrnd);  
   cursor: pointer; /* hand pointer */
   color: white !important;
 }

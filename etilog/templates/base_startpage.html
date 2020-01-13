@@ -60,6 +60,7 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 </head>
 <body>
 <noscript>To use etiki please enable JavaScript!</noscript>
+<div class="fullscreen-wrapper fullsite-wrapper">
 <div class="fullsite-wrapper container">
 	
 	
@@ -83,7 +84,7 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 						<h1>etiki - it's coming</h1>
 						<hr class= "start_hr">
 						<h6>
-							<br>Welcome! On etiki you can lookup publications about ethical behaviour of companies and other organisations.
+							<br>etiki brings more transparency into business – this is a prototype – any feedback appreciated! <small>♥</small>
 						</h6>
 					</div>
 					</div>
@@ -102,9 +103,9 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 		</div>
 		</div>
 
-		<div class= "content-wrapper collapse" id="tabContent">
-			<div class= "container bckground fullbg">
-				<nav class= "navbar">
+		<div class= "content-wrapper collapse z-depth-1 px-0 px-sm-3" id="tabContent">
+			<div class= "">
+				<nav class= "navbar z-depth-0 px-0">
 				  <div class="nav nav-tabs" id="nav-tab" role="tablist">
 				    <a class="nav-item nav-link active" id="table-tab" data-toggle="tab" href="#id_oviewtable" role="tab" aria-controls="id_oviewtable" aria-selected="true"><i class="fas fa-list"></i></a>
 				    <a class="nav-item nav-link" id="wordcloud-tab" data-toggle="tab" href="#wordcloud" role="tab" aria-controls="wordcloud" aria-selected="false"><i class="fas fa-industry"></i> </a>
@@ -117,13 +118,13 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 			
 			</div>
 			
-			<div class="tab-content bckground">
+			<div class="tab-content container px-0 ">
 					<div  class="tab-pane fade show active" id="id_oviewtable" role="tabpanel" aria-labelledby="table-tab">
 					{% block content %} 
 					{% endblock content %}
 					</div>
 				  <div class="tab-pane fade" id="wordcloud" role="tabpanel" aria-labelledby="wordcloud-tab">
-					  	<div class="bckground fullbg img-wrapper col-md-8">
+					  	<div class="img-wrapper container col-md-8">
 					  	<img src="{% static 'etilog/img/mockup.svg' %}" class="img-ovarlay" alt="mockup image">			  	 
 					  	<img src="{% static 'etilog/img/wordcloud.svg' %}" class="img-fullwidth" alt="company wordcloud image" >
 					  	</div>
@@ -152,10 +153,13 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 	
 	<div class = "bottomleft changepos">
 		<p>prealpha; © etiki 2019</p>
+		<a href="{% url 'etilog:legal' %}" >Impressum – Legal Notice</a>
 	</div>
+</div>
 </div>
 
 
 {% block bottomscript %} {% endblock bottomscript %}
 </body>
+
 
