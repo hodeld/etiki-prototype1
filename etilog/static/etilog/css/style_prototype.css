@@ -6,12 +6,12 @@
   --dark_bckgrnd : #111213 ;
   --etikigreen: #37718e ; /* #33b5e5 mdb info colour; var(--info); #3E7480; */
   --positive: #66a182; 
-  --controversial: #aeab98; 
+  --controversial: #dfc983 ; 
   --negative: #e78680;
   /* 
   --etikigreen: #33b5e5; 
   --positive: #7b8776; 
-  --controversial: #d8a47f; 
+  --controversial: #d8a47f; #aeab98;  #d4aa7d
   --negative: #db5461;
   
   
