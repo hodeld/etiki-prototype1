@@ -5,17 +5,32 @@
     margin-bottom: 3px;
 }
 
-/* buttons select outline colors */
+/* buttons select outline colors; border-color in both cases needed as mdb uses !important*/
 .btnselect.btn-outline-info{
 	color: var(--etikigreen) !important;
 	border-color: var(--etikigreen) !important;
 }
 
 .btnselect.btn-outline-info:not([disabled]):not(.disabled).active{
-	background-color:  var(--etikigreen) !important;
-	color: white !important;
-	border-color: var(--etikigreen) !important;
+        background-color:  var(--etikigreen) !important;
+		color: white !important;
+		border-color: var(--etikigreen) !important;
+    }
+
+/* hover on desktop as on mobile it remains */
+@media(min-width: 600px) {
+    .btnselect.btn-outline-info:not([disabled]):not(.disabled):hover {
+        background-color:  var(--etikigreen) !important;
+		color: white !important;
+		border-color: var(--etikigreen) !important;
+    }
+    .btnselect.btn-outline-info:not([disabled]):not(.disabled).active:hover {
+        color: var(--etikigreen) !important;
+		border-color: var(--etikigreen) !important;
+		background-color:  transparent !important;
+    }
 }
+
 
 
 .btnselect.btn-outline-danger:not([disabled]):not(.disabled){
