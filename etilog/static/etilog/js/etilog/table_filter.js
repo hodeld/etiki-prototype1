@@ -336,9 +336,13 @@ function submitFilterForm(ev){
 
 function setFilterIcon(){
 	var validate= false;
+	var filterCount = 0;
 	$('.f_input').each(function(){
-	    if($(this).val() != '')
+	    if($(this).val() != ''){
+	    	filterCount ++;
 	        validate = true;
+	    } 
+	       
 	});
 	if(!validate){
 		
@@ -361,13 +365,16 @@ function setFilterIcon(){
 		}, 200);
 
 	}
+	$('#filter-count').html(filterCount);
 }
 
 function setFilterVisually(filterDict){
+	var filterCount = 0;
 	$('.f_input').each(function(){
 		
 		var ele = $(this);
 	    if (ele.val() != ''){
+	    	filterCount ++;
 	    	var val = ele.val();
 	    	var parfield =  ele.attr('parfield');
 	    	var el_name =  ele.attr('name');
@@ -408,6 +415,7 @@ function setFilterVisually(filterDict){
 	    	    	
 	    }
 	});
+	$('#filter-count').html(filterCount);
 }
 
 //initialize BLOODHOUND

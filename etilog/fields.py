@@ -244,13 +244,15 @@ class SearchWBtn(Layout):
         
         img_1 = '<img class="icon collapse" id="icon_filter_active" alt="icon-filter" src="/static/etilog/img/icon/filter_active.png">'
         img_2 = '<img class="icon collapse show" id="icon_filter" alt="icon-filter" src="/static/etilog/img/icon/filter_nonact.png">'
+        cnt_filters = '<small id="filter-count">0</small>'
         
         super(SearchWBtn, self).__init__(           
             FieldWithButtons(
                 Field(fieldname, *args, **kwargs),
-                            StrictButton(img_1+img_2, css_class='btn-dark m-0 px-3 py-0 z-depth-0', 
-                            css_id='btn_filter_toggle', 
-                            onclick="toggle_filter_frombtn()"),
+                            StrictButton(img_1 + img_2 + cnt_filters, 
+                                         css_class='btn-dark m-0 px-3 py-0 z-depth-0', 
+                                         css_id='btn_filter_toggle', 
+                                         onclick="toggle_filter_frombtn()"),
                             css_id='div_id_search'
                 #for prepend: change template -> span before, prepend-class
                 )
