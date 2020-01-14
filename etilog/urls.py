@@ -34,8 +34,6 @@ urlpatterns = [
     
     path('logout/', views.logout_view, name='logout'),
     path('privacy/', views.legal, name='legal'),
-    
-    path('overview_md/', views.md_overview_impevs, name='home_md'),
 
     
 
