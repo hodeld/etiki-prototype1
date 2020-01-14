@@ -83,3 +83,13 @@
 .badge-info{
 	background-color: var(--etikigreen) !important;
 }
+
+.pagination .page-item.active .page-link {
+	background-color: var(--etikigreen);
+}
+.pagination .page-item.active .page-link:hover {
+	background-color: var(--etikigreen);
+}
+.pagination .page-item .page-link {
+	background-color: var(--etikilight);
+}
