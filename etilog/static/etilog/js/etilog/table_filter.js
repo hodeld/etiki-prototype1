@@ -291,7 +291,6 @@ function set_tag(id, tagname) {
 function toggle_filter_frombtn() {
 	
 	toggle_filter(fshow = true) ; //show always
-	$('#div_filterform').removeClass('noshadow');
 	var hi = $('#id_contsearch').outerHeight() + 10; //smaller than navbar id_navbar
 	$([document.documentElement, document.body]).animate({
 	    scrollTop: $("#div_filterform").offset().top - hi
@@ -300,12 +299,12 @@ function toggle_filter_frombtn() {
 
 function toggle_filter(fshow = false) {	
 	if ($('#filterform').hasClass('show') && fshow == false){
-		$('#div_filterform').addClass('noshadow');
+		$('#div_filterform').addClass('nobackground');
 		$('#div_filterform .show').removeClass('show'); 
 		$('#divFilterHead .showopposite').addClass('show'); 
 	}
 	else {
-		$('#div_filterform').removeClass('noshadow');	
+		$('#div_filterform').removeClass('nobackground');	
 		$('#div_filterform .collapse').addClass('show');
 		$('#divFilterHead .showopposite').removeClass('show'); 
 	}
