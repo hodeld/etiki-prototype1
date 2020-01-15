@@ -15,11 +15,9 @@
 	overflow: hidden;
     white-space: nowrap;
     line-height: .8em;
-    
-    /* word-wrap: normal;
+    padding-left: .5rem;
+    padding-right: .5rem;
     text-overflow: ellipsis;
-    
-    */
 }  
     
 .table-etiki .sustcl	 {
