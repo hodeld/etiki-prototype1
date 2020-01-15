@@ -30,8 +30,9 @@
 	white-space: normal;
 }
 .table-etiki .details {
-	width: 6%;
+	width: 35px;
 	white-space: normal;
+	vertical-align: middle ;
 }
 
 .table-etiki td	 {
