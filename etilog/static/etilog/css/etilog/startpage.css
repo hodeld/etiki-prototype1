@@ -69,7 +69,6 @@ body {
 	/*max-width: 500px;*/
 	padding: 10px 20px;
 	margin: 0;
-	border-radius: 8px;
 	background-color: rgba(38, 33, 32, 0);
 	-webkit-transition: background-color 700ms linear;
     transition: background-color 700ms linear;

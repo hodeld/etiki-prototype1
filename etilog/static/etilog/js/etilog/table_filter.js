@@ -301,13 +301,13 @@ function toggle_filter_frombtn() {
 function toggle_filter(fshow = false) {	
 	if ($('#filterform').hasClass('show') && fshow == false){
 		$('#div_filterform').addClass('noshadow');
-		$('#divFilterHead .btn').removeClass('show');
-		$('#filterform').removeClass('show')
+		$('#div_filterform .show').removeClass('show'); 
+		$('#divFilterHead .showopposite').addClass('show'); 
 	}
 	else {
 		$('#div_filterform').removeClass('noshadow');	
-		$('#divFilterHead .btn').addClass('show');
-		$('#filterform').addClass('show')
+		$('#div_filterform .collapse').addClass('show');
+		$('#divFilterHead .showopposite').removeClass('show'); 
 	}
 }
 

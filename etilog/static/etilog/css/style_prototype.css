@@ -8,7 +8,7 @@
   --positive: #66a182; 
   --controversial: #dfc983 ; 
   --negative: #e78680;
-  --foreground: #fff;
+  --foreground: ##f8f9fa; /* #fff; */
   --etikilight: #6d97ac; /*on lighter than etikigreen */
   /* 
   --etikigreen: #33b5e5; 
@@ -86,7 +86,6 @@ noscript {
     background-color: var(--full_bckgrnd);
     padding: 10px 20px;
 	margin: 0;
-	border-radius: 8px;
     z-index: 800; 
 }
 .navbar-toggler {
@@ -118,10 +117,6 @@ label, .nav-link{
 	font-size: 12px!important;
 }
 
-#div_id_search{
-	/* overwrite form-group css, also needed that navbar not heigher*/
-	margin-bottom:0;
-}
 
 /*white line */
 .whitehr{
@@ -138,20 +133,6 @@ label, .nav-link{
     text-overflow: ellipsis;
 }
 
-
-.btn-link{
-	color: white !important;
-}
-.btn-dark {
-    color: #fff;
-    background-color: var(--full_bckgrnd) !important;
-    border-color: var(--full_bckgrnd);
-}
-.btn-dark:hover, .btn-dark:focus, .btn-dark:active, .btn-dark.active, .open>.dropdown-toggle.btn-dark {
-    color: #fff;
-    background-color: var(--light_bckgrnd) !important; 
-    border-color: var(--light_bckgrnd); 
-}
 
 /* NAV-TABS */
 .nav-tabs .nav-link.active {

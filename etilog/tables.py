@@ -209,10 +209,11 @@ class ImpEvTable(tables.Table):
                               )
     reference_sort = tables.Column(accessor='reference', attrs = get_attrs(hide = True))
 
-    details = tables.Column(verbose_name= '',
-                            accessor = 'id',
-                            attrs = get_attrs()
-                            )
+    details = tables.TemplateColumn(template_code = '<i class="fas fa-chevron-down"></i>',
+                                    verbose_name = '',
+                                    accessor = 'id',
+                                    attrs = get_attrs(),                                   
+                                    )
 
     
     class Meta:
@@ -235,8 +236,8 @@ class ImpEvTable(tables.Table):
     
     def render_copy(self):
         return 'copy!'
-    def render_details(self):
-        return '…'
+    #def render_details(self):
+        #return '&#x25BC'
     
     def render_summary(self, value, record):
         #if record.summara

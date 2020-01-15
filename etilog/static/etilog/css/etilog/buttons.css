@@ -1,5 +1,25 @@
 
 
+.btn-link{
+	color: var(--etikigreen) !important;
+}
+.btn-link-big{
+	color: var(--foreground) !important;
+	font-size: 1rem;
+	white-space: nowrap;
+}
+
+.btn-dark {
+    color: #fff;
+    background-color: var(--full_bckgrnd) !important;
+    border-color: var(--full_bckgrnd);
+}
+.btn-dark:hover, .btn-dark:focus, .btn-dark:active, .btn-dark.active, .open>.dropdown-toggle.btn-dark {
+    color: #fff;
+    background-color: var(--light_bckgrnd) !important; 
+    border-color: var(--light_bckgrnd); 
+}
+
  .btnselect{
  
     margin-bottom: 3px;
@@ -92,4 +112,16 @@
 }
 .pagination .page-item .page-link {
 	background-color: var(--etikilight);
+}
+
+/* not used at the moment */
+
+.btn-outline-default:not([disabled]):not(.disabled){
+	border-color:  var(--foreground) !important;
+	color: var(--foreground) !important;
+}
+.btn-outline-default:not([disabled]):not(.disabled).active{
+	background-color:  var(--foreground) !important;
+	border-color:  var(--foreground) !important;
+	color: white !important;
 }
