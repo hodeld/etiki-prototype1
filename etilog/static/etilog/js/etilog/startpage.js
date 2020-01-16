@@ -61,7 +61,7 @@ function startanimation(){
 	var ele = $('#tabContent');
 	if (ele.css('display') == 'none'){
 		//before table has data:
-		$('#divFilterHead').show();
+		$('#div_filterform').addClass('show');
 
 		$('.fullsite-wrapper').css('height', 'auto');
 		$('.bottomleft').removeClass('bottomleft');
