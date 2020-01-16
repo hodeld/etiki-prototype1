@@ -23,7 +23,7 @@
 	overflow: hidden;
     text-overflow: ellipsis;
 	white-space: nowrap;
-	font-size: 14px;
+	font-size: .875rem;
 	color: white;
 	background-color: var(--etikigreen);
 	

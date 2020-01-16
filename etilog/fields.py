@@ -174,7 +174,35 @@ class ColTendencyBtnSelect(Layout):
             Column(HTML(html_str),
                    ButtonHolder(*btn_list),
                 css_class = col_class  ) 
-            )   
+            )  
+class TendencyLegende(Layout):
+    def __init__(self, *args, **kwargs): 
+        q = SustainabilityTendency.objects.all()
+        ele_list = []
+        icon_name = 'fa-dot-circle'
+        icon_str = '<i class="fas %s mr-1"></i>' % icon_name
+        col_class = "col-12 d-flex flex-wrap justify-content-start chart-legend"
+        for tend in q:
+            eleclass = 'text-'
+            if 'negativ' in tend.name :
+                csscls =  'danger'
+            
+            elif 'positiv' in tend.name :
+                csscls =   'success'
+            else: # 'controv' in tend.name :
+                csscls =  'warning'
+            
+            cont = icon_str +  tend.name
+            css_class = eleclass + csscls + ' mx-3 text-uppercase'
+            ele = HTML('<span class="%s"> %s </span>' % (css_class, cont)) 
+            ele_list.append(ele)
+            
+        
+        super(TendencyLegende, self).__init__( 
+                           
+            Div(*ele_list,
+                css_class = col_class  ) 
+            )  
 
 class RowTopics(Layout):
     def __init__(self, col_class= 'col-12', labelname= '', *args, **kwargs): #distribute buttons

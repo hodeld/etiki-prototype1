@@ -1,5 +1,16 @@
+.text-success{
+	color: var(--positive) !important;
+}
 
-
+.text-danger{
+	color: var(--negative) !important;
+}
+.text-warning{
+	color: var(--controversial) !important;
+}
+.chart-legend{
+	font-size: .75rem;
+}
 .img-rate{
 	width: 100%;
 	

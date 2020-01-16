@@ -322,7 +322,7 @@ function setData(response) {
 	comp_ratings = JSON.parse(response.comp_ratings); 
 	
 	$("#id_message").html(msg);
-	$("#company-details").html(compData);
+	$("#company-details-row").html(compData);
 	
 	drawcharts = true;
 	drawCharts();

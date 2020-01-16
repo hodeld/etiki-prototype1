@@ -18,7 +18,7 @@ from etilog.models import SustainabilityTag
 from .tables import ImpEvTable, ImpEvTablePrivat, ImpEvDetails
 #forms
 from .forms import (ImpactEventForm, NewSource, CompanyForm, ReferenceForm, 
-                    SearchForm, FreetextForm, TopicForm
+                    SearchForm, FreetextForm, TopicForm, TendencyLegendeDiv
                     )
 #forms
 from .filters import ImpevOverviewFilter
@@ -102,7 +102,7 @@ def overview_impevs(request, reqtype = None):
         rend_table =  render_to_string( 'etilog/impactevents_overview_table.html', {'table': table,
                                                                            }
                                                                            )
-        rend_comp =  render_to_string( 'etilog/company_show.html', {'comp_details': comp_details,
+        rend_comp =  render_to_string( 'etilog/company_show_each.html', {'comp_details': comp_details,
                                                                            }
                                                                            )
         
@@ -121,6 +121,7 @@ def overview_impevs(request, reqtype = None):
     searchform = SearchForm() #Filter ServerSide
     topicform = TopicForm()
     freetextform = FreetextForm()
+    tendlegend = TendencyLegendeDiv()
     companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
     references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
@@ -134,6 +135,7 @@ def overview_impevs(request, reqtype = None):
                                                                  'searchform': searchform,
                                                                  'topicform': topicform,
                                                                  'freetextform': freetextform,
+                                                                 'tendlegend': tendlegend, 
                                                                  'companies_url': companies_url,
                                                                  'countries_url': countries_url,
                                                                  'references_url': references_url,
