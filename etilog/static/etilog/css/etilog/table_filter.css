@@ -24,13 +24,5 @@
     text-overflow: ellipsis;
 	white-space: nowrap;
 	font-size: .875rem;
-	color: white;
-	background-color: var(--etikigreen);
 	
 }
-.topic-link:hover {
-    background-color: var(--trans_bckgrnd); 
-    color: white;
-    text-decoration: none;
-}
- 

@@ -189,7 +189,23 @@ label, .nav-link{
     left: 80px;
     top: 20px;
 }
- a {
+
+.link-intern{
+	color: white;
+	background-color: var(--etikigreen);
+	
+}
+.link-intern:hover {
+    background-color: var(--trans_bckgrnd); 
+    color: white;
+    text-decoration: none;
+}
+ 
+ 
+a {
     color: var(--etikigreen);
     font-size: 0.75rem;
+}
+a:hover{
+    text-decoration: underline;
 }

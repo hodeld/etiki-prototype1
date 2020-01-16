@@ -221,7 +221,7 @@ class RowTopics(Layout):
             li_vals.extend(vals)
         
         topics_list = []
-        a_str = '''<a href="#" class="topic-link" tagid = "%d" tagname = "%s" >%s</a>'''
+        a_str = '''<a href="#" class="topic-link link-intern" tagid = "%d" tagname = "%s" >%s</a>'''
         k = nr_tags
         for tag in li_vals:
             stag_id = tag[0]           
