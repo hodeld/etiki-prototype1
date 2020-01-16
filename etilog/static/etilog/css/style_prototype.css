@@ -173,12 +173,20 @@ label, .nav-link{
     margin: 0;
 	
 }
-.img-ovarlay{
+.img-ovarlay-1{
 	width: 40%;
     height: auto;
     position: absolute;
     margin: 0;
     right: 20px;
+    top: 20px;
+}
+.img-ovarlay-2{
+	width: 40%;
+    height: auto;
+    position: absolute;
+    margin: 0;
+    left: 80px;
     top: 20px;
 }
  a {
