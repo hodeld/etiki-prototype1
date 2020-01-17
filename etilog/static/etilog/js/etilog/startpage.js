@@ -45,13 +45,16 @@ function startsettings(){
 }
 function showElements(){
 	var ele = $('#tabContent');
-	$('#link_filter').show();
-	$('.fullsite-wrapper').css('height', 'auto');
+	//$('#link_filter').show();
+	$('#div_filterform').addClass('show');
+	$('.fullsite-wrapper-start').removeClass('fullsite-wrapper-start');
 	$('.bottomleft').removeClass('bottomleft');
 	$('.changepos').addClass('position-relative');
 	ele.show(); 
 	// call once when page is initialized; table must be 				
-	toggle_filter()
+	toggle_filter();
+	scrollToEle();
+	
 }	
 
 
@@ -59,24 +62,28 @@ function startanimation(){
 	var ele = $('#tabContent');
 	if (ele.css('display') == 'none'){
 		//before table has data:
-		$('#link_filter').show();
+		$('#div_filterform').addClass('show');
 
-		$('.fullsite-wrapper').css('height', 'auto');
+		$('.fullsite-wrapper-start').removeClass('fullsite-wrapper-start');
 		$('.bottomleft').removeClass('bottomleft');
 		$('.changepos').addClass('position-relative');
 		ele.show(); 
 		// call once when page is initialized; table must be 				
-		toggle_filter()
-		let hi = $('#id_contsearch').outerHeight() ; //smaller than navbar id_navbar
-		$([document.documentElement, document.body]).animate({
-		    scrollTop: $('#id_oviewtable').offset().top - hi 
-		}, 2000);
+		toggle_filter();
+		scrollToEle();
 
 	}	
 }
 
 
+function scrollToEle(eleId = '#id_oviewtable'){
+	let hi = $('#id_contsearch').outerHeight() ; //smaller than navbar id_navbar
+	$([document.documentElement, document.body]).animate({
+	    scrollTop: $(eleId).offset().top - hi 
+	}, 2000);
 
+	
+}
 
 function set_topheadaer(){
 	let hi = $('#id_contsearch').outerHeight() - 4; //smaller than navbar id_navbar

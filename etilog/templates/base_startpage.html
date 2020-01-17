@@ -60,8 +60,8 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 </head>
 <body>
 <noscript>To use etiki please enable JavaScript!</noscript>
-<div class="fullscreen-wrapper fullsite-wrapper">
-<div class="fullsite-wrapper container">
+<div class="fullscreen-wrapper fullsite-wrapper fullsite-wrapper-start">
+<div class="fullsite-wrapper fullsite-wrapper-start container">
 	
 	
 	
@@ -108,13 +108,14 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 				<nav class= "navbar z-depth-0 px-0">
 				  <div class="nav nav-tabs" id="nav-tab" role="tablist">
 				    <a class="nav-item nav-link active" id="table-tab" data-toggle="tab" href="#id_oviewtable" role="tab" aria-controls="id_oviewtable" aria-selected="true"><i class="fas fa-list"></i></a>
-				    <a class="nav-item nav-link" id="wordcloud-tab" data-toggle="tab" href="#wordcloud" role="tab" aria-controls="wordcloud" aria-selected="false"><i class="fas fa-industry"></i> </a>
-				    <a class="nav-item nav-link" id="company-tab" data-toggle="tab" href="#company-details" role="tab" aria-controls="company-details" aria-selected="false"><i class="fas fa-globe"></i></a>
+				    <a class="nav-item nav-link" id="company-tab" data-toggle="tab" href="#company-details " role="tab" aria-controls="company-details" aria-selected="false"><i class="fas fa-chart-pie"></i> </a>
+				    <a class="nav-item nav-link" id="wordcloud-tab" data-toggle="tab" href="#wordcloud" role="tab" aria-controls="wordcloud" aria-selected="false"><i class="fas fa-globe"></i></a>
 				    <a class="nav-item nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="false"><i class="fas fa-question"></i></a>
 				  
 				  
 				  </div>
-			</nav>
+				</nav>
+				{% crispy tendlegend %}
 			
 			</div>
 			
@@ -124,19 +125,27 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 					{% endblock content %}
 					</div>
 				  <div class="tab-pane fade" id="wordcloud" role="tabpanel" aria-labelledby="wordcloud-tab">
-					  	<div class="img-wrapper container col-md-8">
-					  	<img src="{% static 'etilog/img/mockup.svg' %}" class="img-ovarlay" alt="mockup image">			  	 
-					  	<img src="{% static 'etilog/img/wordcloud.svg' %}" class="img-fullwidth" alt="company wordcloud image" >
+					  	<div class="container d-flex flex-wrap justify-content-center">
+					  	<div class="img-wrapper col-12 col-md-6">
+						  	<img src="{% static 'etilog/img/mockup.svg' %}" class="img-ovarlay-1" alt="mockup image">			  	 
+						  	<img src="{% static 'etilog/img/wordcloud.svg' %}" class="img-fullwidth" alt="company wordcloud image" >
+					  	</div>
+					  	<div class="img-wrapper col-12 col-md-6">
+						  	<img src="{% static 'etilog/img/mockup.svg' %}" class="img-ovarlay-2" alt="mockup image">			  	 
+						  	<img src="{% static 'etilog/img/network.svg' %}" class="img-fullwidth" alt="company wordcloud image" >
+					  	</div>
 					  	</div>
 					</div>
 				  <div class="tab-pane fade" id="company-details" role="tabpanel" aria-labelledby="company-tab" >
 				  		{% include 'etilog/company_show.html' %}
 				  </div>
 				  <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
-					  <h5>What it is about</h5>
-					  <hr class="whitehr">
-					  <p>blablabla</p>
-					  <p>blablabla</p>
+					  <div class="py-3 px-2 px-sm-0">
+						  <h5>What it is about</h5>
+						  <hr class="whitehr">
+						  <p>blablabla</p>
+						  <p>blablabla</p>
+					  </div>
 
 				  </div>
 			</div>

@@ -43,6 +43,7 @@ def get_attrs(hide_mobile = False, hide = False, hover = False, sort = False, da
         return attr_hide_always
     td_class = ''
     th_class = ''
+    #show_details on td not on tr (row_attrs = …) so can be stopped if a or button
     attrs_dic = {'td': {'class': '',
                         'onclick': lambda record:  'show_details(this, %d)' %record.pk
                         }, 
@@ -74,44 +75,6 @@ def get_attrs(hide_mobile = False, hide = False, hover = False, sort = False, da
     attrs_dic.update(add_attrs)
     return attrs_dic
         
-    
-
-class DefWidthColumn(tables.Column):
-
-    def __init__(self, classname=None, *args, **kwargs):
-        self.classname=classname
-        super(DefWidthColumn, self).__init__(*args, **kwargs)
-
-    def render(self, value):
-        return mark_safe("<div class='" + self.classname + "' >" +value+"</div>")
-
-
-
-class SustcatColumn2(tables.Column):
-
-    def __init__(self, *args, **kwargs):
-        def cssclass_sustcat(**kwargs):
-            record = kwargs.get('record', None) #value already changed through rendering
-            if record:
-                sustcat = record.sust_category
-                bntclass = 'sustbtn btn btn-' #.sustbtn in css
-                if 'negativ' in sustcat.name :
-                    return bntclass + 'danger'
-                elif 'controv' in sustcat.name :
-                    return bntclass + 'warning'
-                elif 'positiv' in sustcat.name :
-                    return bntclass + 'success'
-            else:
-                return ''
-        super(SustcatColumn2, self).__init__(*args, **kwargs, 
-                                            attrs={'td': {'class': cssclass_sustcat}}
-                                            )
-
-    def render(self, value):
-        sustcat = value
-        sustdomain = sustcat.sust_domain.name
-        return sustdomain
-
 
 tendency_id_dict = {1: 'success',
                          2: 'danger',
@@ -135,46 +98,8 @@ class BtnTendencyColumn(tables.Column):
         
         
         return html_str
-    
 
-class BtnTendencyColumn2(tables.TemplateColumn):
 
-    def __init__(self, *args, **kwargs):
-        
-        #bntclass = 'sustbtn btn-sm btn-' #.sustbtn in css
-        bntclass = 'sustbtn btn btn-sm disabled btn-block btn-' #.sustbtn in css, btn-block: expands
-        extra_dict = {'clsneg': bntclass  + 'danger',
-                      'clspos': bntclass + 'success',
-                      'clscon': bntclass + 'warning',
-                      }
-        attrs = kwargs.get('attrs', None) #value already changed through rendering
-        
-        if attrs:
-            td = attrs.get('td', None)
-            if td:
-                cls = td.get('class', None)
-                if cls:
-                    td['class'] = ' '.join(['sustcl', cls]) 
-                else:
-                    td['class'] = 'sustcl'
-            else:
-                attrs['td'] = {'class':'sustcl'}
-                
-
-                
-        else:
-            kwargs['attrs'] = {'td': {'class':'sustcl'}}
-
-        super(BtnTendencyColumn2, self).__init__(  
-                                             template_name= 'etilog/cell_button.html',
-                                             extra_context=extra_dict,
-                                             #attrs=attrs,
-                                             *args, **kwargs,
-                                             )
-        
-    
-
-    
 etiki_table_classes =  'table table-hover table-sm table-etiki' #bootstrap classes, plus own tbl class   
 class ImpEvTable(tables.Table):
     '''
@@ -197,7 +122,9 @@ class ImpEvTable(tables.Table):
     country = tables.Column(accessor = 'country_display', 
                             attrs = get_attrs(hide_mobile = True, sort = True))
     
-    company = tables.Column(attrs = get_attrs(sort = True))
+    company = tables.TemplateColumn(template_name='etilog/cell_link.html',
+                                    attrs = get_attrs(sort = True,)
+                                    )
     topics = tables.Column(accessor = 'get_tags', verbose_name = 'Topics', 
                              attrs = get_attrs(hover = True, sort = True))
     reference = tables.Column(linkify = lambda record: record.source_url,  
@@ -209,10 +136,11 @@ class ImpEvTable(tables.Table):
                               )
     reference_sort = tables.Column(accessor='reference', attrs = get_attrs(hide = True))
 
-    details = tables.Column(verbose_name= '',
-                            accessor = 'id',
-                            attrs = get_attrs()
-                            )
+    details = tables.TemplateColumn(template_code = '<i class="fas fa-chevron-down"></i>',
+                                    verbose_name = '',
+                                    accessor = 'id',
+                                    attrs = get_attrs(),                                   
+                                    )
 
     
     class Meta:
@@ -225,25 +153,24 @@ class ImpEvTable(tables.Table):
         #orderable = False #for all columns
         attrs = {'class': etiki_table_classes, #bootstrap4 classes ;table-responsive: not working with sticky
                 }
+
         template_name = 'etilog/etilog_djangotable.html'
         
     
     def render_source_url(self, value, record):
-        #val_short = str(value)[:20] + '…'
+
         val_short = str(record.reference.name)
         return  val_short 
     
     def render_copy(self):
         return 'copy!'
-    def render_details(self):
-        return '…'
+
     
     def render_summary(self, value, record):
         #if record.summara
         val_short = str(value)[:40]
         return  val_short + '…'
 
-    
     #adds column name as css class in td tag -> for List.js:
     def get_column_class_names(self, classes_set, bound_column):
                     classes_set = super().get_column_class_names(classes_set, bound_column)

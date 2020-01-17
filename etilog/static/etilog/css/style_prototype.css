@@ -1,13 +1,15 @@
 :root {
   --full_bckgrnd: rgba(33, 37, 41, 1);  /* = #33b5e5 rgba(38, 33, 32, 1);*rgb(33,37,41)*/
   --trans_bckgrnd: rgba(33, 37, 41, .8);
-  --light_bckgrnd: rgba(255, 255, 255, .3); /*on top */
+  --light_bckgrnd: rgba(255, 255, 255, .05); /*on top */
   --read_bckgrnd: #111213 ;
   --dark_bckgrnd : #111213 ;
   --etikigreen: #37718e ; /* #33b5e5 mdb info colour; var(--info); #3E7480; */
   --positive: #66a182; 
   --controversial: #dfc983 ; 
   --negative: #e78680;
+  --foreground: ##f8f9fa; /* #fff; */
+  --etikilight: #6d97ac; /*on lighter than etikigreen */
   /* 
   --etikigreen: #33b5e5; 
   --positive: #7b8776; 
@@ -44,32 +46,36 @@ noscript {
 	font-weight: bold;
 }
 
-.fullsite-wrapper{
+.fullsite-wrapper-start{
+	height: 100% !important;
+	min-height: 0px !important;
+}
 
+.fullsite-wrapper {
 	color: white !important;
-	height: 100%;
-	/* Add a font */
+	height: auto;
+	min-height: 900px;	/* Add a font */
 }
 
 .content-wrapper{
 	width: 100%; /*so all start at the same width, container does the same, but adds padding*/
 
 }
-
-.noshadow {
+.infront{
+	background-color: var(--light_bckgrnd);
+}
+.nobackground {
+	background-color: transparent !important;
 	-webkit-box-shadow: none !important;
 	-moz-box-shadow: none !important;
 	box-shadow: none !important;
 	}
+/*
 .bckground{
-	/*max-width: 500px;*/
 	padding: 10px 20px;
 	margin: 10px auto;
 	border-radius: 8px;
 	background-color: var(--trans_bckgrnd);
-	/*display: None;
-	z-index: 10;
-	position: fixed;*/
 }
 .bckground.transp{ 
 	background-color: transparent;
@@ -77,6 +83,7 @@ noscript {
 .bckground.fullbg{ 
 	background-color: var(--full_bckgrnd);
 }
+*/
 .navbar{
     display: block; /*because navbar has flex*/
 }
@@ -84,7 +91,6 @@ noscript {
     background-color: var(--full_bckgrnd);
     padding: 10px 20px;
 	margin: 0;
-	border-radius: 8px;
     z-index: 800; 
 }
 .navbar-toggler {
@@ -116,10 +122,6 @@ label, .nav-link{
 	font-size: 12px!important;
 }
 
-#div_id_search{
-	/* overwrite form-group css, also needed that navbar not heigher*/
-	margin-bottom:0;
-}
 
 /*white line */
 .whitehr{
@@ -136,20 +138,6 @@ label, .nav-link{
     text-overflow: ellipsis;
 }
 
-
-.btn-link{
-	color: white !important;
-}
-.btn-dark {
-    color: #fff;
-    background-color: var(--full_bckgrnd) !important;
-    border-color: var(--full_bckgrnd);
-}
-.btn-dark:hover, .btn-dark:focus, .btn-dark:active, .btn-dark.active, .open>.dropdown-toggle.btn-dark {
-    color: #fff;
-    background-color: var(--light_bckgrnd) !important; 
-    border-color: var(--light_bckgrnd); 
-}
 
 /* NAV-TABS */
 .nav-tabs .nav-link.active {
@@ -189,7 +177,7 @@ label, .nav-link{
     margin: 0;
 	
 }
-.img-ovarlay{
+.img-ovarlay-1{
 	width: 40%;
     height: auto;
     position: absolute;
@@ -197,7 +185,31 @@ label, .nav-link{
     right: 20px;
     top: 20px;
 }
- a {
+.img-ovarlay-2{
+	width: 40%;
+    height: auto;
+    position: absolute;
+    margin: 0;
+    left: 80px;
+    top: 20px;
+}
+
+.link-intern{
+	color: white;
+	background-color: var(--etikigreen);
+	
+}
+.link-intern:hover {
+    background-color: var(--trans_bckgrnd); 
+    color: white;
+    text-decoration: none;
+}
+ 
+ 
+a {
     color: var(--etikigreen);
     font-size: 0.75rem;
+}
+a:hover{
+    text-decoration: underline;
 }

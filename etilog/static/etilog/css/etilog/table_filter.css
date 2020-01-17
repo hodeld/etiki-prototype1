@@ -23,14 +23,6 @@
 	overflow: hidden;
     text-overflow: ellipsis;
 	white-space: nowrap;
-	font-size: 14px;
-	color: white;
-	background-color: var(--etikigreen);
+	font-size: .875rem;
 	
 }
-.topic-link:hover {
-    background-color: var(--trans_bckgrnd); 
-    color: white;
-    text-decoration: none;
-}
- 

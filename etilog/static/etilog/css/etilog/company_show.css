@@ -1,5 +1,16 @@
+.text-success{
+	color: var(--positive) !important;
+}
 
-
+.text-danger{
+	color: var(--negative) !important;
+}
+.text-warning{
+	color: var(--controversial) !important;
+}
+.chart-legend{
+	font-size: .75rem;
+}
 .img-rate{
 	width: 100%;
 	
@@ -15,6 +26,7 @@
 	height: 100%;
 	
 }
+
 .square{
 	/* needs defined width */
 	position: relative;
@@ -25,17 +37,23 @@
 .company-rate:hover .img-description {
 	visibility: visible;
 	opacity: .9;
-	
+
 }
 
+.company-rate:hover  {
+	cursor: pointer; /* hand pointer */
+
+}
 .square_content{
 	position: absolute; 
 	top: 0; 
 	left: 0; 
 	bottom: 0; 
 	right: 0; 
+
 	
 }
+
 .company-logo-wrapper{
 	width: 40%;
 	height: 40%;

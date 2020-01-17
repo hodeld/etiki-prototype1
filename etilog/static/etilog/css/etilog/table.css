@@ -15,11 +15,9 @@
 	overflow: hidden;
     white-space: nowrap;
     line-height: .8em;
-    
-    /* word-wrap: normal;
+    padding-left: .5rem;
+    padding-right: .5rem;
     text-overflow: ellipsis;
-    
-    */
 }  
     
 .table-etiki .sustcl	 {
@@ -30,8 +28,9 @@
 	white-space: normal;
 }
 .table-etiki .details {
-	width: 6%;
+	width: 35px;
 	white-space: normal;
+	vertical-align: middle ;
 }
 
 .table-etiki td	 {
@@ -72,6 +71,9 @@
 
 .table-etiki.table a {
 	color: var(--etikigreen) ;
+}
+.table-etiki.table a.link-intern{
+	color: var(--foreground) ;
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {

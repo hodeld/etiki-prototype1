@@ -7,6 +7,13 @@ $(document).ready(function() {
 	$('#link_filter').click(function() {
 		toggle_filter()
 	});
+	$('#filterClose').click(function() {
+		toggle_filter()
+	});
+	$('#filterClear').click(function() {
+		clearFilter()
+	});
+	
 	
 	//$('.row_tags_class').hide(); -> done in css
 	
@@ -170,7 +177,7 @@ $(document).ready(function() {
 	});
 	$('.topic-link').click(function(){
 		var tagname = $(this).attr('tagname');
-		var tagid = $(this).attr('tagid');
+		var tagid = parseInt($(this).attr('tagid'));
 		set_tag(tagid, tagname)
 		
 	});
@@ -283,22 +290,24 @@ function set_tag(id, tagname) {
 
 function toggle_filter_frombtn() {
 	
-	$('#filterform').addClass('show'); //show always
-	$('#div_filterform').removeClass('noshadow');
+	toggle_filter(fshow = true) ; //show always
 	var hi = $('#id_contsearch').outerHeight() + 10; //smaller than navbar id_navbar
 	$([document.documentElement, document.body]).animate({
 	    scrollTop: $("#div_filterform").offset().top - hi
 	}, 'slow');
 }
 
-function toggle_filter() {	
-	if ($('#filterform').hasClass('show')){
-		$('#div_filterform').addClass('noshadow');		
+function toggle_filter(fshow = false) {	
+	if ($('#filterform').hasClass('show') && fshow == false){
+		$('#div_filterform').addClass('nobackground');
+		$('#div_filterform .show').removeClass('show'); 
+		$('#divFilterHead .showopposite').addClass('show'); 
 	}
 	else {
-		$('#div_filterform').removeClass('noshadow');	
+		$('#div_filterform').removeClass('nobackground');	
+		$('#div_filterform .collapse').addClass('show');
+		$('#divFilterHead .showopposite').removeClass('show'); 
 	}
-	toggle_visibility('#filterform');
 }
 
 var ie_details = ''; 
@@ -313,7 +322,7 @@ function setData(response) {
 	comp_ratings = JSON.parse(response.comp_ratings); 
 	
 	$("#id_message").html(msg);
-	$("#company-details").html(compData);
+	$("#company-details-row").html(compData);
 	
 	drawcharts = true;
 	drawCharts();
@@ -336,9 +345,13 @@ function submitFilterForm(ev){
 
 function setFilterIcon(){
 	var validate= false;
+	var filterCount = 0;
 	$('.f_input').each(function(){
-	    if($(this).val() != '')
+	    if($(this).val() != ''){
+	    	filterCount ++;
 	        validate = true;
+	    } 
+	       
 	});
 	if(!validate){
 		
@@ -361,13 +374,16 @@ function setFilterIcon(){
 		}, 200);
 
 	}
+	$('#filter-count').html(filterCount);
 }
 
 function setFilterVisually(filterDict){
+	var filterCount = 0;
 	$('.f_input').each(function(){
 		
 		var ele = $(this);
 	    if (ele.val() != ''){
+	    	filterCount ++;
 	    	var val = ele.val();
 	    	var parfield =  ele.attr('parfield');
 	    	var el_name =  ele.attr('name');
@@ -408,7 +424,36 @@ function setFilterVisually(filterDict){
 	    	    	
 	    }
 	});
+	$('#filter-count').html(filterCount);
 }
+
+function clearFilter() {
+	var filterCount = 0;
+	$('.f_tagsinput').each(function(){
+		
+		var ele = $(this);
+	    if (ele.val() != ''){
+	    	ele.addClass('nosubmit');
+	    	ele.tagsinput('removeAll');
+	    }
+	});
+	
+	$('.btnselect').attr('aria-pressed', 'false');
+	$('.btnselect').removeClass('active');
+	$('.row_tags_class').hide();
+	
+	$('.f_input').each(function(){
+		
+		var ele = $(this);
+	    if (ele.val() != ''){
+	    	ele.addClass('nosubmit');
+	    	ele.val('');
+	    	}
+	    });
+	$('#id_filterform').submit();
+}
+
+
 
 //initialize BLOODHOUND
 function getBloodhoundOpt(field_url){

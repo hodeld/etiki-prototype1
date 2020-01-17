@@ -1,21 +1,56 @@
 
 
+.btn-link{
+	color: var(--etikigreen) !important;
+}
+.btn-link-big{
+	color: var(--foreground) !important;
+	font-size: 1rem;
+	white-space: nowrap;
+}
+
+.btn-dark {
+    color: #fff;
+    background-color: var(--full_bckgrnd) !important;
+    border-color: var(--full_bckgrnd);
+}
+.btn-dark:hover, .btn-dark:focus, .btn-dark:active, .btn-dark.active, .open>.dropdown-toggle.btn-dark {
+    color: #fff;
+    background-color: var(--light_bckgrnd) !important; 
+    border-color: var(--light_bckgrnd); 
+}
+
  .btnselect{
  
     margin-bottom: 3px;
 }
 
-/* buttons select outline colors */
+/* buttons select outline colors; border-color in both cases needed as mdb uses !important*/
 .btnselect.btn-outline-info{
 	color: var(--etikigreen) !important;
 	border-color: var(--etikigreen) !important;
 }
 
 .btnselect.btn-outline-info:not([disabled]):not(.disabled).active{
-	background-color:  var(--etikigreen) !important;
-	color: white !important;
-	border-color: var(--etikigreen) !important;
+        background-color:  var(--etikigreen) !important;
+		color: white !important;
+		border-color: var(--etikigreen) !important;
+    }
+
+/* hover on desktop as on mobile it remains */
+@media(min-width: 600px) {
+    .btnselect.btn-outline-info:not([disabled]):not(.disabled):hover {
+        background-color:  var(--etikigreen) !important;
+		color: white !important;
+		border-color: var(--etikigreen) !important;
+    }
+    .btnselect.btn-outline-info:not([disabled]):not(.disabled).active:hover {
+        color: var(--etikigreen) !important;
+		border-color: var(--etikigreen) !important;
+		background-color:  transparent !important;
+    }
 }
+
 
 
 .btnselect.btn-outline-danger:not([disabled]):not(.disabled){
@@ -67,4 +102,26 @@
 
 .badge-info{
 	background-color: var(--etikigreen) !important;
+}
+
+.pagination .page-item.active .page-link {
+	background-color: var(--etikigreen);
+}
+.pagination .page-item.active .page-link:hover {
+	background-color: var(--etikigreen);
+}
+.pagination .page-item .page-link {
+	background-color: var(--etikilight);
+}
+
+/* not used at the moment */
+
+.btn-outline-default:not([disabled]):not(.disabled){
+	border-color:  var(--foreground) !important;
+	color: var(--foreground) !important;
+}
+.btn-outline-default:not([disabled]):not(.disabled).active{
+	background-color:  var(--foreground) !important;
+	border-color:  var(--foreground) !important;
+	color: white !important;
 }

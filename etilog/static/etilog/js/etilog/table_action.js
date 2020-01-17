@@ -21,7 +21,9 @@ function numOfVisibleCols(tableid) {
 }
 
 function show_details(ele, ie_id) {
-	toggle_details(event);
+	if (toggle_details(event) == false){
+		return;
+	} 
 	toggle_article(event);
 	var tableid = '#impev-list';
 	var parele = $(ele).parent(); //original row
@@ -54,7 +56,7 @@ function show_details(ele, ie_id) {
 function toggle_details(event) {
 	var target = $( event.target );
 	if ( target.is( "button" ) || target.is( "a" ) ) {
-		return;
+		return false;
 	}
 	else {
 	$('.detailrow').hide(); //oder open will be hidden

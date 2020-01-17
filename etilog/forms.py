@@ -18,10 +18,8 @@ from .models import (Source, Company, ImpactEvent, SustainabilityDomain, Referen
 from .fields import (ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn,
                      DateYearPicker, DateYearPickerField,
                      RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, ImpactEventBtns,
-                     Readonly, SearchWBtn
+                     Readonly, SearchWBtn, TendencyLegende
                      )
-
-
     
 DT_FORMAT = '%Y-%m-%d %H:%M:%S'
 #D_FORMAT = '%Y-%m-%d'
@@ -347,7 +345,24 @@ class ReferenceForm(forms.ModelForm):
         model = Reference
         exclude = []    
 
+class TendencyLegendeDiv(forms.Form):
 
+
+    def __init__(self, *args, **kwargs):
+        super(TendencyLegendeDiv, self).__init__(*args, **kwargs)
+            
+
+        
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+        self.helper.layout = Layout(
+ 
+        TendencyLegende(),
+        )
+        
+    
+        
 class NewSource(forms.ModelForm):
     '''
     form to create an source
