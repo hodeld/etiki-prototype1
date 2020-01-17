@@ -177,7 +177,7 @@ $(document).ready(function() {
 	});
 	$('.topic-link').click(function(){
 		var tagname = $(this).attr('tagname');
-		var tagid = $(this).attr('tagid');
+		var tagid = parseInt($(this).attr('tagid'));
 		set_tag(tagid, tagname)
 		
 	});
