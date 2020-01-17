@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.template.loader import render_to_string
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
-from django.contrib.auth.decorators import permission_required, login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth import logout
 import json
 
@@ -25,7 +25,7 @@ from .filters import ImpevOverviewFilter
 
 #viewlogic
 from etilog.ViewLogic.ViewImportDB import parse_xcl
-from etilog.ViewLogic.ViewMain import get_filterdict, get_cache, query_comp_details
+from etilog.ViewLogic.ViewMain import get_filterdict, get_cache, query_comp_details, prefetch_data
 from etilog.ViewLogic.ViewExport import exp_csv_nlp, exp_csv_basedata, extract_err_file
 from etilog.ViewLogic.ViewDatetime import get_now
 
@@ -86,12 +86,13 @@ def overview_impevs(request, reqtype = None):
             msg_results = 'more than %d results! shows %d newest impact events' % (limit_filt, limit_filt)
         else:
             msg_results = msg_base % cnt_ies
-         
+        
+        table_qs = prefetch_data(table_qs)
         table = Table(table_qs)
         #cnt_ies = filt.qs.count() 
         RequestConfig(request, paginate=False).configure(table) 
            
-        #takes about 4 of 12 seconds to load! (when 200 loaded) -> better load them indiv.
+        #takes about .5 of 1s seconds to load! (when 200 loaded) -> better load them indiv.
         ie_details = load_ie_details(table_qs)
         comp_details, comp_ratings = get_comp_details(table_qs)
         

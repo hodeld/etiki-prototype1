@@ -69,7 +69,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+    
 ROOT_URLCONF = 'etikiptype1.urls'
 
 TEMPLATES = [
@@ -177,18 +177,72 @@ STATIC_URL = '/static/'
 #needed for debug = False -> test if needs to under heroku setting
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
-if db_host == '127.0.0.1': 
-    #in order to find node (in readabilipy), wkhtmltopdf executable
-    os.environ['PATH']='/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
-
 base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 spath_sys = os.path.join(base_dir, 'node_modules/ReadabiliPy')
 sys.path.append(spath_sys)
 
-#at the end -> overrates settings, eg logger
+
+
+#defines static root, logger, etc.
 django_heroku.settings(locals())
 
+if DEBUG == True: #db_host == '127.0.0.1': 
+
+    #in order to find node (in readabilipy), wkhtmltopdf executable
+    os.environ['PATH']='/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
+
+    #for query inspect
+    MIDDLEWARE += (
+    'qinspect.middleware.QueryInspectMiddleware',
+    )
 
 
-#logger -> 
+    # Whether the Query Inspector should do anything (default: False)
+    QUERY_INSPECT_ENABLED = True
+    # Whether to log duplicate queries (default: False)
+    QUERY_INSPECT_LOG_QUERIES = True
+    # Whether to log queries that are above an absolute limit (default: None - disabled)
+    QUERY_INSPECT_ABSOLUTE_LIMIT = 20 # in milliseconds
+    # Whether to include tracebacks in the logs (default: False)
+    #QUERY_INSPECT_LOG_TRACEBACKS = True
+    
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'verbose': {
+                'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+                'datefmt' : "%d/%b/%Y %H:%M:%S"
+            },
+            'simple': {
+                'format': '%(levelname)s %(message)s'
+            },
+        },
+        'handlers': {
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': os.path.join(BASE_DIR, 'algoterm.log'),
+                'formatter': 'verbose',
+                #'maxBytes': 1024 only for 'class': 'logging.handlers.RotatingFileHandler',
+            },
+            #for query_inspect
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+            },
+        },
+        'loggers': {
+            #replace normal django logger in console!
+            #'django': { 'handlers':['console'], 'propagate': True, 'level':'DEBUG',},
+            
+            #'algoterm': {'handlers': ['file'], 'level': 'DEBUG',},
+            'qinspect': {
+                'handlers': ['console'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+        }
+    }
+    
 
