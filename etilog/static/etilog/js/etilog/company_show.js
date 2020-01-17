@@ -106,3 +106,13 @@ function imgError(ele){
 	$('#'+altId).css('visibility', 'visible');
 	$('#'+altId).css('opacity', '1');
 }
+
+function showMockup(event){
+	var target = $( event.target );
+	if ( target.is( "path" ) || target.is( "a" ) ) {
+		return false;
+	}
+	else {
+		$('#wordcloud-tab').tab('show');
+	}	
+}

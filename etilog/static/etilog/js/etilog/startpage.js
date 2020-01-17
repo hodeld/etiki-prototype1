@@ -45,8 +45,9 @@ function startsettings(){
 }
 function showElements(){
 	var ele = $('#tabContent');
-	$('#link_filter').show();
-	$('.fullsite-wrapper').css('height', 'auto');
+	//$('#link_filter').show();
+	$('#div_filterform').addClass('show');
+	$('.fullsite-wrapper-start').removeClass('fullsite-wrapper-start');
 	$('.bottomleft').removeClass('bottomleft');
 	$('.changepos').addClass('position-relative');
 	ele.show(); 
@@ -63,7 +64,7 @@ function startanimation(){
 		//before table has data:
 		$('#div_filterform').addClass('show');
 
-		$('.fullsite-wrapper').css('height', 'auto');
+		$('.fullsite-wrapper-start').removeClass('fullsite-wrapper-start');
 		$('.bottomleft').removeClass('bottomleft');
 		$('.changepos').addClass('position-relative');
 		ele.show(); 

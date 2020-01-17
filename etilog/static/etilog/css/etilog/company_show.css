@@ -26,6 +26,7 @@
 	height: 100%;
 	
 }
+
 .square{
 	/* needs defined width */
 	position: relative;
@@ -36,17 +37,23 @@
 .company-rate:hover .img-description {
 	visibility: visible;
 	opacity: .9;
-	
+
 }
 
+.company-rate:hover  {
+	cursor: pointer; /* hand pointer */
+
+}
 .square_content{
 	position: absolute; 
 	top: 0; 
 	left: 0; 
 	bottom: 0; 
 	right: 0; 
+
 	
 }
+
 .company-logo-wrapper{
 	width: 40%;
 	height: 40%;

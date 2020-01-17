@@ -46,11 +46,15 @@ noscript {
 	font-weight: bold;
 }
 
-.fullsite-wrapper{
+.fullsite-wrapper-start{
+	height: 100% !important;
+	min-height: 0px !important;
+}
 
+.fullsite-wrapper {
 	color: white !important;
-	height: 100%;
-	/* Add a font */
+	height: auto;
+	min-height: 900px;	/* Add a font */
 }
 
 .content-wrapper{
