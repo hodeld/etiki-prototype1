@@ -90,7 +90,8 @@ def query_comp_details(q_impev):
         nowhite = noacc.lower().replace(' ', '') 
         return nowhite
 
-    company_ids = q_impev.values_list('company', flat=True).distinct()
+    company_ids = q_impev.prefetch_related('company'
+                            ).values_list('company', flat=True).distinct()
     
     num_pos = Count('impevents', filter=Q(impevents__sust_tendency__impnr=1)) 
     num_neg = Count('impevents', filter=Q(impevents__sust_tendency__impnr=2))
@@ -99,7 +100,7 @@ def query_comp_details(q_impev):
     #q_comp = Company.objects.prefetch_related('impevents').filter(impevents__in = q_impev) #only counts nr of filtered impev
     
     #count all impev of filtered companies
-    q_comp = Company.objects.prefetch_related('impevents'
+    q_comp = Company.objects.prefetch_related('impevents__sust_tendency__impnr'
                             ).filter(
                             id__in = company_ids).annotate(
                                     num_pos=num_pos).annotate(
@@ -124,7 +125,18 @@ def query_comp_details(q_impev):
                                     
     return comp_details, rating_list
 
-
+def prefetch_data(qimpev):
+    #after filter, before excuting
+    q = qimpev.select_related('sust_domain', 'sust_tendency',
+                            'sust_tendency', 
+                           'company__activity', 'company__country',  
+                   'country',   'reference',
+        ).prefetch_related('sust_tags') #M2M
+    #todo details: html, article_text article_title article_html
+    
+    #prefetch_related()
+    return q
+    
   
 
     

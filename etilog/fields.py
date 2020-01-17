@@ -177,7 +177,7 @@ class ColTendencyBtnSelect(Layout):
             )  
 class TendencyLegende(Layout):
     def __init__(self, *args, **kwargs): 
-        q = SustainabilityTendency.objects.all()
+        q = SustainabilityTendency.objects.all() #double query as above
         ele_list = []
         icon_name = 'fa-dot-circle'
         icon_str = '<i class="fas %s mr-1"></i>' % icon_name
@@ -210,6 +210,7 @@ class RowTopics(Layout):
         nr_tags = 2
         li_vals = []
         li_sustagsid = []
+        #hits DB 5 times -> better 1 query
         for i in range(1,6):
             vals = ImpactEvent.objects.filter(
                         sust_domain = i).values_list(
