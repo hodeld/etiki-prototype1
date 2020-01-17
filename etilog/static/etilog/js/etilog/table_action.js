@@ -94,7 +94,7 @@ function full_article(ele, ie_id){
 	
 	$headerrow.after($artrow);
 	hide_img_vid();	
-	let hi = $('#id_contsearch').outerHeight() - 2; //smaller than navbar id_navbar
+	let hi = $('#id_contsearch').outerHeight() - 4; //smaller than navbar id_navbar
 	$('.headertd').css({ top: hi }); 
 	
 	$headerrow.click(function(){

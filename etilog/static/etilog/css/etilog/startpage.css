@@ -56,12 +56,23 @@ body {
 	background-size: cover;
 	-o-background-size: cover;
 }
-.fullscreen-wrapper{
+.fullscreen-cover{
+	position:fixed;
+    padding:0;
+    margin:0;
+
+    top:0;
+    left:0;
+
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    
 	-webkit-transition: background-color 700ms linear;
     transition: background-color 700ms linear;
 }
 
-.fullscreen-wrapper.scrolled{
+.fullscreen-cover.scrolled{
 	background-color: var(--full_bckgrnd);
 }
 
