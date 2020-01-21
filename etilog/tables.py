@@ -44,7 +44,8 @@ def get_attrs(hide_mobile = False, hide = False, hover = False, sort = False, da
     td_class = ''
     th_class = ''
     #show_details on td not on tr (row_attrs = …) so can be stopped if a or button
-    attrs_dic = {'td': {'class': '',
+    attrs_dic = {
+                'td': {'class': '',
                         'onclick': lambda record:  'show_details(this, %d)' %record.pk
                         }, 
                  'th': {'class': ''}
@@ -100,7 +101,7 @@ class BtnTendencyColumn(tables.Column):
         return html_str
 
 
-etiki_table_classes =  'table table-hover table-sm table-etiki' #bootstrap classes, plus own tbl class   
+etiki_table_classes =  'table table-sm table-etiki' #bootstrap classes, plus own tbl class   
 class ImpEvTable(tables.Table):
     '''
     basic table for impact events
@@ -153,6 +154,9 @@ class ImpEvTable(tables.Table):
         #orderable = False #for all columns
         attrs = {'class': etiki_table_classes, #bootstrap4 classes ;table-responsive: not working with sticky
                 }
+        row_arow_attrs = {
+            'class': 'row-normal'
+        }
 
         template_name = 'etilog/etilog_djangotable.html'
         
@@ -173,10 +177,11 @@ class ImpEvTable(tables.Table):
 
     #adds column name as css class in td tag -> for List.js:
     def get_column_class_names(self, classes_set, bound_column):
-                    classes_set = super().get_column_class_names(classes_set, bound_column)
-                    classes_set.add(bound_column.name)
-
-                    return classes_set
+        classes_set = super().get_column_class_names(classes_set, bound_column)
+        classes_set.add(bound_column.name)
+        classes_set.add('td-normal')
+        
+        return classes_set
         
         
 class ImpEvTablePrivat(ImpEvTable):
