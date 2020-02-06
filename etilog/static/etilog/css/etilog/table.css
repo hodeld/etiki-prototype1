@@ -76,7 +76,7 @@
 	color: var(--foreground) ;
 }
 
-.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+.table-etiki tbody tr:hover td.td-normal  {
   background-color:  var(--dark_bckgrnd);  
   cursor: pointer; /* hand pointer */
   color: white !important;

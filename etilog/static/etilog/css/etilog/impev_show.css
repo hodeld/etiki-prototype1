@@ -7,9 +7,7 @@
     border-color: white;
     border-style: solid;
     border-width: thin;
-    /*background-color:var(--full_bckgrnd); */
-	
-	
+    /*background-color:var(--full_bckgrnd); */	
 }
 
 .iedetail{
@@ -34,11 +32,9 @@
 	
 }
 
-
 .headertd{
 	background-color: var(--read_bckgrnd); /*var(--light_bckgrnd); */
-
-	/* Add a font */
+	z-index: 700; /*underneath navbar*/
 }
 .articletd{
 		border-top: none!important;

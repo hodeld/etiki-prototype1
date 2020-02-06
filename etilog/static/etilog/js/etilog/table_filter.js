@@ -460,7 +460,7 @@ function getBloodhoundOpt(field_url){
 	optDict = {
 			  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
 			  queryTokenizer: Bloodhound.tokenizers.whitespace, 
-			  identify: function(obj) { return obj.id; }, //to get suggestion by ID -> not used
+			  //identify: function(obj) { return obj.id; }, //to get suggestion by ID -> not used and breaks typahead!
 			  prefetch: {
 				  url: field_url, // url set in html
 				  cache: false // defaults to true -> for testing	        
