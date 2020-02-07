@@ -184,7 +184,14 @@ $(document).ready(function() {
 	
 	$("#id_search").keyup(function(event) {
 	    if (event.keyCode === 13) { //enter
+	    	var e = jQuery.Event("keydown");
+	    	e.which = e.keyCode  = 40; // down arrow
+	    	$(this).trigger(e);
+	    	e.which = e.keyCode  = 9; // tab key
+	    	$(this).trigger(e);
+	    	//in case there is no suggestion:
 	        $(this).blur();
+	        $(this).focus();
 	    }
 	});
 
@@ -463,7 +470,7 @@ function getBloodhoundOpt(field_url){
 			  //identify: function(obj) { return obj.id; }, //to get suggestion by ID -> not used and breaks typahead!
 			  prefetch: {
 				  url: field_url, // url set in html
-				  cache: false // defaults to true -> for testing	        
+				  cache: true	 // defaults to true -> for testing	        
 			        },
 	}
 	return optDict
