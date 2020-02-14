@@ -46,7 +46,7 @@ def get_attrs(hide_mobile = False, hide = False, hover = False, sort = False, da
     #show_details on td not on tr (row_attrs = …) so can be stopped if a or button
     attrs_dic = {
                 'td': {'class': '',
-                        'onclick': lambda record:  'show_details(this, %d)' %record.pk
+                        'onclick': lambda record:  'show_details(this, %d, event)' %record.pk
                         }, 
                  'th': {'class': ''}
                  }

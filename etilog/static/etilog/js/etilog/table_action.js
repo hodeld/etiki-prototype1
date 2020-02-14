@@ -20,11 +20,10 @@ function numOfVisibleCols(tableid) {
 	return colcnt
 }
 
-function show_details(ele, ie_id) {
+function show_details(ele, ie_id, event) {
 	if (toggle_details(event) == false){
 		return;
 	} 
-	toggle_article(event);
 	var tableid = '#impev-list';
 	var parele = $(ele).parent(); //original row
 	var rowid =   ie_id + '_row';
@@ -44,7 +43,7 @@ function show_details(ele, ie_id) {
 	
 	$(parele).hide();
 	$(parele).after(rowstr);
-	$('#'+ detail_id).click(function(){
+	$('#'+ detail_id).click(function(event){
 		toggle_details(event)		
 	});
 
