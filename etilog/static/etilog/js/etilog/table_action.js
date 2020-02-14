@@ -96,21 +96,15 @@ function full_article(ele, ie_id){
 	let hi = $('#id_contsearch').outerHeight() - 4; //smaller than navbar id_navbar
 	$('.headertd').css({ top: hi }); 
 	
-	$headerrow.click(function(){
+	$headerrow.click(function(event){
 		toggle_article(event)		
 	});
 }
 function toggle_article(event) {
 	$('.fullartrow').hide(); //oder open will be hidden	
-	$('.showbtn').show(); //oder open will be hidden
-	
+	$('.showbtn').show(); //oder open will be hidden	
 }
 
-function hide_full_article(self_id, ele_id){
-
-	$('#' + self_id).hide();
-	$(ele_id).show();
-}
 
 function hide_img_vid(){
 	var articleid = '#id_articleshow ' ;
