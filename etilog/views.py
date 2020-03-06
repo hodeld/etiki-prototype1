@@ -131,6 +131,11 @@ def overview_impevs(request, reqtype = None):
     if reqtype:
         showpage = True
     
+    if showpage == True:
+        landing = False
+    else:
+        landing = True
+    
     return render(request, 'etilog/impactevents_overview.html', {
                                                                  'filter': filt,
                                                                  'searchform': searchform,
@@ -141,7 +146,7 @@ def overview_impevs(request, reqtype = None):
                                                                  'countries_url': countries_url,
                                                                  'references_url': references_url,
                                                                  'tags_url': tags_url,
-                                                                 
+                                                                 'langing': landing,
                                                                  'showpage': showpage,
                                                                  'jsondata': jsondata,
                                                                  })

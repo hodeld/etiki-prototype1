@@ -1,4 +1,4 @@
-{# ... #} {% extends 'base_startpage.html' %} 
+{% extends 'base_darky.html' %} 
 {% load static %}
 {% block djangoadmin %} 
 
@@ -31,6 +31,7 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
     var jsData = JSON.parse("{{ jsondata | escapejs }}"); 
   
     var showpage = "{{showpage}}"; 
+    var landing = "{{landing}}"; 
 
 </script>
 {% endblock script %}
