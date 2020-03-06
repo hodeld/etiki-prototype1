@@ -11,9 +11,9 @@ impev = 'impactevent/'
 
 
 urlpatterns = [
-    path('', views.startinfo, name='startinfo'), #
-    path('overview/', views.overview_impevs, name='home'),
-    path('overview/<slug:reqtype>', views.overview_impevs, name='home_filtered'),
+    path('startinfo/', views.startinfo, name='startinfo'), #
+    path('', views.overview_impevs, name='home'),
+    path('<slug:reqtype>', views.overview_impevs, name='home_filtered'),
     path(impev + 'new/', views.impact_event_create, name='newimpactevent'),
     path(impev + 'newfrom/<slug:ie_id>', views.impact_event_create, name='impactevent_copy'),
     path(impev + 'update/<slug:ie_id>', views.impact_event_update, name='impactevent_update'),
