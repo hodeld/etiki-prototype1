@@ -10,7 +10,7 @@ $(document).ready(function() {
 		drawCharts();
 		});
 	
-	$('#company-tab[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	$('#tab2[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		drawCharts();
 		});
 	
@@ -23,7 +23,7 @@ $(document).ready(function() {
 
 function drawCharts(){
 	//if visible and new data
-	if ($('#company-tab').attr("aria-selected") === "true" && drawcharts) {
+	if ($('#tab2').attr("aria-selected") === "true" && drawcharts) {
 		drawcharts = false;
 		comp_ratings.forEach(function (item, index) {
 			drawChart(item);
