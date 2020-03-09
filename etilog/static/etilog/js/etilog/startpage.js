@@ -26,17 +26,14 @@ function startsettings(){
 	var filterDict = JSON.parse(jsData.filter_dict); 
 	setFilterVisually(filterDict);
 	setData(jsData);
-	toggle_filter();
 	scrollToEle();
 
 }
 
 function startanimation(){
+	// call when first time landing
 	$('.landing').removeClass('landing'); 
-	// call once when page is initialized; table must be 				
-	toggle_filter();
 	scrollToEle();
-
 	}	
 
 

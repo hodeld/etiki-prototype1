@@ -46,6 +46,11 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script> <!-- jquery.min -->
 
 
+<!-- for charts -> todo, separate; do not load jquery again (removes prev plugins -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="{% static 'etilog/js/etilog/company_show.js' %}"></script>
+
+
 <!--following needs to be below body due to reference to the table -->
 <!--under tagsinput due to reference to tagsinput -->
 <script src="{% static 'etilog/js/etilog/table_filter.js' %}"></script>
@@ -57,9 +62,7 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
 
-<!-- for charts -> todo, separate; do not load jquery again (removes prev plugins -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="{% static 'etilog/js/etilog/company_show.js' %}"></script>
+
  
 {% endblock bottomscript %}
 

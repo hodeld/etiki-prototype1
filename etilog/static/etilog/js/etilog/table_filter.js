@@ -330,16 +330,19 @@ function setData(response) {
 	comp_ratings = JSON.parse(response.comp_ratings); 
 	
 	$("#id_message").html(msg);
-	$("#company-details-row").html(compData);
 	
 	drawcharts = true;
-	drawCharts();
+	//when google is loaded
+	google.charts.setOnLoadCallback(drawCharts);
 	
+	$("#company-details-row").html(compData);
 	$("#id_ovtable").html(tblData);
-
+	
 	set_topheadaer()//new th elements
 	prepare_list();
+
 }
+
 function submitFilterForm(ev){
 	var target = $(ev.target);
 	if (target.hasClass('nosubmit')){

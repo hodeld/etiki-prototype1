@@ -3,8 +3,9 @@
 //global functions which override each other
 $(document).ready(function() {
 	
-	google.charts.load("current", {packages:["corechart"]});
-    //google.charts.setOnLoadCallback(drawChart);
+	//google.charts.load("current", {packages:["corechart"]});
+	google.load("visualization", "1", {packages:["corechart"]});
+    
 	$(window).resize(function(){
 		drawcharts = true;
 		drawCharts();
