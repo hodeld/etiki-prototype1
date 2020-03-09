@@ -10,20 +10,15 @@ $(document).ready(function() {
 		drawCharts();
 		});
 	
-	$('#tab2[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	$('#tab1[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		drawCharts();
 		});
-	
-
-
-
-	
 	
 });
 
 function drawCharts(){
 	//if visible and new data
-	if ($('#tab2').attr("aria-selected") === "true" && drawcharts) {
+	if ($('#tab1').attr("aria-selected") === "true" && drawcharts) {
 		drawcharts = false;
 		comp_ratings.forEach(function (item, index) {
 			drawChart(item);
