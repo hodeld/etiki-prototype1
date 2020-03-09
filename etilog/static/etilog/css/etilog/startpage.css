@@ -1,16 +1,32 @@
 
 /* Position text in the top-left corner */
-.siteheader.landing {
-	position: absolute;
+.siteheader {
+	display: none;
 }
 
+.siteheader.landing {
+	display: inherit;
+	position: absolute;
+}
 /* Position text in the bottom-left corner */
 .sitefooter.landing {
 	position: absolute;
 	bottom: 0;
 }
 
+#divTopics.landing{
+	display: inherit;	
+}
+#divTopics{
+	display: none;	
+}
+#startinfo{
+	display: none ;	
+}
 
+#startinfo.landing{
+	display: inherit;	
+}
 /* Style the <hr> element */
 .start_hr {
 	margin: auto;

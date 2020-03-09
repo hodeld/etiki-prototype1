@@ -16,29 +16,10 @@
 	
 	<div class="row h-100 d-flex align-content-center justify-content-center">
 	
-		{# in small screens (sm) different column separation #}
-		<div class = "row justify-content-center"> 
-		{# include 'navigation.html' #}
-		<div class= "col-1 col-lg-3"></div>
-			<div class="col-10 col-lg-6">
-
-				<div id="startinfo" class="collapse show">
-					<div class="text-center">
-						<h1>etiki - it's coming</h1>
-						<hr class= "start_hr">
-						<h6>
-							<br>etiki brings more transparency into business – this is a prototype – any feedback appreciated! <small>♥</small>
-						</h6>
-					</div>
-					</div>
-
-					
-
-				
-			</div>
-		<div class="col-1 col-lg-3"></div>
-		</div>
+		{% include 'etilog/startinfo.html' %}
+		
 		{% include 'nav_search_bar_hidden.html' %}
+		{% include 'etilog/overview_topics.html' %}
 		{% include 'etilog/impactevents_overview_filter.html' %}
 		{% include 'etilog/overview_tabs.html' %}
 
