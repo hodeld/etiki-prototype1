@@ -5,21 +5,6 @@
 // jquery
 $(document).ready(function() {
 
-	//add class to change background
-	//TODO use waypoints in future, also for background at top which will be behind thead
-	$(window).scroll(function () {
-		var cssclass = "d-block"; //"d-md-block";
-		if ($(document).scrollTop() > 100) {			
-	        $('#id_contsearch').addClass("scrolled");
-	        $('.fullscreen-cover').addClass("scrolled");
-	        $('#small_logo').addClass(cssclass) //only on large displays shown
-	    } else {
-	    	$('#id_contsearch').removeClass("scrolled");
-	        $('.fullscreen-cover').removeClass("scrolled");
-	        $('#small_logo').removeClass(cssclass);
-	    }
-	});
-	
 	
 	
 	$(window).resize(function(){ //window changes-> a lot need to be handled
@@ -31,49 +16,28 @@ $(document).ready(function() {
 		timeout = setTimeout(set_topheadaer, delay);
     });
 	
-	startsettings();
+	if (landing == false){
+		startsettings();		
+	}
+	
 	
 });
-function startsettings(){
-	if (showpage == 'True'){
-		var filterDict = JSON.parse(jsData.filter_dict); 
-		setFilterVisually(filterDict);
-		setData(jsData);
-		showElements();
-		
-	}	
+function startsettings(){	
+	var filterDict = JSON.parse(jsData.filter_dict); 
+	setFilterVisually(filterDict);
+	setData(jsData);
+	toggle_filter();
+	scrollToEle();
+
 }
-function showElements(){
-	var ele = $('#tabContent');
-	//$('#link_filter').show();
-	$('#div_filterform').addClass('show');
-	$('.fullsite-wrapper-start').removeClass('fullsite-wrapper-start');
-	$('.bottomleft').removeClass('bottomleft');
-	$('.changepos').addClass('position-relative');
-	ele.show(); 
+
+function startanimation(){
+	$('.landing').removeClass('landing'); 
 	// call once when page is initialized; table must be 				
 	toggle_filter();
 	scrollToEle();
-	
-}	
-
-
-function startanimation(){
-	var ele = $('#tabContent');
-	if (ele.css('display') == 'none'){
-		//before table has data:
-		$('#div_filterform').addClass('show');
-
-		$('.fullsite-wrapper-start').removeClass('fullsite-wrapper-start');
-		$('.bottomleft').removeClass('bottomleft');
-		$('.changepos').addClass('position-relative');
-		ele.show(); 
-		// call once when page is initialized; table must be 				
-		toggle_filter();
-		scrollToEle();
 
 	}	
-}
 
 
 function scrollToEle(eleId = '#id_oviewtable'){

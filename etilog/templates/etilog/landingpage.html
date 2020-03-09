@@ -3,12 +3,12 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-<div class="fullscreen-cover"></div>
-<div class="fullsite-wrapper fullsite-wrapper-start container">
+<div class="fullscreen-cover landing"></div>
+<div class="fullsite-wrapper landing container">
 	
 	
 	
-	<div class="topleft changepos">
+	<div class="siteheader landing">
 		<img alt="logo etiki" border="0" src="{% static 'etilog/img/logoetiki.svg' %}" />
 	</div>
 	
@@ -23,7 +23,7 @@
 			<div class="col-10 col-lg-6">
 
 				<div id="startinfo" class="collapse show">
-					<div class="middle">
+					<div class="text-center">
 						<h1>etiki - it's coming</h1>
 						<hr class= "start_hr">
 						<h6>
@@ -40,82 +40,12 @@
 		</div>
 		{% include 'nav_search_bar_hidden.html' %}
 		{% include 'etilog/impactevents_overview_filter.html' %}
-		<div class = "container">
-		<div class= "row justify-content-center">
-				<h5 id="id_message"></h5>
-		</div>
-		</div>
+		{% include 'etilog/overview_tabs.html' %}
 
-		<div class= "content-wrapper collapse z-depth-1 px-0 px-sm-3" id="tabContent">
-			<div class= "">
-				<nav class= "navbar z-depth-0 px-0">
-				  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-				    <a class="nav-item nav-link active" id="table-tab" data-toggle="tab" href="#id_oviewtable" role="tab" aria-controls="id_oviewtable" aria-selected="true"><i class="fas fa-list"></i></a>
-				    <a class="nav-item nav-link" id="company-tab" data-toggle="tab" href="#company-details " role="tab" aria-controls="company-details" aria-selected="false"><i class="fas fa-chart-pie"></i> </a>
-				    <a class="nav-item nav-link" id="wordcloud-tab" data-toggle="tab" href="#wordcloud" role="tab" aria-controls="wordcloud" aria-selected="false"><i class="fas fa-globe"></i></a>
-				    <a class="nav-item nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="false"><i class="fas fa-question"></i></a>
-				  
-				  
-				  </div>
-				</nav>
-				{% crispy tendlegend %}
-			
-			</div>
-			
-			<div class="tab-content container px-0 ">
-					<div  class="tab-pane fade show active" id="id_oviewtable" role="tabpanel" aria-labelledby="table-tab">
-					{% block content %} 
-					{% endblock content %}
-					</div>
-				  <div class="tab-pane fade" id="wordcloud" role="tabpanel" aria-labelledby="wordcloud-tab">
-					  	<div class="container d-flex flex-wrap justify-content-center">
-					  	<div class="img-wrapper col-12 col-md-6">
-						  	<img src="{% static 'etilog/img/mockup.svg' %}" class="img-ovarlay-1" alt="mockup image">			  	 
-						  	<img src="{% static 'etilog/img/wordcloud.svg' %}" class="img-fullwidth" alt="company wordcloud image" >
-					  	</div>
-					  	<div class="img-wrapper col-12 col-md-6">
-						  	<img src="{% static 'etilog/img/mockup.svg' %}" class="img-ovarlay-2" alt="mockup image">			  	 
-						  	<img src="{% static 'etilog/img/network.svg' %}" class="img-fullwidth" alt="company wordcloud image" >
-					  	</div>
-					  	</div>
-					</div>
-				  <div class="tab-pane fade" id="company-details" role="tabpanel" aria-labelledby="company-tab" >
-				  		{% include 'etilog/company_show.html' %}
-				  </div>
-				  <div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
-					  <div class="py-3 px-2 px-sm-0">
-						  <h5>etiki brings transparency to the business world</h5>
-						  <hr class="whitehr">
-						  <p>With etiki we create a platform that will help you to inform yourself 
-						  about the ethical and sustainable behaviour of companies.  
-						  </p>
-							<p>
-							About current and past events. With which other companies it is connected (suppliers, owners, subsidiaries, etc.). All information reliable, easy to filter and free of charge! Sounds good? Yes, we are not quite there yet.
-							</p>
-							<h5>Well, what you will find on the prototype</h5>
-						  <p>
-						  On prealpha.etiki you can search for news articles about ethical and sustainable behaviour of companies. You can either search for the company or for a category that interests you. This helps you to form your opinion about the companies so that you can use it for future purchase decisions.
-						</p>
-						<p>
-						  Have fun informing about ethics and sustainability!
-						  </p>
-						
-					  </div>
-
-				  </div>
-			</div>
-			
-	
-
-		</div>
-		
-
-		
-		
 
 	</div>
 	
-	<div class = "bottomleft changepos">
+	<div class = "sitefooter landing">
 		<p>prealpha; © etiki 2019</p>
 		<a href="{% url 'etilog:legal' %}" >Impressum – Legal Notice</a>
 	</div>

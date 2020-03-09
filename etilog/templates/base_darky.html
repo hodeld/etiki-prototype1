@@ -42,11 +42,15 @@
 <!-- Material Design Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
 
+{% if landing %} 
+	<link rel="stylesheet" type="text/css"
+	href="{% static 'etilog/css/etilog/startpage.css' %}">
+{% endif %}
 
 <link rel="stylesheet" type="text/css"
 	href="{% static 'etilog/css/style_prototype.css' %}">
-<link rel="stylesheet" type="text/css"
-	href="{% static 'etilog/css/etilog/startpage.css' %}">
+
+
 <link rel="stylesheet" type="text/css"
 	href="{% static 'etilog/css/datepicker.css' %}">
 <link rel="stylesheet" type="text/css"
@@ -66,15 +70,10 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 	
 
 <div class="fullscreen-cover"></div>
-<div class="fullsite-wrapper fullsite-wrapper-start container">
+
+<div class="fullsite-wrapper container">
 	
-	
-	
-	
-	
-		
-	
-	<div class="row h-100 d-flex align-content-center justify-content-center">
+	<div class="row d-flex align-content-center justify-content-center">
 	
 		
 		
@@ -84,14 +83,14 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 
 	</div>
 	
-	<div class = "bottomleft changepos">
+	<div class = "sitefooter">
 		<p>prealpha; © etiki 2019</p>
 		<a href="{% url 'etilog:legal' %}" >Impressum – Legal Notice</a>
 	</div>
+
 </div>
-
-
+{% endif %}
 {% block bottomscript %} {% endblock bottomscript %}
 </body>
-{% endif %}
+
 

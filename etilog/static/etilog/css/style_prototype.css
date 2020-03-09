@@ -31,6 +31,7 @@ body, html {
 	height: 100%;
 		/* default is 1rem or 16px -> for table*/
 	font-family: "Roboto",sans-serif; /*"Courier New", Courier, monospace; */
+	background-color: var(--full_bckgrnd);
 }
 
 noscript {
@@ -46,10 +47,6 @@ noscript {
 	font-weight: bold;
 }
 
-.fullsite-wrapper-start{
-	height: 100% !important;
-	min-height: 0px !important;
-}
 
 .fullsite-wrapper {
 	color: white !important;
@@ -70,20 +67,7 @@ noscript {
 	-moz-box-shadow: none !important;
 	box-shadow: none !important;
 	}
-/*
-.bckground{
-	padding: 10px 20px;
-	margin: 10px auto;
-	border-radius: 8px;
-	background-color: var(--trans_bckgrnd);
-}
-.bckground.transp{ 
-	background-color: transparent;
-}
-.bckground.fullbg{ 
-	background-color: var(--full_bckgrnd);
-}
-*/
+
 .navbar{
     display: block; /*because navbar has flex*/
 }
@@ -96,6 +80,7 @@ noscript {
 .navbar-toggler {
     border: none;
 }
+
 
 .helper {
     display: inline-block;
@@ -114,6 +99,31 @@ noscript {
     transform: translateY(-50%);
     
 }
+.date {
+	width: 20em;
+}
+#id_contsearch{
+	/*max-width: 500px;*/
+	padding: 10px 20px;
+	margin: 0;
+    z-index: 800; 
+    display: block; /*because navbar has flex */
+    background-color: var(--full_bckgrnd);
+	/*display: None;
+	z-index: 10;
+	position: fixed;*/
+}
+
+.sitefooter, .siteheader{
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+#div_id_search{
+	/* overwrite form-group css */
+	margin-bottom:0;
+}
+
 .icon {
   	height: 25px; /* should be square image */
 }

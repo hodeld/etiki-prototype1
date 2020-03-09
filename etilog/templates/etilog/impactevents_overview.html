@@ -29,22 +29,15 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
     var list_url = "{% url 'etilog:home' %}";
     
     var jsData = JSON.parse("{{ jsondata | escapejs }}"); 
-  
-    var showpage = "{{showpage}}"; 
-    var landing = "{{landing}}"; 
+
+    var landing = {{landing|yesno:"true,false" }}; 
 
 </script>
 {% endblock script %}
 {% block title %}Overview{% endblock title %}
 {% block cls_overview %}active{%endblock cls_overview %}
 
-{% block content %}
-<div  id="id_ovtable">
-</div>         	
 
-
-    	
-{% endblock content %}  
 
 {% block bottomscript %}
 

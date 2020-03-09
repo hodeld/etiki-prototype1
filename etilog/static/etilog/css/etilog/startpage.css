@@ -1,62 +1,29 @@
 
 /* Position text in the top-left corner */
-.topleft {
+.siteheader.landing {
 	position: absolute;
 }
 
-.topmiddle {
-	text-align: center;	
-}
-
 /* Position text in the bottom-left corner */
-.bottomleft {
+.sitefooter.landing {
 	position: absolute;
 	bottom: 0;
 }
 
-/* Position text in the middle */
-.middle_content {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	text-align: center;
-	width: 70%;
-}
 
-.middle {
-	text-align: center;
-}
-.changepos{
-	padding-top: 15px;
-	padding-bottom: 15px;
-}
 /* Style the <hr> element */
 .start_hr {
 	margin: auto;
 	width: 40%; 
 }
 
-}
-.date {
-	width: 20em;
-}
-
-
-
-#div_id_search{
-	/* overwrite form-group css */
-	margin-bottom:0;
-}
-
-body {
-	background:  url("/static/etilog/img/background.gif")no-repeat center center fixed;
+.fullscreen-cover.landing {
+	background:  url("/static/etilog/img/background.gif")no-repeat center center fixed ;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	background-size: cover;
 	-o-background-size: cover;
-}
-.fullscreen-cover{
+	
 	position:fixed;
     padding:0;
     margin:0;
@@ -66,35 +33,26 @@ body {
 
     width: 100%;
     height: 100%;
-    z-index: -1;
-    
-	-webkit-transition: background-color 700ms linear;
-    transition: background-color 700ms linear;
+    z-index: 0; 
 }
 
-.fullscreen-cover.scrolled{
-	background-color: var(--full_bckgrnd);
+.fullsite-wrapper.landing{
+	height: 100% !important;
+	min-height: 0px !important;
 }
 
-#id_contsearch{
-	/*max-width: 500px;*/
-	padding: 10px 20px;
-	margin: 0;
-	background-color: rgba(38, 33, 32, 0);
-	-webkit-transition: background-color 700ms linear;
-    transition: background-color 700ms linear;
-    z-index: 800; 
-    display: block; /*because navbar has flex
-    
-	/*display: None;
-	z-index: 10;
-	position: fixed;*/
+
+ #id_contsearch.landing {
+    background-color: rgba(38, 33, 32, 0);
 }
-#id_contsearch.scrolled {
-    background-color: var(--full_bckgrnd);
+
+#small_logo.landing {
+    display: none !important;
 }
-#small_logo_notused {
-    height: 100%; 
-    white-space: nowrap; /* This is required unless you put the helper span closely near the img */
-    text-align: center;
+
+#tabContent.landing{
+	display: none !important;
+}
+#div_filterform.landing{
+	display: none !important;
 }

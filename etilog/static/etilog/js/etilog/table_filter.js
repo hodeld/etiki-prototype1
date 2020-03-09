@@ -38,9 +38,10 @@ $(document).ready(function() {
 			beforeSubmit: function() {
 					$("#id_message").html('calculating results …');
 					setFilterIcon();
-
-					startanimation(); // only first time when table is hidden
-					
+					if (landing  == true){ //means was pressed now
+						startanimation(); // only first time when table is hidden						
+					}
+				
 					var acturl = $('#id_filterform').serialize(); //
 					var searchurl = list_url +  'search?' + acturl; //list_url: etilog:home
 					window.history.pushState("", "", searchurl); //TODO direct url search
