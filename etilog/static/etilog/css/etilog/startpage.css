@@ -72,3 +72,8 @@
 #div_filterform.landing{
 	display: none !important;
 }
+
+.navbar-toggler.landing{
+	display: none !important;
+	
+}

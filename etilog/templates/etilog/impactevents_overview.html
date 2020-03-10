@@ -34,10 +34,18 @@ href="{% static 'etilog/css/etilog/company_show.css' %}">
 
 </script>
 {% endblock script %}
-{% block title %}Overview{% endblock title %}
 {% block cls_overview %}active{%endblock cls_overview %}
 
-
+{% block content %} 
+	
+		{% include 'nav_search_bar_hidden.html' %}
+		{% include 'etilog/impactevents_overview_filter.html' %}
+		{% include 'etilog/overview_tabs.html' %}
+		
+		
+{% endblock content %}
+		
+		
 
 {% block bottomscript %}
 

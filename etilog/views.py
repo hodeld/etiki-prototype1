@@ -503,4 +503,7 @@ def logout_view(request):
     # Redirect to a success page.
 def legal(request):
     return render(request, 'legal.html', )
+
+def about(request):
+    return render(request, 'etilog/about.html', )
     

@@ -221,5 +221,7 @@ a {
     font-size: 0.75rem;
 }
 a:hover{
-    text-decoration: underline;
+	color: var(--etikigreen);
+	font-size: 0.75rem;
+	text-decoration: underline !important;
 }

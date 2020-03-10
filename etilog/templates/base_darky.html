@@ -35,7 +35,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>{% block title %}etiki.org | it's coming {%endblock title%} </title> 
+<title>etiki | {% block title %}it's coming{%endblock title%} </title> 
 <!-- MDB -->
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
@@ -69,23 +69,16 @@ href="{% static 'etilog/css/typeaheadjs.css' %}">
 {% else %}
 	
 
-<div class="fullscreen-cover"></div>
 
 <div class="fullsite-wrapper container">
 	
-	<div class="row d-flex align-content-center justify-content-center">
 	
+		{% block content %} {% endblock content %}
 		
-		
-		{% include 'nav_search_bar_hidden.html' %}
-		{% include 'etilog/impactevents_overview_filter.html' %}
-		{% include 'etilog/overview_tabs.html' %}
 
-	</div>
 	
 	<div class = "sitefooter">
-		<p>prealpha; © etiki 2019</p>
-		<a href="{% url 'etilog:legal' %}" >Impressum – Legal Notice</a>
+		{% include 'footer.html' %}
 	</div>
 
 </div>

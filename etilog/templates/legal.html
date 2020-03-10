@@ -1,35 +1,22 @@
-
-
-{# HTML5 declaration #}
-<!DOCTYPE html>
+{% extends 'base_darky.html' %} 
 {% load static %}
 
-{#import bootstrap4#} {% load bootstrap4 %} {# Embed Bootstrap CSS #}
-{% bootstrap_css %} {# Embed Bootstrap JS+jQuery #} {% bootstrap_javascript jquery='full' %} 
+{% block title %} legal {%endblock title%}
 
-{% load crispy_forms_tags %}
+{% block content %}
 
-<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
-
-{#import scripts need to be under url to scripts (loaded by bootstrap4) #}
-<!--base_script for datepicker -->
-
-
-
-<head>
-
-<!-- Required meta tags for example for responsivity -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>{% block title %}etiki.org | legal {%endblock title%} </title> 
-
-
-</head>
-<body>
 
 <div class="legal container">
-	<a href="https://clearbit.com/" >Logos provided by Clearbit</a>
+<div class="py-3">
+ <ol>
+  <li>
+  Logos provided by <a href="https://clearbit.com/" >Clearbit</a>
+  </li>
+
+</ol> 
+	
+</div>
 </div>
 
 
+{% endblock content %}
