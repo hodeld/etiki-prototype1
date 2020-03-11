@@ -5,8 +5,9 @@
 <div class="container sticky-top navbar navbar-dark landing" id="id_contsearch">
 
 	<div class="row d-flex justify-content-center">
+		<div class="col-0 col-lg-1"></div>
+		<div class="col-6 col-md-1  d-flex justify-content-start justify-content-md-center">
 		
-		<div class="order-0 col-6 col-md-1 col-lg-2 d-flex justify-content-start justify-content-md-center" >
 			<a class="navbar-brand" href="{% url 'etilog:home' %}">
 				<div class="landing" id="small_logo">
 					<span class="helper"></span>
@@ -18,7 +19,7 @@
 
 		</div>
 
-		<div class="col-12 col-md-10 col-lg-8 order-2 order-md-1">
+		<div class="col-12 col-md-10 col-lg-8 order-10 order-md-0">
 		{% if searchform %}
 			<div class="searchform" id="mainsearchform">{# for testing class="collapse" #} 
 			{% crispy searchform %} {# important: not filter.form|crispy #}
@@ -26,7 +27,8 @@
 			{% endif %}
 		</div>
 		
-		<div class="col-6 col-md-1 col-lg-2 order-md-2 d-flex justify-content-end justify-content-md-center ">
+		
+		<div class="col-6 col-md-1 d-flex justify-content-end">
 
 			<button class="navbar-toggler landing" type="button" data-toggle="collapse"
 				data-target="#collapsenav">
@@ -34,19 +36,22 @@
 			</button>
 
 		</div>
-		
+		<div class="col-0 col-lg-1"></div>
 	</div>
 	
 	
 	<div class="row" >
 		<div class="col-12 col-md-6"></div>
-		<div class="col-12 col-md-6 text-right">
+		<div class="col-12 col-md-6 col-lg-5 text-right">
 		
 			<div class="collapse navbar-collapse" id="collapsenav">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item"><a
 					class="nav-link {% block cls_overview %}{%endblock cls_overview %}"
-					href="{% url 'etilog:home' %}">Overview</a></li> 
+					href="{% url 'etilog:home' %}">search</a></li>
+				<li class="nav-item"><a
+					class="nav-link {% block cls_about %}{%endblock cls_about %}"
+					href="{% url 'etilog:about' %}">about</a></li>
 				{% if user.is_authenticated %}
 				<li class="nav-item"><a
 					class="nav-link {% block cls_newie %}{%endblock cls_newie %}"
@@ -87,6 +92,7 @@
 			</ul>
 		</div>
 		</div>
+		<div class="col-0 col-lg-1"></div>
 		
 		
 		

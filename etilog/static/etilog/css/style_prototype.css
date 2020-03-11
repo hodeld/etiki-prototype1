@@ -51,7 +51,7 @@ noscript {
 .fullsite-wrapper {
 	color: white !important;
 	height: auto;
-	min-height: 900px;	/* Add a font */
+	min-height: 100%;	/* Add a font */
 }
 
 .content-wrapper{
@@ -119,6 +119,12 @@ noscript {
 	padding-bottom: 15px;
 }
 
+.sitefooter {
+	top: 100%;
+	position: -webkit-sticky;
+    position: sticky;
+	
+}
 #div_id_search{
 	/* overwrite form-group css */
 	margin-bottom:0;
@@ -218,10 +224,8 @@ label, .nav-link{
  
 a {
     color: var(--etikigreen);
-    font-size: 0.75rem;
 }
 a:hover{
 	color: var(--etikigreen);
-	font-size: 0.75rem;
 	text-decoration: underline !important;
 }
