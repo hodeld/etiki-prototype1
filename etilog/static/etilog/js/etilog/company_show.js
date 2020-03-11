@@ -14,7 +14,10 @@ $(document).ready(function() {
 	$('#tab1[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		drawCharts();
 		});
-	
+	$('#tab3').click(function (){
+		$('#networkAnyCompany').addClass('show');
+		$('#networkCompany').removeClass('show');
+	})
 });
 
 function drawCharts(){
@@ -103,12 +106,28 @@ function imgError(ele){
 	$('#'+altId).css('opacity', '1');
 }
 
-function showMockup(event){
+function showDiagramDetails(event){
 	var target = $( event.target );
 	if ( target.is( "path" ) || target.is( "a" ) ) {
 		return false;
 	}
 	else {
-		$('#wordcloud-tab').tab('show');
+		$('#tab2').tab('show');
 	}	
 }
+
+function showCompanyDetails(event){
+	var val = event.target.text;
+	$('#networkCompany').html(val);
+	$('#networkCompany').addClass('show');
+	$('#networkAnyCompany').removeClass('show');
+	$('#tab3').tab('show');
+	}	
+
+function showCompanyDetails(event){
+	var val = event.target.text;
+	$('#networkCompany').html(val);
+	$('#networkCompany').addClass('show');
+	$('#networkAnyCompany').removeClass('show');
+	$('#tab3').tab('show');
+	}	
