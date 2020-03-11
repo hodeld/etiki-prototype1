@@ -87,16 +87,19 @@ noscript {
     height: 100%;
     vertical-align: middle;
 }
-
+.navbar-brand{
+	margin-right: 0;
+}
 #img_sm {
-    vertical-align: middle; /* is already in bootstrap img class */
-    max-height: 25px; /* to define img size */
+	max-height: 25px; /* to define img size */
+    /*vertical-align: middle;  /*   is already in bootstrap img class */
+    /*
     height: 25px;
     position: absolute;
     top: 50%;
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
+    transform: translateY(-50%); */
     
 }
 .date {
@@ -114,7 +117,7 @@ noscript {
 	position: fixed;*/
 }
 
-.sitefooter, .siteheader{
+.sitefooter, .siteheaderlogo{
 	padding-top: 15px;
 	padding-bottom: 15px;
 }

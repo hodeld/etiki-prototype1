@@ -5,12 +5,13 @@
 <div class="container sticky-top navbar navbar-dark landing" id="id_contsearch">
 
 	<div class="row d-flex justify-content-center">
-		<div class="col-0 col-lg-1"></div>
-		<div class="col-6 col-md-1  d-flex justify-content-start justify-content-md-center">
+		
+		<div class="col-12 col-md-1 col-lg-2 d-flex justify-content-center">
 		
 			<a class="navbar-brand" href="{% url 'etilog:home' %}">
-				<div class="landing" id="small_logo">
-					<span class="helper"></span>
+				<div class="landing  d-flex align-items-center " 
+					id="small_logo">
+					
 				 	<img id="img_sm" alt=""  src="{% static 'etilog/img/logo_sm.svg' %}" /> 
 	
 				</div>			
@@ -28,18 +29,18 @@
 		</div>
 		
 		
-		<div class="col-6 col-md-1 d-flex justify-content-end">
-
+		<div class="col-12 col-md-1 col-lg-2 d-flex justify-content-end justify-content-md-center">
+			{% if user.is_authenticated %}
 			<button class="navbar-toggler landing" type="button" data-toggle="collapse"
 				data-target="#collapsenav">
 				<span class="navbar-toggler-icon"></span>
 			</button>
+			{% endif %}
 
 		</div>
-		<div class="col-0 col-lg-1"></div>
 	</div>
 	
-	
+	{% if user.is_authenticated %}
 	<div class="row" >
 		<div class="col-12 col-md-6"></div>
 		<div class="col-12 col-md-6 col-lg-5 text-right">
@@ -52,7 +53,7 @@
 				<li class="nav-item"><a
 					class="nav-link {% block cls_about %}{%endblock cls_about %}"
 					href="{% url 'etilog:about' %}">about</a></li>
-				{% if user.is_authenticated %}
+				
 				<li class="nav-item"><a
 					class="nav-link {% block cls_newie %}{%endblock cls_newie %}"
 					href="{% url 'etilog:newimpactevent' %}">New Impact Event</a></li> 
@@ -87,7 +88,7 @@
 					{# else #}
 				<li class="nav-item"><a class="nav-link"
 					href="{% url 'login' %}">Login</a></li> 
-					{% endif %}
+					
 
 			</ul>
 		</div>
@@ -97,6 +98,6 @@
 		
 		
 		</div>
-		
+		{% endif %}
 		
 </div>
