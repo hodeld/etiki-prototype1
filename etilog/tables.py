@@ -51,8 +51,8 @@ def get_attrs(hide_mobile = False, hide = False, hover = False, sort = False, da
                  'th': {'class': ''}
                  }
     if hide_mobile:
-        td_class = 'd-none d-lg-table-cell'
-        th_class = 'd-none d-lg-table-cell'
+        td_class = 'd-none' #'d-none d-lg-table-cell'
+        th_class = 'd-none' #'d-none d-lg-table-cell'
 
     if hover:
         td_hover = {'title': get_hovertitle}
