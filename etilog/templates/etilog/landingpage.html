@@ -5,17 +5,12 @@
 
 <div class="fullscreen-cover landing"></div>
 <div class="fullsite-wrapper landing container">
+	{% include 'siteheader.html' %}
 	
-	
-	
-	<div class="siteheader landing">
+	<div class="siteheaderlogo landing">
 		<img alt="logo etiki" border="0" src="{% static 'etilog/img/logoetiki.svg' %}" />
 	</div>
-	
-		
-	
 	<div class="row h-100 d-flex align-content-center justify-content-center">
-	
 		{% include 'etilog/startinfo.html' %}
 		
 		{% include 'nav_search_bar_hidden.html' %}
@@ -23,13 +18,13 @@
 		{% include 'etilog/impactevents_overview_filter.html' %}
 		{% include 'etilog/overview_tabs.html' %}
 
-
 	</div>
 	
-	<div class = "sitefooter landing">
+		<div class = "sitefooter landing">
 	
 		{% include 'footer.html' %}
 	</div>
+	
 </div>
 
 

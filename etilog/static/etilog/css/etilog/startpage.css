@@ -1,17 +1,21 @@
 
 /* Position text in the top-left corner */
-.siteheader {
+.siteheaderlogo {
 	display: none;
 }
 
-.siteheader.landing {
+.siteheaderlogo.landing {
 	display: inherit;
 	position: absolute;
+}
+.siteheader.landing{
+	display: none;
 }
 /* Position text in the bottom-left corner */
 .sitefooter.landing {
 	position: absolute;
 	bottom: 0;
+	top: inherit; /*as in sitefooter: top: 100% */
 }
 
 #divTopics.landing{
