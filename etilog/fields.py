@@ -125,7 +125,8 @@ dom_icon_dict ={1: 'fa-users',  #People
                 }  
               
 class ColDomainBtnSelect(Layout):
-    def __init__(self, col_class= 'col-12 col-lg-6', labelname= 'Category', *args, **kwargs): #distribute buttons
+    def __init__(self, col_class= 'col-12 col-lg-6', labelname= 'Category', 
+                 btncss_class = 'buttonHolder',*args, **kwargs): #distribute buttons
         q = SustainabilityDomain.objects.all()
         btn_list = []
         icon_str = '<i class="fas %s mr-1"></i>' 
@@ -139,17 +140,24 @@ class ColDomainBtnSelect(Layout):
                                aria_pressed = "false",
                                targfield = 'id_sust_domain') 
             btn_list.append(btn)
-            
-        html_str = '<label class="col-form-label">%s</label>' % labelname
+        
+        if labelname:    
+            html_str = '<label class="col-form-label">%s</label>' % labelname
+            label_html = HTML(html_str)
+        else:
+            label_html = ''
         super(ColDomainBtnSelect, self).__init__( 
                            
-            Column(HTML(html_str),
-                   ButtonHolder(*btn_list),
+            Column(label_html,
+                   Div(*btn_list, css_class = btncss_class),
                 css_class = col_class  ) 
             )    
 
 class ColTendencyBtnSelect(Layout):
-    def __init__(self, col_class= 'col-12 col-lg-6', labelname= 'Which Tendency', *args, **kwargs): #distribute buttons
+    def __init__(self, col_class= 'col-12 col-lg-6', 
+                 labelname= 'Which Tendency',
+                 btncss_class = 'buttonHolder',
+                  *args, **kwargs): #distribute buttons
         q = SustainabilityTendency.objects.all()
         btn_list = []
         for tend in q:
@@ -167,12 +175,15 @@ class ColTendencyBtnSelect(Layout):
                                aria_pressed = "false",
                                targfield = 'id_sust_tendency') 
             btn_list.append(btn)
-            
-        html_str = '<label class="col-form-label">%s</label>' % labelname
+        if labelname:    
+            html_str = '<label class="col-form-label">%s</label>' % labelname
+            label_html = HTML(html_str)
+        else:
+            label_html = ''
         super(ColTendencyBtnSelect, self).__init__( 
                            
-            Column(HTML(html_str),
-                   ButtonHolder(*btn_list),
+            Column(label_html,
+                    Div(*btn_list, css_class = btncss_class),
                 css_class = col_class  ) 
             )  
 class TendencyLegende(Layout):
@@ -287,3 +298,22 @@ class SearchWBtn(Layout):
                 )
             )
 
+class BtnIcon(Layout):
+    def __init__(self, col_class= 'col-12 ',
+                 sname = 'Filter',
+                 icon_name = 'fa-filter',
+                  *args, **kwargs): #distribute buttons
+
+        icon_str = '<i class="fas %s mr-1"></i>' 
+
+        cont = icon_str % icon_name + sname
+        btn = StrictButton(cont, name = 'btnfilter', value = 'filter', 
+                           css_class='btn-outline-light btn-block',  #'active btn-light',  ) 
+                           )
+
+        super(BtnIcon, self).__init__(
+            Column(
+                btn, css_class = col_class + ' mt-1'
+                )
+            )    
+        

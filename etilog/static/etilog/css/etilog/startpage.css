@@ -66,18 +66,12 @@
     background-color: rgba(38, 33, 32, 0);
 }
 
-#small_logo.landing {
+#small_logo.landing,
+#tabContent.landing,
+#div_filterform.landing,
+#divFilterBar.landing,
+.navbar-toggler.landing
+ {
     display: none !important;
 }
 
-#tabContent.landing{
-	display: none !important;
-}
-#div_filterform.landing{
-	display: none !important;
-}
-
-.navbar-toggler.landing{
-	display: none !important;
-	
-}

@@ -18,7 +18,8 @@ from etilog.models import SustainabilityTag
 from .tables import ImpEvTable, ImpEvTablePrivat, ImpEvDetails
 #forms
 from .forms import (ImpactEventForm, NewSource, CompanyForm, ReferenceForm, 
-                    SearchForm, FreetextForm, TopicForm, TendencyLegendeDiv
+                    SearchForm, FreetextForm, TopicForm, TendencyLegendeDiv,
+                    OverviewFiltHeaderForm
                     )
 #forms
 from .filters import ImpevOverviewFilter
@@ -78,6 +79,7 @@ def overview_impevs(request, reqtype = None):
         msg_base =  'shows %d filtered impact events'
     
         filt = ImpevOverviewFilter(filter_dict, queryset=q_ie) 
+       
         table_qs =  filt.qs 
         cnt_ies = table_qs.count() #one query too much
         if cnt_ies > limit_filt:
@@ -124,6 +126,8 @@ def overview_impevs(request, reqtype = None):
     topicform = TopicForm()
     freetextform = FreetextForm()
     tendlegend = TendencyLegendeDiv()
+    filtheader = OverviewFiltHeaderForm()
+     
     companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
     references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
@@ -132,6 +136,7 @@ def overview_impevs(request, reqtype = None):
     
     return render(request, 'etilog/impactevents_overview.html', {
                                                                  'filter': filt,
+                                                                 'filtheader': filtheader,
                                                                  'searchform': searchform,
                                                                  'topicform': topicform,
                                                                  'freetextform': freetextform,

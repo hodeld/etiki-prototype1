@@ -340,7 +340,7 @@ function setData(response) {
 	$("#company-details-row").html(compData);
 	$("#id_ovtable").html(tblData);
 	
-	set_topheadaer()//new th elements
+	set_topheadaer();//new th elements
 	prepare_list();
 
 }

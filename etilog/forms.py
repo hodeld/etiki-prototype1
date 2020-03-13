@@ -18,8 +18,10 @@ from .models import (Source, Company, ImpactEvent, SustainabilityDomain, Referen
 from .fields import (ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn,
                      DateYearPicker, DateYearPickerField,
                      RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, ImpactEventBtns,
-                     Readonly, SearchWBtn, TendencyLegende
+                     Readonly, SearchWBtn, TendencyLegende,
+                     BtnIcon
                      )
+from crispy_forms.templatetags.crispy_forms_field import css_class
     
 DT_FORMAT = '%Y-%m-%d %H:%M:%S'
 #D_FORMAT = '%Y-%m-%d'
@@ -120,22 +122,6 @@ class ImpevOverviewFForm(forms.Form):
         
         self.helper.layout = Layout(
             
-            #RowTagsInput('summary',  'col-12', field_class = cls_filterinput),
-            Row(
-                Column(Field('summary', id = 'id_f_summary', 
-                             css_class =  ' '.join([cls_filterinput, 
-                                                    'f_tagsinput']), #f_tagsinput for removing div    
-                             parfield = '#id_row_f_',                       
-                             data_role='tagsinput'
-                       ),
-                        css_class='col-12'                             
-                    ), id = 'id_row_f_summary', css_class='row_tags_class'
-                ),
-            
-            RowTagsInput('tags',  'col-12', field_class = cls_filterinput),
-            RowTagsInput('company',  'col-12', field_class = cls_filterinput),
-            RowTagsInput('country',  'col-12', field_class = cls_filterinput),
-            RowTagsInput('reference',  'col-12', field_class = cls_filterinput),
             
             Field('sust_domain', id='id_sust_domain', 
                   css_class=cls_filterinput + ' btninput', parfield='#id_sust_domain-btn-' ),
@@ -152,11 +138,55 @@ class ImpevOverviewFForm(forms.Form):
                     css_class = 'col-12 d-flex flex-wrap' #wraps if needed
                     )
 
-            ),
+                ),
+            RowTagsInput('tags',  'col-12', field_class = cls_filterinput),
+            RowTagsInput('company',  'col-12', field_class = cls_filterinput),
+            RowTagsInput('country',  'col-12', field_class = cls_filterinput),
+            RowTagsInput('reference',  'col-12', field_class = cls_filterinput),
+            Row(
+                Column(Field('summary', id = 'id_f_summary', 
+                             css_class =  ' '.join([cls_filterinput, 
+                                                    'f_tagsinput']), #f_tagsinput for removing div    
+                             parfield = '#id_row_f_',                       
+                             data_role='tagsinput'
+                       ),
+                        css_class='col-12'                             
+                    ), id = 'id_row_f_summary', css_class='row_tags_class'
+                ),
          
             )
     
+class OverviewFiltHeaderForm(forms.Form):
+
+   
     
+    def __init__(self, *args, **kwargs):
+        super(OverviewFiltHeaderForm, self).__init__(*args, **kwargs)
+              
+
+        
+        self.helper = FormHelper()
+        #self.helper.form_method = 'get'
+        #self.helper.form_id = 'id_filterform'
+        self.helper.form_tag = False
+        
+        
+        self.helper.layout = Layout(
+
+           
+            Row(ColDomainBtnSelect(col_class= 'col-12 flex-nowrap', 
+                                   labelname = None,
+                                   btncss_class = 'justify-content-around d-flex w-100'),
+                ColTendencyBtnSelect(col_class= 'col-12 ', 
+                                     labelname = None,
+                                     btncss_class = 'justify-content-around d-flex w-100'),
+                css_class = 'd-none d-md-flex'
+                ),
+            
+            )
+            
+    
+        
   
 CSS_COL_CLS = 'col-12 col-lg-6'
 class ImpactEventForm(forms.ModelForm):

@@ -42,12 +42,13 @@ function scrollToEle(eleId = '#tabContent'){
 	$([document.documentElement, document.body]).animate({
 	    scrollTop: $(eleId).offset().top - hi 
 	}, 2000);
-
 	
 }
 
 function set_topheadaer(){
-	let hi = $('#id_contsearch').outerHeight() - 4; //smaller than navbar id_navbar
-	$('th').css({ top: hi }); 	
+	let hNavbar = $('#id_contsearch').outerHeight(); //smaller than navbar id_navbar
+	let hFilter = $('#divFilterBar').outerHeight() ; //smaller than navbar id_navbar
+	$('#divFilterBar').css({ top: hNavbar }); 	
+	$('.table-etiki th').css({ top: hNavbar +  hFilter }); 	
 }
 	
