@@ -4,14 +4,17 @@
 
 
 
-<div class="col-12 sticky-top container landing my-3" id="divFilterBar">
-	{% if filtheader %} 
-			{% crispy filtheader %} 
+<div class="col-12 sticky-top container infront landing my-3" id="divFilterBar">
+		{% if filtheader %} 
+		<div class = "row d-none d-md-flex">	
+			{% crispy filtheader %} 			
+		</div>
 		{% endif %} 
+		
 	<button class="btn btn-outline-light btn-block mt-1" 
 	name="btnfilter" type="button" value="filter" data-toggle="collapse"
 		data-target="#div_filterform">	
-	<i class="fas fa-filter mr-1"></i>Filter
+	<i class="fas fa-filter mr-1"></i><span class="d-none d-md-inline">More </span>Filter Options
 	</button>
 
 </div>

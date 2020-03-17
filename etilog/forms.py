@@ -19,7 +19,7 @@ from .fields import (ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn,
                      DateYearPicker, DateYearPickerField,
                      RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, ImpactEventBtns,
                      Readonly, SearchWBtn, TendencyLegende,
-                     BtnIcon
+                     LabelRow
                      )
 from crispy_forms.templatetags.crispy_forms_field import css_class
     
@@ -104,6 +104,9 @@ class ImpevOverviewFForm(forms.Form):
         
         self.fields['date_from'].widget = DateYearPicker()
         self.fields['date_to'].widget = DateYearPicker()
+        self.fields['date_from'].label = ''
+        self.fields['date_to'].label = ''
+        
         self.fields['company'].widget = forms.TextInput() 
         self.fields['country'].widget = forms.TextInput() 
         self.fields['reference'].widget = forms.TextInput() 
@@ -127,16 +130,15 @@ class ImpevOverviewFForm(forms.Form):
                   css_class=cls_filterinput + ' btninput', parfield='#id_sust_domain-btn-' ),
             Field('sust_tendency', id='id_sust_tendency', 
                   css_class=cls_filterinput + ' btninput', parfield='#id_sust_tendency-btn-'), 
-            Row(ColDomainBtnSelect(labelname = 'Category'),
-                ColTendencyBtnSelect(labelname = 'Which Tendency')
-                ),
+            LabelRow(ColDomainBtnSelect(), labelname = 'Category'),
+            LabelRow(ColTendencyBtnSelect(), labelname = 'Which Tendency'),
             
-            Row(
+            LabelRow(
                 Column(
-                    DateYearPickerField('date_from', css_class=cls_filterinput),
-                    DateYearPickerField('date_to', css_class=cls_filterinput),
+                    DateYearPickerField('date_from', 'from',  css_class=cls_filterinput),
+                    DateYearPickerField('date_to', 'to', css_class=cls_filterinput),
                     css_class = 'col-12 d-flex flex-wrap' #wraps if needed
-                    )
+                    ), labelname = 'Date'
 
                 ),
             RowTagsInput('tags',  'col-12', field_class = cls_filterinput),
@@ -174,15 +176,12 @@ class OverviewFiltHeaderForm(forms.Form):
         self.helper.layout = Layout(
 
            
-            Row(ColDomainBtnSelect(col_class= 'col-12 flex-nowrap', 
+            ColDomainBtnSelect(col_class= 'col-12 flex-nowrap', 
                                    labelname = None,
                                    btncss_class = 'justify-content-around d-flex w-100'),
-                ColTendencyBtnSelect(col_class= 'col-12 ', 
-                                     labelname = None,
-                                     btncss_class = 'justify-content-around d-flex w-100'),
-                css_class = 'd-none d-md-flex'
-                ),
-            
+            ColTendencyBtnSelect(col_class= 'col-12 ', 
+                                 labelname = None,
+                                 btncss_class = 'justify-content-around d-flex w-100')
             )
             
     

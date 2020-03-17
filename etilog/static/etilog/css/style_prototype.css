@@ -8,7 +8,7 @@
   --positive: #66a182; 
   --controversial: #dfc983 ; 
   --negative: #e78680;
-  --foreground: ##f8f9fa; /* #fff; */
+  --foreground:  rgba(44, 48, 52); /* on filterhead */
   --etikilight: #6d97ac; /*on lighter than etikigreen */
   /* 
   --etikigreen: #33b5e5; 
@@ -59,7 +59,7 @@ noscript {
 
 }
 .infront{
-	background-color: var(--light_bckgrnd);
+	background-color: var(--foreground);
 }
 .nobackground {
 	background-color: transparent !important;

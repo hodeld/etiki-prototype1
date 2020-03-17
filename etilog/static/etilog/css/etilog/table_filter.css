@@ -30,5 +30,4 @@
 #divFilterBar{
 	z-index: 700; /* navbar 1020; table: 700, date widget : 1000?? typeahed dropdown */
 	top: 36px;
-	background-color: var(--full_bckgrnd);
 }

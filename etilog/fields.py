@@ -83,17 +83,20 @@ class UrlWBtn(Layout):
 class DateYearPicker(DatePickerInput):
     def __init__(self, *args, **kwargs):
         super(DateYearPicker, self).__init__(
+            
             format = D_FORMAT, #django datetime format
                 
             options={'viewMode': 'years', 
-                     'useCurrent': False, #needed to take initial date
+                     'useCurrent': False, #needed to take initial dat
                      'extraFormats': ['DD.MM.YY', 'DD.MM.YYYY' ], #javascript format
                      },
             )
 class DateYearPickerField(Layout):
-    def __init__(self, field_name,  *args, **kwargs):
+    def __init__(self, field_name, placeholder = '', *args, **kwargs):
         super(DateYearPickerField, self).__init__(           
-            Field(field_name, autocomplete='off', wrapper_class='datepicker', *args, **kwargs)
+            Field(field_name, autocomplete='off', wrapper_class='datepicker',
+                  placeholder = placeholder, 
+                   *args, **kwargs)
             )
         
                 
@@ -123,10 +126,32 @@ dom_icon_dict ={1: 'fa-users',  #People
                 4: 'fa-balance-scale-left', #   Politics
                 5: 'fa-store',#   Products& Services                
                 }  
-              
-class ColDomainBtnSelect(Layout):
-    def __init__(self, col_class= 'col-12 col-lg-6', labelname= 'Category', 
-                 btncss_class = 'buttonHolder',*args, **kwargs): #distribute buttons
+class ColBtnSelect(Layout):
+    def __init__(self, btn_list, col_class, labelname, 
+                 btncss_class,
+                 *args, **kwargs): 
+        if col_class is None:
+            col_class= 'col-12'
+        if btncss_class is None:
+            btncss_class = 'justify-content-around d-flex flex-wrap w-100'
+            
+        if labelname:    
+            html_str = '<label class="col-form-label">%s</label>' % labelname
+            label_html = HTML(html_str)
+        else:
+            label_html = ''
+            
+        super(ColBtnSelect, self).__init__( 
+                           
+            Column(label_html,
+                   Div(*btn_list, css_class = btncss_class),
+                css_class = col_class  ) 
+            )    
+                      
+class ColDomainBtnSelect(ColBtnSelect):
+    def __init__(self, col_class= None, labelname= None, 
+                 btncss_class = None,
+                 *args, **kwargs): #distribute buttons
         q = SustainabilityDomain.objects.all()
         btn_list = []
         icon_str = '<i class="fas %s mr-1"></i>' 
@@ -140,23 +165,16 @@ class ColDomainBtnSelect(Layout):
                                aria_pressed = "false",
                                targfield = 'id_sust_domain') 
             btn_list.append(btn)
-        
-        if labelname:    
-            html_str = '<label class="col-form-label">%s</label>' % labelname
-            label_html = HTML(html_str)
-        else:
-            label_html = ''
-        super(ColDomainBtnSelect, self).__init__( 
-                           
-            Column(label_html,
-                   Div(*btn_list, css_class = btncss_class),
-                css_class = col_class  ) 
-            )    
 
-class ColTendencyBtnSelect(Layout):
-    def __init__(self, col_class= 'col-12 col-lg-6', 
-                 labelname= 'Which Tendency',
-                 btncss_class = 'buttonHolder',
+        ColBtnSelect.__init__(self, btn_list, 
+                              col_class, labelname,
+                              btncss_class,
+                              *args, **kwargs)  
+ 
+
+class ColTendencyBtnSelect(ColBtnSelect):
+    def __init__(self, col_class= None, labelname= None, 
+                 btncss_class = None,
                   *args, **kwargs): #distribute buttons
         q = SustainabilityTendency.objects.all()
         btn_list = []
@@ -175,17 +193,12 @@ class ColTendencyBtnSelect(Layout):
                                aria_pressed = "false",
                                targfield = 'id_sust_tendency') 
             btn_list.append(btn)
-        if labelname:    
-            html_str = '<label class="col-form-label">%s</label>' % labelname
-            label_html = HTML(html_str)
-        else:
-            label_html = ''
-        super(ColTendencyBtnSelect, self).__init__( 
-                           
-            Column(label_html,
-                    Div(*btn_list, css_class = btncss_class),
-                css_class = col_class  ) 
-            )  
+
+        ColBtnSelect.__init__(self, btn_list, 
+                              col_class, labelname,
+                              btncss_class,
+                              *args, **kwargs)  
+
 class TendencyLegende(Layout):
     def __init__(self, *args, **kwargs): 
         q = SustainabilityTendency.objects.all() #double query as above
@@ -315,5 +328,35 @@ class BtnIcon(Layout):
             Column(
                 btn, css_class = col_class + ' mt-1'
                 )
-            )    
+            ) 
+class LabelRow(Layout):   
+    def __init__(self, rowcontent, labelname,
+                  *args, **kwargs): #distribute buttons
+        
+        name_stripped = labelname.replace(' ', '')
+        div_id = 'row'+ name_stripped
+        icon_str = '<i class="fas fa-chevron-down ml-1"></i> '
+        cont = labelname + icon_str 
+        btn = StrictButton(cont, name = 'btn'+ name_stripped, value = name_stripped, 
+                            data_toggle='collapse', data_target='#' + div_id,
+                           css_class='btn-link btn-filter-row btn-block btn-sm   mt-1',  #'active btn-light',  ) 
+                           )
+                
+                
+        
+        super(LabelRow, self).__init__(
+            Row(
+                Column(
+                    btn,
+                    Div(
+                        Row(rowcontent, *args, **kwargs),
+                        css_class = 'collapse ', css_id = div_id
+                        ),
+                    css_class = 'col-12 col-md-10'
+                    
+                    ),
+                css_class = 'justify-content-center'
+            )
+            )
+
         

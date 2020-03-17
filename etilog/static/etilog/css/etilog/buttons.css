@@ -2,6 +2,8 @@
 
 .btn-link{
 	color: var(--etikigreen) !important;
+	font-size: larger !important;
+    color: white !important;
 }
 .btn-link-big{
 	color: var(--foreground) !important;
@@ -9,6 +11,11 @@
 	white-space: nowrap;
 }
 
+.btn-filter-row{
+	border-top-style: solid;
+    /* border-bottom-color: white; */
+    border-top-width: thin;
+}
 .btn-dark {
     color: #fff;
     background-color: var(--full_bckgrnd) !important;
