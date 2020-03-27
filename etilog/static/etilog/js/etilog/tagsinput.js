@@ -1,6 +1,7 @@
 /*
  * bootstrap-tagsinput v0.8.0
  * 
+ * mdh: modified by damian
  */
 
 (function ($) {

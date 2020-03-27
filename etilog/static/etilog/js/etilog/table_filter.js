@@ -22,20 +22,8 @@ $(document).ready(function() {
 	
 	//$('.row_tags_class').hide(); -> done in css
 	
-	//add tagsinput on hidden fields
-	$('.f_tagsinput').tagsinput({
-		  	itemValue: 'id',
-			itemText: 'name',
-			
-		});
-	$('.f_tagsinput').on('itemRemoved', function(event) {
-		if ($(this).tagsinput('items').length == 0 ){
-			var modname = $(this).attr('name');
-			var el_id = '#id_row_f_' + modname;
-			$(el_id).hide();				
-		}
-
-		});
+	
+	
 	
 	//form ajax options
 	var options = {		
@@ -83,50 +71,37 @@ $(document).ready(function() {
 	var multitemplate_et = '</h5>';
 	var limit_sugg = 3;
 	
+	//add tagsinput and typeahead on hidden fields
+	$('.f_tagsinput').each(function(){
+		var ele_name = $(this).attr('name');
+		var optDic = allTypeaheadDic[ele_name];
+		if (optDic){
+			$(this).tagsinput({
+				itemValue: 'id',
+				itemText: 'name',
+				typeaheadjs: [
+					{highlight: true,},
+					optDic,
+					],
+			});
+		};		
+	});
+	
+	
+	$('.f_tagsinput').on('itemRemoved', function(event) {
+		if ($(this).tagsinput('items').length == 0 ){
+			var modname = $(this).attr('name');
+			var el_id = '#id_row_f_' + modname;
+			$(el_id).hide();				
+		}
+
+		});
+
+	
 	//initialize typehead -> needs to be below source (assignment is in order in js!
 	$('#id_search').typeahead(
-		{
-			highlight: true
-			
-		},
-		{
-		  name: 'companies',
-		  source: companies,
-		  display: 'name',
-		  limit: limit_sugg,
-		  templates: {
-		    header: multitemplate_st + 'Companies' + multitemplate_et
-		  }
-		},
-		{
-		  name: 'tags',
-		  source: tags,
-		  display: 'name',
-		  limit: limit_sugg,
-		  templates: {
-		    header: multitemplate_st + 'Topics' + multitemplate_et
-		  }
-		},
-		{
-		  name: 'countries',
-		  source: countries,
-		  display: 'name',
-		  limit: limit_sugg,
-		  templates: {
-		    header: multitemplate_st + 'Countries' + multitemplate_et
-		  }
-		},
-		{
-		  name: 'references',
-		  source: references,
-		  display: 'name',
-		  limit: limit_sugg,
-		  templates: {
-		    header: multitemplate_st + 'Where was it published' + multitemplate_et
-		  }
-		
-		
-		});
+			...allTaHList //elements of list
+		);
 
 	$('#id_search').bind('typeahead:select', function(ev, suggestion) {
 		  	//var val_str = suggestion;
@@ -181,6 +156,8 @@ $(document).ready(function() {
 		
 		
 	});
+	
+	
 	$('.topic-link').click(function(){
 		var tagname = $(this).attr('tagname');
 		var tagid = parseInt($(this).attr('tagid'));
@@ -523,3 +500,53 @@ var optTopics = new getBloodhoundOpt(tags_url);
 var tags = new Bloodhound(optTopics);
 
 
+//typeahead
+var multitemplate_st = '<h5 class="category-name text-primary">';
+var multitemplate_et = '</h5>';
+var limit_sugg = 3;
+
+function getTypeaheadOpt(name, source){
+	optDict = {
+			  name: name,
+			  source: source,
+			  display: 'name',
+			  limit: limit_sugg,
+			}
+	return optDict
+}
+
+function tAwHeaderOpt(optDict, title){
+	var templatesDic = {
+			templates: {
+				header: multitemplate_st + title + multitemplate_et
+			}
+	};
+	//combines 2 dics
+	var newOptDict = {...optDict, ...templatesDic};
+	return newOptDict
+}
+
+var compTa = new getTypeaheadOpt('companies', companies); 
+var compTaH = new tAwHeaderOpt(compTa, 'Companies'); 
+
+var refTa = new getTypeaheadOpt('references', references); 
+var refTaH = new tAwHeaderOpt(refTa, 'Where was it published'); 
+
+var countriesTa = new getTypeaheadOpt('countries', countries); 
+var countriesTaH = new tAwHeaderOpt(countriesTa, 'Countries'); 
+
+var tagsTa = new getTypeaheadOpt('tags', tags); 
+var tagsTaH = new tAwHeaderOpt(tagsTa, 'Topics'); 
+
+var allTypeaheadDic = {
+		'tags': tagsTa,
+		'company': compTa,
+		'reference': refTa,
+		'country': countriesTa,
+};
+
+var allTaHList = [
+	{highlight: true,},
+	compTaH, countriesTaH, refTaH, 
+	tagsTaH
+];

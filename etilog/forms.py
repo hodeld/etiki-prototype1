@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Column, Submit, HTML
+from crispy_forms.layout import Layout, Field, Row, Column, Submit, HTML, Div
 
 #models
 from .models import (Source, Company, ImpactEvent, SustainabilityDomain, Reference,
@@ -19,7 +19,7 @@ from .fields import (ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn,
                      DateYearPicker, DateYearPickerField,
                      RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, ImpactEventBtns,
                      Readonly, SearchWBtn, TendencyLegende,
-                     LabelRow
+                     LabelRow, TagsInput
                      )
 from crispy_forms.templatetags.crispy_forms_field import css_class
     
@@ -128,11 +128,18 @@ class ImpevOverviewFForm(forms.Form):
         self.helper.layout = Layout(
             
             
-            Field('sust_domain', id='id_sust_domain', 
-                  css_class=cls_filterinput + ' btninput', parfield='#id_sust_domain-btn-' ),
+            
             Field('sust_tendency', id='id_sust_tendency', 
                   css_class=cls_filterinput + ' btninput', parfield='#id_sust_tendency-btn-'), 
-            LabelRow(ColDomainBtnSelect(), labelname = 'Category'),
+            
+            #in one so whole row could get be fetched with .parent(SELECTOR)
+            LabelRow(
+                Div(Field('sust_domain', id='id_sust_domain', 
+                  css_class=cls_filterinput + ' btninput', parfield='#id_sust_domain-btn-' ),
+                
+                ColDomainBtnSelect(),),                
+                labelname = 'Category'),
+            
             LabelRow(ColTendencyBtnSelect(), labelname = 'Which Tendency'),
             
             LabelRow(
@@ -144,11 +151,18 @@ class ImpevOverviewFForm(forms.Form):
 
                 ),
             LabelRow(
-                RowTagsInput('tags',  'col-12', field_class = cls_filterinput)
-                , labelname = 'tags'),
-            RowTagsInput('company',  'col-12', field_class = cls_filterinput),
-            RowTagsInput('country',  'col-12', field_class = cls_filterinput),
-            RowTagsInput('reference',  'col-12', field_class = cls_filterinput),
+                TagsInput('tags',  'col-12', field_class = cls_filterinput)
+                , labelname = 'Topics'),
+            LabelRow(
+                TagsInput('company',  'col-12', field_class = cls_filterinput)
+                , labelname = 'Company'),
+            LabelRow(
+                TagsInput('country',  'col-12', field_class = cls_filterinput)
+                , labelname = 'Country'),
+            LabelRow(
+                TagsInput('reference',  'col-12', field_class = cls_filterinput)
+                , labelname = 'Where was it published'),
+
             Row(
                 Column(Field('summary', id = 'id_f_summary', 
                              css_class =  ' '.join([cls_filterinput, 

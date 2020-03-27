@@ -45,21 +45,21 @@ class ImpevOverviewFilter(FilterSet):
     
     #todo (evtl needed): handling error messages needed
     company = ModelMultipleChoiceFilter(field_name = 'company', #ModelMultiple... -> accepts list
-                         label = 'Company',
+                         label = '',
                          queryset=Company.objects.all())
     reference = ModelMultipleChoiceFilter(field_name = 'reference',
-                           label = 'Where was it published',
+                           label = '',
                          queryset=Reference.objects.all())
     country = ModelMultipleChoiceFilter(field_name = 'country_display', #can be country
-                         label = 'Country',
+                         label = '',
                          queryset= Country.objects.all(),
                          method = 'filter_country_idlist')
     summary = CharFilter(field_name = 'summary', 
-                         label = 'Text only',
+                         label = '',
                          lookup_expr='icontains')
     
     tags = ModelMultipleChoiceFilter(field_name = 'sust_tags',
-                         label = 'Topics',
+                         label = '',
                          queryset=SustainabilityTag.objects.all())
     
     sust_domain = ModelMultipleChoiceFilter(field_name = 'sust_domain', #ModelMultiple... -> accepts list
