@@ -96,7 +96,9 @@ class FreetextForm(forms.Form):
    
 class ImpevOverviewFForm(forms.Form):
 
-    #datefiltersub = forms.CharField(label = '', required=False)
+    '''
+    form for ImpevOverview filter. labels are defined in filter.
+    '''
    
     
     def __init__(self, *args, **kwargs):
@@ -137,11 +139,13 @@ class ImpevOverviewFForm(forms.Form):
                 Column(
                     DateYearPickerField('date_from', 'from',  css_class=cls_filterinput),
                     DateYearPickerField('date_to', 'to', css_class=cls_filterinput),
-                    css_class = 'col-12 d-flex flex-wrap' #wraps if needed
+                    css_class = 'col-12 d-flex flex-wrap flex-wrap justify-content-around' #wraps if needed
                     ), labelname = 'Date'
 
                 ),
-            RowTagsInput('tags',  'col-12', field_class = cls_filterinput),
+            LabelRow(
+                RowTagsInput('tags',  'col-12', field_class = cls_filterinput)
+                , labelname = 'tags'),
             RowTagsInput('company',  'col-12', field_class = cls_filterinput),
             RowTagsInput('country',  'col-12', field_class = cls_filterinput),
             RowTagsInput('reference',  'col-12', field_class = cls_filterinput),
@@ -165,7 +169,7 @@ class OverviewFiltHeaderForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(OverviewFiltHeaderForm, self).__init__(*args, **kwargs)
               
-
+        element_class = 'mirror'
         
         self.helper = FormHelper()
         #self.helper.form_method = 'get'
@@ -174,14 +178,19 @@ class OverviewFiltHeaderForm(forms.Form):
         
         
         self.helper.layout = Layout(
-
+            
+            
            
             ColDomainBtnSelect(col_class= 'col-12 flex-nowrap', 
                                    labelname = None,
-                                   btncss_class = 'justify-content-around d-flex w-100'),
+                                   ele_class = element_class,
+                                   twin_ele = True,
+                                   btn_wrap_class = 'justify-content-around d-flex w-100'),
             ColTendencyBtnSelect(col_class= 'col-12 ', 
                                  labelname = None,
-                                 btncss_class = 'justify-content-around d-flex w-100')
+                                 ele_class = element_class,
+                                 twin_ele = True,
+                                 btn_wrap_class = 'justify-content-around d-flex w-100')
             )
             
     

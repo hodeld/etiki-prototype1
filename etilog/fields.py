@@ -128,29 +128,51 @@ dom_icon_dict ={1: 'fa-users',  #People
                 }  
 class ColBtnSelect(Layout):
     def __init__(self, btn_list, col_class, labelname, 
-                 btncss_class,
+                 btn_wrap_class,
+                 twin_ele,
                  *args, **kwargs): 
         if col_class is None:
             col_class= 'col-12'
-        if btncss_class is None:
-            btncss_class = 'justify-content-around d-flex flex-wrap w-100'
+        if btn_wrap_class is None:
+            btn_wrap_class = 'justify-content-around d-flex flex-wrap w-100'
             
         if labelname:    
             html_str = '<label class="col-form-label">%s</label>' % labelname
             label_html = HTML(html_str)
         else:
             label_html = ''
+        if twin_ele == True:
+            id_pref = 'twin-'
+            twin_pref = ''
+        else:
+            id_pref = ''
+            twin_pref = 'twin-'
+        btn_ele_li = []
+        for (cont, name, val, css_clss, css_id, targfield) in btn_list:
             
+            btn = StrictButton(cont, name = name, 
+                               value = val, 
+                               css_class = css_clss,
+                               css_id = id_pref+css_id,
+                               data_toggle='button',
+                               aria_pressed = "false",
+                               targfield = targfield,
+                               twin_id = twin_pref+css_id
+                               ) 
+            btn_ele_li.append(btn)
+        
         super(ColBtnSelect, self).__init__( 
                            
             Column(label_html,
-                   Div(*btn_list, css_class = btncss_class),
+                   Div(*btn_ele_li, css_class = btn_wrap_class),
                 css_class = col_class  ) 
             )    
                       
 class ColDomainBtnSelect(ColBtnSelect):
     def __init__(self, col_class= None, labelname= None, 
-                 btncss_class = None,
+                 btn_wrap_class = None,
+                  ele_class = '',
+                  twin_ele = False,
                  *args, **kwargs): #distribute buttons
         q = SustainabilityDomain.objects.all()
         btn_list = []
@@ -159,22 +181,25 @@ class ColDomainBtnSelect(ColBtnSelect):
             
             icon_name = dom_icon_dict[dom.id]
             cont = icon_str % icon_name + dom.name 
-            btn = StrictButton(cont, name = dom.id, value = dom.name, css_class='btnselect btn-outline-info btn-sm',  #'active btn-light',  
-                               css_id = 'id_sust_domain-btn-' + str(dom.id),
-                               data_toggle='button',
-                               aria_pressed = "false",
-                               targfield = 'id_sust_domain') 
+            btn = (cont,  dom.id, dom.name, 
+                    ele_class + ' btnselect btn-outline-info btn-sm',  #'active btn-light',  
+                    'id_sust_domain-btn-' + str(dom.id),
+                    'id_sust_domain',
+                   ) 
             btn_list.append(btn)
 
         ColBtnSelect.__init__(self, btn_list, 
                               col_class, labelname,
-                              btncss_class,
+                              btn_wrap_class,
+                              twin_ele,
                               *args, **kwargs)  
  
 
 class ColTendencyBtnSelect(ColBtnSelect):
     def __init__(self, col_class= None, labelname= None, 
-                 btncss_class = None,
+                 btn_wrap_class = None,
+                  ele_class = '',
+                 twin_ele = False,                
                   *args, **kwargs): #distribute buttons
         q = SustainabilityTendency.objects.all()
         btn_list = []
@@ -187,16 +212,19 @@ class ColTendencyBtnSelect(ColBtnSelect):
                 csscls =  bntclass + 'success'
             else: # 'controv' in tend.name :
                 csscls =  bntclass +'warning'
-            btn = Button(tend.id, tend.name, css_class=csscls,  #'active btn-light',  
-                               css_id = 'id_sust_tendency-btn-' + str(tend.id),
-                               data_toggle='button',
-                               aria_pressed = "false",
-                               targfield = 'id_sust_tendency') 
-            btn_list.append(btn)
+            cont = tend.name
+            name = tend.id
+            val = tend.name
+            css_class= ' '.join([ele_class, csscls])
+            css_id = 'id_sust_tendency-btn-' + str(tend.id)
+            targfield = 'id_sust_tendency'
+            
+            btn_list.append((cont, name, val, css_class, css_id, targfield))
 
         ColBtnSelect.__init__(self, btn_list, 
                               col_class, labelname,
-                              btncss_class,
+                              btn_wrap_class,
+                              twin_ele,
                               *args, **kwargs)  
 
 class TendencyLegende(Layout):

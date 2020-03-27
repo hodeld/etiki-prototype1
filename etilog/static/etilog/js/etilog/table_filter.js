@@ -2,7 +2,12 @@
 
 $(document).ready(function() {
 	//button select for categories
-	$('.btnselect').on('click', set_val_from_btn);
+	//$('.btnselect').on('click', mirror_btn);
+	
+	//send element as with event.target it can be fa-icon!
+	$('.btnselect').click(function() {
+		set_val_from_btn($(this))
+	});
 	
 	$('#link_filter').click(function() {
 		toggle_filter()
@@ -200,29 +205,46 @@ $(document).ready(function() {
 
 var drawcharts = false; 
 
-function set_val_from_btn(event) {
-	var el_id = '#' + event.target.id;
-	var id_val = Number(event.target.name);
-	var input_id = '#' + $(event.target).attr('targfield');
-	var pressed = event.target.attributes['aria-pressed'].value; // true or false
+function mirror_btn(ele){
+	var twin_id = '#' + ele.attr('twin-id');
+	var twin_ele = $(twin_id);
+	var pressed = ele.attr('aria-pressed'); // jquery: true or fals
+
+	if (pressed  == "false"){ //means was not pressed
+		twin_ele.attr('aria-pressed', 'true');
+		twin_ele.addClass('active');
+	}
+	else {
+		twin_ele.attr('aria-pressed', 'false');
+		twin_ele.removeClass('active');		
+	}	
+}
+
+
+function set_val_from_btn(ele) {
+	mirror_btn(ele);
+	var el_id = ele.attr('id');
+	var id_val = Number(ele.attr('name'));
+	var input_id = '#' + ele.attr('targfield');
+	var pressed = ele.attr('aria-pressed'); // true or false
 
 	var el_val = $(input_id).val();
-	var val_list = JSON.parse("[" + el_val + "]"); 
+	try {
+		var val_set = new Set(JSON.parse("[" + el_val + "]")); 
+		}
+	catch(err) {
+		console.log(err.message);
+		}
+	
 
 	if (pressed  == "false"){ //means was pressed now
-		
-
-		val_list.push(id_val)
-		
+		val_set.add(id_val);		
 	}
 	else{
-
-		var index = val_list.indexOf(id_val);
-		if (index > -1) {
-			val_list.splice(index, 1);
-		    }
+		val_set.delete(id_val);
 	}
-	$(input_id).val(val_list)
+	new_li = Array.from(val_set);
+	$(input_id).val(new_li)
 				.trigger('change'); //needed for hidden input fields
 }
 
@@ -406,8 +428,15 @@ function setFilterVisually(filterDict){
 	    		$.each(valList, function(index, value ){
 	    			//todo check but should only ids
 		    		var targetId =  parfield + value;	    		
-		    		$(targetId).attr('aria-pressed', 'true');
-		    		$(targetId).addClass('active');
+		    		$(targetId).attr('aria-pressed', 'true')
+		    					.addClass('active');
+		    		if ($(targetId).attr('twin-id')){
+		    			var twinId = '#'+ $(targetId).attr('twin-id');
+			    		$(twinId).addClass('active')
+			    				.attr('aria-pressed', 'true');		    			
+		    		}
+		    		
+		    		
 	    		});
 	    	} else if (ele.hasClass('f_tagsinput')) {
 	    		function addTag(suggestion){
