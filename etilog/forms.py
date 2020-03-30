@@ -18,7 +18,7 @@ from .models import (Source, Company, ImpactEvent, SustainabilityDomain, Referen
 from .fields import (ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn,
                      DateYearPicker, DateYearPickerField,
                       ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, ImpactEventBtns,
-                     Readonly, SearchWBtn, TendencyLegende,
+                     Readonly, SearchWIcon, TendencyLegende,
                      LabelRow, LabelRowTagsInput
                      )
 from crispy_forms.templatetags.crispy_forms_field import css_class
@@ -48,7 +48,7 @@ class SearchForm(forms.Form):
         
         self.helper.layout = Layout(
         Row(
-                Column(SearchWBtn('search', id = 'id_search', autocomplete="off", 
+                Column(SearchWIcon('search', id = 'id_search', autocomplete="off", 
                              placeholder = 'Search Companies, Countries, Topics, Newspaper …'
                        ),
                         css_class='col-12'                             
@@ -138,9 +138,10 @@ class ImpevOverviewFForm(forms.Form):
                   css_class=cls_filterinput + ' btninput', parfield='#id_sust_domain-btn-' ),
                 
                 ColDomainBtnSelect(),),                
-                labelname = 'Category'),
+                labelname = 'Category', row_class= 'd-flex d-md-none'),
             
-            LabelRow(ColTendencyBtnSelect(), labelname = 'Which Tendency'),
+            LabelRow(ColTendencyBtnSelect(), 
+                     labelname = 'Which Tendency', row_class= 'd-flex d-md-none'),
             
             LabelRow(
                 Column(

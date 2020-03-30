@@ -9,7 +9,7 @@ from django.db.models import Count
 
 #crispoy
 from crispy_forms.layout import Layout, Field, Row, Column, Div, Button, HTML, ButtonHolder, Submit
-from crispy_forms.bootstrap import  InlineRadios, FieldWithButtons, StrictButton
+from crispy_forms.bootstrap import  InlineRadios, FieldWithButtons, StrictButton, AppendedText
 #datepicker
 from bootstrap_datepicker_plus import DatePickerInput
 
@@ -326,19 +326,32 @@ class SearchWBtn(Layout):
         
         img_1 = '<img class="icon collapse" id="icon_filter_active" alt="icon-filter" src="/static/etilog/img/icon/filter_active.png">'
         img_2 = '<img class="icon collapse show" id="icon_filter" alt="icon-filter" src="/static/etilog/img/icon/filter_nonact.png">'
-        cnt_filters = '<small id="filter-count">0</small>'
         
+        cnt_filters = '<small id="filter-count">0</small>'
         super(SearchWBtn, self).__init__(           
             FieldWithButtons(
                 Field(fieldname, *args, **kwargs),
-                            StrictButton(img_1 + img_2 + cnt_filters, 
+                                        StrictButton(img_1 + img_2 + cnt_filters, 
                                          css_class='btn-dark m-0 px-3 py-0 z-depth-0', 
                                          css_id='btn_filter_toggle', 
                                          onclick="toggle_filter_frombtn()"),
-                            css_id='div_id_search'
+                                    css_id='div_id_search'
+
+
                 #for prepend: change template -> span before, prepend-class
                 )
             )
+class SearchWIcon(Layout):
+    def __init__(self, fieldname,  *args, **kwargs):
+
+        icon_str = '<i class="fa fa-search "></i>'
+        super(SearchWIcon, self).__init__(           
+            AppendedText(fieldname, icon_str, *args, **kwargs)
+                #Field(fieldname, *args, **kwargs),
+                #'icon_str')
+            #, css_id='div_id_search')
+            )
+
 
 class BtnIcon(Layout):
     def __init__(self, col_class= 'col-12 ',
@@ -361,6 +374,7 @@ class BtnIcon(Layout):
 
 class LabelRow(Layout):   
     def __init__(self, rowcontent, labelname,
+                 row_class = '',
                   *args, **kwargs): #distribute buttons
         
         name_stripped = labelname.replace(' ', '')
@@ -385,7 +399,7 @@ class LabelRow(Layout):
                     css_class = 'col-12 col-md-10'
                     
                     ),
-                css_class = 'justify-content-center'
+                css_class = 'justify-content-center ' + row_class
             )
             )
 

@@ -132,6 +132,26 @@ noscript {
 	/* overwrite form-group css */
 	margin-bottom:0;
 }
+/*Search Bar */
+
+#div_id_search .input-group-append {
+	    margin-left: -3px !important;
+}
+#div_id_search  .input-group-text{
+	background-color: white;
+    border: 1px solid white;	
+}
+#div_id_search  .input-group-text:hover{
+	cursor: pointer; /* hand pointer */
+}
+
+
+#id_search{
+	border: 1px solid white; 
+}
+	
+
+
 
 .icon {
   	height: 25px; /* should be square image */
