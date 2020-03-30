@@ -21,7 +21,7 @@
   cursor: text; */
 }
 .bootstrap-tagsinput input {
-	/* display: none;  * mdh */ 
+	color: #fff;; /* mdh; was: no color */ 
   border: none;
   box-shadow: none;
   outline: none;
@@ -46,7 +46,7 @@
   box-shadow: none;
 }
 .bootstrap-tagsinput .badge {
-  margin: 2px 0;
+  margin: 2px 1px; /* mdh; was margin: 2px 0px; */
   padding:5px 8px;
 }
 .bootstrap-tagsinput .badge [data-role="remove"] {

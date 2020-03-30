@@ -119,23 +119,7 @@ class RowTagsInput(Layout):
                 id = row_id
                 )
             )
-class TagsInput(Layout):
-    def __init__(self, field_name,  col_class,  field_class = '', field_id = None, row_id=None, *args, **kwargs):
-        if field_id == None:
-            field_id = 'id_f_' + field_name 
-        if row_id == None:
-            row_id = 'id_row_f_' + field_name
-        cls_taginp = 'f_tagsinput'
-        super(TagsInput, self).__init__(           
-                    Column(Field(field_name, id = field_id,
-                                 parfield = '#id_row_f_',
-                                 css_class = ' '.join([cls_taginp, field_class]) ,
-                                 
-                           ),
-                            css_class = col_class                             
-                        )
-                )
-        
+
 
 dom_icon_dict ={1: 'fa-users',  #People
                 2:  'fa-hippo', #   Animals
@@ -374,6 +358,7 @@ class BtnIcon(Layout):
                 btn, css_class = col_class + ' mt-1'
                 )
             ) 
+
 class LabelRow(Layout):   
     def __init__(self, rowcontent, labelname,
                   *args, **kwargs): #distribute buttons
@@ -403,5 +388,25 @@ class LabelRow(Layout):
                 css_class = 'justify-content-center'
             )
             )
+
+class LabelRowTagsInput(LabelRow):
+    def __init__(self, field_name,  col_class, labelname, field_class = '',
+                  field_id = None, 
+                  *args, **kwargs):
+        if field_id == None:
+            field_id = 'id_f_' + field_name 
+        name_stripped = labelname.replace(' ', '')
+        parent_id = '#row'+ name_stripped #same as labelrow
+        cls_taginp = 'f_tagsinput'
+        rowcontent = Column(Field(field_name, id = field_id,
+                                 parfield = parent_id,
+                                 css_class = ' '.join([cls_taginp, field_class]) ,
+                                 placeholder = 'Search ' + labelname,
+                           ),
+                            css_class = col_class                             
+                        )
+        
+        LabelRow.__init__(self, rowcontent, labelname)
+        
 
         

@@ -84,15 +84,19 @@ $(document).ready(function() {
 					optDic,
 					],
 			});
+			var plcHolder = $(this).attr('placeholder');
+			
+			var parentId = $(this).attr('parfield');
+			$(parentId).find('.bootstrap-tagsinput input.tt-input').attr('placeholder', plcHolder);
+			
 		};		
 	});
 	
 	
 	$('.f_tagsinput').on('itemRemoved', function(event) {
 		if ($(this).tagsinput('items').length == 0 ){
-			var modname = $(this).attr('name');
-			var el_id = '#id_row_f_' + modname;
-			$(el_id).hide();				
+			var parentId = $(this).attr('parfield');
+			$(parentId).removeClass('show');				
 		}
 
 		});
@@ -100,7 +104,7 @@ $(document).ready(function() {
 	
 	//initialize typehead -> needs to be below source (assignment is in order in js!
 	$('#id_search').typeahead(
-			...allTaHList //elements of list
+			...allTaHList //elements of list 
 		);
 
 	$('#id_search').bind('typeahead:select', function(ev, suggestion) {
@@ -114,27 +118,23 @@ $(document).ready(function() {
 				var modname = ev.handleObj.handler.arguments[2]; 
 				if (modname == 'companies'){
 					var elt = $('#id_f_company');
-					var el_id = '#id_row_f_company';
 				}
 				else if (modname == 'countries'){
-					var elt = $('#id_f_country');
-					var el_id = '#id_row_f_country';					
+					var elt = $('#id_f_country');					
 				}
 				else if (modname == 'references'){
-					var elt = $('#id_f_reference');
-					var el_id = '#id_row_f_reference';					
+					var elt = $('#id_f_reference');				
 				}					
 				else if (modname == 'tags'){
-					var elt = $('#id_f_tags');
-					var el_id = '#id_row_f_tags';					
+					var elt = $('#id_f_tags');				
 				}	
 				else {
 					var elt = $('#id_f_freetext');					
 				}
 		    
 				elt.tagsinput('add', suggestion);	//adds tag	
-				
-				$(el_id).show();
+				parentId = elt.attr('parfield');
+				$(parentId).addClass('show');
 				$(this).typeahead('val', ''); //typeahead input			
 			}
 			
@@ -166,16 +166,8 @@ $(document).ready(function() {
 	});
 	
 	$("#id_search").keyup(function(event) {
-	    if (event.keyCode === 13) { //enter
-	    	var e = jQuery.Event("keydown");
-	    	e.which = e.keyCode  = 40; // down arrow
-	    	$(this).trigger(e);
-	    	e.which = e.keyCode  = 9; // tab key
-	    	$(this).trigger(e);
-	    	//in case there is no suggestion:
-	        $(this).blur();
-	        $(this).focus();
-	    }
+		var ele = $(this);
+		keyBehavior(event, ele);
 	});
 
 });
@@ -421,7 +413,7 @@ function setFilterVisually(filterDict){
 	        		ele.tagsinput('add', suggestion);	
 	    		}
 	    		
-	    		var targetId =  parfield + el_name; //eg company
+	    		var targetId =  parfield //+ el_name; //eg company
 	    		if (el_name == 'summary'){
 	    			addTag(val)		    			
 	    		} else {
@@ -431,7 +423,7 @@ function setFilterVisually(filterDict){
 	    				addTag(suggestion)	    				
 			    		});
 	    		}
-	    		$(targetId).show();		
+	    		$(targetId).addClass('show');		
 	    	} else if (ele.hasClass('dateyearpicker')){
 	    		
 	    		//ele.data("DateTimePicker").date(val);
@@ -550,3 +542,16 @@ var allTaHList = [
 	compTaH, countriesTaH, refTaH, 
 	tagsTaH
 ];
+
+function keyBehavior(event, ele){
+	if (event.keyCode === 13) { //enter
+    	var e = jQuery.Event("keydown");
+    	e.which = e.keyCode  = 40; // down arrow
+    	ele.trigger(e);
+    	e.which = e.keyCode  = 9; // tab key
+    	ele.trigger(e);
+    	//in case there is no suggestion:
+    	ele.blur();
+    	ele.focus();
+	};
+}

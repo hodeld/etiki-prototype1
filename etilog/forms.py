@@ -17,9 +17,9 @@ from .models import (Source, Company, ImpactEvent, SustainabilityDomain, Referen
             
 from .fields import (ReferenceWidget, CompanyWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn,
                      DateYearPicker, DateYearPickerField,
-                     RowTagsInput, ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, ImpactEventBtns,
+                      ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, ImpactEventBtns,
                      Readonly, SearchWBtn, TendencyLegende,
-                     LabelRow, TagsInput
+                     LabelRow, LabelRowTagsInput
                      )
 from crispy_forms.templatetags.crispy_forms_field import css_class
     
@@ -150,17 +150,18 @@ class ImpevOverviewFForm(forms.Form):
                     ), labelname = 'Date'
 
                 ),
-            LabelRow(
-                TagsInput('tags',  'col-12', field_class = cls_filterinput)
+
+            LabelRowTagsInput('tags',  'col-12', field_class = cls_filterinput
                 , labelname = 'Topics'),
-            LabelRow(
-                TagsInput('company',  'col-12', field_class = cls_filterinput)
-                , labelname = 'Company'),
-            LabelRow(
-                TagsInput('country',  'col-12', field_class = cls_filterinput)
+
+            LabelRowTagsInput('company',  'col-12', 
+                              labelname = 'Company', field_class = cls_filterinput
+                              ),
+
+            LabelRowTagsInput('country',  'col-12', field_class = cls_filterinput
                 , labelname = 'Country'),
-            LabelRow(
-                TagsInput('reference',  'col-12', field_class = cls_filterinput)
+    
+            LabelRowTagsInput('reference',  'col-12', field_class = cls_filterinput
                 , labelname = 'Where was it published'),
 
             Row(
