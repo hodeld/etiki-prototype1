@@ -12,14 +12,51 @@
 		{% endif %} 
 		
 	<button class="btn btn-outline-light btn-block mt-1" 
-	name="btnfilter" type="button" value="filter" data-toggle="collapse"
+	name="btnfilter" type="button" value="filter" data-toggle="modal"
 		data-target="#div_filterform">	
 	<i class="fas fa-filter mr-1"></i><span class="d-none d-md-inline">More </span>Filter Options
 	</button>
 
 </div>
 
-<div class="col-12 col-lg-10  my-3 container z-depth-1 infront landing" id="div_filterform">
+<!-- Modal -->
+<div class="modal fade" id="div_filterform" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <div class="col-12 text-center d-flex justify-content-between" id="divFilterHead">
+			<button class="btn btn-sm btn-link" type="button" id="filterClear" >
+			
+				<i class="fas fa-trash mr-1"></i>
+				<span class="d-none d-sm-inline">Clear all</span>
+				
+			</button> 
+			 <h4 class="my-auto" id="modalTitle">Filter</h4>
+			<button class="btn btn-sm btn-link" type="button"data-dismiss="modal"  id="filterClose1" >
+				<i class="far fa-window-close mr-1"></i>
+				<span class="d-none d-sm-inline">Close</span>
+			</button> 
+			
+		</div>
+      </div>
+      <div class="modal-body">
+        {% if filter %} 
+			{% crispy filter.form %} 
+		{% endif %} 
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm btn-link" type="button"data-dismiss="modal"  id="filterClose2" >
+				<i class="far fa-window-close mr-1"></i>
+				<span class="d-none d-sm-inline">Close</span>
+			</button> 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-12 col-lg-10  my-3 container z-depth-1 infront landing" id="div_filterform2">
 
 <div class="justify-content-center">
 		
