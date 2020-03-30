@@ -391,17 +391,21 @@ class LabelRow(Layout):
 
 class LabelRowTagsInput(LabelRow):
     def __init__(self, field_name,  col_class, labelname, field_class = '',
+                 placeholder = None,
                   field_id = None, 
                   *args, **kwargs):
         if field_id == None:
             field_id = 'id_f_' + field_name 
+        if placeholder == None:
+            placeholder = labelname
         name_stripped = labelname.replace(' ', '')
         parent_id = '#row'+ name_stripped #same as labelrow
         cls_taginp = 'f_tagsinput'
         rowcontent = Column(Field(field_name, id = field_id,
                                  parfield = parent_id,
+                                 
                                  css_class = ' '.join([cls_taginp, field_class]) ,
-                                 placeholder = 'Search ' + labelname,
+                                 placeholder = 'Search ' + placeholder,
                            ),
                             css_class = col_class                             
                         )

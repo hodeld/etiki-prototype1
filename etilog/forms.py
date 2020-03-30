@@ -162,18 +162,12 @@ class ImpevOverviewFForm(forms.Form):
                 , labelname = 'Country'),
     
             LabelRowTagsInput('reference',  'col-12', field_class = cls_filterinput
-                , labelname = 'Where was it published'),
+                , labelname = 'Where was it published', placeholder = 'Publisher'),
+            
+            LabelRowTagsInput('summary',  'col-12', field_class = cls_filterinput
+                , labelname = 'Fulltext'),
+            
 
-            Row(
-                Column(Field('summary', id = 'id_f_summary', 
-                             css_class =  ' '.join([cls_filterinput, 
-                                                    'f_tagsinput']), #f_tagsinput for removing div    
-                             parfield = '#id_row_f_',                       
-                             data_role='tagsinput'
-                       ),
-                        css_class='col-12'                             
-                    ), id = 'id_row_f_summary', css_class='row_tags_class'
-                ),
          
             )
     
