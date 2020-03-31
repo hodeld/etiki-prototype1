@@ -28,14 +28,12 @@
 
 /*DETAILS*/
 .darkbg {
-	background-color: var(--dark_bckgrnd);  
-	
+	background-color: var(--dark_bckgrnd);  	
 }
 
-.headertd{
-	background-color: var(--read_bckgrnd); /*var(--light_bckgrnd); */
-	z-index: 700; /*underneath navbar*/
+#modalFullArticle .modal-content,
+#modalFullArticle .fullarticleheader{
+	background-color: var(--read_bckgrnd); 
 }
-.articletd{
-		border-top: none!important;
-}
+
+background-color: var(--read_bckgrnd);
