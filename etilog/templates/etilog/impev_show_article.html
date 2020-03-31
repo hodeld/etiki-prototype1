@@ -1,18 +1,32 @@
 <!--no javascript for parsing to json -->
-<div class="container justify-content-center iearticle" >
+<!--modal content incl header -->
 
-		<div class="px-md-2 px-lg-4  py-2">
-		
-				
-			<p class="smfont txtellipsis">		
-			original link: <a id="id_url_link" href="{{ rec.source_url  }}" target="_blank">{{rec.source_url  }}</a>		
-			</p>	
-			<div id="id_articleshowdiv" class="">
-				<h3 id="id_titleshow">{{ rec.article_title }}</h3>
-				<hr class = "whitehr">
-				<div id="id_articleshow" >
-					{{ rec.article_html |safe }}
-				</div>
-			</div>
+<div class="modal-header fullarticleheader border-0 pb-0 sticky-top"> 
+	
+	<div class="smfont txtellipsis my-auto">		
+ 			original link: <a id="id_url_link" href="{{ rec.source_url  }}" target="_blank">{{rec.source_url  }}</a>		
 		</div>
-</div>	
+    <button class="btn btn-sm btn-link my-0" type="button" data-dismiss="modal" id="modalFAClose1">
+				<i class="far fa-window-close mr-1"></i>
+	</button>
+
+</div>
+
+<div class="modal-header" >  	
+
+	<h3 class = "modal-title" id="fullArticle{{rec.pk}}">{{ rec.article_title }}</h3>
+</div>
+ <div  class="modal-body">
+       
+		<div id="id_articleshow" >
+		{{ rec.article_html |safe }}
+	</div>
+			
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm btn-link" type="button"data-dismiss="modal"  id="modalFAClose2" >
+				<i class="far fa-window-close mr-1"></i>
+				<span class="d-none d-sm-inline">Close</span>
+			</button> 
+  </div>
+      

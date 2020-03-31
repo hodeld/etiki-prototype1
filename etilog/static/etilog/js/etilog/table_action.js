@@ -60,50 +60,19 @@ function toggle_details(event) {
 	else {
 	$('.detailrow').hide(); //oder open will be hidden
 	$('.parentrow').show(); //oder open will be hidden
-	toggle_article(event);
+	//toggle_article(event);
 	}
 	
 }
-
 function full_article(ele, ie_id){
-	var parele = $(ele).parent('.showbtn'); //parent div of button
-	var detrow = $(ele).parents('.detailrow'); //several levels up
-	var detcell = $(ele).parents('td'); //several levels up
-	var colcnt = $(detcell).attr('colspan');
-	
-	var rowstr1 = 'tr scope="row" class="headerrow fullartrow"  ';
-	var rowstr2 ='<td class="sticky-top darkbg headertd" colspan = "%%colcnt" > %%htmlstr </td> ';	
-
-	var rowstr = '<' + rowstr1 + '>' +  rowstr2 + '</tr>';
-	var html_str = ie_details[ie_id][1]; //header row
-	rowstr = rowstr.replace("%%htmlstr", html_str);
-	rowstr = rowstr.replace("%%colcnt", colcnt);
-	$headerrow= $(rowstr);
-	
-	var rowstr1 = 'tr scope="row" class="articlerow fullartrow darkbg"  ';
-	var rowstr2 ='<td class="articletd" colspan = "%%colcnt" > %%htmlstr </td> ';	
-	var rowstr = '<' + rowstr1 + '>' +  rowstr2 + '</tr>';
 	var html_str = ie_details[ie_id][2]; //article row
-	rowstr = rowstr.replace("%%htmlstr", html_str);
-	rowstr = rowstr.replace("%%colcnt", colcnt);
-	$artrow = $(rowstr);
 	
-	$(parele).hide();
-	$(detrow).after($headerrow);
-	
-	$headerrow.after($artrow);
+	$('#fullArticleContent').html(html_str);
 	hide_img_vid();	
-	let hi = $('#id_contsearch').outerHeight() - 4; //smaller than navbar id_navbar
-	$('.headertd').css({ top: hi }); 
-	
-	$headerrow.click(function(event){
-		toggle_article(event)		
-	});
+	$('#modalFullArticle').modal('toggle');
 }
-function toggle_article(event) {
-	$('.fullartrow').hide(); //oder open will be hidden	
-	$('.showbtn').show(); //oder open will be hidden	
-}
+
+
 
 
 function hide_img_vid(){
