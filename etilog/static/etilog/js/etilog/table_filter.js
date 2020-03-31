@@ -132,9 +132,7 @@ $(document).ready(function() {
 					var elt = $('#id_f_freetext');					
 				}
 		    
-				elt.tagsinput('add', suggestion);	//adds tag	
-				parentId = elt.attr('parfield');
-				$(parentId).addClass('show');
+				setTags(elt, suggestion);
 				$(this).typeahead('val', ''); //typeahead input			
 			}
 			
@@ -281,10 +279,8 @@ function toggle_visibility(jqid) {
 //set tags from topics
 function set_tag(id, tagname) {
 	var suggestion = {'id': id, 'name': tagname};
-	var elt = $('#id_f_tags');
-	var el_id = '#id_row_f_tags';
-	elt.tagsinput('add', suggestion);	//adds tag	
-	$(el_id).show();	
+	var ele = $('#id_f_tags');
+	setTags(ele, suggestion);
 	
 }
 
@@ -554,4 +550,10 @@ function keyBehavior(event, ele){
     	ele.blur();
     	ele.focus();
 	};
+}
+
+function setTags(ele, suggestion){	
+	ele.tagsinput('add', suggestion);	//adds tag	
+	parentId = ele.attr('parfield');
+	$(parentId).addClass('show');
 }
