@@ -4,14 +4,14 @@
 
 
 
-<div class="col-12 sticky-top container infront landing my-3" id="divFilterBar">
+<div class="col-12 sticky-top container infront landing my-3 py-1" id="divFilterBar">
 		{% if filtheader %} 
 		<div class = "row d-none d-md-flex">	
 			{% crispy filtheader %} 			
 		</div>
 		{% endif %} 
 		
-	<button id="btn_filter_toggle" class="btn btn-outline-light btn-block mt-1" 
+	<button id="btn_filter_toggle" class="btn btn-outline-light btn-block my-1" 
 	name="btnfilter" type="button" value="filter" data-toggle="modal"
 		data-target="#div_filterform">	
 	<i class="fas fa-filter mr-1"></i><span class="d-none d-md-inline">More </span>Filter Options

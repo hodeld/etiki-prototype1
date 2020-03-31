@@ -28,6 +28,5 @@
 }
 
 #divFilterBar{
-	z-index: 700; /* navbar 1020; table: 700, date widget : 1000?? typeahed dropdown */
-	top: 36px;
+	z-index: 750; /* navbar 800; table: 700, date widget : 1000?? typeahed dropdown */
 }

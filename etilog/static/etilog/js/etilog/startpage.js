@@ -16,10 +16,31 @@ $(document).ready(function() {
 		timeout = setTimeout(set_topheadaer, delay);
     });
 	
+	var prevScrollTop = $(window).scrollTop()
+	  
+	$(window).on('scroll', function(e) {
+
+	    var currentScrollTop = $(this).scrollTop()
+	    var ele = $('#divFilterBar')
+	    //on scrolling up: sticky-top
+	    if (currentScrollTop >= prevScrollTop) {
+	    	ele.removeClass('sticky-top');
+	    	ele.css({ top: '' }); 
+	    } else {
+	    	let hNavbar = $('#id_contsearch').outerHeight(); //smaller than navbar id_navbar	
+	    	ele.addClass('sticky-top');
+	    	ele.css({ top: hNavbar }); 	
+	    }
+	      
+	   
+	    
+	    prevScrollTop = currentScrollTop
+	});
+	
+	
 	if (landing == false){
 		startsettings();		
 	}
-	
 	
 });
 function startsettings(){	
@@ -48,7 +69,8 @@ function scrollToEle(eleId = '#tabContent'){
 function set_topheadaer(){
 	let hNavbar = $('#id_contsearch').outerHeight(); //smaller than navbar id_navbar
 	let hFilter = $('#divFilterBar').outerHeight() ; //smaller than navbar id_navbar
-	$('#divFilterBar').css({ top: hNavbar }); 	
-	$('.table-etiki th').css({ top: hNavbar +  hFilter }); 	
+	let hTotal = hNavbar; //+  hFilter;
+	//$('#divFilterBar').css({ top: hNavbar }); 	
+	$('.table-etiki th').css({ top: hTotal }); 	
 }
 	
