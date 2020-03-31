@@ -7,8 +7,12 @@ $(document).ready(function() {
 	google.load("visualization", "1", {packages:["corechart"]});
     
 	$(window).resize(function(){
-		drawcharts = true;
-		drawCharts();
+		//only if not on landing page
+		if (comp_ratings){
+			drawcharts = true;
+			drawCharts();			
+		}
+		
 		});
 	
 	$('#tab1[data-toggle="tab"]').on('shown.bs.tab', function (e) {
