@@ -80,7 +80,8 @@ $(document).ready(function() {
 				itemValue: 'id',
 				itemText: 'name',
 				typeaheadjs: [
-					{highlight: true,},
+					{highlight: true,
+						autoselect: true,},
 					optDic,
 					],
 			});
@@ -92,6 +93,10 @@ $(document).ready(function() {
 		};		
 	});
 	
+	$(".f_tagsinput").keyup(function(event) {
+		var ele = $(this);
+		keyBehaviorSearch(event, ele);
+	});
 	
 	$('.f_tagsinput').on('itemRemoved', function(event) {
 		if ($(this).tagsinput('items').length == 0 ){
@@ -138,24 +143,8 @@ $(document).ready(function() {
 			
 		
 	});
-	// if changed without suggestion
-	$('#id_search').bind('typeahead:change', function() {
-		var val_str = $(this).typeahead('val');
-		//var elt = $('#id_f_freetext');
-		var elt = $('#id_f_summary');
-		var el_id = '#id_row_f_summary';
-		
-		
-		elt.tagsinput('add', val_str);	//adds tag
-		$(el_id).show();
-		//$('#id_row_f_freetext').show();
-		//$(this).val(''); 
-		$(this).typeahead('val', ''); //typeahead input
-		
-		
-	});
 	
-	
+
 	$('.topic-link').click(function(){
 		var tagname = $(this).attr('tagname');
 		var tagid = parseInt($(this).attr('tagid'));
@@ -165,7 +154,7 @@ $(document).ready(function() {
 	
 	$("#id_search").keyup(function(event) {
 		var ele = $(this);
-		keyBehavior(event, ele);
+		keyBehaviorSearch(event, ele);
 	});
 
 });
@@ -534,21 +523,27 @@ var allTypeaheadDic = {
 };
 
 var allTaHList = [
-	{highlight: true,},
+	{highlight: true,
+		autoselect: true,
+		},
 	compTaH, countriesTaH, refTaH, 
 	tagsTaH
 ];
 
 function keyBehavior(event, ele){
 	if (event.keyCode === 13) { //enter
-    	var e = jQuery.Event("keydown");
-    	e.which = e.keyCode  = 40; // down arrow
-    	ele.trigger(e);
-    	e.which = e.keyCode  = 9; // tab key
-    	ele.trigger(e);
-    	//in case there is no suggestion:
+		setFirstSelection(ele);
     	ele.blur();
     	ele.focus();
+	};
+}
+
+function keyBehaviorSearch(event, ele){
+	if (event.keyCode === 13) { //enter
+		setFirstSelection(ele);
+		if (setFirstSelection(ele) === false) {
+			changeWOSelection (ele);		
+		};
 	};
 }
 
@@ -556,4 +551,37 @@ function setTags(ele, suggestion){
 	ele.tagsinput('add', suggestion);	//adds tag	
 	parentId = ele.attr('parfield');
 	$(parentId).addClass('show');
+}
+
+function setTagBtn(eleId){
+	var ele = $('#'+eleId); 
+	if (setFirstSelection(ele) === false) {
+		changeWOSelection (ele);		
+	};
+}
+
+function setFirstSelection(ele){
+	var firstsel = ele.parent().find('.tt-selectable:first');
+	if (firstsel.length > 0){
+		firstsel[0].click();
+	}
+	else {
+		return false;
+	}
+	
+	
+}
+//if changed without suggestion
+function changeWOSelection (ele){
+
+	var eletarget = $('#id_f_summary');
+	var el_id = '#id_row_f_summary';
+	
+	var val_str = ele.typeahead('val');
+	
+	eletarget.tagsinput('add', val_str);	//adds tag
+	$(el_id).show();
+	ele.typeahead('val', ''); //typeahead input
+	ele.focus();
+
 }

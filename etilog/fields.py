@@ -344,10 +344,12 @@ class SearchWBtn(Layout):
             )
 class SearchWIcon(Layout):
     def __init__(self, fieldname,  *args, **kwargs):
+        input_id = kwargs.get('id', 'otherid')
 
-        icon_str = '<i class="fa fa-search "></i>'
+        icon_str = '''<i class="fa fa-search" onclick = "setTagBtn('%s')";></i>''' % input_id
         super(SearchWIcon, self).__init__(           
-            AppendedText(fieldname, icon_str, *args, **kwargs)
+            AppendedText(fieldname, icon_str, 
+                         *args, **kwargs)
                 #Field(fieldname, *args, **kwargs),
                 #'icon_str')
             #, css_id='div_id_search')

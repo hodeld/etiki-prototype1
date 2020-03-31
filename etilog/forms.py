@@ -49,7 +49,7 @@ class SearchForm(forms.Form):
         self.helper.layout = Layout(
         Row(
                 Column(SearchWIcon('search', id = 'id_search', autocomplete="off", 
-                             placeholder = 'Search Companies, Countries, Topics, Newspaper …'
+                             placeholder = 'Search Companies, Countries, Topics, Newspaper …',
                        ),
                         css_class='col-12'                             
                     )
