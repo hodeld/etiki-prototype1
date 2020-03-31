@@ -137,11 +137,6 @@ class ColBtnSelect(Layout):
         if btn_wrap_class is None:
             btn_wrap_class = 'justify-content-around d-flex flex-wrap w-100'
             
-        if labelname:    
-            html_str = '<label class="col-form-label">%s</label>' % labelname
-            label_html = HTML(html_str)
-        else:
-            label_html = ''
         if twin_ele == True:
             id_pref = 'twin-'
             twin_pref = ''
@@ -161,13 +156,19 @@ class ColBtnSelect(Layout):
                                twin_id = twin_pref+css_id
                                ) 
             btn_ele_li.append(btn)
-        
-        super(ColBtnSelect, self).__init__( 
-                           
-            Column(label_html,
+        #due to key error -> no string (which is not field name) as 1st argument
+        if labelname:    
+            html_str = '<label class="col-form-label">%s</label>' % labelname
+            label_html = HTML(html_str)
+            col = Column(label_html,
                    Div(*btn_ele_li, css_class = btn_wrap_class),
                 css_class = col_class  ) 
-            )    
+            
+        else:
+            col = Column(Div(*btn_ele_li, css_class = btn_wrap_class),
+                css_class = col_class  ) 
+             
+        super(ColBtnSelect, self).__init__(col)    
                       
 class ColDomainBtnSelect(ColBtnSelect):
     def __init__(self, col_class= None, labelname= None, 
