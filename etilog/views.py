@@ -430,8 +430,8 @@ def get_company_notused(request):
 
 def load_names(request, modelname):
     if modelname == 'company':
-        q_names = Company.objects.values( 'id', 'name')
-        #q_names = Company.objects.values_list( 'name', flat = True) #id
+        q_names = Company.objects.exclude(impevents  = None
+                                          ).values( 'id', 'name')
     elif modelname == 'reference':
         q_names = Reference.objects.values( 'id', 'name')
     elif modelname == 'country':
