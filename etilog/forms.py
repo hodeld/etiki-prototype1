@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Column, Submit, HTML, Div
+from crispy_forms.layout import Layout, Field, Row, Column, Submit, HTML, Div, Hidden
 
 #models
 from .models import (Source, Company, ImpactEvent, SustainabilityDomain, Reference,
@@ -99,7 +99,7 @@ class ImpevOverviewFForm(forms.Form):
     '''
     form for ImpevOverview filter. labels are defined in filter.
     '''
-   
+
     
     def __init__(self, *args, **kwargs):
         super(ImpevOverviewFForm, self).__init__(*args, **kwargs)
@@ -115,8 +115,7 @@ class ImpevOverviewFForm(forms.Form):
         self.fields['tags'].widget = forms.TextInput() 
         self.fields['summary'].widget = forms.TextInput() 
         self.fields['sust_domain'].widget = forms.HiddenInput() 
-        self.fields['sust_tendency'].widget = forms.HiddenInput() 
-        
+        self.fields['sust_tendency'].widget = forms.HiddenInput()      
 
         
         self.helper = FormHelper()
@@ -168,8 +167,6 @@ class ImpevOverviewFForm(forms.Form):
             LabelRowTagsInput('summary',  'col-12', field_class = cls_filterinput
                 , labelname = 'Fulltext'),
             
-
-         
             )
     
 class OverviewFiltHeaderForm(forms.Form):
@@ -179,7 +176,7 @@ class OverviewFiltHeaderForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(OverviewFiltHeaderForm, self).__init__(*args, **kwargs)
               
-        element_class = 'mirror'
+        element_class = 'gettable '
         
         self.helper = FormHelper()
         #self.helper.form_method = 'get'

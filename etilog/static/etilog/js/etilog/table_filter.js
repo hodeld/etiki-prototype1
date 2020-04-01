@@ -8,49 +8,21 @@ $(document).ready(function() {
 	$('.btnselect').click(function() {
 		set_val_from_btn($(this))
 	});
-	
-	$('#link_filter').click(function() {
-		toggle_filter()
-	});
-	$('#filterClose').click(function() {
-		toggle_filter()
-	});
+
 	$('#filterClear').click(function() {
 		clearFilter()
 	});
 	
 	
-	//$('.row_tags_class').hide(); -> done in css
-	
-	
-	
-	
-	//form ajax options
-	var options = {		
-			
-			beforeSubmit: function() {
-					$("#id_message").html('calculating results …');
-					setFilterIcon();
-					if (landing  == true){ //means was pressed now
-						startanimation(); // only first time when table is hidden						
-					}
-				
-					var acturl = $('#id_filterform').serialize(); //
-					var searchurl = list_url +  'search?' + acturl; //list_url: etilog:home
-					window.history.pushState("", "", searchurl); //TODO direct url search
-			},
-			success : function(response) {
-				setData(response)
-					
-				},
-			url: list_url, //needed to be defined due to searchurl
-			};
 	// pass options to ajaxForm
-	$('#id_filterform').ajaxForm(options);
+	//$('#id_filterform').ajaxForm(options);
 	
 	
 
-    
+	$('#applyFilter').click(function() {
+		resultType = 'table';
+		submitFromID('#id_filterform');
+	});
 	
 	//directly submit on filterinputs:
 	$('.f_input').change(function(ev){
@@ -62,10 +34,6 @@ $(document).ready(function() {
 		submitFilterForm(ev)
 	});
 
-	
-	
-	
-	var elttag = $('.f_tagsinput') //array of elements
 	
 	var multitemplate_st = '<h5 class="category-name text-primary">';
 	var multitemplate_et = '</h5>';
@@ -113,33 +81,35 @@ $(document).ready(function() {
 		);
 
 	$('#id_search').bind('typeahead:select', function(ev, suggestion) {
-		  	//var val_str = suggestion;
-			
-		  	var val_str = suggestion['name'];
-		  	var val_id = suggestion['id'];
 		  	
-			
-		  	if (val_str.length > 0 ) {
-				var modname = ev.handleObj.handler.arguments[2]; 
-				if (modname == 'companies'){
-					var elt = $('#id_f_company');
-				}
-				else if (modname == 'countries'){
-					var elt = $('#id_f_country');					
-				}
-				else if (modname == 'references'){
-					var elt = $('#id_f_reference');				
-				}					
-				else if (modname == 'tags'){
-					var elt = $('#id_f_tags');				
-				}	
-				else {
-					var elt = $('#id_f_freetext');					
-				}
-		    
-				setTags(elt, suggestion);
-				$(this).typeahead('val', ''); //typeahead input			
+		//from search directly table
+		resultType = 'table';	
+		
+	  	var val_str = suggestion['name'];
+	  	var val_id = suggestion['id'];
+	  	
+		
+	  	if (val_str.length > 0 ) {
+			var modname = ev.handleObj.handler.arguments[2]; 
+			if (modname == 'companies'){
+				var elt = $('#id_f_company');
 			}
+			else if (modname == 'countries'){
+				var elt = $('#id_f_country');					
+			}
+			else if (modname == 'references'){
+				var elt = $('#id_f_reference');				
+			}					
+			else if (modname == 'tags'){
+				var elt = $('#id_f_tags');				
+			}	
+			else {
+				var elt = $('#id_f_freetext');					
+			}
+	    
+			setTags(elt, suggestion);
+			$(this).typeahead('val', ''); //typeahead input			
+		}
 			
 		
 	});
@@ -148,6 +118,7 @@ $(document).ready(function() {
 	$('.topic-link').click(function(){
 		var tagname = $(this).attr('tagname');
 		var tagid = parseInt($(this).attr('tagid'));
+		resultType = 'table';
 		set_tag(tagid, tagname)
 		
 	});
@@ -158,6 +129,7 @@ $(document).ready(function() {
 	});
 
 });
+
 
 var drawcharts = false; 
 
@@ -200,6 +172,10 @@ function set_val_from_btn(ele) {
 		val_set.delete(id_val);
 	}
 	new_li = Array.from(val_set);
+	if (ele.hasClass('gettable')){
+		resultType = 'table';		
+	}
+
 	$(input_id).val(new_li)
 				.trigger('change'); //needed for hidden input fields
 }
@@ -274,39 +250,24 @@ function set_tag(id, tagname) {
 }
 
 
-function toggle_filter_frombtn() {
-	
-	toggle_filter(fshow = true) ; //show always
-	var hi = $('#id_contsearch').outerHeight() + 10; //smaller than navbar id_navbar
-	$([document.documentElement, document.body]).animate({
-	    scrollTop: $("#div_filterform").offset().top - hi
-	}, 'slow');
-}
-
-function toggle_filter(fshow = false) {	
-	if ($('#filterform').hasClass('show') && fshow == false){
-		$('#div_filterform').addClass('nobackground');
-		$('#div_filterform .show').removeClass('show'); 
-		$('#divFilterHead .showopposite').addClass('show'); 
-	}
-	else {
-		$('#div_filterform').removeClass('nobackground');	
-		$('#div_filterform .collapse').addClass('show');
-		$('#divFilterHead .showopposite').removeClass('show'); 
-	}
-}
-
 var ie_details = ''; 
 var comp_ratings = ''; 
+var resultMessage = '';
 
 function setData(response) {
+	var responseType = response.result_type;
+	$('#filterCountText').html(response.msg_count);
+	if (responseType === 'count'){
+		$("#id_message").html(resultMessage);
+		return
+	}
 	var tblData = response.table_data;
 	var compData = response.comp_details;
 	var msg = response.message;
 	
 	ie_details = JSON.parse(response.ie_details); 
 	comp_ratings = JSON.parse(response.comp_ratings); 
-	
+	resultMessage = msg;
 	$("#id_message").html(msg);
 	
 	drawcharts = true;
@@ -320,6 +281,34 @@ function setData(response) {
 	prepare_list();
 
 }
+var resultType = 'count';
+//form ajax options
+var formOptions = {		
+		
+		beforeSubmit: function(arr, $form, options) {
+				$("#id_message").html('calculating results …');
+				setFilterIcon();
+				if (landing  == true){ //means was pressed now
+					startanimation(); // only first time when table is hidden						
+				}
+				var form = $form //$('#id_filterform');
+				var acturl = form.serialize(); //
+				
+				var searchurl = list_url +  'search?' + acturl; //list_url: etilog:home
+				window.history.pushState("", "", searchurl); //TODO direct url search
+				
+				
+		},
+		success : function(response) {
+			setData(response)
+			resultType = 'count';
+				
+			},
+		url: list_url, //needed to be defined due to searchurl
+		
+		
+};
+
 
 function submitFilterForm(ev){
 	var target = $(ev.target);
@@ -327,11 +316,17 @@ function submitFilterForm(ev){
 		target.removeClass('nosubmit');
 	}
 	else {
+		
 		var foid = '#' + ev.target.form.id;
-		$(foid).submit();
+		submitFromID(foid);
 	}	
 }
-
+function submitFromID(foid){
+	//manipulate extra data
+	formOptions.data = { result_type: resultType}
+	$(foid).ajaxSubmit(formOptions)
+	
+}
 function setFilterIcon(){
 	var validate= false;
 	var filterCount = 0;
@@ -350,7 +345,7 @@ function setFilterIcon(){
 	else { 
 		$('#icon_filter').hide();
 		$( '#icon_filter_active' ).show();	
-		var $el = $('#btn_filter_toggle'),
+		var $el = $('#applyFilter'),
 	    	originalColor = $el.css("background");
 
 		$el.attr('style', "background: #ffff99 !important"); //due to mdb
@@ -446,7 +441,10 @@ function clearFilter() {
 	    	ele.val('');
 	    	}
 	    });
-	$('#id_filterform').submit();
+	resultType = 'count';
+	
+	submitFromID('#id_filterform');
+
 }
 
 

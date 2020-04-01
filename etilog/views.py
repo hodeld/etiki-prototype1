@@ -26,7 +26,8 @@ from .filters import ImpevOverviewFilter
 
 #viewlogic
 from etilog.ViewLogic.ViewImportDB import parse_xcl
-from etilog.ViewLogic.ViewMain import get_filterdict, get_cache, query_comp_details, prefetch_data
+from etilog.ViewLogic.ViewMain import (get_filterdict, get_cache, query_comp_details, 
+                                       prefetch_data, count_qs)
 from etilog.ViewLogic.ViewExport import exp_csv_nlp, exp_csv_basedata, extract_err_file
 from etilog.ViewLogic.ViewDatetime import get_now
 
@@ -65,30 +66,54 @@ def overview_impevs(request, reqtype = None):
         landing = True
     
     else:
-        filter_dict, filter_name_dict = get_filterdict(request) 
-        filt_data_json = json.dumps(filter_name_dict)
+        filter_dict, filter_name_dict, result_type = get_filterdict(request) 
+        #fromcache not used so far
+        if result_type == 'fromcache':
+            table_qs = get_cache('tableqs', request)
             
-        if request.user.is_authenticated:
-            limit_filt = 1000
-            Table = ImpEvTablePrivat
-        else:
-            limit_filt = 50
-            Table = ImpEvTable
-            
-        q_ie = ImpactEvent.objects.all()
-        msg_base =  'shows %d filtered impact events'
-    
-        filt = ImpevOverviewFilter(filter_dict, queryset=q_ie) 
+        else: 
+            filt_data_json = json.dumps(filter_name_dict)
+                
+            if request.user.is_authenticated:
+                limit_filt = 1000
+                Table = ImpEvTablePrivat
+            else:
+                limit_filt = 50
+                Table = ImpEvTable
+                
+            q_ie = ImpactEvent.objects.all()
+            filt = ImpevOverviewFilter(filter_dict, queryset=q_ie) 
        
-        table_qs =  filt.qs 
-        cnt_ies = table_qs.count() #one query too much
+            table_qs =  filt.qs 
+            
+            count_vals = count_qs(table_qs) #one query too much
+            (cnt_ies, cnt_comp) = count_vals
+        
+        
+        msg_impev =  '<strong>%d impact events</strong>' % cnt_ies
+        str_comp = 'companies'
+        if cnt_comp == 1:
+            str_comp = 'company'            
+        msg_company = '<strong>%d %s</strong>' % (cnt_comp, str_comp)
+        
+        d_dict = {}
+        msg_count =  'show ' +  msg_company + ' and ' + msg_impev
+        d_dict['result_type'] = result_type
+        d_dict['msg_count'] = msg_count
+        
+        if result_type == 'count':
+            d_dict['result_type'] = result_type
+                
+            jsondata = json.dumps(d_dict)         
+            return HttpResponse(jsondata, content_type='application/json')
+        
         if cnt_ies > limit_filt:
             last_ies = table_qs.order_by('-date_published')[:limit_filt]
             dt = list(last_ies)[-1].date_published
             table_qs = table_qs.filter(date_published__gte = dt)
-            msg_results = 'more than %d results! shows %d newest impact events' % (limit_filt, limit_filt)
-        else:
-            msg_results = msg_base % cnt_ies
+            msg_results = 'more than <strong>%d</strong> results! shows %d newest impact events' % (limit_filt, limit_filt)
+        else:          
+            msg_results = 'shows ' + msg_company + ' and ' + msg_impev
         
         table_qs = prefetch_data(table_qs)
         table = Table(table_qs)
@@ -99,10 +124,9 @@ def overview_impevs(request, reqtype = None):
         ie_details = load_ie_details(table_qs)
         comp_details, comp_ratings = get_comp_details(table_qs)
         
-        msg_results = msg_results + ' of %d in total' % cnt_tot
+        msg_results = msg_results + ' of %d in total' % cnt_tot 
     
         
-        d_dict = {}
         rend_table =  render_to_string( 'etilog/impactevents_overview_table.html', {'table': table,
                                                                            }
                                                                            )
@@ -110,6 +134,7 @@ def overview_impevs(request, reqtype = None):
                                                                            }
                                                                            )
         
+        d_dict['result_type'] = 'table'
         d_dict['table_data'] = rend_table
         d_dict['message'] = msg_results
         d_dict['ie_details'] = ie_details

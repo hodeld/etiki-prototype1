@@ -33,6 +33,10 @@ def get_filterdict(request):
     filter_name_dict = {} #for setting visually values
     set_value('date_from')
     set_value('date_to')
+    
+    result_type = reqdict.get('result_type', 'table')
+    filter_dict.pop('result_type', None)
+    
             
     field_names = [ ]
 
@@ -63,7 +67,7 @@ def get_filterdict(request):
         filter_dict[fname] =  text_str
     
                
-    return filter_dict, filter_name_dict
+    return filter_dict, filter_name_dict, result_type
 
 def get_name (inst_id, modelname):
     if modelname == 'company':
@@ -138,8 +142,14 @@ def prefetch_data(qimpev):
     return q
     
   
-
+def count_qs(qimpev):
+    ie_ids = qimpev.values_list('id', flat = True) #.count()
+    cnt_ies = len(ie_ids)
+    cnt_comp = Company.objects.filter(impevents__in = ie_ids).distinct().count() 
     
+    vals = (cnt_ies, cnt_comp)
+    return vals
+
 def set_cache(name, value, request, timeout = 3600):
     key_name = str(request.user.id) + name
     cache.set(key_name, value, timeout)
