@@ -15,7 +15,7 @@ import sys
 
 import django_heroku 
 
-from secrets import *
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,10 +25,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+#used for heroku local:
 SECRET_KEY = os.getenv('SECRET_KEY', 'Optional default value')
 
+db_user = os.getenv('DB_USER', 'Optional default value')
+db_password = os.getenv('DB_PW', 'Optional default value')
+db_host = os.getenv('DB_HOST', 'Optional default value')
+db_port = os.getenv('DB_PORT', 'Optional default value')
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -98,7 +104,6 @@ DATABASES = {
         'PORT': db_port,
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
