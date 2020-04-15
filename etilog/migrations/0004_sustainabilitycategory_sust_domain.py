@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('etilog', '0003_auto_20190725_1033'),
     ]
@@ -14,7 +13,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='sustainabilitycategory',
             name='sust_domain',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='etilog.SustainabilityDomain'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE,
+                                    to='etilog.SustainabilityDomain'),
             preserve_default=False,
         ),
     ]

@@ -1,38 +1,41 @@
 .navbar-dark {
-	background-color: #3E7480;
+    background-color: #3E7480;
 }
+
 .navbar-etilog a {
-	color: #3E7480;
+    color: #3E7480;
 }
+
 body {
-	/* default is 1rem or 16px -> for table*/
-	font-size: 12px;
-	font-family: "Courier New", Courier, monospace;
+    /* default is 1rem or 16px -> for table*/
+    font-size: 12px;
+    font-family: "Courier New", Courier, monospace;
 }
 
 .text-primary {
-	color: #3E7480;
+    color: #3E7480;
 }
 
 /*DATEINPUT*/
 .date {
-	width: 20em;
-}
-#id_date_from{
-  width: 30px;
+    width: 20em;
 }
 
+#id_date_from {
+    width: 30px;
+}
 
 
-.hidden-label{
-	visibility: hidden;
+.hidden-label {
+    visibility: hidden;
 }
 
 
 #id_impev_msg {
-	background-color: lightgreen;
+    background-color: lightgreen;
 }
+
 /*white line */
-.whitehr{
-	border-color: #eeeeee;
+.whitehr {
+    border-color: #eeeeee;
 }

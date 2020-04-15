@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('etilog', '0011_auto_20190801_1909'),
     ]
@@ -13,6 +12,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='impactevent',
             name='sources',
-            field=models.ManyToManyField(blank=True, related_name='impevents', to='etilog.Source', verbose_name='further sources'),
+            field=models.ManyToManyField(blank=True, related_name='impevents', to='etilog.Source',
+                                         verbose_name='further sources'),
         ),
     ]

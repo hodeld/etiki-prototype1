@@ -7,20 +7,21 @@ Created on 26.8.2019
 from datetime import timedelta
 from django.utils import timezone
 
+
 def get_dateframe():
     now = timezone.localtime()
-    #et = now
+    # et = now
     et = None
 
-  
     yearsdelta = 2
-    daysdelta = yearsdelta*365
+    daysdelta = yearsdelta * 365
     st_dt = now - timedelta(days=daysdelta)
     st = st_dt.strftime('%d.%m.%Y')
-    
+
     return st, et
+
 
 def get_now():
     now = timezone.localtime()
-    
+
     return now

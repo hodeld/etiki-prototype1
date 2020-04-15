@@ -1,32 +1,32 @@
 <!--no javascript for parsing to json -->
 <!--modal content incl header -->
 
-<div class="modal-header fullarticleheader border-0 pb-0 sticky-top"> 
-	
-	<div class="smfont txtellipsis my-auto">		
- 			original link: <a id="id_url_link" href="{{ rec.source_url  }}" target="_blank">{{rec.source_url  }}</a>		
-		</div>
+<div class="modal-header fullarticleheader border-0 pb-0 sticky-top">
+
+    <div class="smfont txtellipsis my-auto">
+        original link: <a id="id_url_link" href="{{ rec.source_url }}" target="_blank">{{ rec.source_url }}</a>
+    </div>
     <button class="btn btn-sm btn-link my-0" type="button" data-dismiss="modal" id="modalFAClose1">
-				<i class="far fa-window-close mr-1"></i>
-	</button>
+        <i class="far fa-window-close mr-1"></i>
+    </button>
 
 </div>
 
-<div class="modal-header" >  	
+<div class="modal-header">
 
-	<h3 class = "modal-title" id="fullArticle{{rec.pk}}">{{ rec.article_title }}</h3>
+    <h3 class="modal-title" id="fullArticle{{ rec.pk }}">{{ rec.article_title }}</h3>
 </div>
- <div  class="modal-body">
-       
-		<div id="id_articleshow" >
-		{{ rec.article_html |safe }}
-	</div>
-			
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-sm btn-link" type="button"data-dismiss="modal"  id="modalFAClose2" >
-				<i class="far fa-window-close mr-1"></i>
-				<span class="d-none d-sm-inline">Close</span>
-			</button> 
-  </div>
+<div class="modal-body">
+
+    <div id="id_articleshow">
+        {{ rec.article_html |safe }}
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-sm btn-link" type="button" data-dismiss="modal" id="modalFAClose2">
+        <i class="far fa-window-close mr-1"></i>
+        <span class="d-none d-sm-inline">Close</span>
+    </button>
+</div>
       

@@ -1,68 +1,72 @@
-
 /* Position text in the top-left corner */
 .siteheaderlogo {
-	display: none;
+    display: none;
 }
 
 .siteheaderlogo.landing {
-	display: inherit;
-	position: absolute;
+    display: inherit;
+    position: absolute;
 }
-.siteheader.landing{
-	display: none;
+
+.siteheader.landing {
+    display: none;
 }
+
 /* Position text in the bottom-left corner */
 .sitefooter.landing {
-	position: absolute;
-	bottom: 0;
-	top: inherit; /*as in sitefooter: top: 100% */
+    position: absolute;
+    bottom: 0;
+    top: inherit; /*as in sitefooter: top: 100% */
 }
 
-#divTopics.landing{
-	display: inherit;	
-}
-#divTopics{
-	display: none;	
-}
-#startinfo{
-	display: none ;	
+#divTopics.landing {
+    display: inherit;
 }
 
-#startinfo.landing{
-	display: inherit;	
+#divTopics {
+    display: none;
 }
+
+#startinfo {
+    display: none;
+}
+
+#startinfo.landing {
+    display: inherit;
+}
+
 /* Style the <hr> element */
 .start_hr {
-	margin: auto;
-	width: 40%; 
+    margin: auto;
+    width: 40%;
 }
 
 .fullscreen-cover.landing {
-	background:  url("/static/etilog/img/background.gif")no-repeat center center fixed ;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	background-size: cover;
-	-o-background-size: cover;
-	
-	position:fixed;
-    padding:0;
-    margin:0;
+    background: url("/static/etilog/img/background.gif") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
 
-    top:0;
-    left:0;
+    position: fixed;
+    padding: 0;
+    margin: 0;
+
+    top: 0;
+    left: 0;
 
     width: 100%;
     height: 100%;
-    z-index: 0; 
+    z-index: 0;
 }
 
-.fullsite-wrapper.landing{
-	height: 100% !important;
-	min-height: 0px !important;
+.fullsite-wrapper.landing {
+    height: 100% !important;
+    min-height: 0px !important;
 }
 
 
- #id_contsearch.landing {
+#id_contsearch.landing {
     background-color: rgba(38, 33, 32, 0);
 }
 
@@ -70,8 +74,7 @@
 #tabContent.landing,
 #div_filterform.landing,
 #divFilterBar.landing,
-.navbar-toggler.landing
- {
+.navbar-toggler.landing {
     display: none !important;
 }
 

@@ -1,134 +1,145 @@
 
-
-.btn-link{
-	color: var(--etikigreen) !important;
-	font-size: larger !important;
+.btn-link {
+    color: var(--etikigreen) !important;
+    font-size: larger !important;
     color: white !important;
 }
-.btn-link-big{
-	color: var(--foreground) !important;
-	font-size: 1rem;
-	white-space: nowrap;
+
+.btn-link-big {
+    color: var(--foreground) !important;
+    font-size: 1rem;
+    white-space: nowrap;
 }
 
-.btn-filter-row{
-	border-top-style: solid;
+.btn-filter-row {
+    border-top-style: solid;
     /* border-bottom-color: white; */
     border-top-width: thin;
 }
+
 .btn-dark {
     color: #fff;
     background-color: var(--full_bckgrnd) !important;
     border-color: var(--full_bckgrnd);
 }
-.btn-dark:hover, .btn-dark:focus, .btn-dark:active, .btn-dark.active, .open>.dropdown-toggle.btn-dark {
+
+.btn-dark:hover, .btn-dark:focus, .btn-dark:active, .btn-dark.active, .open > .dropdown-toggle.btn-dark {
     color: #fff;
-    background-color: var(--light_bckgrnd) !important; 
-    border-color: var(--light_bckgrnd); 
+    background-color: var(--light_bckgrnd) !important;
+    border-color: var(--light_bckgrnd);
 }
 
- .btnselect{
- 
+.btnselect {
+
     margin-bottom: 3px;
 }
 
 /* buttons select outline colors; border-color in both cases needed as mdb uses !important*/
-.btnselect.btn-outline-info{
-	color: var(--etikigreen) !important;
-	border-color: var(--etikigreen) !important;
+.btnselect.btn-outline-info {
+    color: var(--etikigreen) !important;
+    border-color: var(--etikigreen) !important;
 }
 
-.btnselect.btn-outline-info:not([disabled]):not(.disabled).active{
-        background-color:  var(--etikigreen) !important;
-		color: white !important;
-		border-color: var(--etikigreen) !important;
-    }
+.btnselect.btn-outline-info:not([disabled]):not(.disabled).active {
+    background-color: var(--etikigreen) !important;
+    color: white !important;
+    border-color: var(--etikigreen) !important;
+}
 
 /* hover on desktop as on mobile it remains */
-@media(min-width: 600px) {
+@media (min-width: 600px) {
     .btnselect.btn-outline-info:not([disabled]):not(.disabled):hover {
-        background-color:  var(--etikigreen) !important;
-		color: white !important;
-		border-color: var(--etikigreen) !important;
+        background-color: var(--etikigreen) !important;
+        color: white !important;
+        border-color: var(--etikigreen) !important;
     }
+
     .btnselect.btn-outline-info:not([disabled]):not(.disabled).active:hover {
         color: var(--etikigreen) !important;
-		border-color: var(--etikigreen) !important;
-		background-color:  transparent !important;
+        border-color: var(--etikigreen) !important;
+        background-color: transparent !important;
     }
 }
 
 
-
-.btnselect.btn-outline-danger:not([disabled]):not(.disabled){
-	border-color:  var(--negative) !important;
-	color: var(--negative) !important;
-}
-.btnselect.btn-outline-danger:not([disabled]):not(.disabled).active{
-	background-color:  var(--negative) !important;
-	border-color:  var(--negative) !important;
-	color: white !important;
+.btnselect.btn-outline-danger:not([disabled]):not(.disabled) {
+    border-color: var(--negative) !important;
+    color: var(--negative) !important;
 }
 
-.btnselect.btn-outline-warning:not([disabled]):not(.disabled){
-	border-color:  var(--controversial) !important;
-	color: var(--controversial) !important;
-}
-.btnselect.btn-outline-warning:not([disabled]):not(.disabled).active{
-	background-color:  var(--controversial) !important;
-	border-color:  var(--controversial) !important;
-	color: white !important;
+.btnselect.btn-outline-danger:not([disabled]):not(.disabled).active {
+    background-color: var(--negative) !important;
+    border-color: var(--negative) !important;
+    color: white !important;
 }
 
-.btnselect.btn-outline-success:not([disabled]):not(.disabled){
-	border-color:  var(--positive) !important;
-	color: var(--positive) !important;
+.btnselect.btn-outline-warning:not([disabled]):not(.disabled) {
+    border-color: var(--controversial) !important;
+    color: var(--controversial) !important;
 }
-.btnselect.btn-outline-success:not([disabled]):not(.disabled).active{
-	background-color:  var(--positive) !important;
-	border-color:  var(--positive) !important;
-	color: white !important;
+
+.btnselect.btn-outline-warning:not([disabled]):not(.disabled).active {
+    background-color: var(--controversial) !important;
+    border-color: var(--controversial) !important;
+    color: white !important;
+}
+
+.btnselect.btn-outline-success:not([disabled]):not(.disabled) {
+    border-color: var(--positive) !important;
+    color: var(--positive) !important;
+}
+
+.btnselect.btn-outline-success:not([disabled]):not(.disabled).active {
+    background-color: var(--positive) !important;
+    border-color: var(--positive) !important;
+    color: white !important;
 }
 
 
 .sustbtn.btn.disabled, .btn:disabled {
     opacity: .9 !important;
 }
+
 .sustbtn.btn-danger.disabled, .btn-danger:disabled {
     background-color: var(--negative) !important;
     border-color: var(--negative) !important;
 }
+
 .sustbtn.btn-success.disabled, .btn-success:disabled {
     background-color: var(--positive) !important;
     border-color: var(--positive) !important;
 }
+
 .sustbtn.btn-warning.disabled, .btn-warning:disabled {
     background-color: var(--controversial) !important;
     border-color: var(--controversial) !important;
 }
 
-.badge-info{
-	background-color: var(--etikigreen) !important;
+.badge-info {
+    background-color: var(--etikigreen) !important;
 }
 
 .pagination .page-item.active .page-link {
-	background-color: var(--etikigreen);
+    background-color: var(--etikigreen);
 }
+
 .pagination .page-item.active .page-link:hover {
-	background-color: var(--etikigreen);
+    background-color: var(--etikigreen);
 }
+
 .pagination .page-item .page-link {
-	background-color: var(--etikilight);
+    background-color: var(--etikilight);
 }
 
 /* not used at the moment */
 
-.btn-outline-default:not([disabled]):not(.disabled){
-	border-color:  var(--foreground) !important;
-	color: var(--foreground) !important;
+.btn-outline-default:not([disabled]):not(.disabled) {
+    border-color: var(--foreground) !important;
+    color: var(--foreground) !important;
 }
-.btn-outline-default:not([disabled]):not(.disabled).active{
-	background-color:  var(--foreground) !important;
-	border-color:  var(--foreground) !important;
-	color: white !important;
+
+.btn-outline-default:not([disabled]):not(.disabled).active {
+    background-color: var(--foreground) !important;
+    border-color: var(--foreground) !important;
+    color: white !important;
 }

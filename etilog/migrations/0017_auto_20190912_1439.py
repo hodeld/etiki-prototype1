@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('etilog', '0016_auto_20190912_1427'),
     ]
@@ -14,13 +13,15 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='impactevent',
             name='sust_domain',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='etilog.SustainabilityDomain'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE,
+                                    to='etilog.SustainabilityDomain'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='impactevent',
             name='sust_tendency',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='etilog.SustainabilityTendency'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='etilog.SustainabilityTendency'),
         ),
         migrations.AddField(
             model_name='sustainabilitytag',
@@ -30,26 +31,31 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='sustainabilitytag',
             name='sust_tendency',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='etilog.SustainabilityTendency'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='etilog.SustainabilityTendency'),
         ),
         migrations.AlterField(
             model_name='company',
             name='owner',
-            field=models.ManyToManyField(blank=True, related_name='_company_owner_+', to='etilog.Company', verbose_name='owned by'),
+            field=models.ManyToManyField(blank=True, related_name='_company_owner_+', to='etilog.Company',
+                                         verbose_name='owned by'),
         ),
         migrations.AlterField(
             model_name='company',
             name='recipient',
-            field=models.ManyToManyField(blank=True, related_name='_company_recipient_+', to='etilog.Company', verbose_name='supplied by'),
+            field=models.ManyToManyField(blank=True, related_name='_company_recipient_+', to='etilog.Company',
+                                         verbose_name='supplied by'),
         ),
         migrations.AlterField(
             model_name='company',
             name='subsidiary',
-            field=models.ManyToManyField(blank=True, related_name='_company_subsidiary_+', to='etilog.Company', verbose_name='owns'),
+            field=models.ManyToManyField(blank=True, related_name='_company_subsidiary_+', to='etilog.Company',
+                                         verbose_name='owns'),
         ),
         migrations.AlterField(
             model_name='company',
             name='supplier',
-            field=models.ManyToManyField(blank=True, related_name='_company_supplier_+', to='etilog.Company', verbose_name='delivers to'),
+            field=models.ManyToManyField(blank=True, related_name='_company_supplier_+', to='etilog.Company',
+                                         verbose_name='delivers to'),
         ),
     ]

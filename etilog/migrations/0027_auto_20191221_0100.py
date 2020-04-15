@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('etilog', '0026_auto_20191221_0054'),
     ]
@@ -17,13 +16,18 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('active', models.BooleanField(default=True)),
-                ('recipient_company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='recipient_company', to='etilog.Company', verbose_name='delivers to')),
-                ('supplier_company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='supplier_company', to='etilog.Company', verbose_name='supplied by')),
+                ('recipient_company',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='recipient_company',
+                                   to='etilog.Company', verbose_name='delivers to')),
+                ('supplier_company',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='supplier_company',
+                                   to='etilog.Company', verbose_name='supplied by')),
             ],
         ),
         migrations.AddField(
             model_name='company',
             name='supplier_to_recipient',
-            field=models.ManyToManyField(blank=True, related_name='recipient_to_supplier', through='etilog.SupplierRecipient', to='etilog.Company'),
+            field=models.ManyToManyField(blank=True, related_name='recipient_to_supplier',
+                                         through='etilog.SupplierRecipient', to='etilog.Company'),
         ),
     ]

@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('etilog', '0017_auto_20190912_1439'),
     ]
@@ -28,7 +27,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='impactevent',
             name='company',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='impevents', to='etilog.Company'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='impevents',
+                                    to='etilog.Company'),
         ),
         migrations.AlterField(
             model_name='impactevent',
@@ -38,7 +38,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='impactevent',
             name='sust_category',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='etilog.SustainabilityCategory'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='etilog.SustainabilityCategory'),
         ),
         migrations.AlterField(
             model_name='impactevent',
@@ -48,12 +49,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='reference',
             name='company',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='reference', to='etilog.Company'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='reference', to='etilog.Company'),
         ),
         migrations.AlterField(
             model_name='reference',
             name='country',
-            field=models.ForeignKey(blank=True, help_text='optional', null=True, on_delete=django.db.models.deletion.PROTECT, to='etilog.Country'),
+            field=models.ForeignKey(blank=True, help_text='optional', null=True,
+                                    on_delete=django.db.models.deletion.PROTECT, to='etilog.Country'),
         ),
         migrations.AlterField(
             model_name='reference',

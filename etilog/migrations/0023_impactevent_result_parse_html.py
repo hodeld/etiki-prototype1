@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('etilog', '0022_auto_20191008_1203'),
     ]
@@ -13,6 +12,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='impactevent',
             name='result_parse_html',
-            field=models.PositiveSmallIntegerField(choices=[(0, 'not parsed'), (1, 'success'), (2, 'error'), (3, 'PDF'), (4, 'ConnErr'), (5, 'readabErr'), (6, 'emptyText')], default=0),
+            field=models.PositiveSmallIntegerField(
+                choices=[(0, 'not parsed'), (1, 'success'), (2, 'error'), (3, 'PDF'), (4, 'ConnErr'), (5, 'readabErr'),
+                         (6, 'emptyText')], default=0),
         ),
     ]

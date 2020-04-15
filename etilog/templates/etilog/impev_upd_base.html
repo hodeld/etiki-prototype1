@@ -1,74 +1,75 @@
-{# ... #} {% extends 'base.html' %} 
+{# ... #} {% extends 'base.html' %}
 {% load static %}
-{% block djangoadmin %} 
+{% block djangoadmin %}
 
 
 
 {% endblock djangoadmin %}
 {% load crispy_forms_tags %}
 
-{% load render_table from django_tables2 %} 
-{% block head_css %} 
-<link rel="stylesheet" type="text/css"
-	href="{% static 'etilog/css/autocomplete.css' %}">
-{{ form.media }} {# Adds date-picker required JS and CSS #}
+{% load render_table from django_tables2 %}
+{% block head_css %}
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'etilog/css/autocomplete.css' %}">
+    {{ form.media }} {# Adds date-picker required JS and CSS #}
 
-{% endblock head_css %} 
-{% block script %} 
-<!-- - <script src="{% static 'admin/js/core.js' %}"></script>
+{% endblock head_css %}
+{% block script %}
+    <!-- - <script src="{% static 'admin/js/core.js' %}"></script>
 <script src="{% static 'admin/js/jquery.init.js' %}"></script> 
 <script src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script> -->
 
 
-<script>
-    var next_id_url = "{{next_id_url}}"; 
-    var new_ie_url = "{% url 'etilog:newimpactevent' %}";  
-</script>
-<script src="{% static 'etilog/js/etilog/impev_upd.js' %}"></script> 
+    <script>
+        var next_id_url = "{{next_id_url}}";
+        var new_ie_url = "{% url 'etilog:newimpactevent' %}";
+    </script>
+    <script src="{% static 'etilog/js/etilog/impev_upd.js' %}"></script>
 
- 
+
 
 
 {% endblock script %}
 
 {% block title %}New Impact Event
-{% endblock title %} 
-{% block cls_newie %}active{%endblock cls_newie %}
+{% endblock title %}
+{% block cls_newie %}active{% endblock cls_newie %}
 
 
 {% block content %} {# script needs to be next to function and form (non in script block) #}
 
-<div class="container">
-</br>
-	<div class="row justify-content-center">
-		<div class="col-12 col-lg-8">
+    <div class="container">
+        </br>
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
 
-			<h6 id="id_impev_msg">{{ message }}</h6>
+                <h6 id="id_impev_msg">{{ message }}</h6>
 
-			<hr class="mt-0 mb-4">
-			<div  id="id_div_impevform">
-				{% include 'etilog/impev_upd_form.html' %}
-			</div> 
-		</div>
-	</div>
-	<div class="row justify-content-center">
-		<div class="col-12 col-lg-10">
-		</br>
-			<h6 >extracted HTML of article </h6>
-			<hr class="mt-0 mb-4">	
-			<p>		
-			original link: <a id="id_url_link" href="{{ form.initial.source_url  }}">{{ form.initial.source_url  }}</a>		
-			</p>	
-			<div id="id_articleshowdiv" class="col-12 bg-dark text-white">
-				<h3 id="id_titleshow">{{ form.initial.article_title }}</h3>
-				<hr class = "whitehr">
-				<div id="id_articleshow" >
-					{{ form.initial.article_html |safe }}
-				</div>
-			</div>
-		</div>
-	</div>	
-</div>
+                <hr class="mt-0 mb-4">
+                <div id="id_div_impevform">
+                    {% include 'etilog/impev_upd_form.html' %}
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                </br>
+                <h6>extracted HTML of article </h6>
+                <hr class="mt-0 mb-4">
+                <p>
+                    original link: <a id="id_url_link"
+                                      href="{{ form.initial.source_url }}">{{ form.initial.source_url }}</a>
+                </p>
+                <div id="id_articleshowdiv" class="col-12 bg-dark text-white">
+                    <h3 id="id_titleshow">{{ form.initial.article_title }}</h3>
+                    <hr class="whitehr">
+                    <div id="id_articleshow">
+                        {{ form.initial.article_html |safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 {% endblock content %}
@@ -76,9 +77,11 @@
 {% block bottomscript %}
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
-  
- 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"
+            integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i"
+            crossorigin="anonymous"></script>
+
+
 {% endblock bottomscript %}
 
 

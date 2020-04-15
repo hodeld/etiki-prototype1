@@ -1,39 +1,47 @@
 
-
-.div_iedetail{
-	margin: .3rem;
-	padding: .3rem;
-    vertical-align: top; 
+.div_iedetail {
+    margin: .3rem;
+    padding: .3rem;
+    vertical-align: top;
     border-color: white;
     border-style: solid;
     border-width: thin;
-    /*background-color:var(--full_bckgrnd); */	
+    /*background-color:var(--full_bckgrnd); */
 }
 
-.iedetail{
-	white-space: normal;
-	color: white;
+.iedetail {
+    white-space: normal;
+    color: white;
 }
-.detail_label{
-	/*color: var(--light_bckgrnd); */
+
+.detail_label {
+    /*color: var(--light_bckgrnd); */
 
 }
-.iearticle{
-	/* needed as in table */
-	white-space: normal; 
-	word-break: normal;
-	font-size: 16px;
-	background-color: var(--read_bckgrnd);
+
+.iearticle {
+    /* needed as in table */
+    white-space: normal;
+    word-break: normal;
+    font-size: 16px;
+    background-color: var(--read_bckgrnd);
 }
 
 /*DETAILS*/
 .darkbg {
-	background-color: var(--dark_bckgrnd);  	
+    background-color: var(--dark_bckgrnd);
 }
 
 #modalFullArticle .modal-content,
-#modalFullArticle .fullarticleheader{
-	background-color: var(--read_bckgrnd); 
+#modalFullArticle .fullarticleheader {
+    background-color: var(--read_bckgrnd);
 }
 
-background-color: var(--read_bckgrnd);
+background-color:
+
+var
+(
+--read_bckgrnd
+
+)
+;

@@ -2,61 +2,59 @@
 {% load static %}
 
 
-
-
 <div class="col-12 sticky-top container infront landing my-3 py-1" id="divFilterBar">
-		{% if filtheader %} 
-		<div class = "row d-none d-md-flex">	
-			{% crispy filtheader %} 			
-		</div>
-		{% endif %} 
-		
-	<button id="btn_filter_toggle" class="btn btn-outline-light btn-block my-1" 
-	name="btnfilter" type="button" value="filter" data-toggle="modal"
-		data-target="#div_filterform">	
-	<i class="fas fa-filter mr-1"></i><span class="d-none d-md-inline">More </span>Filter Options
-	</button>
+    {% if filtheader %}
+        <div class="row d-none d-md-flex">
+            {% crispy filtheader %}
+        </div>
+    {% endif %}
+
+    <button id="btn_filter_toggle" class="btn btn-outline-light btn-block my-1"
+            name="btnfilter" type="button" value="filter" data-toggle="modal"
+            data-target="#div_filterform">
+        <i class="fas fa-filter mr-1"></i><span class="d-none d-md-inline">More </span>Filter Options
+    </button>
 
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="div_filterform" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        
-        <div class="col-12 text-center d-flex justify-content-between" id="divFilterHead">
-			<button class="btn btn-sm btn-link" type="button" id="filterClear" >
-			
-				<i class="fas fa-trash mr-1"></i>
-				<span class="d-none d-sm-inline">Clear all</span>
-				
-			</button> 
-			 <h4 class="my-auto" id="modalTitle">Filter</h4>
-			<button class="btn btn-sm btn-link" type="button"data-dismiss="modal"  id="filterClose1" >
-				<i class="far fa-window-close mr-1"></i>
-				<span class="d-none d-sm-inline">Close</span>
-			</button> 
-			
-		</div>
-      </div>
-      <div class="modal-body">
-        {% if filter %} 
-			{% crispy filter.form %} 
-		{% endif %} 
-      </div>
-      <div class="modal-footer">
-      <button class="btn btn-light" type="button"data-dismiss="modal" id = "applyFilter"  >
-				<span id="filterCountText" class="d-inline">Apply Filter</span>
-	</button> 
-			
-        <button class="btn btn-sm btn-link" type="button"data-dismiss="modal"  id="filterClose2" >
-				<i class="far fa-window-close mr-1"></i>
-				<span class="d-none d-sm-inline">Close</span>
-			</button> 
-      </div>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <div class="col-12 text-center d-flex justify-content-between" id="divFilterHead">
+                    <button class="btn btn-sm btn-link" type="button" id="filterClear">
+
+                        <i class="fas fa-trash mr-1"></i>
+                        <span class="d-none d-sm-inline">Clear all</span>
+
+                    </button>
+                    <h4 class="my-auto" id="modalTitle">Filter</h4>
+                    <button class="btn btn-sm btn-link" type="button" data-dismiss="modal" id="filterClose1">
+                        <i class="far fa-window-close mr-1"></i>
+                        <span class="d-none d-sm-inline">Close</span>
+                    </button>
+
+                </div>
+            </div>
+            <div class="modal-body">
+                {% if filter %}
+                    {% crispy filter.form %}
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" type="button" data-dismiss="modal" id="applyFilter">
+                    <span id="filterCountText" class="d-inline">Apply Filter</span>
+                </button>
+
+                <button class="btn btn-sm btn-link" type="button" data-dismiss="modal" id="filterClose2">
+                    <i class="far fa-window-close mr-1"></i>
+                    <span class="d-none d-sm-inline">Close</span>
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 

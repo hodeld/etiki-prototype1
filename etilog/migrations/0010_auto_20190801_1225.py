@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('etilog', '0009_auto_20190726_1549'),
     ]
@@ -27,17 +26,20 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='impactevent',
             name='date_published',
-            field=models.DateField(help_text='First time published. If only year is known put 1st of jan', verbose_name='Date IE published'),
+            field=models.DateField(help_text='First time published. If only year is known put 1st of jan',
+                                   verbose_name='Date IE published'),
         ),
         migrations.AlterField(
             model_name='impactevent',
             name='summary',
-            field=models.CharField(blank=True, help_text='abstract, title or first part of text', max_length=200, null=True),
+            field=models.CharField(blank=True, help_text='abstract, title or first part of text', max_length=200,
+                                   null=True),
         ),
         migrations.AlterField(
             model_name='reference',
             name='country',
-            field=models.ForeignKey(blank=True, help_text='optional', null=True, on_delete=django.db.models.deletion.CASCADE, to='etilog.Country'),
+            field=models.ForeignKey(blank=True, help_text='optional', null=True,
+                                    on_delete=django.db.models.deletion.CASCADE, to='etilog.Country'),
         ),
         migrations.AddField(
             model_name='impactevent',
