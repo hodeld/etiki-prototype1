@@ -34,7 +34,7 @@ $(document).ready(function () {
 
         prevScrollTop = currentScrollTop
     });
-
+    $('.tooltip-item').tooltip({trigger : 'hover'});
 
     if (landing == false) {
         startsettings();

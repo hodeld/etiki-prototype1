@@ -8,6 +8,7 @@
     color: white;
 }
 
+
 /*#impev-list > table > tbody > tr:nth-child(1) > td.badge.badge-danger.sust_category*/
 
 .table-etiki .sustbtn { /* button within cell */
@@ -73,6 +74,10 @@
     top: 36px;
     height: 40px;
     background-color: var(--full_bckgrnd);
+}
+
+.table-etiki th:hover {
+    cursor: pointer;
 }
 
 .table-etiki.table a {
