@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('etilog', '0027_auto_20191221_0100'),
     ]
@@ -21,12 +20,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='company',
             name='recipient_old',
-            field=models.ManyToManyField(blank=True, related_name='_company_recipient_old_+', to='etilog.Company', verbose_name='delivers to'),
+            field=models.ManyToManyField(blank=True, related_name='_company_recipient_old_+', to='etilog.Company',
+                                         verbose_name='delivers to'),
         ),
         migrations.AlterField(
             model_name='company',
             name='supplier_old',
-            field=models.ManyToManyField(blank=True, related_name='_company_supplier_old_+', to='etilog.Company', verbose_name='supplied by'),
+            field=models.ManyToManyField(blank=True, related_name='_company_supplier_old_+', to='etilog.Company',
+                                         verbose_name='supplied by'),
         ),
         migrations.DeleteModel(
             name='SustainabilityCategory',

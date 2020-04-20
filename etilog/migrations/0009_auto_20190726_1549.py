@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('etilog', '0008_impactevent_comment'),
     ]
@@ -53,7 +52,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='impactevent',
             name='country',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='etilog.Country'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    to='etilog.Country'),
         ),
         migrations.AlterField(
             model_name='impactevent',
@@ -68,12 +68,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='reference',
             name='company',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='etilog.Company'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    to='etilog.Company'),
         ),
         migrations.AlterField(
             model_name='reference',
             name='country',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='etilog.Country'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    to='etilog.Country'),
         ),
         migrations.AlterField(
             model_name='reference',

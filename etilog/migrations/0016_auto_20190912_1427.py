@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('etilog', '0015_auto_20190820_1641'),
     ]
@@ -23,5 +22,5 @@ class Migration(migrations.Migration):
                 'ordering': ['name'],
             },
         ),
-        
+
     ]

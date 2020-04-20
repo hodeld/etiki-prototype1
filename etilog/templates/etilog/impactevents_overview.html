@@ -1,81 +1,84 @@
-{% extends 'base_darky.html' %} 
+{% extends 'base_darky.html' %}
 {% load static %}
-{% block djangoadmin %} 
+{% block djangoadmin %}
 
 {% endblock djangoadmin %}
 
-{% load render_table from django_tables2 %} 
-{% block head_css %} 
-<link rel="stylesheet" type="text/css"
-	href="{% static 'etilog/css/etilog/table_filter.css' %}">
-<link rel="stylesheet" type="text/css"
-href="{% static 'etilog/css/etilog/table.css' %}">
-<link rel="stylesheet" type="text/css"
-href="{% static 'etilog/css/etilog/impev_show.css' %}">
-<link rel="stylesheet" type="text/css"
-href="{% static 'etilog/css/etilog/company_show.css' %}">
-<link rel="stylesheet" type="text/css"
-	href="{% static 'etilog/css/etilog/buttons.css' %}">
-<link rel="stylesheet" type="text/css"
-	href="{% static 'etilog/css/etilog/modal.css' %}">
-{{ filter.form.media }} {# Adds date-picker required and specific JS and CSS #}
+{% load render_table from django_tables2 %}
+{% block head_css %}
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'etilog/css/etilog/table_filter.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'etilog/css/etilog/table.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'etilog/css/etilog/impev_show.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'etilog/css/etilog/company_show.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'etilog/css/etilog/buttons.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'etilog/css/etilog/modal.css' %}">
+    {{ filter.form.media }} {# Adds date-picker required and specific JS and CSS #}
 
-{% endblock head_css %} 
-{% block script %} 
-<script src="{% static 'etilog/js/etilog/List.js' %}"></script>
-<script>
-    var companies_url = "{{companies_url}}";  
-    var countries_url = "{{countries_url}}";  
-    var references_url = "{{references_url}}"; 
-    var tags_url = "{{tags_url}}"; 
-    var list_url = "{% url 'etilog:home' %}";
-    
-    var jsData = JSON.parse("{{ jsondata | escapejs }}"); 
+{% endblock head_css %}
+{% block script %}
+    <script src="{% static 'etilog/js/etilog/List.js' %}"></script>
+    <script>
+        var companies_url = "{{companies_url}}";
+        var countries_url = "{{countries_url}}";
+        var references_url = "{{references_url}}";
+        var tags_url = "{{tags_url}}";
+        var list_url = "{% url 'etilog:home' %}";
 
-    var landing = {{landing|yesno:"true,false" }}; 
+        var jsData = JSON.parse("{{ jsondata | escapejs }}");
 
-</script>
+        var landing = {{landing|yesno:"true,false" }};
+
+    </script>
 {% endblock script %}
-{% block cls_overview %}active{%endblock cls_overview %}
+{% block cls_overview %}active{% endblock cls_overview %}
 
-{% block content %} 
-	
-		{% include 'nav_search_bar_hidden.html' %}
-		
-		{% include 'etilog/impev_show_article_modal.html' %}
-		{% include 'etilog/impactevents_overview_filter.html' %}
-		{% include 'etilog/overview_tabs.html' %}
-		
-		
+{% block content %}
+
+    {% include 'nav_search_bar_hidden.html' %}
+
+    {% include 'etilog/impev_show_article_modal.html' %}
+    {% include 'etilog/impactevents_overview_filter.html' %}
+    {% include 'etilog/overview_tabs.html' %}
+
+
 {% endblock content %}
-		
-		
+
+
 
 {% block bottomscript %}
 
-<script src="{% static 'etilog/js/etilog/tagsinput.js' %}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script> 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script> <!-- jquery.min -->
+    <script src="{% static 'etilog/js/etilog/tagsinput.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script>
+    <!-- jquery.min -->
 
 
-<!-- for charts -> todo, separate; do not load jquery again (removes prev plugins -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="{% static 'etilog/js/etilog/company_show.js' %}"></script>
+    <!-- for charts -> todo, separate; do not load jquery again (removes prev plugins -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="{% static 'etilog/js/etilog/company_show.js' %}"></script>
 
 
-<!--following needs to be below body due to reference to the table -->
-<!--under tagsinput due to reference to tagsinput -->
-<script src="{% static 'etilog/js/etilog/table_filter.js' %}"></script>
+    <!--following needs to be below body due to reference to the table -->
+    <!--under tagsinput due to reference to tagsinput -->
+    <script src="{% static 'etilog/js/etilog/table_filter.js' %}"></script>
 
-<!--underneath filter due to sources -->
-<script src="{% static 'etilog/js/etilog/startpage.js' %}"></script> 
-<!--no dependency so far -->
-<script src="{% static 'etilog/js/etilog/table_action.js' %}"></script>
+    <!--underneath filter due to sources -->
+    <script src="{% static 'etilog/js/etilog/startpage.js' %}"></script>
+    <!--no dependency so far -->
+    <script src="{% static 'etilog/js/etilog/table_action.js' %}"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"
+            integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i"
+            crossorigin="anonymous"></script>
 
 
- 
+
 {% endblock bottomscript %}
 
 

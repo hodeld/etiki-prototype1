@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -26,7 +25,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=15, unique=True, verbose_name='CompanyName')),
-                ('activity', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='etilog.ActivityCategory')),
+                ('activity',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='etilog.ActivityCategory')),
             ],
         ),
         migrations.CreateModel(
@@ -82,9 +82,11 @@ class Migration(migrations.Migration):
                 ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='etilog.Company')),
                 ('country', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='etilog.Country')),
                 ('reference', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='etilog.Reference')),
-                ('sust_categories', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='etilog.SustainabilityCategory')),
+                ('sust_categories',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='etilog.SustainabilityCategory')),
                 ('sust_tags', models.ManyToManyField(blank=True, to='etilog.SustainabilityTag')),
-                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                           to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.AddField(

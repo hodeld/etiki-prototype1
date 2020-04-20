@@ -5,7 +5,6 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('etilog', '0012_auto_20190801_2340'),
     ]
@@ -29,6 +28,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='impactevent',
             name='summary',
-            field=models.CharField(blank=True, help_text='abstract, title or first part of text', max_length=500, null=True),
+            field=models.CharField(blank=True, help_text='abstract, title or first part of text', max_length=500,
+                                   null=True),
         ),
     ]

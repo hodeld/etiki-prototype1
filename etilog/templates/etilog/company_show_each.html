@@ -1,31 +1,32 @@
 {% load static %}
-	{% for company in comp_details %} 
-	<div class="col-6 col-md-3 nopadding ">
-		
-		<div class="square company-rate" onclick="showDiagramDetails(event);">		
-			<div class="div_iedetail square_content" id="div-company-{{company.pk}}">  
-					             
-		            <div class="company-logo-wrapper"> 
-			            		<div class="company-logo text-center"> 
-		            			
-			            			<img src="//logo.clearbit.com/{{company.domain}}?size=105" 
-			            				id="company-logo-{{company.pk}}" altid="company-alt-{{company.pk}}" onerror="imgError(this);">   
-			            			<div class="img-description d-flex" id="company-alt-{{company.pk}}">
-									    <div class="justify-content-center align-self-center text-center company-name">
-									     	{{ company.name |slice:20  }}
-										            											     	
-									    </div>
-									</div>    
-			            			
-			     				</div>  
-		            </div> 
-		            <div class="chart-wrapper"> 
-		            	
-		            	<div class="company-chart" id="company-chart-{{company.pk}}">           
-		     			</div>    	     			
-		     		</div> 
-		     		
-		     </div>
-	     </div>
-     </div>
-  {% endfor %}
+{% for company in comp_details %}
+    <div class="col-6 col-md-3 nopadding ">
+
+        <div class="square company-rate" onclick="showDiagramDetails(event);">
+            <div class="div_iedetail square_content" id="div-company-{{ company.pk }}">
+
+                <div class="company-logo-wrapper">
+                    <div class="company-logo text-center">
+
+                        <img src="//logo.clearbit.com/{{ company.domain }}?size=105"
+                             id="company-logo-{{ company.pk }}" altid="company-alt-{{ company.pk }}"
+                             onerror="imgError(this);">
+                        <div class="img-description d-flex" id="company-alt-{{ company.pk }}">
+                            <div class="justify-content-center align-self-center text-center company-name">
+                                {{ company.name |slice:20 }}
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+
+                    <div class="company-chart" id="company-chart-{{ company.pk }}">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endfor %}

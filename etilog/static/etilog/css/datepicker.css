@@ -1,15 +1,15 @@
 /*DATEINPUT*/
 .datepicker .date {
-	width: 15em;
-	/*margin-right: 2em !important; */
+    width: 15em;
+    /*margin-right: 2em !important; */
 }
 
 
 .datepicker .dateyearpicker {
-	height: 20%;
-	color : white;
-	background-color: transparent;
-	/*width: 30px !important;
-	flex: none !important; */
-	
+    height: 20%;
+    color: white;
+    background-color: transparent;
+    /*width: 30px !important;
+    flex: none !important; */
+
 }
