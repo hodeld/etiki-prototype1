@@ -7,8 +7,11 @@ $(document).ready(function () {
         set_val_from_btn($(this))
     });
 
-    $('#filterClear').click(function () {
+    $('.filterClear').click(function () {
         clearFilter()
+    });
+    $('.filterClearDirect').click(function () {
+        clearFilter('table')
     });
 
 
@@ -52,12 +55,17 @@ $(document).ready(function () {
                     optDic,
                 ],
             });
+            }
+        else { //free text
+            $(this).tagsinput();
+
+        }
             var plcHolder = $(this).attr('placeholder');
 
             var parentId = $(this).attr('parfield');
             $(parentId).find('.bootstrap-tagsinput input.tt-input').attr('placeholder', plcHolder);
 
-        }
+
         ;
     });
 
@@ -409,7 +417,7 @@ function setFilterVisually(filterDict) {
     $('#filter-count').html(filterCount);
 }
 
-function clearFilter() {
+function clearFilter(locResultType = 'count') {
     var filterCount = 0;
     $('.f_tagsinput').each(function () {
 
@@ -432,7 +440,7 @@ function clearFilter() {
             ele.val('');
         }
     });
-    resultType = 'count';
+    resultType = locResultType;
 
     submitFromID('#id_filterform');
 

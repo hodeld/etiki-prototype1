@@ -47,6 +47,7 @@ class SearchForm(forms.Form):
             Row(
                 Column(SearchWIcon('search', id='id_search', autocomplete="off",
                                    placeholder='Search Companies, Countries, Topics, Newspaper …',
+                                   css_class='tt-input'   # to have correct from beginning
                                    ),
                        css_class='col-12'
                        )
@@ -178,12 +179,12 @@ class OverviewFiltHeaderForm(forms.Form):
                                labelname=None,
                                ele_class=element_class,
                                twin_ele=True,
-                               btn_wrap_class='justify-content-around d-flex w-100'),
+                               btn_wrap_class='justify-content-center d-flex w-100'),
             ColTendencyBtnSelect(col_class='col-12 ',
                                  labelname=None,
                                  ele_class=element_class,
                                  twin_ele=True,
-                                 btn_wrap_class='justify-content-around d-flex w-100')
+                                 btn_wrap_class='justify-content-center d-flex w-100')
         )
 
 

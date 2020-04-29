@@ -11,12 +11,6 @@
     white-space: nowrap;
 }
 
-.btn-filter-row {
-    border-top-style: solid;
-    /* border-bottom-color: white; */
-    border-top-width: thin;
-}
-
 .btn-dark {
     color: #fff;
     background-color: var(--full_bckgrnd) !important;
