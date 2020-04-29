@@ -98,7 +98,6 @@
 th button.sort {
     text-align: left;
     padding: 0 10px;
-    line-height: $ input-height;
     border: none;
     background: none;
     display: block;

@@ -7,11 +7,15 @@ get_data = 'get_data/'
 load_data = 'load_data/'
 export = 'export/'
 impev = 'impactevent/'
+prototype = 'prototype/'
 
 urlpatterns = [
     path('startinfo/', views.startinfo, name='startinfo'),  #
-    path('', views.overview_impevs, name='home'),
+    path('', views.entry_mask, name='entrymask'),
+
+    path(prototype, views.overview_impevs, name='home'),
     path('<slug:reqtype>', views.overview_impevs, name='home_filtered'),
+
     path(impev + 'new/', views.impact_event_create, name='newimpactevent'),
     path(impev + 'newfrom/<slug:ie_id>', views.impact_event_create, name='impactevent_copy'),
     path(impev + 'update/<slug:ie_id>', views.impact_event_update, name='impactevent_update'),
@@ -21,6 +25,7 @@ urlpatterns = [
     path('extract_text/<slug:ie_id>', views.extract_text, name='extract_text'),
     path('extract_text_all', views.extract_text_all, name='extract_text_all'),
     path('extract_text_url/', views.extract_text_from_url, name='extract_text_url'),
+
 
     path(impev + '<slug:ie_id>', views.impact_event_show, name='impactevent_show'),
 

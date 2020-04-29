@@ -25,8 +25,8 @@
 
 .btn-dark:hover, .btn-dark:focus, .btn-dark:active, .btn-dark.active, .open > .dropdown-toggle.btn-dark {
     color: #fff;
-    background-color: var(--light_bckgrnd) !important;
-    border-color: var(--light_bckgrnd);
+    background-color: var(--dark_bckgrnd) !important;
+    border-color: var(--dark_bckgrnd);
 }
 
 .btnselect {
