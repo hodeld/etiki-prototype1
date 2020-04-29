@@ -14,7 +14,7 @@ urlpatterns = [
     path('', views.entry_mask, name='entrymask'),
 
     path(prototype, views.overview_impevs, name='home'),
-    path('<slug:reqtype>', views.overview_impevs, name='home_filtered'),
+    path(prototype+'<slug:reqtype>', views.overview_impevs, name='home_filtered'),
 
     path(impev + 'new/', views.impact_event_create, name='newimpactevent'),
     path(impev + 'newfrom/<slug:ie_id>', views.impact_event_create, name='impactevent_copy'),
