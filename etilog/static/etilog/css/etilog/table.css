@@ -84,10 +84,6 @@
     color: var(--etikigreen);
 }
 
-.table-etiki.table a.link-intern {
-    color: var(--foreground);
-}
-
 .table-etiki tbody tr:hover td.td-normal {
     background-color: var(--dark_bckgrnd);
     cursor: pointer; /* hand pointer */

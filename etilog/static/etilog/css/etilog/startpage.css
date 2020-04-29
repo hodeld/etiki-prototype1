@@ -20,6 +20,21 @@
     display: none;
 }
 
+.div_topic_li {
+    max-width: 100%;
+    padding: 0.125rem;
+}
+
+.topic-link {
+    max-width: 100%;
+    display: block;
+    padding: 0.25rem 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: .875rem;
+
+}
 
 .fullsite-wrapper.landing {
     height: 100% !important;

@@ -1,0 +1,16 @@
+
+.link-intern {
+    padding: .25rem;
+    color: var(--full_bckgrnd)!important;
+    background-color: var(--etikigreen);
+}
+
+
+a {
+    color: var(--etikigreen);
+}
+
+a:hover {
+    color: var(--etikigreen);
+    text-decoration: underline !important;
+}
