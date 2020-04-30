@@ -9,7 +9,8 @@ from .models import (ImpactEvent,
                      SustainabilityDomain, SustainabilityTendency, SustainabilityTag,
                      Company, Country, ActivityCategory,
                      Media, Reference, Source,
-                     SubsidiaryOwner, SupplierRecipient
+                     SubsidiaryOwner, SupplierRecipient,
+                     FrequentAskedQuestions
                      )
 
 
@@ -81,6 +82,11 @@ class SupplierRecipientAdmin(admin.ModelAdmin):
     list_display = ('recipient_company', 'supplier_company', 'active', 'created_at')
 
 
+class FrequentAskedQuestionsAdmin(admin.ModelAdmin):
+    model = FrequentAskedQuestions
+    list_display = ('question', 'answer', 'active',)
+
+
 # customized admin
 admin_site = EtilogAdminSite(name='etilog_admin')
 
@@ -100,3 +106,5 @@ admin_site.register(SupplierRecipient, SupplierRecipientAdmin)
 admin_site.register(Media)
 admin_site.register(ActivityCategory)
 admin_site.register(Country)
+
+admin_site.register(FrequentAskedQuestions, FrequentAskedQuestionsAdmin)

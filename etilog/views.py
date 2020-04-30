@@ -11,8 +11,8 @@ import json
 from django_tables2 import RequestConfig
 
 # models
-from etilog.models import ImpactEvent, Company, Reference, Country
-from etilog.models import SustainabilityTag
+from etilog.models import (ImpactEvent, Company, Reference, Country,
+                           SustainabilityTag, FrequentAskedQuestions)
 
 # tables
 from .tables import ImpEvTable, ImpEvTablePrivat, ImpEvDetails
@@ -527,6 +527,11 @@ def legal(request):
 
 def about(request):
     return render(request, 'etilog/about.html', )
+
+
+def faq(request):
+    faqs = FrequentAskedQuestions.objects.all().order_by('question')
+    return render(request, 'etilog/faq.html', {'faqs': faqs} )
 
 
 def startinfo(request):

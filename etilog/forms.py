@@ -128,10 +128,10 @@ class ImpevOverviewFForm(forms.Form):
                           css_class=cls_filterinput + ' btninput', parfield='#id_sust_domain-btn-'),
 
                     ColDomainBtnSelect(), ),
-                labelname='Category', row_class='d-flex d-md-none'),
+                labelname='Category', row_class='d-flex'),
 
             LabelRow(ColTendencyBtnSelect(),
-                     labelname='Which Tendency', row_class='d-flex d-md-none'),
+                     labelname='Which Tendency', row_class='d-flex'),
 
             LabelRow(
                 Column(

@@ -279,3 +279,11 @@ class ImpactEvent(models.Model):
 
     class Meta:
         ordering = ['date_impact', 'company']
+
+
+class FrequentAskedQuestions(models.Model):
+    question = models.CharField(max_length=100)
+    answer = models.TextField(max_length=1000)
+    active = models.BooleanField(default=True)
+    comment = models.CharField(max_length=500, blank=True, null=True)
+    user = models.ForeignKey(get_user_model(), models.SET_NULL, blank=True, null=True)
