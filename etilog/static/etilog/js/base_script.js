@@ -22,6 +22,7 @@ $(document).ready(function () {
         timeout = setTimeout(set_topheadaer, delay);
     });
 
+    set_topheadaer();
 
 
 });

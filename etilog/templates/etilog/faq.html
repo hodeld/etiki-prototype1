@@ -8,8 +8,8 @@
 
     <div class="row px-md-3">
 
-        <div class="col-0 col-lg-2"></div>
-        <div class="col-12 col-lg-8">
+        <div class="col-0 col-md-1 col-xl-2"></div>
+        <div class="col-12 col-md-10 col-xl-8">
             <div class="py-3 px-2 px-sm-0">
                 <h5>Frequent Asked Questions</h5>
                 <hr class="whitehr">
@@ -28,9 +28,21 @@
                 <h6  class = "link-intern ">{{ faq.question }}</h6>
                 </div>
 
+                {% if  faq.image_top %}
+                    <div class="text-center px-md-5 py-2">
+                      <img class="w-100 h-auto" src="{{ faq.image_top.url }}" >
+                    </div>
+                {% endif %}
 
+<div class="text-justify ml-md-2 ">
+                       <p class = "">{{ faq.answer|urlizetrunc:50|linebreaks }} </p>
+                    </div>
 
-                <p class = "text-justify">{{ faq.answer|urlizetrunc:50|linebreaks }} </p>
+                {% if  faq.image_bottom %}
+                    <div class="text-center px-md-5 py-2">
+                      <img class="w-100 h-auto" src="{{ faq.image_bottom.url }}" >
+                    </div>
+                {% endif %}
 
                 {% endfor  %}
 
@@ -38,7 +50,7 @@
 
 
         </div>
-        <div class="col-0 col-lg-2"></div>
+        <div class="col-0 col-md-1 col-xl-2"></div>
     </div>
 
 
