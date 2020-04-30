@@ -6,14 +6,7 @@
 $(document).ready(function () {
 
 
-    $(window).resize(function () { //window changes-> a lot need to be handled
-        var timeout = false, // holder for timeout id
-            delay = 400; // delay after event is "complete" to run callback
-        // clear the timeout
-        clearTimeout(timeout);
-        // start timing for event "completion"
-        timeout = setTimeout(set_topheadaer, delay);
-    });
+
 
     var prevScrollTop = $(window).scrollTop()
 
@@ -65,11 +58,5 @@ function scrollToEle(eleId = '#tabContent') {
 
 }
 
-function set_topheadaer() {
-    let hNavbar = $('#id_contsearch').outerHeight(); //smaller than navbar id_navbar
-    let hFilter = $('#divFilterBar').outerHeight(); //smaller than navbar id_navbar
-    let hTotal = hNavbar; //+  hFilter;
-    //$('#divFilterBar').css({ top: hNavbar });
-    $('.table-etiki th').css({top: hTotal});
-}
+f
 	
