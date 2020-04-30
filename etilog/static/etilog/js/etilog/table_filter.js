@@ -47,6 +47,7 @@ $(document).ready(function () {
             $(this).tagsinput({
                 itemValue: 'id',
                 itemText: 'name',
+                itemCategory: 'category',
                 typeaheadjs: [
                     {
                         highlight: true,
@@ -109,7 +110,9 @@ $(document).ready(function () {
                 var elt = $('#id_f_tags');
             } else {
                 var elt = $('#id_f_freetext');
+
             }
+            suggestion.category = modname;
 
             setTags(elt, suggestion);
             $(this).typeahead('val', ''); //typeahead input
@@ -550,12 +553,16 @@ function keyBehaviorSearch(event, ele) {
 
 function setTags(ele, suggestion) {
     ele.tagsinput('add', suggestion);	//adds tag
-    parentId = ele.attr('parfield');
+    let parentId = ele.attr('parfield');
     $(parentId).addClass('show');
+    // todo >, on delete -> delete
+    const eleAllTags = $('#id_alltags');
+    eleAllTags.tagsinput('add', suggestion);	//adds tag
+
 }
 
 function setTagBtn(eleId) {
-    var ele = $('#' + eleId);
+    const ele = $('#' + eleId);
     if (setFirstSelection(ele) === false) {
         changeWOSelection(ele);
     }
@@ -563,7 +570,7 @@ function setTagBtn(eleId) {
 }
 
 function setFirstSelection(ele) {
-    var firstsel = ele.parent().find('.tt-selectable:first');
+    const firstsel = ele.parent().find('.tt-selectable:first');
     if (firstsel.length > 0) {
         firstsel[0].click();
     } else {

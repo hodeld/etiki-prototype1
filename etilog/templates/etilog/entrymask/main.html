@@ -2,8 +2,7 @@
 {% load static %}
 
 {% block head_css %}
-    <link rel="stylesheet" type="text/css"
-          href="{% static 'etilog/css/etilog/buttons.css' %}">
+
 {% endblock head_css %}
 
 {% block script %}
@@ -22,7 +21,7 @@
         <div class="row h-100 d-flex align-content-center justify-content-center">
             {% include 'etilog/entrymask/startinfo.html' %}
             <a href={% url 'etilog:home' %}>
-                <button  class="btn btn-lg btn-dark my-3">
+                <button  class="btn btn-lg btn-info my-3">
                     <i class="fas fa-sign-in-alt mr-2"></i>Enter Prototype</button>
             </a>
         </div>

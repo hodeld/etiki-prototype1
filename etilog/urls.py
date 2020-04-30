@@ -22,10 +22,11 @@ urlpatterns = [
     path('<slug:main_model>/add/<slug:foreign_model>', views.add_foreignmodel, name='add_foreignmodel'),
 
     path('importdbdata/', views.import_dbdata, name='import_dbdata'),
+    path('updatedbdata/', views.update_db_internal, name='update_db_internal'),
+
     path('extract_text/<slug:ie_id>', views.extract_text, name='extract_text'),
     path('extract_text_all', views.extract_text_all, name='extract_text_all'),
     path('extract_text_url/', views.extract_text_from_url, name='extract_text_url'),
-
 
     path(impev + '<slug:ie_id>', views.impact_event_show, name='impactevent_show'),
 

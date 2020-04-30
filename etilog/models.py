@@ -187,6 +187,10 @@ class SustainabilityTag(models.Model):
     def get_domains(self):
         return '; '.join([x.name for x in self.sust_domains.all()])
 
+    @property
+    def name_display(self):
+        return self.name.upper()
+
     class Meta:
         ordering = ['name', ]
 

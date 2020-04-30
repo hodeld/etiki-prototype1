@@ -79,8 +79,11 @@
                                 aria-expanded="false">Imports</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{% url 'etilog:import_dbdata' %}">Import
-                                    DB Data</a> <a class="dropdown-item"
+                                    DB Data</a>
+                                <a class="dropdown-item"
                                                    href="{% url 'etilog:extract_text_all' %}">Extract all IE's</a>
+                                <a class="dropdown-item"
+                                                   href="{% url 'etilog:update_db_internal' %}">Internal DB Update</a>
                             </div>
                         </li>
                         <li class="nav-item"><a class="nav-link"

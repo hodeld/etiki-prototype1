@@ -33,6 +33,8 @@ from etilog.ViewLogic.ViewDatetime import get_now
 
 from etilog.ViewLogic.ViewAccessURL import parse_url, parse_url_all, extract_text_rpy
 
+from etilog.ViewLogic.ViewUpdateDB import update_internal
+
 
 def entry_mask(request):
     return render(request, 'etilog/entrymask/main.html', )
@@ -451,7 +453,6 @@ def load_names(request, modelname):
     else:
         return HttpResponse("/")
 
-    # data = json.dumps(list(q_names))
     data = json.dumps(list(q_names))
     return HttpResponse(data, content_type='application/json')
 
@@ -545,3 +546,6 @@ def startinfo(request):
                                                       'message': message
                                                       })
 
+def update_db_internal(request):
+    update_internal()
+    return HttpResponseRedirect(reverse('etilog:home'))

@@ -38,6 +38,18 @@ noscript {
     font-weight: bold;
 }
 
+::placeholder  /* Firefox, Chrome, Opera */
+{
+    font-weight:lighter !important;
+    color:#fff !important;
+}
+:-ms-input-placeholder /* Internet Explorer 10-11 */
+{
+    font-weight:lighter !important;
+    color:#fff !important;
+}
+
+
 
 .fullsite-wrapper {
     color: white !important;
@@ -127,51 +139,6 @@ noscript {
     position: sticky;
 
 }
-
-#div_id_search {
-    /* overwrite form-group css */
-    margin-bottom: 0;
-}
-
-/*Search Bar -> see also typeahead.css*/
-
-#div_id_search .input-group-append {
-    margin-left: 0 !important;
-}
-
-#div_id_search .input-group-text {
-    background-color: transparent;
-    border: none;
-    color: white;
-}
-
-#div_id_search .input-group-text:hover {
-    cursor: pointer; /* hand pointer */
-}
-
-#div_id_search input {
-    padding: .375rem 0;
-    box-shadow: none;
-    border-bottom: 1px solid #fff;
-    border-radius: 0;
-
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-}
-#div_id_search input:focus {
-    padding: .375rem 0;
-    box-shadow: none;
-    border-bottom: 1px solid #fff;
-    border-radius: 0;
-
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-    border-bottom: 1px solid var(--etikigreen);
-    box-shadow: 0 1px 0 0 var(--etikigreen);
-}
-
 
 
 .icon {
