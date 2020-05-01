@@ -9,10 +9,10 @@
         <div class="col-12 col-md-1 col-lg-2 d-flex justify-content-center">
 
             <a class="navbar-brand" href="{% url 'etilog:home' %}">
-                <div class="landing  d-flex align-items-center "
+                <div class="landing  d-flex justify-content-center align-items-center h-100"
                      id="small_logo">
 
-                    <img id="img_sm" alt="" src="{% static 'etilog/img/logo_sm.svg' %}"/>
+                    <img class="h-75" id="img_sm" alt="" src="{% static 'etilog/img/logo_sm.svg' %}"/>
 
                 </div>
             </a>
@@ -79,8 +79,11 @@
                                 aria-expanded="false">Imports</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{% url 'etilog:import_dbdata' %}">Import
-                                    DB Data</a> <a class="dropdown-item"
+                                    DB Data</a>
+                                <a class="dropdown-item"
                                                    href="{% url 'etilog:extract_text_all' %}">Extract all IE's</a>
+                                <a class="dropdown-item"
+                                                   href="{% url 'etilog:update_db_internal' %}">Internal DB Update</a>
                             </div>
                         </li>
                         <li class="nav-item"><a class="nav-link"

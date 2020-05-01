@@ -174,6 +174,8 @@ BOOTSTRAP4 = {
 
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  #/Users/…/etikiptype1/media
+MEDIA_URL = '/media/'
 #needed for debug = False -> test if needs to under heroku setting
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 

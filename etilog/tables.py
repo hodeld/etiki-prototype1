@@ -14,6 +14,7 @@ import django_tables2 as tables
 from .models import ImpactEvent
 from .fields import dom_icon_dict
 
+ETILOG_TABLE_TEMPLATE = 'etilog/impev_table/etilog_djangotable.html'
 
 def get_hovertitle(*args, **kwargs):
     col = kwargs.get('bound_column', None)  # value already changed through rendering
@@ -157,7 +158,7 @@ class ImpEvTable(tables.Table):
             'class': 'row-normal'
         }
 
-        template_name = 'etilog/etilog_djangotable.html'
+        template_name = ETILOG_TABLE_TEMPLATE
 
     def render_source_url(self, value, record):
         val_short = str(record.reference.name)
@@ -196,7 +197,7 @@ class ImpEvTablePrivat(ImpEvTable):
         # css stuff needed in inherited table as well!
         attrs = {'class': etiki_table_classes,  # bootstrap4 classes ;table-responsive: not working with sticky
                  }
-        template_name = 'etilog/etilog_djangotable.html'
+        template_name = ETILOG_TABLE_TEMPLATE
         sequence = ('id', 'copy', '...')
 
 

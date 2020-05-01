@@ -8,23 +8,7 @@
     display: none;
 }
 
-.div_topic_li {
-    max-width: 100%;
-    padding: 2px;
 
-
-}
-
-.topic-link {
-    max-width: 100%;
-    display: block;
-    padding-right: 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: .875rem;
-
-}
 
 #divFilterBar {
     z-index: 750; /* navbar 800; table: 700, date widget : 1000?? typeahed dropdown */

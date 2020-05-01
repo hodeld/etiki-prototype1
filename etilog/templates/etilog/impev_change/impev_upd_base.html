@@ -15,6 +15,7 @@
 
 {% endblock head_css %}
 {% block script %}
+
     <!-- - <script src="{% static 'admin/js/core.js' %}"></script>
 <script src="{% static 'admin/js/jquery.init.js' %}"></script> 
 <script src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script> -->
@@ -25,6 +26,7 @@
         var new_ie_url = "{% url 'etilog:newimpactevent' %}";
     </script>
     <script src="{% static 'etilog/js/etilog/impev_upd.js' %}"></script>
+    <script src="{% static 'etilog/js/etilog/impev_upd_base.js' %}"></script>
 
 
 
@@ -47,7 +49,7 @@
 
                 <hr class="mt-0 mb-4">
                 <div id="id_div_impevform">
-                    {% include 'etilog/impev_upd_form.html' %}
+                    {% include 'etilog/impev_change/impev_upd_form.html' %}
                 </div>
             </div>
         </div>

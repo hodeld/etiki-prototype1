@@ -4,6 +4,17 @@ span.twitter-typeahead .tt-menu {
 
 }
 
+input.tt-hint, input.tt-hint:focus,
+input.tt-input, input.tt-input:focus {
+    background-color: transparent !important;
+    color: #fff !important;
+}
+input.tt-hint, input.tt-hint:focus {
+    font-weight:lighter !important;
+}
+
+
+
 .dropdown-menu, span.twitter-typeahead .tt-menu {
     position: absolute;
     top: 100%;
@@ -92,3 +103,4 @@ span.twitter-typeahead {
 #div_id_search span.twitter-typeahead {
     /*width: 100%;  modified by damian DH  in tagesinput.css*/
     width: 1%;
+}

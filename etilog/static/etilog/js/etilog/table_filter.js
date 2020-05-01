@@ -7,8 +7,11 @@ $(document).ready(function () {
         set_val_from_btn($(this))
     });
 
-    $('#filterClear').click(function () {
+    $('.filterClear').click(function () {
         clearFilter()
+    });
+    $('.filterClearDirect').click(function () {
+        clearFilter('table')
     });
 
 
@@ -44,6 +47,7 @@ $(document).ready(function () {
             $(this).tagsinput({
                 itemValue: 'id',
                 itemText: 'name',
+                itemCategory: 'category',
                 typeaheadjs: [
                     {
                         highlight: true,
@@ -52,12 +56,17 @@ $(document).ready(function () {
                     optDic,
                 ],
             });
+            }
+        else { //free text
+            $(this).tagsinput();
+
+        }
             var plcHolder = $(this).attr('placeholder');
 
             var parentId = $(this).attr('parfield');
             $(parentId).find('.bootstrap-tagsinput input.tt-input').attr('placeholder', plcHolder);
 
-        }
+
         ;
     });
 
@@ -101,7 +110,9 @@ $(document).ready(function () {
                 var elt = $('#id_f_tags');
             } else {
                 var elt = $('#id_f_freetext');
+
             }
+            suggestion.category = modname;
 
             setTags(elt, suggestion);
             $(this).typeahead('val', ''); //typeahead input
@@ -409,7 +420,7 @@ function setFilterVisually(filterDict) {
     $('#filter-count').html(filterCount);
 }
 
-function clearFilter() {
+function clearFilter(locResultType = 'count') {
     var filterCount = 0;
     $('.f_tagsinput').each(function () {
 
@@ -432,7 +443,7 @@ function clearFilter() {
             ele.val('');
         }
     });
-    resultType = 'count';
+    resultType = locResultType;
 
     submitFromID('#id_filterform');
 
@@ -542,12 +553,16 @@ function keyBehaviorSearch(event, ele) {
 
 function setTags(ele, suggestion) {
     ele.tagsinput('add', suggestion);	//adds tag
-    parentId = ele.attr('parfield');
+    let parentId = ele.attr('parfield');
     $(parentId).addClass('show');
+    // todo >, on delete -> delete
+    const eleAllTags = $('#id_alltags');
+    eleAllTags.tagsinput('add', suggestion);	//adds tag
+
 }
 
 function setTagBtn(eleId) {
-    var ele = $('#' + eleId);
+    const ele = $('#' + eleId);
     if (setFirstSelection(ele) === false) {
         changeWOSelection(ele);
     }
@@ -555,7 +570,7 @@ function setTagBtn(eleId) {
 }
 
 function setFirstSelection(ele) {
-    var firstsel = ele.parent().find('.tt-selectable:first');
+    const firstsel = ele.parent().find('.tt-selectable:first');
     if (firstsel.length > 0) {
         firstsel[0].click();
     } else {

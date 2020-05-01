@@ -11,8 +11,8 @@ import json
 from django_tables2 import RequestConfig
 
 # models
-from etilog.models import ImpactEvent, Company, Reference, Country
-from etilog.models import SustainabilityTag
+from etilog.models import (ImpactEvent, Company, Reference, Country,
+                           SustainabilityTag, FrequentAskedQuestions)
 
 # tables
 from .tables import ImpEvTable, ImpEvTablePrivat, ImpEvDetails
@@ -33,24 +33,11 @@ from etilog.ViewLogic.ViewDatetime import get_now
 
 from etilog.ViewLogic.ViewAccessURL import parse_url, parse_url_all, extract_text_rpy
 
+from etilog.ViewLogic.ViewUpdateDB import update_internal
 
-# Create your views here.
-def startinfo(request):
-    if request.method == 'POST':
-        form = NewSource(request.POST)
-        if form.is_valid():
-            form.save()
-            print('valid', form.cleaned_data)
-            message = 'you are helping creating a new platform, thank you!'
-        else:
-            message = 'oh, this did not work!'
 
-    else:
-        message = ''
-    form = NewSource()
-    return render(request, 'etilog/comingsoon.html', {'form': form,
-                                                      'message': message
-                                                      })
+def entry_mask(request):
+    return render(request, 'etilog/entrymask/main.html', )
 
 
 def overview_impevs(request, reqtype=None):
@@ -127,11 +114,11 @@ def overview_impevs(request, reqtype=None):
 
         msg_results = msg_results + ' of %d in total' % cnt_tot
 
-        rend_table = render_to_string('etilog/impactevents_overview_table.html', {'table': table,
-                                                                                  }
+        rend_table = render_to_string('etilog/impev_table/impactevents_overview_table.html', {'table': table,
+                                                                                              }
                                       )
-        rend_comp = render_to_string('etilog/company_show_each.html', {'comp_details': comp_details,
-                                                                       }
+        rend_comp = render_to_string('etilog/impev_company/company_show_each.html', {'comp_details': comp_details,
+                                                                                     }
                                      )
 
         d_dict['result_type'] = 'table'
@@ -157,7 +144,7 @@ def overview_impevs(request, reqtype=None):
     references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
     tags_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'tags'})
 
-    return render(request, 'etilog/impactevents_overview.html', {
+    return render(request, 'etilog/overview.html', {
         'filter': filt,
         'filtheader': filtheader,
         'searchform': searchform,
@@ -327,11 +314,11 @@ def impact_event_change(request, ietype='new', ie_id=None):
             next_id_url = reverse_lazy('etilog:impactevent_update', kwargs={'ie_id': first_id})
         form = ImpactEventForm(initial=init_data)
         shtml = init_data.get('article_html', '')
-    return render(request, 'etilog/impev_upd_base.html', {'form': form,  # for form.media
+    return render(request, 'etilog/impev_change/impev_upd_base.html', {'form': form,  # for form.media
                                                           'message': message,
                                                           'next_id_url': next_id_url,
                                                           'shtml': shtml
-                                                          })
+                                                                       })
 
 
 def get_ie_form_data(request):
@@ -411,7 +398,7 @@ def add_foreignmodel(request, main_model, foreign_model):
 
     modelname = foreign_model[0].upper() + foreign_model[1:]
 
-    return render(request, 'etilog/addforeign_form.html', {'form': form,
+    return render(request, 'etilog/impev_change/addforeign_form.html', {'form': form,
                                                            'modelname': modelname})
 
 
@@ -466,7 +453,6 @@ def load_names(request, modelname):
     else:
         return HttpResponse("/")
 
-    # data = json.dumps(list(q_names))
     data = json.dumps(list(q_names))
     return HttpResponse(data, content_type='application/json')
 
@@ -479,17 +465,17 @@ def load_ie_details(qs, single_ie=False):
         rec = row.record
         id_ie = rec.pk
 
-        html_fields = render_to_string('etilog/impev_show_fields.html', {'row': row,
+        html_fields = render_to_string('etilog/impev_details/impev_show_fields.html', {'row': row,
                                                                          'rec': rec  # can be deleted
-                                                                         })
+                                                                                       })
 
         if single_ie == True:
             return html_fields
-        html_article = render_to_string('etilog/impev_show_article.html', {'rec': rec
-                                                                           })
+        html_article = render_to_string('etilog/impev_details/impev_show_article.html', {'rec': rec
+                                                                                         })
 
-        html_header = render_to_string('etilog/impev_show_article_hd.html', {'rec': rec
-                                                                             })
+        html_header = render_to_string('etilog/impev_details/impev_show_article_hd.html', {'rec': rec
+                                                                                           })
         ie_dt_dict[id_ie] = (html_fields, html_header, html_article)
 
     # data = json.dumps(list(q_names))
@@ -526,7 +512,7 @@ def load_sust_tags(request):  # ,
 
     sust_tags = SustainabilityTag.objects.filter(**lookup_dict).order_by('name')
 
-    return render(request, 'etilog/select_sust_tags.html', {'tags': sust_tags})
+    return render(request, 'etilog/impev_change/select_sust_tags.html', {'tags': sust_tags})
 
 
 def logout_view(request):
@@ -541,3 +527,30 @@ def legal(request):
 
 def about(request):
     return render(request, 'etilog/about.html', )
+
+
+def faq(request):
+    faqs = FrequentAskedQuestions.objects.all().order_by('question')
+    return render(request, 'etilog/faq.html', {'faqs': faqs} )
+
+
+def startinfo(request):
+    if request.method == 'POST':
+        form = NewSource(request.POST)
+        if form.is_valid():
+            form.save()
+            print('valid', form.cleaned_data)
+            message = 'you are helping creating a new platform, thank you!'
+        else:
+            message = 'oh, this did not work!'
+
+    else:
+        message = ''
+    form = NewSource()
+    return render(request, 'etilog/comingsoon.html', {'form': form,
+                                                      'message': message
+                                                      })
+
+def update_db_internal(request):
+    update_internal()
+    return HttpResponseRedirect(reverse('etilog:home'))

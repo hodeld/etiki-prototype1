@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
 import re
 
 
@@ -187,6 +189,10 @@ class SustainabilityTag(models.Model):
     def get_domains(self):
         return '; '.join([x.name for x in self.sust_domains.all()])
 
+    @property
+    def name_display(self):
+        return self.name.upper()
+
     class Meta:
         ordering = ['name', ]
 
@@ -275,3 +281,32 @@ class ImpactEvent(models.Model):
 
     class Meta:
         ordering = ['date_impact', 'company']
+
+
+class FrequentAskedQuestions(models.Model):
+    question = models.CharField(max_length=100)
+    answer = models.TextField(max_length=1000)
+    image_top = models.ImageField(upload_to='uploads/faq/',
+                                  height_field='img_top_width',
+                                  width_field='img_top_height',
+                                  blank=True, null=True)
+    img_top_width = models.IntegerField(blank=True, null=True)
+    img_top_height = models.IntegerField(blank=True, null=True)
+    img_bottom_width = models.IntegerField(blank=True, null=True)
+    img_bottom_height = models.IntegerField(blank=True, null=True)
+    image_bottom = models.ImageField(upload_to='uploads/faq/',
+                                     height_field='img_bottom_width',
+                                     width_field='img_bottom_height',
+                                     blank=True, null=True)
+    active = models.BooleanField(default=True)
+    comment = models.CharField(max_length=500, blank=True, null=True)
+    user = models.ForeignKey(get_user_model(), models.SET_NULL, blank=True, null=True)
+
+
+@receiver(pre_delete, sender=FrequentAskedQuestions)
+def delete_image(sender, instance, **kwargs):
+    # Pass false so FileField doesn't save the model.
+    if instance.image_top:
+        instance.image_top.delete(False)
+    if instance.image_bottom:
+        instance.image_bottom.delete(False)

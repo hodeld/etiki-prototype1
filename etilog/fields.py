@@ -400,7 +400,7 @@ class LabelRow(Layout):
         cont = labelname + icon_str
         btn = StrictButton(cont, name='btn' + name_stripped, value=name_stripped,
                            data_toggle='collapse', data_target='#' + div_id,
-                           css_class='btn-link btn-filter-row btn-block btn-sm   mt-1',  # 'active btn-light',  )
+                           css_class='btn-link btn-block btn-sm mt-1',  # 'active btn-light',  )
                            )
 
         super(LabelRow, self).__init__(
@@ -409,7 +409,7 @@ class LabelRow(Layout):
                     btn,
                     Div(
                         Row(rowcontent, *args, **kwargs),
-                        css_class='collapse ', css_id=div_id
+                        css_class='collapse show', css_id=div_id
                     ),
                     css_class='col-12 col-md-10'
 

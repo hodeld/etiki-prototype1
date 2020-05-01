@@ -2,18 +2,36 @@
 {% load static %}
 
 
-<div class="col-12 sticky-top container infront landing my-3 py-1" id="divFilterBar">
+<div class="col-12 sticky-top container infront landing my-3 pt-1 pb-3 border-bottom" id="divFilterBar">
+    <div class=" d-flex justify-content-center" id="">
+
+
+        <button class="btn btn-sm btn-link filterClearDirect d-none d-md-block" type="button" id="filterClear2">
+
+            <i class="fas fa-trash mr-1"></i>
+            <span class="d-none d-sm-inline">Clear all</span>
+
+        </button>
+
+        <h4 class="my-auto d-none d-md-block " id="">Filter</h4>
+
+
+        <button id="btn_filter_toggle" class="btn btn-sm btn-link"
+                name="btnfilter" type="button" value="filter" data-toggle="modal"
+                data-target="#div_filterform">
+            <i class="fas fa-filter mr-1"></i><span class="d-none d-md-inline">More Options</span>
+            <span class="d-inline d-md-none">Filter Options</span>
+        </button>
+
+
+    </div>
+
     {% if filtheader %}
         <div class="row d-none d-md-flex">
             {% crispy filtheader %}
         </div>
     {% endif %}
 
-    <button id="btn_filter_toggle" class="btn btn-outline-light btn-block my-1"
-            name="btnfilter" type="button" value="filter" data-toggle="modal"
-            data-target="#div_filterform">
-        <i class="fas fa-filter mr-1"></i><span class="d-none d-md-inline">More </span>Filter Options
-    </button>
 
 </div>
 
@@ -24,7 +42,7 @@
             <div class="modal-header">
 
                 <div class="col-12 text-center d-flex justify-content-between" id="divFilterHead">
-                    <button class="btn btn-sm btn-link" type="button" id="filterClear">
+                    <button class="btn btn-sm btn-link filterClear" type="button" id="filterClear">
 
                         <i class="fas fa-trash mr-1"></i>
                         <span class="d-none d-sm-inline">Clear all</span>

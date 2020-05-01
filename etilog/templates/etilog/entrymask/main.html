@@ -1,0 +1,41 @@
+{% extends 'etilog/entrymask/base_entrymask.html' %}
+{% load static %}
+
+{% block head_css %}
+
+{% endblock head_css %}
+
+{% block script %}
+{% endblock script %}
+
+
+{% block content %}
+
+    <div class="fullscreen-cover "></div>
+    <div class="fullsite-wrapper entrymask container">
+
+        <div class="siteheaderlogo entrymask">
+            <img alt="logo etiki" border="0" src="{% static 'etilog/img/logoetiki.svg' %}"/>
+        </div>
+
+        <div class="row h-100 d-flex align-content-center justify-content-center">
+            {% include 'etilog/entrymask/startinfo.html' %}
+            <a href={% url 'etilog:home' %}>
+                <button  class="btn btn-lg btn-info my-3">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Enter Prototype</button>
+            </a>
+        </div>
+
+        <div class="sitefooter entrymask">
+            {% include 'footer.html' %}
+        </div>
+
+    </div>
+
+{% endblock content %}
+
+
+
+
+
+

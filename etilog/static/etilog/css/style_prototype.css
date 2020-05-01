@@ -1,29 +1,20 @@
 :root {
-    --full_bckgrnd: rgba(33, 37, 41, 1); /* = #33b5e5 rgba(38, 33, 32, 1);*rgb(33,37,41)*/
+    --full_bckgrnd: #212529; /*= rgba(33, 37, 41, 1) */
+
     --trans_bckgrnd: rgba(33, 37, 41, .8);
     --light_bckgrnd: rgba(255, 255, 255, .05); /*on top */
+
     --read_bckgrnd: #111213;
     --dark_bckgrnd: #111213;
-    --etikigreen: #37718e; /* #33b5e5 mdb info colour; var(--info); #3E7480; */
+
+    --etikigreen: #669CB0; /* #33b5e5 mdb info colour; var(--info); #3E7480; */
     --positive: #66a182;
     --controversial: #dfc983;
     --negative: #e78680;
-    --foreground: rgba(44, 48, 52); /* on filterhead */
-    --etikilight: #6d97ac; /*on lighter than etikigreen */
-    /*
-    --etikigreen: #33b5e5;
-    --positive: #7b8776;
-    --controversial: #d8a47f; #aeab98;  #d4aa7d
-    --negative: #db5461;
 
+    --foreground: #2c3034; /* rgba(44, 48, 52); */
+    --etikilight: #91C4D0; /*on lighter than etikigreen */
 
-    --positive: #7b8776;
-    --controversial: #87767b;
-    --negative: #827687;
-
-    /*--positive: var(--success) ;
-    --controversial: var(--warning) ;
-    --negative: var(--danger) ; */
 }
 
 
@@ -46,6 +37,18 @@ noscript {
     font-size: 1.5em; /*25px;*/
     font-weight: bold;
 }
+
+::placeholder  /* Firefox, Chrome, Opera */
+{
+    font-weight:lighter !important;
+    color:#fff !important;
+}
+:-ms-input-placeholder /* Internet Explorer 10-11 */
+{
+    font-weight:lighter !important;
+    color:#fff !important;
+}
+
 
 
 .fullsite-wrapper {
@@ -96,19 +99,6 @@ noscript {
     margin-right: 0;
 }
 
-#img_sm {
-    max-height: 25px; /* to define img size */
-    /*vertical-align: middle;  /*   is already in bootstrap img class */
-    /*
-    height: 25px;
-    position: absolute;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%); */
-
-}
-
 .date {
     width: 20em;
 }
@@ -135,31 +125,6 @@ noscript {
     position: -webkit-sticky;
     position: sticky;
 
-}
-
-#div_id_search {
-    /* overwrite form-group css */
-    margin-bottom: 0;
-}
-
-/*Search Bar */
-
-#div_id_search .input-group-append {
-    margin-left: -3px !important;
-}
-
-#div_id_search .input-group-text {
-    background-color: white;
-    border: 1px solid white;
-}
-
-#div_id_search .input-group-text:hover {
-    cursor: pointer; /* hand pointer */
-}
-
-
-#id_search {
-    border: 1px solid white;
 }
 
 
@@ -250,26 +215,4 @@ label, .nav-link {
     margin: 0;
     left: 80px;
     top: 20px;
-}
-
-.link-intern {
-    color: white;
-    background-color: var(--etikigreen);
-
-}
-
-.link-intern:hover {
-    background-color: var(--trans_bckgrnd);
-    color: white;
-    text-decoration: none;
-}
-
-
-a {
-    color: var(--etikigreen);
-}
-
-a:hover {
-    color: var(--etikigreen);
-    text-decoration: underline !important;
 }

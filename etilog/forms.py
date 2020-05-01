@@ -47,6 +47,7 @@ class SearchForm(forms.Form):
             Row(
                 Column(SearchWIcon('search', id='id_search', autocomplete="off",
                                    placeholder='Search Companies, Countries, Topics, Newspaper …',
+                                   css_class='tt-input'   # to have correct from beginning
                                    ),
                        css_class='col-12'
                        )
@@ -127,10 +128,10 @@ class ImpevOverviewFForm(forms.Form):
                           css_class=cls_filterinput + ' btninput', parfield='#id_sust_domain-btn-'),
 
                     ColDomainBtnSelect(), ),
-                labelname='Category', row_class='d-flex d-md-none'),
+                labelname='Category', row_class='d-flex'),
 
             LabelRow(ColTendencyBtnSelect(),
-                     labelname='Which Tendency', row_class='d-flex d-md-none'),
+                     labelname='Which Tendency', row_class='d-flex'),
 
             LabelRow(
                 Column(
@@ -178,12 +179,12 @@ class OverviewFiltHeaderForm(forms.Form):
                                labelname=None,
                                ele_class=element_class,
                                twin_ele=True,
-                               btn_wrap_class='justify-content-around d-flex w-100'),
+                               btn_wrap_class='justify-content-center d-flex w-100'),
             ColTendencyBtnSelect(col_class='col-12 ',
                                  labelname=None,
                                  ele_class=element_class,
                                  twin_ele=True,
-                                 btn_wrap_class='justify-content-around d-flex w-100')
+                                 btn_wrap_class='justify-content-center d-flex w-100')
         )
 
 

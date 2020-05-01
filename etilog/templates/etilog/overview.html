@@ -14,8 +14,7 @@
           href="{% static 'etilog/css/etilog/impev_show.css' %}">
     <link rel="stylesheet" type="text/css"
           href="{% static 'etilog/css/etilog/company_show.css' %}">
-    <link rel="stylesheet" type="text/css"
-          href="{% static 'etilog/css/etilog/buttons.css' %}">
+
     <link rel="stylesheet" type="text/css"
           href="{% static 'etilog/css/etilog/modal.css' %}">
     {{ filter.form.media }} {# Adds date-picker required and specific JS and CSS #}
@@ -42,8 +41,8 @@
 
     {% include 'nav_search_bar_hidden.html' %}
 
-    {% include 'etilog/impev_show_article_modal.html' %}
-    {% include 'etilog/impactevents_overview_filter.html' %}
+    {% include 'etilog/impev_details/impev_show_article_modal.html' %}
+    {% include 'etilog/overview_filter.html' %}
     {% include 'etilog/overview_tabs.html' %}
 
 
