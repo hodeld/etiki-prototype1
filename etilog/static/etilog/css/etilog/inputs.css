@@ -64,15 +64,7 @@
 }
 
 .alltaginput .bootstrap-tagsinput input {
-    color: #fff;; /* mdh; was: no color */
-    border: none;
-    box-shadow: none;
-    outline: none;
-    background-color: transparent;
-    padding: 0;
-    margin: 2px;
-    width: auto;
-    max-width: inherit;
+    display: none;
 }
 
 .taginput-row .bootstrap-tagsinput input {

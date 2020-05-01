@@ -285,7 +285,10 @@ class RowTopics(Layout):
             li_vals.extend(vals)
 
         topics_list = []
-        a_str = '''<a href="#" class="topic-link link-intern" tagid = "%d" tagname = "%s" >%s</a>'''
+        a_str = '''<a href="#" class="topic-link link-intern" 
+                    tag-category = "tags"
+                    tagid = "%d" tagname = "%s" >%s</a>
+                    '''
         k = nr_tags
         for tag in li_vals:
             stag_id = tag[0]
@@ -396,6 +399,7 @@ class LabelRow(Layout):
 
         name_stripped = labelname.replace(' ', '')
         div_id = 'row' + name_stripped
+        div_class = 'taginput-row'
         icon_str = '<i class="fas fa-chevron-down ml-1"></i> '
         cont = labelname + icon_str
         btn = StrictButton(cont, name='btn' + name_stripped, value=name_stripped,
@@ -409,7 +413,8 @@ class LabelRow(Layout):
                     btn,
                     Div(
                         Row(rowcontent, *args, **kwargs),
-                        css_class='collapse show', css_id=div_id
+                        css_class=' '.join(['collapse show', div_class]),
+                        css_id=div_id
                     ),
                     css_class='col-12 col-md-10'
 

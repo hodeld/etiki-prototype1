@@ -42,41 +42,19 @@ $(document).ready(function () {
         //from search directly table
         resultType = 'table';
 
-        var val_str = suggestion['name'];
-        var val_id = suggestion['id'];
-
+        const val_str = suggestion['name'];
 
         if (val_str.length > 0) {
-            var modname = ev.handleObj.handler.arguments[2];
-            if (modname == 'companies') {
-                var elt = $('#id_f_company');
-            } else if (modname == 'countries') {
-                var elt = $('#id_f_country');
-            } else if (modname == 'references') {
-                var elt = $('#id_f_reference');
-            } else if (modname == 'tags') {
-                var elt = $('#id_f_tags');
-            } else {
-                var elt = $('#id_f_freetext');
+            var catgory = ev.handleObj.handler.arguments[2];
+            setTags(catgory, suggestion)
 
-            }
-            suggestion.category = modname;
-
-            setTags(elt, suggestion);
             $(this).typeahead('val', ''); //typeahead input
         }
 
-
     });
 
 
-    $('.topic-link').click(function () {
-        var tagname = $(this).attr('tagname');
-        var tagid = parseInt($(this).attr('tagid'));
-        resultType = 'table';
-        set_tag(tagid, tagname)
 
-    });
 
     $("#id_search").keyup(function (event) {
         var ele = $(this);

@@ -21,7 +21,7 @@
 
 {% endblock head_css %}
 {% block script %}
-    <script src="{% static 'etilog/js/etilog/List.js' %}"></script>
+
     <script>
         var companies_url = "{{companies_url}}";
         var countries_url = "{{countries_url}}";
@@ -64,8 +64,16 @@
 
 
     <!--following needs to be below body due to reference to the table -->
+    <script src="{% static 'etilog/js/etilog/List.js' %}"></script>
+    <script src="{% static 'etilog/js/etilog/table_list.js' %}"></script>
     <!--under tagsinput due to reference to tagsinput -->
-    <script src="{% static 'etilog/js/etilog/table_filter.js' %}"></script>
+    <script src="{% static 'etilog/js/etilog/filter_data.js' %}"></script>
+    <script src="{% static 'etilog/js/etilog/filter_tagsinput.js' %}"></script>
+    <script src="{% static 'etilog/js/etilog/filter_typahead.js' %}"></script>
+    <script src="{% static 'etilog/js/etilog/filter_visual.js' %}"></script>
+
+    <!--under other filter-js due to reference -->
+    <script src="{% static 'etilog/js/etilog/filter_base.js' %}"></script>
 
     <!--underneath filter due to sources -->
     <script src="{% static 'etilog/js/etilog/overview_start.js' %}"></script>
