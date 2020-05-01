@@ -15,36 +15,27 @@
                 <hr class="whitehr">
                 {% for faq in faqs %}
                     <p>
-                        <a class = "link-intern " href = "#faq_{{ faq.id }}">{{ faq.question }}</a>
+                        <a class="link-intern " href="#faq_{{ faq.id }}">{{ faq.question }}</a>
                     </p>
 
 
 
 
-                {% endfor  %}
-            {% for faq in faqs %}
+                {% endfor %}
+                {% for faq in faqs %}
 
-                <div id = "faq_{{ faq.id }}" class = "anchor">
-                <h6  class = "link-intern ">{{ faq.question }}</h6>
-                </div>
-
-                {% if  faq.image_top %}
-                    <div class="text-center px-md-5 py-2">
-                      <img class="w-100 h-auto" src="{{ faq.image_top.url }}" >
-                    </div>
-                {% endif %}
-
-<div class="text-justify ml-md-2 ">
-                       <p class = "">{{ faq.answer|urlizetrunc:50|linebreaks }} </p>
+                    <div id="faq_{{ faq.id }}" class="anchor">
+                        <h6 class="link-intern ">{{ faq.question }}</h6>
                     </div>
 
-                {% if  faq.image_bottom %}
-                    <div class="text-center px-md-5 py-2">
-                      <img class="w-100 h-auto" src="{{ faq.image_bottom.url }}" >
-                    </div>
-                {% endif %}
 
-                {% endfor  %}
+                    <div class="text-justify ml-md-2 ">
+                        <p class="">{{ faq.answer|urlizetrunc:50|linebreaks }} </p>
+                    </div>
+
+
+
+                {% endfor %}
 
             </div>
 

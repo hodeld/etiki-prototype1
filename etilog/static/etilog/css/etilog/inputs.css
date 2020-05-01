@@ -1,3 +1,11 @@
+.form-control,     .form-control:focus {
+    color: #fff;
+    background-color: transparent;
+    background-clip: padding-box;
+    border: None;
+    border-radius: 0;
+    box-shadow: None;
+}
 
 #div_id_search {
     /* overwrite form-group css */
@@ -9,8 +17,8 @@
 #div_id_search .input-group-append {
     margin-left: 0 !important;
 }
-
-#div_id_search .input-group-text {
+/* #div_id_search  and dateyearpicker */
+.input-group-text {
     background-color: transparent;
     border: none;
     color: white;
@@ -20,7 +28,7 @@
     cursor: pointer; /* hand pointer */
 }
 
-#div_id_search input, .bootstrap-tagsinput {
+#div_id_search input, .taginput-row .bootstrap-tagsinput {
     box-shadow: none;
     border-bottom: 1px solid #fff;
     border-radius: 0;
@@ -35,7 +43,7 @@
     padding: .375rem 0;
 }
 
-.bootstrap-tagsinput  {
+.taginput-row .bootstrap-tagsinput  {
     padding: 0;
     margin: 2px;
 }
@@ -55,10 +63,11 @@
     outline: none; /* in input blue shadow is outline */
 }
 
-#div_id_search input:focus{
-
+.alltaginput .bootstrap-tagsinput input {
+    display: none;
 }
-.bootstrap-tagsinput input {
+
+.taginput-row .bootstrap-tagsinput input {
     color: #fff;; /* mdh; was: no color */
     border: none;
     box-shadow: none;
@@ -70,14 +79,14 @@
     max-width: inherit;
 }
 
-.bootstrap-tagsinput input:focus
+.taginput-row .bootstrap-tagsinput input:focus
 {
     padding: 0;
     margin: 2px;
 }
 /* tagsinput, other part in tagsinput.css */
 
-.bootstrap-tagsinput {
+.taginput-row .bootstrap-tagsinput {
 
     display: inline-block;
     width: 100%;
@@ -86,6 +95,7 @@
 }
 
 
+/* OLD */
 .bootstrap-tagsinput_old {
 
     /* background-color: #fff; mdh */

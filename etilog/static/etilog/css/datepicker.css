@@ -1,15 +1,17 @@
 /*DATEINPUT*/
+.datepicker{
+        border-bottom: 1px solid #fff;
+}
 .datepicker .date {
     width: 15em;
+
     /*margin-right: 2em !important; */
 }
 
 
 .datepicker .dateyearpicker {
     height: 20%;
-    color: white;
-    background-color: transparent;
-    /*width: 30px !important;
-    flex: none !important; */
+
+    /* color and background in .form-control input */
 
 }

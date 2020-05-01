@@ -128,10 +128,10 @@ class ImpevOverviewFForm(forms.Form):
                           css_class=cls_filterinput + ' btninput', parfield='#id_sust_domain-btn-'),
 
                     ColDomainBtnSelect(), ),
-                labelname='Category', row_class='d-flex'),
+                labelname='Category', row_class='d-flex d-md-none'),
 
             LabelRow(ColTendencyBtnSelect(),
-                     labelname='Which Tendency', row_class='d-flex'),
+                     labelname='Which Tendency', row_class='d-flex d-md-none'),
 
             LabelRow(
                 Column(
@@ -162,6 +162,7 @@ class ImpevOverviewFForm(forms.Form):
 
 
 class OverviewFiltHeaderForm(forms.Form):
+    alltaginput = forms.CharField(required=False, label='',)
 
     def __init__(self, *args, **kwargs):
         super(OverviewFiltHeaderForm, self).__init__(*args, **kwargs)
@@ -184,8 +185,13 @@ class OverviewFiltHeaderForm(forms.Form):
                                  labelname=None,
                                  ele_class=element_class,
                                  twin_ele=True,
-                                 btn_wrap_class='justify-content-center d-flex w-100')
+                                 btn_wrap_class='justify-content-center d-flex w-100'),
+            Column(Field('alltaginput', id='id_alltaginput', css_class='f_alltagsinput',
+                         wrapper_class='alltaginput justify-content-center d-flex my-2')
+                   , css_class='col-12  d-none'),
+
         )
+
 
 
 CSS_COL_CLS = 'col-12 col-lg-6'
