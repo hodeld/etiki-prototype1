@@ -1,8 +1,11 @@
 :root {
     --full_bckgrnd: #212529; /*= rgba(33, 37, 41, 1) */
 
+
     --trans_bckgrnd: rgba(33, 37, 41, .8);
     --light_bckgrnd: rgba(255, 255, 255, .05); /*on top */
+
+    --bright_bg: #e6e9ea;
 
     --read_bckgrnd: #111213;
     --dark_bckgrnd: #111213;
@@ -13,7 +16,7 @@
     --negative: #e78680;
 
     --foreground: #2c3034; /* rgba(44, 48, 52); */
-    --etikilight: #91C4D0; /*on lighter than etikigreen */
+    --etikilight: #91C4D0; /*one lighter than etikigreen */
 
 }
 

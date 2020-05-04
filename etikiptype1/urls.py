@@ -22,6 +22,7 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     path('admin/', admin_site.urls),
     path('', include('etilog.urls', namespace='etilog')),
+    path('', include('etikihead.urls', namespace='etikihead')),
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     
 ]
