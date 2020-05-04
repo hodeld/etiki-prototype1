@@ -28,21 +28,18 @@ function show_details(ele, ie_id, event) {
     var detail_id = rowid + '_detail';
     $(parele).addClass('parentrow')
 
-    var colcnt = numOfVisibleCols(tableid)
+    var colcnt = numOfVisibleCols(tableid);
     var rowstr1 = 'tr scope="row" class="detailrow darkbg" id="%%detailid" ';
     var rowstr3 = '<td colspan = "%%colcnt" > %%htmlstr </td> ';
-    var rowstr = '<' + rowstr1 + '>' + rowstr3 + '</tr>';
+    const rowstr4 = ' <td class=" details td-normal" onclick="toggle_details(event)"><i class="fas fa-chevron-up"></i></td> ';
+    var rowstr = '<' + rowstr1 + '>' + rowstr3 + rowstr4 + '</tr>';
     var html_str = ie_details[ie_id][0];
     rowstr = rowstr.replace("%%htmlstr", html_str);
-    rowstr = rowstr.replace("%%colcnt", colcnt);
+    rowstr = rowstr.replace("%%colcnt", colcnt - 1);
     rowstr = rowstr.replace("%%detailid", detail_id);
-
-
+    
     $(parele).hide();
     $(parele).after(rowstr);
-    $('#' + detail_id).click(function (event) {
-        toggle_details(event)
-    });
 
 
 }
