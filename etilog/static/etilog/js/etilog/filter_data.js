@@ -26,6 +26,8 @@ function setData(response) {
     comp_ratings = JSON.parse(response.comp_ratings);
     resultMessage = msg;
     $("#id_message").html(msg);
+    $(".ie_count").html(response.ie_count);
+    $(".company_count").html(response.company_count);
 
     drawcharts = true;
     //when google is loaded

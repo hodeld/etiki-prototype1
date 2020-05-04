@@ -77,14 +77,17 @@ def overview_impevs(request, reqtype=None):
             count_vals = count_qs(table_qs)  # one query too much
             (cnt_ies, cnt_comp) = count_vals
 
-        msg_impev = '<strong>%d impact events</strong>' % cnt_ies
-        str_comp = 'companies'
+        msg_impev = '<strong>%d Impact Events</strong>' % cnt_ies
+        str_comp = 'Companies'
         if cnt_comp == 1:
-            str_comp = 'company'
+            str_comp = 'Company'
+            tip_str = '<br/>' + 'Tip: you can search for more than one company!'
+        else:
+            tip_str = ''
         msg_company = '<strong>%d %s</strong>' % (cnt_comp, str_comp)
 
         d_dict = {}
-        msg_count = 'show ' + msg_company + ' and ' + msg_impev
+        msg_count = ' '.join(('show', msg_company, 'and', msg_impev, tip_str))
         d_dict['result_type'] = result_type
         d_dict['msg_count'] = msg_count
 
@@ -98,10 +101,11 @@ def overview_impevs(request, reqtype=None):
             last_ies = table_qs.order_by('-date_published')[:limit_filt]
             dt = list(last_ies)[-1].date_published
             table_qs = table_qs.filter(date_published__gte=dt)
-            msg_results = 'more than <strong>%d</strong> results! shows %d newest impact events' % (
+            msg_results = 'more than <strong>%d</strong> results! shows %d newest Impact Events' % (
             limit_filt, limit_filt)
+            cnt_ies = limit_filt
         else:
-            msg_results = 'shows ' + msg_company + ' and ' + msg_impev
+            msg_results = ' '.join(('shows', msg_company, 'and', msg_impev))
 
         table_qs = prefetch_data(table_qs)
         table = Table(table_qs)
@@ -112,7 +116,7 @@ def overview_impevs(request, reqtype=None):
         ie_details = load_ie_details(table_qs)
         comp_details, comp_ratings = get_comp_details(table_qs)
 
-        msg_results = msg_results + ' of %d in total' % cnt_tot
+        msg_results = ' '.join((msg_results,'of %d in total' % cnt_tot, tip_str))
 
         rend_table = render_to_string('etilog/impev_table/impactevents_overview_table.html', {'table': table,
                                                                                               }
@@ -128,6 +132,8 @@ def overview_impevs(request, reqtype=None):
         d_dict['comp_ratings'] = comp_ratings
         d_dict['comp_details'] = rend_comp
         d_dict['filter_dict'] = filt_data_json
+        d_dict['ie_count'] = cnt_ies
+        d_dict['company_count'] = cnt_comp
 
         jsondata = json.dumps(d_dict)
         if reqtype == None:  # load directly data

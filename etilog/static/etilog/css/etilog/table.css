@@ -34,7 +34,7 @@
 .table-etiki .details {
     width: 35px;
     white-space: normal;
-    vertical-align: middle;
+    vertical-align: text-top;
 }
 
 .table-etiki td {

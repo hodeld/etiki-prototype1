@@ -153,7 +153,7 @@ class ImpevOverviewFForm(forms.Form):
                               , labelname='Country'),
 
             LabelRowTagsInput('reference', 'col-12', field_class=cls_filterinput
-                              , labelname='Where was it published', placeholder='Publisher'),
+                              , labelname='Published In', placeholder='Publisher'),
 
             LabelRowTagsInput('summary', 'col-12', field_class=cls_filterinput
                               , labelname='Fulltext'),

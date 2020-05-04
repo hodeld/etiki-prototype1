@@ -49,7 +49,12 @@
     cursor: pointer; /* hand pointer */
 
 }
-
+.div_company_detail{
+    margin: 0.3rem;
+    padding: 0.3rem;
+    vertical-align: top;
+    border: white solid thin;
+}
 .square_content {
     position: absolute;
     top: 0;
@@ -63,6 +68,13 @@
 .company-logo-wrapper {
     width: 40%;
     height: 40%;
+}
+.company-info-wrapper{
+    top: 0.3rem;
+    right: 0.3rem;
+    position: absolute;
+    font-size: xx-small;
+
 }
 
 .nopadding {
@@ -124,9 +136,6 @@
     color: black;
     visibility: hidden;
     opacity: 0;
-    margin-left: .2;
-    margin-left: .2;
-
     transition: opacity .2s, visibility .2s;
 
 }

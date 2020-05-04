@@ -3,7 +3,7 @@
     <div class="col-6 col-md-3 nopadding ">
 
         <div class="square company-rate" onclick="showDiagramDetails(event);">
-            <div class="div_iedetail square_content" id="div-company-{{ company.pk }}">
+            <div class="div_company_detail square_content" id="div-company-{{ company.pk }}">
 
                 <div class="company-logo-wrapper">
                     <div class="company-logo text-center">
@@ -25,8 +25,16 @@
                     <div class="company-chart" id="company-chart-{{ company.pk }}">
                     </div>
                 </div>
+                <div class="company-info-wrapper">
 
+                    <p>
+                        <i class="fas fa-calculator mr-1"></i>
+                        <strong>{{ company.num_tot }}</strong>
+                         <abbr title=' Impact Events'> IE's</abbr>
+                    </p>
+                </div>
             </div>
         </div>
+    </div>
     </div>
 {% endfor %}
