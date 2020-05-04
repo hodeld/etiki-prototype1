@@ -6,7 +6,7 @@ Created on 26.8.2019
 
 from django.core.cache import cache  # default cache in locmem
 from threading import Thread
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Sum
 
 # models
 from etilog.models import (Company, Reference, SustainabilityTag, SustainabilityDomain,
@@ -101,6 +101,8 @@ def query_comp_details(q_impev):
     num_neg = Count('impevents', filter=Q(impevents__sust_tendency__impnr=2))
     num_con = Count('impevents', filter=Q(impevents__sust_tendency__impnr=3))
 
+    num_tot = Count('impevents')
+
     # q_comp = Company.objects.prefetch_related('impevents').filter(impevents__in = q_impev) #only counts nr of filtered impev
 
     # count all impev of filtered companies
@@ -110,10 +112,12 @@ def query_comp_details(q_impev):
         num_pos=num_pos).annotate(
         num_neg=num_neg).annotate(
         num_con=num_con).annotate(
+        num_tot=num_tot).annotate(
     )
 
     # list of dicts:
     comp_details = q_comp.values('pk', 'name', 'num_pos', 'num_neg', 'num_con',
+                                 'num_tot',
                                  'domain')  # select_related('num_pos', 'num_neg', 'num_con'
 
     rating_dict = {}

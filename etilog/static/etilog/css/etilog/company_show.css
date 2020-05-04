@@ -69,6 +69,13 @@
     width: 40%;
     height: 40%;
 }
+.company-info-wrapper{
+    top: 0.3rem;
+    right: 0.3rem;
+    position: absolute;
+    font-size: xx-small;
+
+}
 
 .nopadding {
 

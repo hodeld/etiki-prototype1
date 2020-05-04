@@ -25,8 +25,16 @@
                     <div class="company-chart" id="company-chart-{{ company.pk }}">
                     </div>
                 </div>
+                <div class="company-info-wrapper">
 
+                    <p>
+                        <i class="fas fa-calculator mr-1"></i>
+                        <strong>{{ company.num_tot }}</strong>
+                         <abbr title=' Impact Events'> IE's</abbr>
+                    </p>
+                </div>
             </div>
         </div>
+    </div>
     </div>
 {% endfor %}
