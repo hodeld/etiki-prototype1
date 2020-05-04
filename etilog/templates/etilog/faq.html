@@ -31,9 +31,16 @@
 
                     <div class="text-justify ml-md-2 ">
                         <p class="">{{ faq.answer|urlizetrunc:50|linebreaks }} </p>
+
+
+                        {% for rel_faq in faq.related_question.all %}
+
+                            <p>
+                                See also <a class="" href="#faq_{{ rel_faq.id }}">{{ rel_faq.question }}</a>
+                            </p>
+
+                        {% endfor %}
                     </div>
-
-
 
                 {% endfor %}
 
