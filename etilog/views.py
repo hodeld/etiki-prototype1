@@ -81,7 +81,7 @@ def overview_impevs(request, reqtype=None):
         str_comp = 'companies'
         if cnt_comp == 1:
             str_comp = 'company'
-            tip_str = 'Tip: you can search for more than one company!'
+            tip_str = '<br/>' + 'Tip: you can search for more than one company!'
         else:
             tip_str = ''
         msg_company = '<strong>%d %s</strong>' % (cnt_comp, str_comp)
@@ -115,7 +115,7 @@ def overview_impevs(request, reqtype=None):
         ie_details = load_ie_details(table_qs)
         comp_details, comp_ratings = get_comp_details(table_qs)
 
-        msg_results = msg_results + ' of %d in total' % cnt_tot
+        msg_results = ' '.join((msg_results,'of %d in total' % cnt_tot, tip_str))
 
         rend_table = render_to_string('etilog/impev_table/impactevents_overview_table.html', {'table': table,
                                                                                               }
