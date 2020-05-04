@@ -10,7 +10,7 @@ from .models import (ImpactEvent,
                      Company, Country, ActivityCategory,
                      Media, Reference, Source,
                      SubsidiaryOwner, SupplierRecipient,
-                     FrequentAskedQuestions
+                     FrequentAskedQuestions, RelatedQuestion
                      )
 
 
@@ -82,8 +82,16 @@ class SupplierRecipientAdmin(admin.ModelAdmin):
     list_display = ('recipient_company', 'supplier_company', 'active', 'created_at')
 
 
+class RelatedQuestionInLine(admin.TabularInline):
+    model = RelatedQuestion
+    fk_name = 'from_questions'
+    extra = 1
+    verbose_name_plural = 'Related Question'
+
+
 class FrequentAskedQuestionsAdmin(admin.ModelAdmin):
     model = FrequentAskedQuestions
+    inlines = (RelatedQuestionInLine, )
     list_display = ('question', 'answer', 'active',)
 
 

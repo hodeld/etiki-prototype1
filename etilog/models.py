@@ -289,3 +289,29 @@ class FrequentAskedQuestions(models.Model):
     active = models.BooleanField(default=True)
     comment = models.CharField(max_length=500, blank=True, null=True)
     user = models.ForeignKey(get_user_model(), models.SET_NULL, blank=True, null=True)
+    related_question = models.ManyToManyField('self', blank=True,
+                                              through='RelatedQuestion',
+                                              through_fields=('from_questions', 'to_questions'),
+                                              symmetrical=False,
+                                              related_name='to_master_question'
+                                              )
+
+    def __str__(self):
+        return ' '.join((str(self.id), self.question))
+
+
+class RelatedQuestion(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)  # tz aware datetime
+    active = models.BooleanField(default=True)
+    from_questions = models.ForeignKey(FrequentAskedQuestions, on_delete=models.CASCADE,
+                                       related_name='from_questions',
+                                       verbose_name='master_question')
+    to_questions = models.ForeignKey(FrequentAskedQuestions, on_delete=models.CASCADE,
+                                     related_name='to_questions',
+                                     verbose_name='related_question')
+
+    def __str__(self):
+        return self.from_questions.question
+
+
+

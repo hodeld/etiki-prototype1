@@ -531,7 +531,7 @@ def about(request):
 
 def faq(request):
     faqs = FrequentAskedQuestions.objects.all().order_by('question')
-    return render(request, 'etilog/faq.html', {'faqs': faqs} )
+    return render(request, 'etilog/faq.html', {'faqs': faqs})
 
 
 def startinfo(request):
@@ -550,6 +550,7 @@ def startinfo(request):
     return render(request, 'etilog/comingsoon.html', {'form': form,
                                                       'message': message
                                                       })
+
 
 def update_db_internal(request):
     update_internal()
