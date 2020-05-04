@@ -1,4 +1,4 @@
-.form-control,     .form-control:focus {
+.form-control, .form-control:focus {
     color: #fff;
     background-color: transparent;
     background-clip: padding-box;
@@ -7,6 +7,10 @@
     box-shadow: None;
 }
 
+.etiki-form .form-control, .etiki-form .form-control:focus {
+    color: var(--full_bckgrnd);
+    background-color: var(--bright_bg);
+}
 #div_id_search {
     /* overwrite form-group css */
     margin-bottom: 0;

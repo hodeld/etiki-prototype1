@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     
     # Local apps
-    'etilog.apps.EtilogConfig'
+    'etilog.apps.EtilogConfig',
+    'etikihead.apps.EtikiheadConfig'
 ]
 
 MIDDLEWARE = [
@@ -183,7 +184,14 @@ base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 spath_sys = os.path.join(base_dir, 'node_modules/ReadabiliPy')
 sys.path.append(spath_sys)
 
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST', L_EMAIL_HOST)
+EMAIL_PORT = os.getenv('EMAIL_PORT', L_EMAIL_PORT)
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', L_EMAIL_HOST_USER)
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', L_EMAIL_HOST_PASSWORD)
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #defines static root, logger, etc.
 django_heroku.settings(locals())
