@@ -1,12 +1,9 @@
 
 .div_iedetail {
-    margin: .3rem;
-    padding: .3rem;
+    margin: .5rem;
+    padding: 0.25rem 1rem 0rem 1rem;
     vertical-align: top;
-    border-color: white;
-    border-style: solid;
-    border-width: thin;
-    /*background-color:var(--full_bckgrnd); */
+    border: white solid thin;
 }
 
 .iedetail {
@@ -15,8 +12,8 @@
 }
 
 .detail_label {
-    /*color: var(--light_bckgrnd); */
-
+    margin-left: -0.5rem;
+    font-weight: bold;
 }
 
 .iearticle {
@@ -36,12 +33,3 @@
 #modalFullArticle .fullarticleheader {
     background-color: var(--read_bckgrnd);
 }
-
-background-color:
-
-var
-(
---read_bckgrnd
-
-)
-;

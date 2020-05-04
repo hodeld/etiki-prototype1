@@ -38,7 +38,9 @@ def get_sortname(*args, **kwargs):
     return colname
 
 
-def get_attrs(hide_mobile=False, hide=False, hover=False, sort=False, datasort=None, add_attrs={}, *args, **kwargs):
+def get_attrs(hide_mobile=False, hide=False,
+              hover=False,
+              sort=False, datasort=None, add_attrs={}, *args, **kwargs):
     if hide:
         attr_hide_always = {'td': {'class': 'd-none'},  # hide on screens smaller than ...
                             'th': {'class': 'd-none '}
@@ -53,9 +55,10 @@ def get_attrs(hide_mobile=False, hide=False, hover=False, sort=False, datasort=N
                },
         'th': {'class': ''}
     }
+
     if hide_mobile:
-        td_class = 'd-none'  # 'd-none d-lg-table-cell'
-        th_class = 'd-none'  # 'd-none d-lg-table-cell'
+        td_class = 'd-none d-lg-table-cell'
+        th_class = 'd-none d-lg-table-cell'
 
     if hover:
         td_hover = {'title': get_hovertitle}
@@ -103,7 +106,7 @@ class BtnTendencyColumn(tables.Column):
 etiki_table_classes = 'table table-sm table-etiki'  # bootstrap classes, plus own tbl class
 
 
-class ImpEvTable(tables.Table):
+class ImpEvBaseTable(tables.Table):
     '''
     basic table for impact events
     '''
@@ -131,7 +134,8 @@ class ImpEvTable(tables.Table):
                            attrs=get_attrs(hover=True, sort=True))
     reference = tables.Column(linkify=lambda record: record.source_url,
                               verbose_name='Published in',
-                              attrs=get_attrs(sort=True, hide_mobile=True,
+                              attrs=get_attrs(sort=True,
+                                              hide_mobile=True,
                                               datasort='reference_sort',
                                               add_attrs={'a': {'target': '_blank'}},
                                               )
@@ -181,7 +185,33 @@ class ImpEvTable(tables.Table):
         return classes_set
 
 
-class ImpEvTablePrivat(ImpEvTable):
+class ImpEvTable(ImpEvBaseTable):
+    '''
+    basic table for impact events
+    '''
+    country = None
+    summary = None
+
+
+    class Meta:
+        model = ImpactEvent
+
+        exclude = ('created_at', 'updated_at',)
+        # defines also order of columns
+        fields = ('sust_domain', 'topics', 'company', 'date',
+                   'reference',
+                  )
+        # orderable = False #for all columns
+        attrs = {'class': etiki_table_classes,  # bootstrap4 classes ;table-responsive: not working with sticky
+                 }
+        row_arow_attrs = {
+            'class': 'row-normal'
+        }
+
+        template_name = ETILOG_TABLE_TEMPLATE
+
+
+class ImpEvTablePrivat(ImpEvBaseTable):
     '''
     table for impact events for internal use
     subclassing from public table
@@ -201,7 +231,7 @@ class ImpEvTablePrivat(ImpEvTable):
         sequence = ('id', 'copy', '...')
 
 
-class ImpEvDetails(ImpEvTable):
+class ImpEvDetails(ImpEvBaseTable):
     '''
     fields for impact events details
     subclassing from public table
@@ -217,5 +247,5 @@ class ImpEvDetails(ImpEvTable):
         return val_long
 
     class Meta:
-        sequence = ('sust_domain', 'company', 'date',
-                    'country', 'reference', 'topics', 'summary', '...')
+        sequence = ('sust_domain', 'topics', 'company', 'date',
+                     'reference',  'country', 'summary', '...')

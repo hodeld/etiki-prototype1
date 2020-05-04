@@ -81,10 +81,13 @@ def overview_impevs(request, reqtype=None):
         str_comp = 'companies'
         if cnt_comp == 1:
             str_comp = 'company'
+            tip_str = 'Tip: you can search for more than one company!'
+        else:
+            tip_str = ''
         msg_company = '<strong>%d %s</strong>' % (cnt_comp, str_comp)
 
         d_dict = {}
-        msg_count = 'show ' + msg_company + ' and ' + msg_impev
+        msg_count = ' '.join(('show', msg_company, 'and', msg_impev, tip_str))
         d_dict['result_type'] = result_type
         d_dict['msg_count'] = msg_count
 
@@ -101,7 +104,7 @@ def overview_impevs(request, reqtype=None):
             msg_results = 'more than <strong>%d</strong> results! shows %d newest impact events' % (
             limit_filt, limit_filt)
         else:
-            msg_results = 'shows ' + msg_company + ' and ' + msg_impev
+            msg_results = ' '.join(('shows', msg_company, 'and', msg_impev))
 
         table_qs = prefetch_data(table_qs)
         table = Table(table_qs)
