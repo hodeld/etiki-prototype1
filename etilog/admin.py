@@ -32,7 +32,10 @@ class ImpactEventAdminForm(forms.ModelForm):
 class ImpactEventAdmin(admin.ModelAdmin):
     model = ImpactEvent
     form = ImpactEventAdminForm
-    list_display = ('id', '__str__', 'company', 'updated_at',)
+    list_display = ('id', '__str__', 'company', 'updated_at',
+                    'sust_domain', 'sust_tendency', 
+                    )
+    list_filter = ('sust_domain', 'sust_tendency', 'sust_tags', 'company')
 
 
 class TagsAdmin(admin.ModelAdmin):
