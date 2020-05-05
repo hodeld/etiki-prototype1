@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.template.loader import render_to_string
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
@@ -8,14 +7,13 @@ from django.contrib.auth import logout
 import json
 
 # from 3rd apps
-from django_tables2 import RequestConfig
 
 # models
+
 from etilog.models import (ImpactEvent, Company, Reference, Country,
                            SustainabilityTag, FrequentAskedQuestions)
 
 # tables
-from .tables import ImpEvTable, ImpEvTablePrivat, ImpEvDetails
 # forms
 from .forms import (ImpactEventForm, NewSource, CompanyForm, ReferenceForm,
                     SearchForm, FreetextForm, TopicForm, TendencyLegendeDiv,
@@ -26,8 +24,8 @@ from .filters import ImpevOverviewFilter
 
 # viewlogic
 from etilog.ViewLogic.ViewImportDB import parse_xcl
-from etilog.ViewLogic.ViewMain import (get_filterdict, get_cache, query_comp_details,
-                                       prefetch_data, count_qs)
+from etilog.ViewLogic.ImpevView import (overview_filter_results, load_ie_details)
+
 from etilog.ViewLogic.ViewExport import exp_csv_nlp, exp_csv_basedata, extract_err_file
 from etilog.ViewLogic.ViewDatetime import get_now
 
@@ -41,102 +39,18 @@ def entry_mask(request):
 
 
 def overview_impevs(request, reqtype=None):
-    key_totnr = 'cnties'
-    cnt_tot = get_cache(key_totnr, request)
-    if cnt_tot == None:
-        cnt_tot = ImpactEvent.objects.all().count()
 
     landing = False
+
     if len(request.GET) == 0:  # firsttime
         filt = ImpevOverviewFilter({}, queryset=ImpactEvent.objects.none())  # needed, as should be shown imm.
-        # table_qs =  filt.qs
         jsondata = json.dumps(False)  # False #Table(table_qs)
         landing = True
 
     else:
-        filter_dict, filter_name_dict, result_type = get_filterdict(request)
-        # fromcache not used so far
-        if result_type == 'fromcache':
-            table_qs = get_cache('tableqs', request)
-
-        else:
-            filt_data_json = json.dumps(filter_name_dict)
-
-            if request.user.is_authenticated:
-                limit_filt = 1000
-                Table = ImpEvTablePrivat
-            else:
-                limit_filt = 50
-                Table = ImpEvTable
-
-            q_ie = ImpactEvent.objects.all()
-            filt = ImpevOverviewFilter(filter_dict, queryset=q_ie)
-
-            table_qs = filt.qs
-
-            count_vals = count_qs(table_qs)  # one query too much
-            (cnt_ies, cnt_comp) = count_vals
-
-        msg_impev = '<strong>%d Impact Events</strong>' % cnt_ies
-        str_comp = 'Companies'
-        if cnt_comp == 1:
-            str_comp = 'Company'
-            tip_str = '<br/>' + 'Tip: you can search for more than one company!'
-        else:
-            tip_str = ''
-        msg_company = '<strong>%d %s</strong>' % (cnt_comp, str_comp)
-
-        d_dict = {}
-        msg_count = ' '.join(('show', msg_company, 'and', msg_impev, tip_str))
-        d_dict['result_type'] = result_type
-        d_dict['msg_count'] = msg_count
-
-        if result_type == 'count':
-            d_dict['result_type'] = result_type
-
-            jsondata = json.dumps(d_dict)
-            return HttpResponse(jsondata, content_type='application/json')
-
-        if cnt_ies > limit_filt:
-            last_ies = table_qs.order_by('-date_published')[:limit_filt]
-            dt = list(last_ies)[-1].date_published
-            table_qs = table_qs.filter(date_published__gte=dt)
-            msg_results = 'more than <strong>%d</strong> results! shows %d newest Impact Events' % (
-            limit_filt, limit_filt)
-            cnt_ies = limit_filt
-        else:
-            msg_results = ' '.join(('shows', msg_company, 'and', msg_impev))
-
-        table_qs = prefetch_data(table_qs)
-        table = Table(table_qs)
-        # cnt_ies = filt.qs.count()
-        RequestConfig(request, paginate=False).configure(table)
-
-        # takes about .5 of 1s seconds to load! (when 200 loaded) -> better load them indiv.
-        ie_details = load_ie_details(table_qs)
-        comp_details, comp_ratings = get_comp_details(table_qs)
-
-        msg_results = ' '.join((msg_results,'of %d in total' % cnt_tot, tip_str))
-
-        rend_table = render_to_string('etilog/impev_table/impactevents_overview_table.html', {'table': table,
-                                                                                              }
-                                      )
-        rend_comp = render_to_string('etilog/impev_company/company_show_each.html', {'comp_details': comp_details,
-                                                                                     }
-                                     )
-
-        d_dict['result_type'] = 'table'
-        d_dict['table_data'] = rend_table
-        d_dict['message'] = msg_results
-        d_dict['ie_details'] = ie_details
-        d_dict['comp_ratings'] = comp_ratings
-        d_dict['comp_details'] = rend_comp
-        d_dict['filter_dict'] = filt_data_json
-        d_dict['ie_count'] = cnt_ies
-        d_dict['company_count'] = cnt_comp
-
+        d_dict, filt = overview_filter_results(request)
         jsondata = json.dumps(d_dict)
-        if reqtype == None:  # load directly data
+        if reqtype is None:  # load directly data
             return HttpResponse(jsondata, content_type='application/json')
 
     searchform = SearchForm()  # Filter ServerSide
@@ -461,39 +375,6 @@ def load_names(request, modelname):
 
     data = json.dumps(list(q_names))
     return HttpResponse(data, content_type='application/json')
-
-
-def load_ie_details(qs, single_ie=False):
-    ie_fields = ImpEvDetails(qs)
-    ie_dt_dict = {}
-
-    for row in ie_fields.paginated_rows:
-        rec = row.record
-        id_ie = rec.pk
-
-        html_fields = render_to_string('etilog/impev_details/impev_show_fields.html', {'row': row,
-                                                                         'rec': rec  # can be deleted
-                                                                                       })
-
-        if single_ie == True:
-            return html_fields
-        html_article = render_to_string('etilog/impev_details/impev_show_article.html', {'rec': rec
-                                                                                         })
-
-        html_header = render_to_string('etilog/impev_details/impev_show_article_hd.html', {'rec': rec
-                                                                                           })
-        ie_dt_dict[id_ie] = (html_fields, html_header, html_article)
-
-    # data = json.dumps(list(q_names))
-    data = json.dumps(ie_dt_dict)
-    return data
-
-
-def get_comp_details(q_impev):
-    details, ratings = query_comp_details(q_impev)
-
-    jsdata = json.dumps(ratings)
-    return details, jsdata
 
 
 # used in New IE Form

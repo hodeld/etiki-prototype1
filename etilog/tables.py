@@ -16,6 +16,7 @@ from .fields import dom_icon_dict
 
 ETILOG_TABLE_TEMPLATE = 'etilog/impev_table/etilog_djangotable.html'
 
+
 def get_hovertitle(*args, **kwargs):
     col = kwargs.get('bound_column', None)  # value already changed through rendering
 
@@ -192,14 +193,13 @@ class ImpEvTable(ImpEvBaseTable):
     country = None
     summary = None
 
-
     class Meta:
         model = ImpactEvent
 
         exclude = ('created_at', 'updated_at',)
         # defines also order of columns
         fields = ('sust_domain', 'topics', 'company', 'date',
-                   'reference',
+                  'reference',
                   )
         # orderable = False #for all columns
         attrs = {'class': etiki_table_classes,  # bootstrap4 classes ;table-responsive: not working with sticky
@@ -248,4 +248,4 @@ class ImpEvDetails(ImpEvBaseTable):
 
     class Meta:
         sequence = ('sust_domain', 'topics', 'company', 'date',
-                     'reference',  'country', 'summary', '...')
+                    'reference', 'country', 'summary', '...')
