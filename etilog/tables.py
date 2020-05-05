@@ -218,10 +218,10 @@ class ImpEvTablePrivat(ImpEvBaseTable):
     '''
 
     id = tables.Column(attrs=get_attrs(sort=True),
-                       linkify=lambda record: reverse('etilog:impactevent_update', args=(record.id,)))
+                       linkify=lambda record: reverse('etikicapture:impactevent_update', args=(record.id,)))
     copy = tables.Column(verbose_name='copy',
                          accessor='id', orderable=False,
-                         linkify=lambda record: reverse('etilog:impactevent_copy', args=(record.id,)))
+                         linkify=lambda record: reverse('etikicapture:impactevent_copy', args=(record.id,)))
 
     class Meta:
         # css stuff needed in inherited table as well!
