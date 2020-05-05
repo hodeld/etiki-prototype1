@@ -65,11 +65,11 @@
                                 role="button" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">Exports</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'etilog:export_csv_nlp' %}">Export:
+                                <a class="dropdown-item" href="{% url 'impexport:export_csv_nlp' %}">Export:
                                     CSV_NLP</a> <a class="dropdown-item"
-                                                   href="{% url 'etilog:export_csv_base' %}">Export: CSV_Base</a> <a
+                                                   href="{% url 'impexport:export_csv_base' %}">Export: CSV_Base</a> <a
                                     class="dropdown-item"
-                                    href="{% url 'etilog:export_csv_exterrs' %}">CSV: Extract
+                                    href="{% url 'impexport:export_csv_exterrs' %}">CSV: Extract
                                 Errors</a>
                             </div>
                         </li>
@@ -78,12 +78,12 @@
                                 role="button" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">Imports</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'etilog:import_dbdata' %}">Import
+                                <a class="dropdown-item" href="{% url 'impexport:import_dbdata' %}">Import
                                     DB Data</a>
                                 <a class="dropdown-item"
                                                    href="{% url 'etikicapture:extract_text_all' %}">Extract all IE's</a>
                                 <a class="dropdown-item"
-                                                   href="{% url 'etilog:update_db_internal' %}">Internal DB Update</a>
+                                                   href="{% url 'impexport:update_db_internal' %}">Internal DB Update</a>
                             </div>
                         </li>
                         <li class="nav-item"><a class="nav-link"

@@ -24,6 +24,8 @@ urlpatterns = [
     path('', include('etilog.urls', namespace='etilog')),
     path('', include('etikicapture.urls', namespace='etikicapture')),
     path('', include('etikihead.urls', namespace='etikihead')),
+
+    path('', include('impexport.urls', namespace='impexport')),
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
     
 ]

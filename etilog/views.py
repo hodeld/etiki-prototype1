@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import permission_required
 from django.contrib.auth import logout
 import json
 
@@ -22,13 +21,7 @@ from .forms import (NewSource, SearchForm, FreetextForm, TopicForm, TendencyLege
 from .filters import ImpevOverviewFilter
 
 # viewlogic
-from etilog.ViewLogic.ViewImportDB import parse_xcl
 from etilog.ViewLogic.ImpevView import (overview_filter_results, load_ie_details)
-
-from etilog.ViewLogic.ViewExport import exp_csv_nlp, exp_csv_basedata, extract_err_file
-from etilog.ViewLogic.ViewDatetime import get_now
-
-from etilog.ViewLogic.ViewUpdateDB import update_internal
 
 
 def entry_mask(request):
@@ -85,46 +78,6 @@ def impact_event_show(request, ie_id):
     return render(request, 'etilog/impev_show.html', {'ie_details': html_str,
                                                       'ie': ie
                                                       })
-
-
-def export_csv_nlp(request):
-    # Create the HttpResponse object with the appropriate CSV header.
-    response = HttpResponse(content_type='text/csv')
-    now = get_now()
-    date_str = now.strftime('%Y%m%d')
-    filename = 'impevs_nlp_' + date_str
-    response['Content-Disposition'] = 'attachment; filename="%s.csv"' % filename
-    response = exp_csv_nlp(response)
-
-    return response
-
-
-def export_csv_base(request):
-    # Create the HttpResponse object with the appropriate CSV header.
-    response = HttpResponse(content_type='text/csv')
-    now = get_now()
-    date_str = now.strftime('%Y%m%d')
-    filename = 'base_nlp_' + date_str
-    response['Content-Disposition'] = 'attachment; filename="%s.csv"' % filename
-    response = exp_csv_basedata(response)
-
-    return response
-
-
-def export_csv_extr(request):
-    response = HttpResponse(content_type='text/csv')
-    now = get_now()
-    date_str = now.strftime('%Y%m%d')
-    filename = 'extracterr_' + date_str
-    response['Content-Disposition'] = 'attachment; filename="%s.csv"' % filename
-    response = extract_err_file(response)
-    return response
-
-
-@permission_required('etilog.impactevent')
-def import_dbdata(request):  #
-    parse_xcl()
-    return HttpResponseRedirect(reverse('etilog:home'))
 
 
 @csrf_exempt
@@ -191,6 +144,3 @@ def startinfo(request):
                                                       })
 
 
-def update_db_internal(request):
-    update_internal()
-    return HttpResponseRedirect(reverse('etilog:home'))

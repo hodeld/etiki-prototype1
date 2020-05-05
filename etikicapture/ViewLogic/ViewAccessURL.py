@@ -6,7 +6,7 @@ Created on23.08.19
 from readabilipy import simple_json_from_html_string
 import requests
 from etilog.models import ImpactEvent
-from etilog.ViewLogic.ViewUpdateDB import postpone
+from impexport.Logic.ViewUpdateDB import postpone
 from django.db import connection
 
 
