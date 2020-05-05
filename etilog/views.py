@@ -154,9 +154,6 @@ def load_names(request, modelname):
     return HttpResponse(data, content_type='application/json')
 
 
-
-
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('login'))

@@ -5,8 +5,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 
-from etilog.ViewLogic.ViewAccessURL import parse_url, parse_url_all, extract_text_rpy
+from etikicapture.ViewLogic.ViewAccessURL import parse_url, parse_url_all, extract_text_rpy
 from etikicapture.forms import ImpactEventForm, CompanyForm, ReferenceForm
+#models
 from etilog.models import ImpactEvent, Company, Reference, SustainabilityTag
 
 
