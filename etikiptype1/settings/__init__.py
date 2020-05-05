@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     
     # Local apps
     'etilog.apps.EtilogConfig',
+    'etikicapture.apps.EtikicaptureConfig',
     'etikihead.apps.EtikiheadConfig'
 ]
 
