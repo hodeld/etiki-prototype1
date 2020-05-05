@@ -50,9 +50,7 @@
                         <li class="nav-item"><a
                                 class="nav-link {% block cls_overview %}{% endblock cls_overview %}"
                                 href="{% url 'etilog:home' %}">search</a></li>
-                        <li class="nav-item"><a
-                                class="nav-link {% block cls_about %}{% endblock cls_about %}"
-                                href="{% url 'etilog:about' %}">about</a></li>
+
 
                         <li class="nav-item"><a
                                 class="nav-link {% block cls_newie %}{% endblock cls_newie %}"
@@ -89,7 +87,7 @@
                         <li class="nav-item"><a class="nav-link"
                                                 href="{% url 'admin:index' %}">Admin</a></li>
                         <li class="nav-item"><a class="nav-link"
-                                                href="{% url 'etilog:logout' %}">Logout</a></li>
+                                                href="{% url 'etikihead:logout' %}">Logout</a></li>
                         {# else #}
                         <li class="nav-item"><a class="nav-link"
                                                 href="{% url 'login' %}">Login</a></li>

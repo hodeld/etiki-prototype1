@@ -1,8 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse, reverse_lazy
+from django.http import HttpResponse
+from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import logout
 import json
 
 # from 3rd apps
@@ -10,11 +9,11 @@ import json
 # models
 
 from etilog.models import (ImpactEvent, Company, Reference, Country,
-                           SustainabilityTag, FrequentAskedQuestions)
+                           SustainabilityTag)
 
 # tables
 # forms
-from .forms import (NewSource, SearchForm, FreetextForm, TopicForm, TendencyLegendeDiv,
+from .forms import (SearchForm, FreetextForm, TopicForm, TendencyLegendeDiv,
                     OverviewFiltHeaderForm
                     )
 # forms
@@ -22,10 +21,6 @@ from .filters import ImpevOverviewFilter
 
 # viewlogic
 from etilog.ViewLogic.ImpevView import (overview_filter_results, load_ie_details)
-
-
-def entry_mask(request):
-    return render(request, 'etilog/entrymask/main.html', )
 
 
 def overview_impevs(request, reqtype=None):
@@ -105,42 +100,5 @@ def load_names(request, modelname):
 
     data = json.dumps(list(q_names))
     return HttpResponse(data, content_type='application/json')
-
-
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('login'))
-    # Redirect to a success page.
-
-
-def legal(request):
-    return render(request, 'legal.html', )
-
-
-def about(request):
-    return render(request, 'etilog/about.html', )
-
-
-def faq(request):
-    faqs = FrequentAskedQuestions.objects.all().order_by('question')
-    return render(request, 'etilog/faq.html', {'faqs': faqs})
-
-
-def startinfo(request):
-    if request.method == 'POST':
-        form = NewSource(request.POST)
-        if form.is_valid():
-            form.save()
-            print('valid', form.cleaned_data)
-            message = 'you are helping creating a new platform, thank you!'
-        else:
-            message = 'oh, this did not work!'
-
-    else:
-        message = ''
-    form = NewSource()
-    return render(request, 'etilog/comingsoon.html', {'form': form,
-                                                      'message': message
-                                                      })
 
 
