@@ -18,7 +18,8 @@ function toggle_details(event, ele, ie_id) {
             hide_details();
         }
         else {
-            show_details(ele, ie_id);
+            hide_details();
+            show_detail(ele, ie_id);
         }
         //toggle_article(event);
     }
@@ -31,7 +32,7 @@ function hide_details() {
 
 
 //used in table on detail column
-function show_details(parele, ie_id) {
+function show_detail(parele, ie_id) {
     var rowid = ie_id + '_row';
     var detail_id = rowid + '_detail';
     if ($(parele).hasClass('parentrow')){
