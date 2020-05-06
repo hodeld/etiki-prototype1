@@ -13,13 +13,7 @@ $(document).ready(function () {
 
     });
 
-    $('#tab1[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        drawCharts();
-    });
-    $('#tab3').click(function () {
-        $('#networkAnyCompany').addClass('show');
-        $('#networkCompany').removeClass('show');
-    })
+
 });
 
 function drawCharts() {

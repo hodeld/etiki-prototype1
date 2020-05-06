@@ -3,46 +3,69 @@ $(document).ready(function () {
 
 });
 
-var drawcharts = false;
+let drawcharts = false;
 
-var ie_details = '';
-var comp_ratings = '';
-var resultMessage = '';
 
-var resultType = 'count';
+let ie_details = '';
+let comp_ratings = '';
+
+let resultType = 'data'; //'count'  or data
 
 function setData(response) {
-    var responseType = response.result_type;
-    $('#filterCountText').html(response.msg_count);
-    if (responseType === 'count') {
-        $("#id_message").html(resultMessage);
+
+    $('#filterCountText').html(response.msg_count); // in Button, always update
+    if (resultType == 'count') {
         return
     }
-    var tblData = response.table_data;
-    var compData = response.comp_details;
-    var msg = response.message;
 
-    ie_details = JSON.parse(response.ie_details);
-    comp_ratings = JSON.parse(response.comp_ratings);
-    resultMessage = msg;
-    $("#id_message").html(msg);
+    if (resultType === 'data'){
+        resultType = 'count'; // on fields which need to be data -> is set data
+        if (response.message) { //other messages if new calculated
+            setMessages(response);
+        }
+        getResults();
+    }
+}
+
+function setResultData(response){
+    let responseType = response.result_type;
+
+
+    if (responseType === 'table') {
+        tableGet = false;
+        let tblData = response.table_data;
+        //ie_details = JSON.parse(response.ie_details);
+        $("#id_ovtable").html(tblData);
+
+        set_topheadaer();//new th elements
+        prepare_list();
+        return
+    }
+
+    if (responseType === 'company') {
+        companyGet = false;
+        let compData = response.comp_details;
+        comp_ratings = JSON.parse(response.comp_ratings);
+        drawcharts = true;
+        //when google is loaded
+        google.charts.setOnLoadCallback(drawCharts);
+        $("#company-details-row").html(compData);
+        return
+    }
+
+
+}
+function setMessages(response){
+    // cached or new messages
+    $("#id_message").html(response.message);
     $(".ie_count").html(response.ie_count);
     $(".company_count").html(response.company_count);
 
-    drawcharts = true;
-    //when google is loaded
-    google.charts.setOnLoadCallback(drawCharts);
+    }
 
-    $("#company-details-row").html(compData);
-    $("#id_ovtable").html(tblData);
-
-    set_topheadaer();//new th elements
-    prepare_list();
-
-}
 
 //form ajax options
-var formOptions = {
+const formOptions = {
 
     beforeSubmit: function (arr, $form, options) {
         $("#id_message").html('calculating results …');
@@ -59,15 +82,14 @@ var formOptions = {
 
     },
     success: function (response) {
-        setData(response)
-        resultType = 'count';
+        companyGet = tableGet = true;
+        setData(response);
 
     },
-    url: list_url, //needed to be defined due to searchurl
+    url: filter_url, //needed to be defined due to searchurl
 
 
 };
-
 
 function submitFilterForm(ev) {
     var target = $(ev.target);
@@ -81,8 +103,8 @@ function submitFilterForm(ev) {
 }
 
 function submitFromID(foid) {
-    //manipulate extra data
-    formOptions.data = {result_type: resultType}
-    $(foid).ajaxSubmit(formOptions)
+    //from filter -> first count only
+    formOptions.data = {result_type: 'count'};
+    $(foid).ajaxSubmit(formOptions);
 
 }

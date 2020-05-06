@@ -20,7 +20,7 @@ from etilog.tables import ImpEvTablePrivat, ImpEvTable, ImpEvDetails
 
 def get_overview_qs(request, filter_dict, limit_filt):
     q_ie = ImpactEvent.objects.all() #  caching this does not help as will be filtered -> new hit in DB
-    filt = ImpevOverviewFilter(filter_dict, queryset=q_ie)
+    filt = ImpevOverviewFilter(filter_dict, queryset=q_ie) # needed first time for template
     q = filt.qs
 
     cnt_ies, cnt_comp = count_qs(q)  # one query too much
@@ -29,71 +29,95 @@ def get_overview_qs(request, filter_dict, limit_filt):
         dt = last_ie.date_published
         q = q.filter(date_published__gte=dt)
 
-    # todo setting cache if withou new filter for different views
-    # set_cache('q_ie', q_ie, request) #  _result_cache should be not None after evaluated
-    # set_cache('cnt_ies', cnt_ies, request)
-    # set_cache('cnt_comp', cnt_comp, request)
     q = prefetch_data(q)
+    cache_d = {
+        'q_ie': q,
+        'cnt_ies': cnt_ies,
+        'cnt_comp': cnt_comp,
+    }
+    set_cache('impev_data', cache_d, request) #  _result_cache should be not None after evaluated
 
     return q, filt, cnt_ies, cnt_comp
 
 
-def overview_filter_results(request):
-    key_totnr = 'cnties'
+def filter_results(request):
+
+    key_totnr = 'tot_ies'
     cnt_tot = get_cache(key_totnr, request)
     if cnt_tot is None:
         cnt_tot = ImpactEvent.objects.all().count()
         set_cache(key_totnr, cnt_tot, request)
 
     filter_dict, filter_name_dict, result_type = get_filterdict(request)
-    filt_data_json = json.dumps(filter_name_dict)
+    filt_data_json = json.dumps(filter_name_dict) # for setting filter visually
     if request.user.is_authenticated:
         limit_filt = 1000
-        Table = ImpEvTablePrivat
     else:
         limit_filt = 50
-        Table = ImpEvTable
 
     q_ov, filt, cnt_ies, cnt_comp = get_overview_qs(request, filter_dict, limit_filt)
-    msg_results, msg_count = overview_message(cnt_ies, cnt_comp, cnt_tot, limit_filt)
+    info_dict = overview_message(cnt_ies, cnt_comp, cnt_tot, limit_filt)
+
     d_dict = {}
+    d_dict['filter_dict'] = filt_data_json # for setting filter visually
+
+    set_cache('info_dict', info_dict, request)
+
+    get_results(request, d_dict)
+    return d_dict, filt
+
+
+def get_results(request, d_dict):
+    result_type = request.GET.get('result_type', 'count') # first time always count
+    d_dict['result_type'] = result_type
 
     if result_type == 'count':
-        d_dict['result_type'] = result_type
-        d_dict['msg_count'] = msg_count
-        return d_dict
+        info_dict = get_cache('info_dict', request)
+        d_dict.update(info_dict)
+        return
 
-    elif result_type == 'table':
+    dispatch_result = {
 
-        table = Table(q_ov)
-        RequestConfig(request, paginate=False).configure(table)
-        rend_table = render_to_string('etilog/impev_table/impactevents_overview_table.html',
-                                      {'table': table, }
-                                      )
-        d_dict['result_type'] = 'table'
-        d_dict['table_data'] = rend_table
-
-    # elif result_type == 'ie_detail':
-    # takes about .5 of 1s seconds to load! (when 200 loaded) -> better load them indiv.
-        ie_details = load_ie_details(q_ov)
-        d_dict['ie_details'] = ie_details
-    # elif result_type == 'companies':
-        comp_details, comp_ratings = get_comp_details(q_ov)
-
-        rend_comp = render_to_string('etilog/impev_company/company_show_each.html',
-                                     {'comp_details': comp_details,}
-                                     )
-        d_dict['comp_ratings'] = comp_ratings
-        d_dict['comp_details'] = rend_comp
+        'table': get_impev_table,
+        'company': get_impev_company,
+        'ie_detail': get_impev_detail,
+        # 'count': get_impev_count,
+    }
+    dispatch_result[result_type](request, d_dict)
 
 
-    d_dict['message'] = msg_results
+def get_impev_table(request, d_dict):
+    impev_data = get_cache('impev_data', request)
+    q = impev_data['q_ie']
+    if request.user.is_authenticated:
+        table_obj = ImpEvTablePrivat
+    else:
+        table_obj = ImpEvTable
+    table = table_obj(q)
+    RequestConfig(request, paginate=False).configure(table)
+    rend_table = render_to_string('etilog/impev_table/impactevents_overview_table.html',
+                                  {'table': table, }
+                                  )
+    d_dict['table_data'] = rend_table
 
-    d_dict['filter_dict'] = filt_data_json
-    d_dict['ie_count'] = cnt_ies
-    d_dict['company_count'] = cnt_comp
 
-    return d_dict, filt
+def get_impev_company(request, d_dict):
+    impev_data = get_cache('impev_data', request)
+    q = impev_data['q_ie']
+    comp_details, comp_ratings = get_comp_details(q)
+
+    rend_comp = render_to_string('etilog/impev_company/company_show_each.html',
+                                 {'comp_details': comp_details, }
+                                 )
+    d_dict['comp_ratings'] = comp_ratings
+    d_dict['comp_details'] = rend_comp
+
+
+def get_impev_detail(request, d_dict):
+    impev_data = get_cache('impev_data', request)
+    q = impev_data['q_ie']
+    ie_details = load_ie_details(q)
+    d_dict['ie_details'] = ie_details
 
 
 def load_ie_details(qs, single_ie=False):

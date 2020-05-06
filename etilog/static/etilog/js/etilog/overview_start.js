@@ -6,7 +6,10 @@
 $(document).ready(function () {
 
 
-
+    $('#tab3').click(function () {
+        $('#networkAnyCompany').addClass('show');
+        $('#networkCompany').removeClass('show');
+    })
 
     var prevScrollTop = $(window).scrollTop()
 

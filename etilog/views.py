@@ -16,11 +16,10 @@ from etilog.models import (ImpactEvent, Company, Reference, Country,
 from .forms import (SearchForm, FreetextForm, TopicForm, TendencyLegendeDiv,
                     OverviewFiltHeaderForm
                     )
-# forms
+
 from .filters import ImpevOverviewFilter
 
-# viewlogic
-from etilog.ViewLogic.ImpevView import (overview_filter_results, load_ie_details)
+from etilog.ViewLogic.ImpevView import get_results, filter_results
 
 
 def overview_impevs(request, reqtype=None):
@@ -33,10 +32,8 @@ def overview_impevs(request, reqtype=None):
         landing = True
 
     else:
-        d_dict, filt = overview_filter_results(request)
+        d_dict, filt = filter_results(request)
         jsondata = json.dumps(d_dict)
-        if reqtype is None:  # load directly data
-            return HttpResponse(jsondata, content_type='application/json')
 
     searchform = SearchForm()  # Filter ServerSide
     topicform = TopicForm()
@@ -65,24 +62,17 @@ def overview_impevs(request, reqtype=None):
     })
 
 
-def impact_event_show(request, ie_id):
-    table_qs = ImpactEvent.objects.filter(id=ie_id)
-    html_str = load_ie_details(table_qs, single_ie=True)  # same as in table
-    ie = table_qs[0]
-
-    return render(request, 'etilog/impev_show.html', {'ie_details': html_str,
-                                                      'ie': ie
-                                                      })
+def filter_impevs(request):
+    d_dict, filt = filter_results(request)
+    jsondata = json.dumps(d_dict)
+    return HttpResponse(jsondata, content_type='application/json')
 
 
-@csrf_exempt
-def get_company_notused(request):
-    if request.is_ajax():
-        company_name = request.GET['company_name']
-        company_id = Company.objects.get(name=company_name).id
-        data = {'company_id': company_id, }
-        return HttpResponse(json.dumps(data), content_type='application/json')
-    return HttpResponse("/")
+def get_result(request):
+    d_dict = {}
+    get_results(request, d_dict)
+    jsondata = json.dumps(d_dict)
+    return HttpResponse(jsondata, content_type='application/json')
 
 
 def load_names(request, modelname):

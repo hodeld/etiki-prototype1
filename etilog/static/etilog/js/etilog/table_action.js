@@ -18,6 +18,7 @@ function numOfVisibleCols(tableid) {
     return colcnt
 }
 
+//used in table on detail column
 function show_details(ele, ie_id, event) {
     if (toggle_details(event) == false) {
         return;

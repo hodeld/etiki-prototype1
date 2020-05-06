@@ -9,6 +9,7 @@ from django.db.models import Count, Q, Sum
 
 from etilog.ViewLogic.queries import get_name
 
+
 def get_filterdict(request):
     reqdict = request.GET
 
@@ -31,7 +32,7 @@ def get_filterdict(request):
     set_value('date_to')
 
     result_type = reqdict.get('result_type', 'table')
-    filter_dict.pop('result_type', None)
+    #filter_dict.pop('result_type', None)
 
     field_names = []
 
