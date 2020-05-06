@@ -6,7 +6,7 @@ $(document).ready(function () {
 let drawcharts = false;
 
 
-let ie_details = '';
+
 let comp_ratings = '';
 
 let resultType = 'data'; //'count'  or data

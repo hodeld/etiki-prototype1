@@ -37,6 +37,38 @@
     vertical-align: text-top;
 }
 
+.table-etiki .parentrow.active {
+    background-color: var(--dark_bckgrnd);
+}
+.table-etiki .parentrow.active div .normalicon {
+    display: none;
+}
+
+.table-etiki .parentrow.active div .activeicon {
+    display: none;
+}
+.table-etiki .detailrow td {
+    border-top: none;
+
+}
+.table-etiki .parentrow.active td{
+    white-space: normal;
+    text-overflow: unset;
+}
+
+.table-etiki .parentrow.active .normalicon {
+    display: none;
+}
+
+.table-etiki .parentrow.active .activeicon {
+    display: table-cell;
+}
+
+
+.table-etiki .activeicon {
+    display: none;
+}
+
 .table-etiki td {
     overflow: hidden;
     white-space: nowrap;

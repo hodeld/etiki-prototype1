@@ -13,6 +13,7 @@ $(document).ready(function () {
             drawCharts();
             companyGet = false;
         }
+        return false
 
     });
 
@@ -22,6 +23,7 @@ $(document).ready(function () {
             getResults();
             tableGet = false;
         }
+        return false
 
     });
 
@@ -46,7 +48,6 @@ const resultOptions = {
         setResultData(response);
     },
     url: result_url, //needed to be defined due to searchurl
-
 
 };
 
