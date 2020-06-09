@@ -120,10 +120,4 @@ function showCompanyDetails(event) {
     $('#tab3').tab('show');
 }
 
-function showCompanyDetails(event) {
-    var val = event.target.text;
-    $('#networkCompany').html(val);
-    $('#networkCompany').addClass('show');
-    $('#networkAnyCompany').removeClass('show');
-    $('#tab3').tab('show');
-}
+
