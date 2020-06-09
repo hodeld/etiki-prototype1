@@ -11,6 +11,7 @@ from django.template.loader import render_to_string
 # 3rd app
 import django_tables2 as tables
 # models
+from etilog.ViewLogic.queries import get_tags
 from .models import ImpactEvent
 from .fields import dom_icon_dict
 
@@ -21,6 +22,8 @@ DETAIL_ICON = '''<div class="normalicon"><i class="fas fa-chevron-down"></i></di
 '''
 
 LARGE_BREAKPOINT = 'lg'
+
+
 def get_hovertitle(*args, **kwargs):
     col = kwargs.get('bound_column', None)  # value already changed through rendering
 
@@ -89,21 +92,31 @@ def get_attrs(hide_mobile=False, hide=False,
     return attrs_dic
 
 
-tendency_id_dict = {1: 'success',
-                    2: 'danger',
-                    3: 'warning',
+tendency_id_dict = {1: 'pos',
+                    2: 'neg',
+                    3: 'con',
                     }
 
 
-class BtnTendencyColumn(tables.Column):
+class TendencyColumn(tables.Column):
 
     def render(self, value, record):
+        '<i class="fas fa-circle"></i>'
         btn_color = tendency_id_dict[record.sust_tendency.impnr]
-        btnclass = 'sustbtn btn btn-sm disabled btn-block btn-' + btn_color
-        iconname = dom_icon_dict[record.sust_domain.id]
-        html_str = render_to_string('etilog/cell_button.html',
+        btnclass = btn_color
+        html_str = render_to_string('etilog/table_cells/cell_tendency.html',
                                     {'btnclass': btnclass,
-                                     'iconname': iconname,
+                                     })
+
+        return html_str
+
+
+class CategoryColumn(tables.Column):
+
+    def render(self, value, record):
+        iconname = dom_icon_dict[record.sust_domain.id]
+        html_str = render_to_string('etilog/table_cells/cell_category.html',
+                                    {'iconname': iconname,
                                      'value': value
                                      })
 
@@ -124,8 +137,10 @@ class ImpEvBaseTable(tables.Table):
     date_sort = tables.DateColumn(accessor='date_display', format='Ymd',
                                   attrs=get_attrs(hide=True)
                                   )
+    sust_tendency = TendencyColumn(accessor='sust_tendency', verbose_name='',
+                                 attrs=get_attrs(sort=False))
 
-    sust_domain = BtnTendencyColumn(accessor='sust_domain', verbose_name='Category',
+    sust_domain = CategoryColumn(accessor='sust_domain', verbose_name='Category',
                                     attrs=get_attrs(sort=True, datasort='sudom_sort'))
     sudom_sort = tables.Column(accessor='sust_domain', attrs=get_attrs(hide=True))
 
@@ -134,11 +149,13 @@ class ImpEvBaseTable(tables.Table):
     country = tables.Column(accessor='country_display',
                             attrs=get_attrs(hide_mobile=True, sort=True))
 
-    company = tables.TemplateColumn(template_name='etilog/cell_link.html',
+    company = tables.TemplateColumn(template_name='etilog/table_cells/cell_link.html',
                                     attrs=get_attrs(sort=True, )
                                     )
     topics = tables.Column(accessor='get_tags', verbose_name='Topics',
+                           empty_values=(),
                            attrs=get_attrs(hover=True, sort=True))
+
     reference = tables.Column(linkify=lambda record: record.source_url,
                               verbose_name='Published in',
                               attrs=get_attrs(sort=True,
@@ -160,7 +177,7 @@ class ImpEvBaseTable(tables.Table):
 
         exclude = ('created_at', 'updated_at',)
         # defines also order of columns
-        fields = ('sust_domain', 'topics', 'company', 'date',
+        fields = ('sust_tendency', 'sust_domain', 'topics', 'company', 'date',
                   'country', 'reference', 'summary')
         # orderable = False #for all columns
         attrs = {'class': etiki_table_classes,  # bootstrap4 classes ;table-responsive: not working with sticky
@@ -183,6 +200,12 @@ class ImpEvBaseTable(tables.Table):
         val_short = str(value)[:40]
         return val_short + '…'
 
+    def render_topics(self, value, record):
+        if value == '':
+            return get_tags(record)
+        else:
+            return value
+
     # adds column name as css class in td tag -> for List.js:
     def get_column_class_names(self, classes_set, bound_column):
         classes_set = super().get_column_class_names(classes_set, bound_column)
@@ -204,7 +227,7 @@ class ImpEvTable(ImpEvBaseTable):
 
         exclude = ('created_at', 'updated_at',)
         # defines also order of columns
-        fields = ('sust_domain', 'topics', 'company', 'date',
+        fields = ('sust_tendency', 'sust_domain', 'topics', 'company', 'date',
                   'reference',
                   )
         # orderable = False #for all columns
@@ -235,7 +258,7 @@ class ImpEvTablePrivat(ImpEvBaseTable):
                  }
         template_name = ETILOG_TABLE_TEMPLATE
         row_attrs = {
-            'id': lambda record: record['id'] + '_row'
+            'id': lambda record: str(record.id) + '_row'
         }
         sequence = ('id', 'copy', '...')
 
@@ -252,6 +275,7 @@ class ImpEvDetails(ImpEvBaseTable):
 
     #show in parent row:
     sust_domain = None
+    sust_tendency = None
     company = None
     date = None
     topics = None

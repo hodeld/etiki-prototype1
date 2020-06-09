@@ -22,6 +22,16 @@
     text-overflow: ellipsis;
 }
 
+.table-etiki .tendency-pos { /* button within cell */
+    color: var(--positive);
+}
+.table-etiki .tendency-neg { /* button within cell */
+    color: var(--negative);
+}
+.table-etiki .tendency-con { /* button within cell */
+    color: var(--controversial);
+}
+
 .table-etiki .sustcl {
     vertical-align: middle;
 }
@@ -30,12 +40,19 @@
     width: 3%;
     white-space: normal;
 }
+.table-etiki .sust_tendency {
+    width: 35px;
+    text-align: center;
+    font-size: medium;
+}
 
 .table-etiki .details {
     width: 35px;
     white-space: normal;
     vertical-align: text-top;
 }
+
+
 
 .table-etiki .parentrow.active {
     background-color: var(--dark_bckgrnd);

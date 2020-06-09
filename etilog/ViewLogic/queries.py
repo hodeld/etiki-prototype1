@@ -12,6 +12,16 @@ from etilog.models import (Company, Reference, SustainabilityTag, Sustainability
                            Country, SustainabilityTendency)
 import unicodedata
 
+POS_IMPNR = 1
+NEG_IMPNR = 2
+CON_IMPNR = 3
+
+DOM_PEOPLE = 1
+DOM_ANIMAL = 2
+DOM_ENV = 3
+DOM_POLI = 4
+DOM_PS = 5
+
 
 def get_name(inst_id, modelname):
     if modelname == 'company':
@@ -42,9 +52,9 @@ def query_comp_details(q_impev):
     company_ids = q_impev.prefetch_related('company'
                                            ).values_list('company', flat=True).distinct()
 
-    num_pos = Count('impevents', filter=Q(impevents__sust_tendency__impnr=1))
-    num_neg = Count('impevents', filter=Q(impevents__sust_tendency__impnr=2))
-    num_con = Count('impevents', filter=Q(impevents__sust_tendency__impnr=3))
+    num_pos = Count('impevents', filter=Q(impevents__sust_tendency__impnr=POS_IMPNR))
+    num_neg = Count('impevents', filter=Q(impevents__sust_tendency__impnr=NEG_IMPNR))
+    num_con = Count('impevents', filter=Q(impevents__sust_tendency__impnr=CON_IMPNR))
 
     num_tot = Count('impevents')
 
@@ -99,4 +109,32 @@ def count_qs(qimpev):
     return vals
 
 
+POS_IMPNR = 1
+NEG_IMPNR = 2
+CON_IMPNR = 3
 
+DOM_PEOPLE = 1
+DOM_ANIMAL = 2
+DOM_ENV = 3
+DOM_POLI = 4
+DOM_PS = 5
+
+TEND_DICT = {POS_IMPNR: 'Positive',
+             NEG_IMPNR: 'Negative',
+             CON_IMPNR: 'Controversial',
+             }
+
+DOM_DICT = {
+    DOM_PEOPLE: 'Effect On People',
+    DOM_ANIMAL: 'Effect On Animals',
+    DOM_ENV: 'Effect On Environment',
+    DOM_POLI: 'Political Action',
+    DOM_PS: 'Products And Services',
+}
+
+
+def get_tags(impev):
+    impnr = impev.sust_tendency.impnr #POS_IMPNR
+    domain_id = impev.sust_domain.id
+    val = ' '.join([TEND_DICT[impnr], DOM_DICT[domain_id]])
+    return val
