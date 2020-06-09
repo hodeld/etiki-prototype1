@@ -101,7 +101,12 @@ tendency_id_dict = {1: 'pos',
 class TendencyColumn(tables.Column):
 
     def render(self, value, record):
-        '<i class="fas fa-circle"></i>'
+        return value
+
+
+class TendencyColumn_(tables.Column):
+
+    def render(self, value, record):
         btn_color = tendency_id_dict[record.sust_tendency.impnr]
         btnclass = btn_color
         html_str = render_to_string('etilog/table_cells/cell_tendency.html',
