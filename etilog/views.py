@@ -11,7 +11,6 @@ import json
 from etilog.models import (ImpactEvent, Company, Reference, Country,
                            SustainabilityTag)
 
-# tables
 # forms
 from .forms import (SearchForm, FreetextForm, TopicForm, TendencyLegendeDiv,
                     OverviewFiltHeaderForm

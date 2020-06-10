@@ -39,6 +39,8 @@ function setResultData(response){
 
         set_topheadaer();//new th elements
         prepare_list();
+        // load table in background
+        getResultsInBG('company');
         return
     }
 
@@ -50,6 +52,8 @@ function setResultData(response){
         //when google is loaded
         google.charts.setOnLoadCallback(drawCharts);
         $("#company-details-row").html(compData);
+        // load table in background
+        getResultsInBG('table');
         return
     }
 
@@ -73,11 +77,11 @@ const formOptions = {
         if (landing == true) { //means was pressed now
             startanimation(); // only first time when table is hidden
         }
-        var form = $form //$('#id_filterform');
+        var form = $form;//$('#id_filterform');
         var acturl = form.serialize(); //
 
         var searchurl = list_url + 'search?' + acturl; //list_url: etilog:home
-        window.history.pushState("", "", searchurl); //TODO direct url search
+        window.history.pushState("", "", searchurl);
 
 
     },

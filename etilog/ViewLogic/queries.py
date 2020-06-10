@@ -90,13 +90,9 @@ def query_comp_details(q_impev):
 def prefetch_data(qimpev):
     # after filter, before excuting
     q = qimpev.select_related('sust_domain', 'sust_tendency',
-                              'sust_tendency',
                               'company__activity', 'company__country',
                               'country', 'reference',
                               ).prefetch_related('sust_tags')  # M2M
-    # todo details: html, article_text article_title article_html
-
-    # prefetch_related()
     return q
 
 
