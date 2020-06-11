@@ -114,10 +114,12 @@ def get_impev_company(request, d_dict):
 
 
 def get_impev_detail(request, d_dict):
-    impev_data = get_cache('impev_data', request)
-    q = impev_data['q_ie']
+    """not from cache but from db"""
+    #impev_data = get_cache('impev_data', request)
+    #q = impev_data['q_ie']
     ie_id = int(request.GET.get('ie_id', '0'))
-    ie = q.filter(id=ie_id)
+    #ie = q.filter(id=ie_id)
+    ie = ImpactEvent.objects.filter(pk=ie_id)
     ie_details = load_ie_details(ie)
     d_dict['ie_details'] = ie_details
     d_dict['ie_id'] = ie_id
