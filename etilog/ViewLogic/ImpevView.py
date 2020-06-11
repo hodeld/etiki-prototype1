@@ -130,14 +130,20 @@ def load_ie_details(qs, single_ie=False):
     for row in ie_fields.paginated_rows:
         rec = row.record
         id_ie = rec.pk
-
+        if rec.article_title:
+            len_title = len(rec.article_title)
+            text_prev = rec.article_text[len_title:300] + '…'
+        else:
+            text_prev = None  # better: without text
         html_fields = render_to_string('etilog/impev_details/impev_show_fields.html', {'row': row,
-                                                                         'rec': rec  # can be deleted
+                                                                                       'rec': rec,  # can be deleted
+                                                                                       'text_prev': text_prev
                                                                                        })
 
         if single_ie == True:
             return html_fields
-        html_article = render_to_string('etilog/impev_details/impev_show_article.html', {'rec': rec
+
+        html_article = render_to_string('etilog/impev_details/impev_show_article.html', {'rec': rec,
                                                                                          })
 
         html_header = render_to_string('etilog/impev_details/impev_show_article_hd.html', {'rec': rec
