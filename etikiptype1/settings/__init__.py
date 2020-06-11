@@ -58,7 +58,10 @@ INSTALLED_APPS = [
     
     # Local apps
     'etilog.apps.EtilogConfig',
-    'etikihead.apps.EtikiheadConfig'
+    'etikicapture.apps.EtikicaptureConfig',
+    'etikihead.apps.EtikiheadConfig',
+    'impexport.apps.ImpexportConfig',
+
 ]
 
 MIDDLEWARE = [

@@ -13,13 +13,7 @@ $(document).ready(function () {
 
     });
 
-    $('#tab1[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        drawCharts();
-    });
-    $('#tab3').click(function () {
-        $('#networkAnyCompany').addClass('show');
-        $('#networkCompany').removeClass('show');
-    })
+
 });
 
 function drawCharts() {
@@ -126,10 +120,4 @@ function showCompanyDetails(event) {
     $('#tab3').tab('show');
 }
 
-function showCompanyDetails(event) {
-    var val = event.target.text;
-    $('#networkCompany').html(val);
-    $('#networkCompany').addClass('show');
-    $('#networkAnyCompany').removeClass('show');
-    $('#tab3').tab('show');
-}
+

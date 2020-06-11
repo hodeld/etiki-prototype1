@@ -4,7 +4,7 @@
     {% for column, cell in row.items %}
 
 
-        <div id="div_id_{{ column.header }}" class="div_iedetail">
+        <div id="div_id_{{ column.header }}" class="div_iedetail {{ column.attrs.div_class }}" >
             <label for="id_{{ column.header }}" class="detail_label">
                 {{ column.header }}
             </label>
