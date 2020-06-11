@@ -143,7 +143,7 @@ class ImpEvBaseTable(tables.Table):
                                     attrs=get_attrs(sort=True, datasort='sudom_sort'))
     sudom_sort = tables.Column(accessor='sust_domain', attrs=get_attrs(hide=True))
 
-    summary = tables.Column(accessor='summary', attrs=get_attrs(hide_mobile=True, hover=True))
+    summary = tables.Column(accessor='summary_display', attrs=get_attrs(hide_mobile=True, hover=True))
 
     country = tables.Column(accessor='country_display',
                             attrs=get_attrs(hide_mobile=True, sort=True))
@@ -285,6 +285,8 @@ class ImpEvDetails(ImpEvBaseTable):
                               attrs={'a': {'target': '_blank'},
                                      'div_class': ' d-block d-{}-none'.format(LARGE_BREAKPOINT)}
                                               )
+
+
 
     def render_summary(self, value, record):
         # if record.summara

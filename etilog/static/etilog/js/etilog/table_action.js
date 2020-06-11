@@ -19,7 +19,7 @@ function toggle_details(event, ele, ie_id) {
         }
         else {
             hide_details();
-            show_detail(parele, ie_id);
+            show_detail(ele, ie_id);
         }
         //toggle_article(event);
     }
@@ -35,18 +35,11 @@ function hide_details() {
 function show_detail(parele, ie_id) {
     var rowid = ie_id + '_row';
     var detail_id = rowid + '_detail';
-    let getDet = true;
     if ($(parele).hasClass('parentrow')){
-        $(parele).addClass('active');
-        const detailEle =  $('#' + detail_id);
-        // after sorting element disappears
-        if (detailEle.length > 0){
-            detailEle.addClass('show');
-            //$(parele).after(detailEle);
-            getDet = false;
-        }
+        $(parele).addClass('active')
+        $('#' + detail_id).addClass('show');
     }
-    if (getDet) {
+    else {
          getDetail(ie_id);
     }
 
@@ -84,14 +77,12 @@ function setDetail(response){
 
     var colcnt = numOfVisibleCols(tableid);
     var rowstr1 = 'tr scope="row" class="detailrow darkbg collapse show" id="%%detailid" ';
-    const rowstr2 = ' <td class=" details td-normal" onclick="hide_details();"></td> ';
     var rowstr3 = '<td colspan = "%%colcnt" > %%htmlstr </td> ';
     const rowstr4 = ' <td class=" details td-normal" onclick="hide_details();"></td> ';
-    var rowstr = '<' + rowstr1 + '>' + rowstr2 + rowstr3 + rowstr4 + '</tr>';
+    var rowstr = '<' + rowstr1 + '>' + rowstr3 + rowstr4 + '</tr>';
     var html_str = ie_details[ie_id][0];
     rowstr = rowstr.replace("%%htmlstr", html_str);
-    //-left and right each one td additional
-    rowstr = rowstr.replace("%%colcnt", colcnt - 2);
+    rowstr = rowstr.replace("%%colcnt", colcnt - 1);
     rowstr = rowstr.replace("%%detailid", detail_id);
 
     $(parele).removeClass('show');

@@ -271,6 +271,14 @@ class ImpactEvent(models.Model):
             value = self.company.country
         return value
 
+    @property
+    def summary_display(self):
+        if self.summary:
+            value = self.summary
+        else:
+            value = self.article_title
+        return value
+
     class Meta:
         ordering = ['-date_published', 'company']
 

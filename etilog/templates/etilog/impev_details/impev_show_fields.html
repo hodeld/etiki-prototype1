@@ -1,5 +1,5 @@
 <!--no javascript for parsing to json -->
-<div class="div_iedetails">
+<div class="col-12 d-flex flex-wrap">
 
     {% for column, cell in row.items %}
 
@@ -17,4 +17,15 @@
 
 
 </div>
-    {% include 'etilog/impev_details/impev_show_article_preview.html' %}
+
+<div class="col-12 ">
+    <div class="div_iedetail showbtn" id='id_div_btn_{{ rec.pk }}'>
+
+        <button class="btn btn-sm btn-link btn-block" type="button"
+                data-toggle="collapse"
+                onclick='full_article(this, "{{ rec.pk }}")'>
+            show full article …
+        </button>
+    </div>
+</div>
+
