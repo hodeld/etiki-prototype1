@@ -44,7 +44,7 @@ $(document).ready(function () {
     });
 
     $('#id_alltaginput').on('beforeItemRemove', function(event) {
-        resultType = 'table';
+        resultType = 'data';
         const eleId = tagElementDict[event.item.category] || '#id_f_freetext';
         removeTags(eleId, event);
     });
@@ -54,7 +54,7 @@ $(document).ready(function () {
         let tagname = $(this).attr('tagname');
         let tagid = parseInt($(this).attr('tagid'));
         let tagCategory = $(this).attr('tag-category');
-        resultType = 'table';
+        resultType = 'data';
         let suggestion = {
             'id': tagid,
             'name': tagname,

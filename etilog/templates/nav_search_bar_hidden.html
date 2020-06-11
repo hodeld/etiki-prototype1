@@ -50,13 +50,11 @@
                         <li class="nav-item"><a
                                 class="nav-link {% block cls_overview %}{% endblock cls_overview %}"
                                 href="{% url 'etilog:home' %}">search</a></li>
-                        <li class="nav-item"><a
-                                class="nav-link {% block cls_about %}{% endblock cls_about %}"
-                                href="{% url 'etilog:about' %}">about</a></li>
+
 
                         <li class="nav-item"><a
                                 class="nav-link {% block cls_newie %}{% endblock cls_newie %}"
-                                href="{% url 'etilog:newimpactevent' %}">New Impact Event</a></li>
+                                href="{% url 'etikicapture:newimpactevent' %}">New Impact Event</a></li>
 
                     </ul>
                     <ul class="navbar-nav ml-auto">
@@ -65,11 +63,11 @@
                                 role="button" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">Exports</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'etilog:export_csv_nlp' %}">Export:
+                                <a class="dropdown-item" href="{% url 'impexport:export_csv_nlp' %}">Export:
                                     CSV_NLP</a> <a class="dropdown-item"
-                                                   href="{% url 'etilog:export_csv_base' %}">Export: CSV_Base</a> <a
+                                                   href="{% url 'impexport:export_csv_base' %}">Export: CSV_Base</a> <a
                                     class="dropdown-item"
-                                    href="{% url 'etilog:export_csv_exterrs' %}">CSV: Extract
+                                    href="{% url 'impexport:export_csv_exterrs' %}">CSV: Extract
                                 Errors</a>
                             </div>
                         </li>
@@ -78,18 +76,18 @@
                                 role="button" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">Imports</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'etilog:import_dbdata' %}">Import
+                                <a class="dropdown-item" href="{% url 'impexport:import_dbdata' %}">Import
                                     DB Data</a>
                                 <a class="dropdown-item"
-                                                   href="{% url 'etilog:extract_text_all' %}">Extract all IE's</a>
+                                                   href="{% url 'etikicapture:extract_text_all' %}">Extract all IE's</a>
                                 <a class="dropdown-item"
-                                                   href="{% url 'etilog:update_db_internal' %}">Internal DB Update</a>
+                                                   href="{% url 'impexport:update_db_internal' %}">Internal DB Update</a>
                             </div>
                         </li>
                         <li class="nav-item"><a class="nav-link"
                                                 href="{% url 'admin:index' %}">Admin</a></li>
                         <li class="nav-item"><a class="nav-link"
-                                                href="{% url 'etilog:logout' %}">Logout</a></li>
+                                                href="{% url 'etikihead:logout' %}">Logout</a></li>
                         {# else #}
                         <li class="nav-item"><a class="nav-link"
                                                 href="{% url 'login' %}">Login</a></li>

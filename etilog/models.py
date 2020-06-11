@@ -280,7 +280,7 @@ class ImpactEvent(models.Model):
         return value
 
     class Meta:
-        ordering = ['date_impact', 'company']
+        ordering = ['-date_published', 'company']
 
 
 class FrequentAskedQuestions(models.Model):
