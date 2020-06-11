@@ -8,7 +8,9 @@
     color: white;
 }
 
-
+.table-etiki th {
+    font-weight: bold;
+}
 /*#impev-list > table > tbody > tr:nth-child(1) > td.badge.badge-danger.sust_category*/
 
 .table-etiki .sustbtn { /* button within cell */

@@ -33,6 +33,15 @@
     background-color: var(--full_bckgrnd) !important;
 }
 
+.btn-bright {
+    color: #000;
+    background-color: var(--bright_bg);
+}
+
+.btn-bright:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open > .dropdown-toggle.btn-info {
+    color: #fff;
+    background-color: transparent;
+}
 
 .btnselect {
 

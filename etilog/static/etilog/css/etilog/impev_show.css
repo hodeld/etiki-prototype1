@@ -1,9 +1,9 @@
-
+.div_iedetails{
+    border-bottom: white solid thin;
+}
 .div_iedetail {
-    margin: .5rem;
-    padding: 0.25rem 1rem 0rem 1rem;
+    padding-bottom: 0.75rem;
     vertical-align: top;
-    border: white solid thin;
 }
 
 .iedetail {
@@ -12,10 +12,13 @@
 }
 
 .detail_label {
-    margin-left: -0.5rem;
     font-weight: bold;
+    margin-bottom: .25rem;
 }
 
+.article-preview {
+    white-space: normal;
+}
 .iearticle {
     /* needed as in table */
     white-space: normal;
