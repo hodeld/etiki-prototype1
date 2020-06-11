@@ -13,14 +13,12 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import sys
 
-import django_heroku 
+import django_heroku
 
 from etikiptype1.settings.secrets import *
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -28,12 +26,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', 'Optional default value')
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -44,14 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    #third party apps
+
+    # third party apps
     'django_tables2',
     'django_filters',
     'bootstrap4',
     'bootstrap_datepicker_plus',
     'crispy_forms',
-    
+
     # Local apps
     'etilog.apps.EtilogConfig',
     'etikicapture.apps.EtikicaptureConfig',
@@ -69,13 +65,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-    
+
 ROOT_URLCONF = 'etikiptype1.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')], #for custom templates
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # for custom templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,21 +86,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'etikiptype1.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'etiki-local', #'etikiprtype-1-prealpha', # 'etiki-local',
+        'NAME': 'etiki-local',  # 'etikiprtype-1-prealpha', # 'etiki-local',
         'USER': db_user,
         'PASSWORD': db_password,
         'HOST': db_host,
         'PORT': db_port,
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -126,11 +120,54 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_REDIRECT_URL = 'etilog:home'
 
 
-CACHES = {
-   'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-   }
-}
+def get_cache():
+    import os
+    try:
+        servers = os.environ['MEMCACHIER_SERVERS']
+        username = os.environ['MEMCACHIER_USERNAME']
+        password = os.environ['MEMCACHIER_PASSWORD']
+        return {
+            'default': {
+                'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+                # TIMEOUT is not the connection timeout! It's the default expiration
+                # timeout that should be applied to keys! Setting it to `None`
+                # disables expiration.
+                'TIMEOUT': 60*60,
+                'LOCATION': servers,
+                'OPTIONS': {
+                    'binary': True,
+                    'username': username,
+                    'password': password,
+                    'behaviors': {
+                        # Enable faster IO
+                        'no_block': True,
+                        'tcp_nodelay': True,
+                        # Keep connection alive
+                        'tcp_keepalive': True,
+                        # Timeout settings
+                        'connect_timeout': 2000,  # ms
+                        'send_timeout': 750 * 1000,  # us
+                        'receive_timeout': 750 * 1000,  # us
+                        '_poll_timeout': 2000,  # ms
+                        # Better failover
+                        'ketama': True,
+                        'remove_failed': 1,
+                        'retry_timeout': 2,
+                        'dead_timeout': 30,
+                    }
+                }
+            }
+        }
+    except:
+        return {
+            'default': {
+                'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+            }
+        }
+
+
+CACHES = get_cache()
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -145,39 +182,37 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html" #'django_tables2/bootstrap-responsive.html'
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"  # 'django_tables2/bootstrap-responsive.html'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 BOOTSTRAP4 = {
-    #already includes jquery:
+    # already includes jquery:
     'include_jquery': 'full',
     "css_url": {
         "href": "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
-        },
+    },
     "javascript_url": {
         "url": "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
-        },
+    },
     "jquery_url": {
         "url": "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
-        },
-    #default:
-    #"css_url": {
+    },
+    # default:
+    # "css_url": {
     #    "href": "https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css",
     #    "integrity": "sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB",
     #    "crossorigin": "anonymous",
-    #},
+    # },
 }
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  #/Users/…/etikiptype1/media
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  # /Users/…/etikiptype1/media
 MEDIA_URL = '/media/'
-#needed for debug = False -> test if needs to under heroku setting
+# needed for debug = False -> test if needs to under heroku setting
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -193,36 +228,35 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-#defines static root, logger, etc.
+# defines static root, logger, etc.
 django_heroku.settings(locals())
 
-if DEBUG == True: #db_host == '127.0.0.1': 
+if DEBUG == True:  # db_host == '127.0.0.1':
 
-    #in order to find node (in readabilipy), wkhtmltopdf executable
-    os.environ['PATH']='/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
+    # in order to find node (in readabilipy), wkhtmltopdf executable
+    os.environ['PATH'] = '/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
 
-    #for query inspect
+    # for query inspect
     MIDDLEWARE += (
-    'qinspect.middleware.QueryInspectMiddleware',
+        'qinspect.middleware.QueryInspectMiddleware',
     )
-
 
     # Whether the Query Inspector should do anything (default: False)
     QUERY_INSPECT_ENABLED = True
     # Whether to log duplicate queries (default: False)
     QUERY_INSPECT_LOG_QUERIES = True
     # Whether to log queries that are above an absolute limit (default: None - disabled)
-    QUERY_INSPECT_ABSOLUTE_LIMIT = 20 # in milliseconds
+    QUERY_INSPECT_ABSOLUTE_LIMIT = 20  # in milliseconds
     # Whether to include tracebacks in the logs (default: False)
-    #QUERY_INSPECT_LOG_TRACEBACKS = True
-    
+    # QUERY_INSPECT_LOG_TRACEBACKS = True
+
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
         'formatters': {
             'verbose': {
-                'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-                'datefmt' : "%d/%b/%Y %H:%M:%S"
+                'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+                'datefmt': "%d/%b/%Y %H:%M:%S"
             },
             'simple': {
                 'format': '%(levelname)s %(message)s'
@@ -234,19 +268,19 @@ if DEBUG == True: #db_host == '127.0.0.1':
                 'class': 'logging.FileHandler',
                 'filename': os.path.join(BASE_DIR, 'algoterm.log'),
                 'formatter': 'verbose',
-                #'maxBytes': 1024 only for 'class': 'logging.handlers.RotatingFileHandler',
+                # 'maxBytes': 1024 only for 'class': 'logging.handlers.RotatingFileHandler',
             },
-            #for query_inspect
+            # for query_inspect
             'console': {
                 'level': 'DEBUG',
                 'class': 'logging.StreamHandler',
             },
         },
         'loggers': {
-            #replace normal django logger in console!
-            #'django': { 'handlers':['console'], 'propagate': True, 'level':'DEBUG',},
-            
-            #'algoterm': {'handlers': ['file'], 'level': 'DEBUG',},
+            # replace normal django logger in console!
+            # 'django': { 'handlers':['console'], 'propagate': True, 'level':'DEBUG',},
+
+            # 'algoterm': {'handlers': ['file'], 'level': 'DEBUG',},
             'qinspect': {
                 'handlers': ['console'],
                 'level': 'DEBUG',
@@ -254,5 +288,3 @@ if DEBUG == True: #db_host == '127.0.0.1':
             },
         }
     }
-    
-
