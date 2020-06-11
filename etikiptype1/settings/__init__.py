@@ -15,7 +15,6 @@ import sys
 
 import django_heroku 
 
-from etikiptype1.settings.secrets import *
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,11 +25,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+#used for heroku local: (in .env file)
 SECRET_KEY = os.getenv('SECRET_KEY', 'Optional default value')
 
+db_user = os.getenv('DB_USER', 'Optional default value')
+db_password = os.getenv('DB_PW', 'Optional default value')
+db_host = os.getenv('DB_HOST', 'Optional default value')
+db_port = os.getenv('DB_PORT', 'Optional default value')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -104,7 +108,6 @@ DATABASES = {
         'PORT': db_port,
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -185,10 +188,10 @@ spath_sys = os.path.join(base_dir, 'node_modules/ReadabiliPy')
 sys.path.append(spath_sys)
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST', L_EMAIL_HOST)
-EMAIL_PORT = os.getenv('EMAIL_PORT', L_EMAIL_PORT)
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', L_EMAIL_HOST_USER)
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', L_EMAIL_HOST_PASSWORD)
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'email_host')
+EMAIL_PORT = os.getenv('EMAIL_PORT', 'email_port')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'email_host_user')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'email_host_pw')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
