@@ -73,8 +73,8 @@ function getDetail(ie_id){
 }
 
 function setDetail(response){
-    ie_details =  JSON.parse(response.ie_details);
-
+    //ie_details =  JSON.parse(response.ie_details);
+    ie_details =  response.ie_details;
     const ie_id = response.ie_id;
     const rowid = ie_id + '_row';
     const detail_id = rowid + '_detail';
