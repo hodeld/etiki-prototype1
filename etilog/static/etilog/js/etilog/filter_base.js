@@ -8,17 +8,16 @@ $(document).ready(function () {
     });
 
     $('.filterClear').click(function () {
-        clearFilter('count')
+        clearFilter()
     });
     $('.filterClearDirect').click(function () {
-        clearFilter('data')
+        clearFilter('table')
     });
 
 
 
     $('#applyFilter').click(function () {
-        resultType = 'data';
-
+        resultType = 'table';
         submitFromID('#id_filterform');
     });
 
@@ -41,7 +40,7 @@ $(document).ready(function () {
     $('#id_search').bind('typeahead:select', function (ev, suggestion) {
 
         //from search directly table
-        resultType = 'data';
+        resultType = 'table';
 
         const val_str = suggestion['name'];
 
@@ -103,12 +102,38 @@ function set_val_from_btn(ele) {
     }
     new_li = Array.from(val_set);
     if (ele.hasClass('gettable')) {
-        resultType = 'data';
+        resultType = 'table';
     }
 
     $(input_id).val(new_li)
         .trigger('change'); //needed for hidden input fields
 }
+
+
+function set_filterbtns_notused() {
+    $.each(btns_dict, function (k, v) {
+        var part_id = '#id-' + k + '-btn-';	//k = sust_domain or sust_tendency
+        $.each(v, function (index, val_i) {
+            var btn_id = part_id + val_i;
+            //$(btn_id).addClass("active");
+            $(btn_id).click(); //clicks and adds to hidden input
+        });
+    });
+}
+
+function toggle_visibility(jqid) {
+    var e = $(jqid);
+    if (e.hasClass('show')) {
+        e.removeClass('show');
+    } else {
+        e.addClass('show');
+    }
+}
+
+
+
+
+
 
 function clearFilter(locResultType = 'count') {
     var filterCount = 0;

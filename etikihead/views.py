@@ -1,17 +1,12 @@
-from django.contrib.auth import logout
 from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import json
 
 #forms
-from django.urls import reverse
-
 from etikihead.forms import ContactForm
 
 # Create your views here.
-from etilog.forms import NewSource
-from etilog.models import FrequentAskedQuestions
 
 
 def contact(request):
@@ -44,44 +39,3 @@ def contact(request):
         return HttpResponse(jsondata, content_type='application/json')
 
     return render(request, 'etikihead/contact.html', {'form': form})
-
-
-def entry_mask(request):
-    return render(request, 'etikihead/entrymask/main.html', )
-
-
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('login'))
-    # Redirect to a success page.
-
-
-def legal(request):
-    return render(request, 'etikihead/legal.html', )
-
-
-def about(request):
-    return render(request, 'etikihead/about.html', )
-
-
-def faq(request):
-    faqs = FrequentAskedQuestions.objects.all().order_by('question')
-    return render(request, 'etikihead/faq.html', {'faqs': faqs})
-
-
-def startinfo(request):
-    if request.method == 'POST':
-        form = NewSource(request.POST)
-        if form.is_valid():
-            form.save()
-            print('valid', form.cleaned_data)
-            message = 'you are helping creating a new platform, thank you!'
-        else:
-            message = 'oh, this did not work!'
-
-    else:
-        message = ''
-    form = NewSource()
-    return render(request, 'etikihead/comingsoon.html', {'form': form,
-                                                      'message': message
-                                                      })

@@ -1,0 +1,105 @@
+{# HTML5 declaration #}
+<!DOCTYPE html>
+{% load static %}
+{% block djangoadmin %} {% endblock djangoadmin %}
+{#import bootstrap4#} {% load bootstrap4 %} {# Embed Bootstrap CSS #}
+{% bootstrap_css %} {# Embed Bootstrap JS+jQuery #} {% bootstrap_javascript jquery='full' %}
+{% block head_css %} {% endblock head_css %}
+
+<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
+
+{#import scripts need to be under url to scripts (loaded by bootstrap4) #}
+<script src="{% static 'etilog/js/base_script.js' %}"></script>
+{% block script %} {% endblock script %}
+
+<!-- Required meta tags for example for responsivity -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <title>{% block title %}etiki {% endblock title %} | etiki</title>
+
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'etilog/css/base_style.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'etilog/css/tagsinput.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'etilog/css/typeaheadjs.css' %}">
+
+</head>
+<body>
+{# Navigation Menu #}
+<header class="navbar sticky-top navbar-expand-lg navbar-dark rounded" id="id_navbar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">etiki</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#collapsenav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="collapsenav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a
+                        class="nav-link {% block cls_overview %}{% endblock cls_overview %}"
+                        href="{% url 'etilog:home' %}">Listview</a></li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item"><a
+                            class="nav-link {% block cls_newie %}{% endblock cls_newie %}"
+                            href="{% url 'etilog:newimpactevent' %}">New Impact Event</a></li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown"><a
+                            class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                            role="button" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">Exports</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'etilog:export_csv_nlp' %}">Export: CSV_NLP</a>
+                            <a class="dropdown-item" href="{% url 'etilog:export_csv_base' %}">Export: CSV_Base</a>
+                            <a class="dropdown-item" href="{% url 'etilog:export_csv_exterrs' %}">CSV: Extract
+                                Errors</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown"><a
+                            class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                            role="button" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">Imports</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'etilog:import_dbdata' %}">Import DB Data</a>
+                            <a class="dropdown-item" href="{% url 'etilog:extract_text_all' %}">Extract all IE's</a>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a class="nav-link"
+                                            href="{% url 'admin:index' %}">Admin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'etilog:logout' %}">Logout</a></li>
+
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+
+
+</header>
+
+{# The Document Body #}
+
+<div id="site-wrapper">{% block content %} {% endblock content %}
+</div>
+
+{# The Footer #}
+
+<div class="footer">
+
+    <div class="container">
+        <br>
+
+        <p>prealpha; Copyright etiki 2019</p>
+    </div>
+</div>
+{% block bottomscript %} {% endblock bottomscript %}
+</body>
+

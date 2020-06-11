@@ -3,7 +3,6 @@ Created on 25 Jul 2019
 
 @author: daim
 '''
-from threading import Thread
 
 from etilog.models import (Country, SustainabilityDomain, SustainabilityTag,
                            SustainabilityTendency, ImpactEvent,
@@ -25,11 +24,4 @@ def upd_tags_names():
         obj.save()
 
 
-def postpone(function):  # connection needs to be closed in function if db connection
-    def decorator(*args, **kwargs):
-        t = Thread(target=function, args=args, kwargs=kwargs)
-        t.daemon = True
-        t.start()
-
-    return decorator
 

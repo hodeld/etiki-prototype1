@@ -23,18 +23,15 @@
 {% block script %}
 
     <script>
-        const companies_url = "{{companies_url}}";
-        const countries_url = "{{countries_url}}";
-        const references_url = "{{references_url}}";
-        const tags_url = "{{tags_url}}";
+        var companies_url = "{{companies_url}}";
+        var countries_url = "{{countries_url}}";
+        var references_url = "{{references_url}}";
+        var tags_url = "{{tags_url}}";
+        var list_url = "{% url 'etilog:home' %}";
 
-        const list_url = "{% url 'etilog:home' %}";
-        const filter_url = "{% url 'etilog:filter' %}";
-        const result_url = "{% url 'etilog:results' %}";
+        var jsData = JSON.parse("{{ jsondata | escapejs }}");
 
-        const jsData = JSON.parse("{{ jsondata | escapejs }}");
-
-        let landing = {{landing|yesno:"true,false" }};
+        var landing = {{landing|yesno:"true,false" }};
 
     </script>
 {% endblock script %}
@@ -63,7 +60,7 @@
 
     <!-- for charts -> todo, separate; do not load jquery again (removes prev plugins -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="{% static 'etilog/js/etilog/company_base.js' %}"></script>
+    <script src="{% static 'etilog/js/etilog/company_show.js' %}"></script>
 
 
     <!--following needs to be below body due to reference to the table -->
@@ -86,8 +83,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"
             integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i"
             crossorigin="anonymous"></script>
-
-    <script src="{% static 'etilog/js/etilog/filter_result.js' %}"></script>
 
 
 

@@ -22,16 +22,6 @@
     text-overflow: ellipsis;
 }
 
-.table-etiki .tendency-pos { /* button within cell */
-    color: var(--positive);
-}
-.table-etiki .tendency-neg { /* button within cell */
-    color: var(--negative);
-}
-.table-etiki .tendency-con { /* button within cell */
-    color: var(--controversial);
-}
-
 .table-etiki .sustcl {
     vertical-align: middle;
 }
@@ -40,50 +30,11 @@
     width: 3%;
     white-space: normal;
 }
-.table-etiki .sust_tendency {
-    width: 35px;
-    text-align: center;
-    font-size: medium;
-}
 
 .table-etiki .details {
     width: 35px;
     white-space: normal;
     vertical-align: text-top;
-}
-
-
-
-.table-etiki .parentrow.active {
-    background-color: var(--dark_bckgrnd);
-}
-.table-etiki .parentrow.active div .normalicon {
-    display: none;
-}
-
-.table-etiki .parentrow.active div .activeicon {
-    display: none;
-}
-.table-etiki .detailrow td {
-    border-top: none;
-
-}
-.table-etiki .parentrow.active td{
-    white-space: normal;
-    text-overflow: unset;
-}
-
-.table-etiki .parentrow.active .normalicon {
-    display: none;
-}
-
-.table-etiki .parentrow.active .activeicon {
-    display: table-cell;
-}
-
-
-.table-etiki .activeicon {
-    display: none;
 }
 
 .table-etiki td {
