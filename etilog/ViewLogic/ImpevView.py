@@ -150,9 +150,7 @@ def load_ie_details(qs, single_ie=False):
                                                                                            })
         ie_dt_dict[id_ie] = (html_fields, html_header, html_article)
 
-    # data = json.dumps(list(q_names))
-    data = json.dumps(ie_dt_dict)
-    return data
+    return ie_dt_dict
 
 
 def get_comp_details(q_impev):
