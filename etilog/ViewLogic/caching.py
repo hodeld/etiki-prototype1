@@ -4,11 +4,14 @@ Created on 26.8.2019
 @author: daim
 '''
 
-from django.core.cache import cache  # default cache in locmem
+from django.core.cache import caches  # default cache in locmem
+
+cache = caches['local']
 
 
 def set_cache(name, value, request, timeout=3600):
     key_name = str(request.user.id) + name
+    print(key_name)
     cache.set(key_name, value, timeout)
 
 
