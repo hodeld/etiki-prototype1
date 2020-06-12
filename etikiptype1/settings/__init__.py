@@ -129,11 +129,39 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_REDIRECT_URL = 'etilog:home'
 
 
-CACHES = {
-   'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-   }
-}
+def get_cache():
+    import os
+    try:
+        servers = os.environ['MEMCACHEDCLOUD_SERVERS'].split(',')
+        username = os.environ['MEMCACHEDCLOUD_USERNAME']
+        password = os.environ['MEMCACHEDCLOUD_PASSWORD']
+        return {
+            'default': {
+                'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+            },
+            'memcache': {
+                'BACKEND': 'django_bmemcached.memcached.BMemcached',
+                # TIMEOUT is not the connection timeout! It's the default expiration
+                # timeout that should be applied to keys! Setting it to `None`
+                # disables expiration.
+                'TIMEOUT': 60*60,
+                'LOCATION': servers,
+                'OPTIONS': {
+                    'username': username,
+                    'password': password,
+                }
+            }
+        }
+    except:
+        return {
+            'default': {
+                'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+            }
+        }
+
+
+CACHES = get_cache()
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
