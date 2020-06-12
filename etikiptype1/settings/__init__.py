@@ -122,13 +122,21 @@ LOGIN_REDIRECT_URL = 'etilog:home'
 
 def get_cache():
     import os
-    try:
+    if 0 == 0:
         servers = os.environ['MEMCACHEDCLOUD_SERVERS'].split(',')
         username = os.environ['MEMCACHEDCLOUD_USERNAME']
         password = os.environ['MEMCACHEDCLOUD_PASSWORD']
         return {
             'default': {
                 'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+            },
+            'local': {
+                'BACKEND': 'lrucache_backend.LRUObjectCache',
+                'TIMEOUT': 600,
+                'OPTIONS': {
+                    'MAX_ENTRIES': 100,
+                    'CULL_FREQUENCY': 100,
+                },
             },
             'memcache': {
                 'BACKEND': 'django_bmemcached.memcached.BMemcached',
@@ -143,7 +151,7 @@ def get_cache():
                 }
             }
         }
-    except:
+    else:
         return {
             'default': {
                 'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
