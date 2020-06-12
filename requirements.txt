@@ -16,7 +16,6 @@ gunicorn==19.9.0
 html5lib==1.0.1
 jdcal==1.4.1
 lxml==4.4.1
-django-lrucache-backend==4.0.0
 openpyxl==2.6.2
 Pillow==6.1.0
 psycopg2==2.8.3
