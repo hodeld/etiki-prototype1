@@ -13,13 +13,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import sys
 
-import django_heroku 
-
-
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -35,6 +32,7 @@ db_port = os.getenv('DB_PORT', 'Optional default value')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+local_app = os.getenv('LOCAL_APP', False)
 
 ALLOWED_HOSTS = []
 
@@ -129,25 +127,42 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_REDIRECT_URL = 'etilog:home'
 
 
-CACHES = {
+def get_caches():
+    if local_app:
+        return {
 
-    'default': {
-        'BACKEND': 'django_bmemcached.memcached.BMemcached',
-        'TIMEOUT': 60 * 60,
-        'LOCATION': os.environ['MEMCACHEDCLOUD_SERVERS'].split(','),
-        'OPTIONS': {
-            'username': os.environ['MEMCACHEDCLOUD_USERNAME'],
-            'password': os.environ['MEMCACHEDCLOUD_PASSWORD'],
+            'memcached': {
+                'BACKEND': 'django_bmemcached.memcached.BMemcached',
+                'TIMEOUT': 60 * 60,
+                'LOCATION': os.environ['MEMCACHEDCLOUD_SERVERS'].split(','),
+                'OPTIONS': {
+                    'username': os.environ['MEMCACHEDCLOUD_USERNAME'],
+                    'password': os.environ['MEMCACHEDCLOUD_PASSWORD'],
+                }
+            },
+            'default': {
+                'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+            },
+            'database': {
+                'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+                'LOCATION': 'cache_table',
+            }
         }
-    },
-    'local': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
-    },
-    'database': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'cache_table',
-    }
-}
+    else:
+        return {
+            'default': {
+                'BACKEND': 'django_bmemcached.memcached.BMemcached',
+                'TIMEOUT': 60 * 60,
+                'LOCATION': os.environ['MEMCACHEDCLOUD_SERVERS'].split(','),
+                'OPTIONS': {
+                    'username': os.environ['MEMCACHEDCLOUD_USERNAME'],
+                    'password': os.environ['MEMCACHEDCLOUD_PASSWORD'],
+                }
+            },
+        }
+
+
+CACHES = get_caches()
 
 
 # Internationalization
@@ -213,64 +228,3 @@ EMAIL_USE_SSL = False
 
 #defines static root, logger, etc.
 django_heroku.settings(locals())
-
-if DEBUG == True: #db_host == '127.0.0.1': 
-
-    #in order to find node (in readabilipy), wkhtmltopdf executable
-    os.environ['PATH']='/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
-
-    #for query inspect
-    MIDDLEWARE += (
-    'qinspect.middleware.QueryInspectMiddleware',
-    )
-
-
-    # Whether the Query Inspector should do anything (default: False)
-    QUERY_INSPECT_ENABLED = True
-    # Whether to log duplicate queries (default: False)
-    QUERY_INSPECT_LOG_QUERIES = True
-    # Whether to log queries that are above an absolute limit (default: None - disabled)
-    QUERY_INSPECT_ABSOLUTE_LIMIT = 20 # in milliseconds
-    # Whether to include tracebacks in the logs (default: False)
-    #QUERY_INSPECT_LOG_TRACEBACKS = True
-    
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'formatters': {
-            'verbose': {
-                'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-                'datefmt' : "%d/%b/%Y %H:%M:%S"
-            },
-            'simple': {
-                'format': '%(levelname)s %(message)s'
-            },
-        },
-        'handlers': {
-            'file': {
-                'level': 'DEBUG',
-                'class': 'logging.FileHandler',
-                'filename': os.path.join(BASE_DIR, 'algoterm.log'),
-                'formatter': 'verbose',
-                #'maxBytes': 1024 only for 'class': 'logging.handlers.RotatingFileHandler',
-            },
-            #for query_inspect
-            'console': {
-                'level': 'DEBUG',
-                'class': 'logging.StreamHandler',
-            },
-        },
-        'loggers': {
-            #replace normal django logger in console!
-            #'django': { 'handlers':['console'], 'propagate': True, 'level':'DEBUG',},
-            
-            #'algoterm': {'handlers': ['file'], 'level': 'DEBUG',},
-            'qinspect': {
-                'handlers': ['console'],
-                'level': 'DEBUG',
-                'propagate': True,
-            },
-        }
-    }
-    
-

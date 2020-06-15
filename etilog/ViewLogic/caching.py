@@ -4,10 +4,8 @@ Created on 26.8.2019
 @author: daim
 '''
 
-from django.core.cache import caches
+from django.core.cache import cache
 from threading import Thread
-
-cache = caches['database']  # fastest cache on heroku so far (locmem does not work)
 
 
 def postpone(function):
