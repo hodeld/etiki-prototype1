@@ -5,8 +5,6 @@ $(document).ready(function () {
 
 let drawcharts = false;
 
-
-
 let comp_ratings = '';
 
 let resultType = 'data'; //'count'  or data
@@ -39,8 +37,7 @@ function setResultData(response){
 
         set_topheadaer();//new th elements
         prepare_list();
-        // load table in background
-        getResultsInBG('company');
+        getResultsInBG();
         return
     }
 
@@ -52,10 +49,14 @@ function setResultData(response){
         //when google is loaded
         google.charts.setOnLoadCallback(drawCharts);
         $("#company-details-row").html(compData);
-        // load table in background
-        getResultsInBG('table');
+        getResultsInBG();
         return
     }
+     if (responseType === 'ie_detail') {
+         ie_details =  response.ie_details;
+     }
+
+
 
 
 }
@@ -86,7 +87,7 @@ const formOptions = {
 
     },
     success: function (response) {
-        companyGet = tableGet = true;
+        companyGet = tableGet = detailsGet = true;
         setData(response);
 
     },

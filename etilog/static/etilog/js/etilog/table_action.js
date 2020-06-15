@@ -47,7 +47,7 @@ function show_detail(parele, ie_id) {
         }
     }
     if (getDet) {
-         getDetail(ie_id);
+         setDetail(ie_id);
     }
 
 }
@@ -72,10 +72,10 @@ function getDetail(ie_id){
     return
 }
 
-function setDetail(response){
+function setDetail(ie_id){
     //ie_details =  JSON.parse(response.ie_details);
-    ie_details =  response.ie_details;
-    const ie_id = response.ie_id;
+    //ie_details =  response.ie_details;
+    //const ie_id = response.ie_id;
     const rowid = ie_id + '_row';
     const detail_id = rowid + '_detail';
     const parele = $('#' + rowid);

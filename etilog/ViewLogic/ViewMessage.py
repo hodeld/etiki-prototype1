@@ -5,8 +5,9 @@ Created on 04.05.20
 '''
 
 
-
-def overview_message(cnt_ies, cnt_comp, cnt_tot, limit_filt):
+def overview_message(share_d, cnt_tot, limit_filt):
+    cnt_ies = share_d['cnt_ies']
+    cnt_comp = share_d['cnt_comp']
     msg_impev = '<strong>%d Impact Events</strong>' % cnt_ies
     str_comp = 'Companies'
     if cnt_comp == 1:
