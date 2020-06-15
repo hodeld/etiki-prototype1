@@ -28,6 +28,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'Optional default value')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+local_app = os.getenv('LOCAL_APP', False)
 
 ALLOWED_HOSTS = []
 
@@ -120,27 +121,42 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_REDIRECT_URL = 'etilog:home'
 
 
-CACHES = {
+def get_caches():
+    if local_app:
+        return {
 
-    'default': {
-        'BACKEND': 'django_bmemcached.memcached.BMemcached',
-        'TIMEOUT': 60 * 60,
-        'LOCATION': os.environ['MEMCACHEDCLOUD_SERVERS'].split(','),
-        'OPTIONS': {
-            'username': os.environ['MEMCACHEDCLOUD_USERNAME'],
-            'password': os.environ['MEMCACHEDCLOUD_PASSWORD'],
+            'memcached': {
+                'BACKEND': 'django_bmemcached.memcached.BMemcached',
+                'TIMEOUT': 60 * 60,
+                'LOCATION': os.environ['MEMCACHEDCLOUD_SERVERS'].split(','),
+                'OPTIONS': {
+                    'username': os.environ['MEMCACHEDCLOUD_USERNAME'],
+                    'password': os.environ['MEMCACHEDCLOUD_PASSWORD'],
+                }
+            },
+            'default': {
+                'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+            },
+            'database': {
+                'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+                'LOCATION': 'cache_table',
+            }
         }
-    },
-    'local': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
-    },
-    'database': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'cache_table',
-    }
-}
+    else:
+        return {
+            'default': {
+                'BACKEND': 'django_bmemcached.memcached.BMemcached',
+                'TIMEOUT': 60 * 60,
+                'LOCATION': os.environ['MEMCACHEDCLOUD_SERVERS'].split(','),
+                'OPTIONS': {
+                    'username': os.environ['MEMCACHEDCLOUD_USERNAME'],
+                    'password': os.environ['MEMCACHEDCLOUD_PASSWORD'],
+                }
+            },
+        }
 
 
+CACHES = get_caches()
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -203,7 +219,7 @@ EMAIL_USE_SSL = False
 # defines static root, logger, etc.
 django_heroku.settings(locals())
 
-if DEBUG == True:  # db_host == '127.0.0.1':
+if DEBUG:
 
     # in order to find node (in readabilipy), wkhtmltopdf executable
     os.environ['PATH'] = '/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
