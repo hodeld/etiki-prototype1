@@ -49,8 +49,9 @@ def get_filterdict(request):
             if fname in ['company', 'reference', 'tags', 'country']:
                 tag_list = []
                 for inst_id in id_list:
-                    tag_tupple = get_name(inst_id, fname)
-                    tag_list.append(tag_tupple)
+                    tag_dict = get_name(inst_id, fname)
+                    tag_dict.update({'category': fname})
+                    tag_list.append(tag_dict)
                 filter_name_dict[fname] = tag_list
             else:
                 filter_name_dict[fname] = id_list  # buttons only need ids

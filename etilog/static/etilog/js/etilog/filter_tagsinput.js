@@ -26,8 +26,6 @@ $(document).ready(function () {
         let parentId = $(this).attr('parfield');
         $(parentId).find('.bootstrap-tagsinput input.tt-input').attr('placeholder', plcHolder);
 
-
-        ;
     });
 
 
@@ -45,8 +43,8 @@ $(document).ready(function () {
 
     $('#id_alltaginput').on('beforeItemRemove', function(event) {
         resultType = 'data';
-        const eleId = tagElementDict[event.item.category] || '#id_f_freetext';
-        removeTags(eleId, event);
+        const suggestion = event.item;
+        removeTags(suggestion);
     });
 
 
@@ -60,54 +58,38 @@ $(document).ready(function () {
             'name': tagname,
             'category': tagCategory
         };
-        setTags(tagCategory, suggestion)
+        setTags(suggestion)
     });
 
 
 });
 
 const tagElementDict  = {
-    'companies': '#id_f_company',
-    'countries': '#id_f_country',
-    'references': '#id_f_reference',
+    'company': '#id_f_company',
+    'country': '#id_f_country',
+    'reference': '#id_f_reference',
     'tags': '#id_f_tags',
-}
+};
 
-function setTags(category, suggestion) {
-    const eleId = tagElementDict[category] || '#id_f_freetext';
-    const ele = $(eleId);
-    suggestion.category = category;
+function setTags(suggestion) {
+    const eleId = tagElementDict[suggestion.category] || '#id_f_freetext';
+    const idVal = suggestion.id;
 
-    ele.tagsinput('add', suggestion);	//adds tag
-    let parentId = ele.attr('parfield');
-    $(parentId).addClass('show');
-    // todo >, on delete -> delete
     const eleAllTags = $('#id_alltaginput');
     eleAllTags.tagsinput('add', suggestion);	//adds tag
+    setFilterValue(eleId, idVal, addValue=true);
 }
 
-function removeTags(eleId, event) {
-    let evOpt = {};
-    if (event.options ) {
-        if (event.options.preventRemove){
-            event.cancel = true;
-            return false;
-        }
-        else if (event.options.firstRemove){
-            evOpt.preventRemove = true;
-        }
-    }
-    else {
-        evOpt.firstRemove = true;
-    }
-    const ele = $(eleId);
-    ele.tagsinput('remove', event.item, evOpt);	//adds tag
+function removeTags(suggestion) {
+    const eleId = tagElementDict[suggestion.category] || '#id_f_freetext';
+    const idVal = suggestion.id;
+    setFilterValue(eleId, idVal, addValue=false);
 }
 
+//on search button in searchfield
 function setTagBtn(eleId) {
     const ele = $('#' + eleId);
     if (setFirstSelection(ele) === false) {
         changeWOSelection(ele);
     }
-    ;
 }

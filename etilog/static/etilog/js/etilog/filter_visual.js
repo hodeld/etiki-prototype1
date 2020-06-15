@@ -15,7 +15,6 @@ function setFilterIcon() {
 
     });
     if (!validate) {
-
         $('#icon_filter_active').hide();
         $('#icon_filter').show();
     } else {
@@ -65,18 +64,18 @@ function setFilterVisually(filterDict) {
                 });
             } else if (ele.hasClass('f_tagsinput')) {
                 function addTag(suggestion) {
-                    ele.addClass('nosubmit');
-                    ele.tagsinput('add', suggestion);
+                    const allEle = $('#id_alltaginput');
+                    allEle.addClass('nosubmit');
+                    allEle.tagsinput('add', suggestion);
                 }
 
-                var targetId = parfield //+ el_name; //eg company
+                var targetId = parfield;  //+ el_name; //eg company
                 if (el_name == 'summary') {
                     addTag(val)
                 } else {
-
                     $.each(valList, function (index, value) {
                         var suggestion = value; //filterDict[value] ;
-                        addTag(suggestion)
+                        addTag(suggestion);
                     });
                 }
                 $(targetId).addClass('show');

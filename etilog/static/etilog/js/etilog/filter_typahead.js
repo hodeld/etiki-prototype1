@@ -22,8 +22,6 @@ function setFirstSelection(ele) {
     } else {
         return false;
     }
-
-
 }
 
 //if changed without suggestion
@@ -86,12 +84,12 @@ var multitemplate_et = '</h5>';
 var limit_sugg = 3;
 
 function getTypeaheadOpt(name, source) {
-    optDict = {
+    const optDict = {
         name: name,
         source: source,
         display: 'name',
         limit: limit_sugg,
-    }
+    };
     return optDict
 }
 
@@ -106,13 +104,13 @@ function tAwHeaderOpt(optDict, title) {
     return newOptDict
 }
 
-var compTa = new getTypeaheadOpt('companies', companies);
+var compTa = new getTypeaheadOpt('company', companies);
 var compTaH = new tAwHeaderOpt(compTa, 'Companies');
 
-var refTa = new getTypeaheadOpt('references', references);
+var refTa = new getTypeaheadOpt('reference', references);
 var refTaH = new tAwHeaderOpt(refTa, 'Where was it published');
 
-var countriesTa = new getTypeaheadOpt('countries', countries);
+var countriesTa = new getTypeaheadOpt('country', countries);
 var countriesTaH = new tAwHeaderOpt(countriesTa, 'Countries');
 
 var tagsTa = new getTypeaheadOpt('tags', tags);

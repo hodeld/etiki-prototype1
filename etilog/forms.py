@@ -183,7 +183,7 @@ class OverviewFiltHeaderForm(forms.Form):
                                  btn_wrap_class='justify-content-center d-flex w-100'),
             Column(Field('alltaginput', id='id_alltaginput', css_class='f_alltagsinput',
                          wrapper_class='alltaginput justify-content-center d-flex my-2')
-                   , css_class='col-12  d-none'),
+                   , css_class='col-12 '),
 
         )
 

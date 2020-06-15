@@ -46,9 +46,9 @@ $(document).ready(function () {
         const val_str = suggestion['name'];
 
         if (val_str.length > 0) {
-            var catgory = ev.handleObj.handler.arguments[2];
-            setTags(catgory, suggestion)
-
+            const category = ev.handleObj.handler.arguments[2];
+            suggestion.category = category;
+            setTags(suggestion);
             $(this).typeahead('val', ''); //typeahead input
         }
 
@@ -83,32 +83,36 @@ function mirror_btn(ele) {
 
 function set_val_from_btn(ele) {
     mirror_btn(ele);
-    var el_id = ele.attr('id');
-    var id_val = Number(ele.attr('name'));
-    var input_id = '#' + ele.attr('targfield');
-    var pressed = ele.attr('aria-pressed'); // true or false
-
-    var el_val = $(input_id).val();
-    try {
-        var val_set = new Set(JSON.parse("[" + el_val + "]"));
-    } catch (err) {
-        console.log(err.message);
-    }
-
-
-    if (pressed == "false") { //means was pressed now
-        val_set.add(id_val);
-    } else {
-        val_set.delete(id_val);
-    }
-    new_li = Array.from(val_set);
+    const idVal = Number(ele.attr('name'));
+    const inputId = '#' + ele.attr('targfield');
     if (ele.hasClass('gettable')) {
         resultType = 'data';
     }
+    const pressed = ele.attr('aria-pressed'); // true or false
 
-    $(input_id).val(new_li)
+    let addValue = false;
+    if (pressed == "false") { //means was pressed now
+        addValue = true;
+    }
+    setFilterValue(inputId, idVal, addValue);
+}
+
+function setFilterValue(inputId, idVal, addValue) {
+
+    var el_val = $(inputId).val();
+    var val_set = new Set(JSON.parse("[" + el_val + "]"));
+
+    if (addValue) { //means was pressed now
+        val_set.add(idVal);
+    } else {
+        val_set.delete(idVal);
+    }
+    const new_li = Array.from(val_set);
+
+    $(inputId).val(new_li)
         .trigger('change'); //needed for hidden input fields
 }
+
 
 function clearFilter(locResultType = 'count') {
     var filterCount = 0;
