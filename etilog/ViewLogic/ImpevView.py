@@ -30,14 +30,13 @@ def get_overview_qs(request, filter_dict, limit_filt):
         q = q.filter(date_published__gte=dt)
 
     q = prefetch_data(q)
-    cache_d = {
+    share_d = {
         'q_ie': q,
         'cnt_ies': cnt_ies,
         'cnt_comp': cnt_comp,
     }
-    set_cache('impev_data', cache_d, request) #  _result_cache should be not None after evaluated
 
-    return q, filt, cnt_ies, cnt_comp
+    return filt, share_d
 
 
 def filter_results(request):
@@ -55,24 +54,28 @@ def filter_results(request):
     else:
         limit_filt = 50
 
-    q_ov, filt, cnt_ies, cnt_comp = get_overview_qs(request, filter_dict, limit_filt)
-    info_dict = overview_message(cnt_ies, cnt_comp, cnt_tot, limit_filt)
+    filt, share_d = get_overview_qs(request, filter_dict, limit_filt)
+
+    info_dict = overview_message(share_d, cnt_tot, limit_filt)
 
     d_dict = {}
     d_dict['filter_dict'] = filt_data_json # for setting filter visually
 
-    set_cache('info_dict', info_dict, request)
+    share_d['info_dict'] = info_dict
+    set_cache('share_d', share_d, request)
 
-    get_results(request, d_dict)
+    get_results(request, d_dict, share_d)
     return d_dict, filt
 
 
-def get_results(request, d_dict):
+def get_results(request, d_dict, share_d=None):
     result_type = request.GET.get('result_type', 'count') # first time always count
     d_dict['result_type'] = result_type
+    if share_d is None:
+        share_d = get_cache('share_d', request)
 
     if result_type == 'count':
-        info_dict = get_cache('info_dict', request)
+        info_dict = share_d['info_dict']
         d_dict.update(info_dict)
         return
 
@@ -83,12 +86,12 @@ def get_results(request, d_dict):
         'ie_detail': get_impev_detail,
         # 'count': get_impev_count,
     }
-    dispatch_result[result_type](request, d_dict)
+    print ('cnt_ies', share_d['cnt_ies'])
+    dispatch_result[result_type](request, d_dict, share_d)
 
 
-def get_impev_table(request, d_dict):
-    impev_data = get_cache('impev_data', request)
-    q = impev_data['q_ie']
+def get_impev_table(request, d_dict, share_d):
+    q = share_d['q_ie']
     if request.user.is_authenticated:
         table_obj = ImpEvTablePrivat
     else:
@@ -101,9 +104,8 @@ def get_impev_table(request, d_dict):
     d_dict['table_data'] = rend_table
 
 
-def get_impev_company(request, d_dict):
-    impev_data = get_cache('impev_data', request)
-    q = impev_data['q_ie']
+def get_impev_company(request, d_dict, share_d):
+    q = share_d['q_ie']
     comp_details, comp_ratings = get_comp_details(q)
 
     rend_comp = render_to_string('etilog/impev_company/company_show_each.html',
@@ -113,18 +115,14 @@ def get_impev_company(request, d_dict):
     d_dict['comp_details'] = rend_comp
 
 
-def get_impev_detail(request, d_dict):
-    impev_data = get_cache('impev_data', request)
-    q = impev_data['q_ie']
-    ie_id = int(request.GET.get('ie_id', '0'))
-    ie = q.filter(id=ie_id)
-    ie_details = load_ie_details(ie)
+def get_impev_detail(request, d_dict, share_d):
+    q = share_d['q_ie']
+    ie_details = load_ie_details(q)
     d_dict['ie_details'] = ie_details
-    d_dict['ie_id'] = ie_id
 
 
 def load_ie_details(qs, single_ie=False):
-    ie_fields = ImpEvDetails(qs) # todo from cache
+    ie_fields = ImpEvDetails(qs)  # todo from cache
     ie_dt_dict = {}
 
     for row in ie_fields.paginated_rows:
@@ -140,7 +138,7 @@ def load_ie_details(qs, single_ie=False):
                                                                                        'text_prev': text_prev
                                                                                        })
 
-        if single_ie == True:
+        if single_ie:
             return html_fields
 
         html_article = render_to_string('etilog/impev_details/impev_show_article.html', {'rec': rec,

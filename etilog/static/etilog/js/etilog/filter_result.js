@@ -36,6 +36,7 @@ $(document).ready(function () {
 });
 let companyGet = true;
 let tableGet = true;
+let detailsGet = true;
 let viewType = 'company'; // or table or imp_detail
 
 const resultOptions = {
@@ -59,21 +60,22 @@ function getResults(){
     return false;
 }
 
-function getResultsInBG(viewName='table'){
-    if (viewName === 'table') {
-        if (tableGet) {
-            resultOptsBG.data = {result_type: viewName};
-            $.ajax(resultOptsBG); // ajax request without form submit
-            tableGet = false;
-        }
-
+function getResultsInBG(){
+    //load all other results in background
+    if (companyGet) {
+        resultOptsBG.data = {result_type: 'company'};
+        $.ajax(resultOptsBG); // ajax request without form submit
+        companyGet = false;
     }
-    if (viewName === 'company') {
-        if (companyGet) {
-            resultOptsBG.data = {result_type: viewName};
-            $.ajax(resultOptsBG); // ajax request without form submit
-            companyGet = false;
-        }
-
+    if (tableGet) {
+        resultOptsBG.data = {result_type: 'table'};
+        $.ajax(resultOptsBG); // ajax request without form submit
+        tableGet = false;
     }
+     if (detailsGet) {
+         resultOptsBG.data = {result_type: 'ie_detail'};
+         $.ajax(resultOptsBG); // ajax request without form submit
+         detailsGet = false;
+
+     }
 }

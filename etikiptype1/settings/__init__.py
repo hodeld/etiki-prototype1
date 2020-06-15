@@ -120,46 +120,25 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_REDIRECT_URL = 'etilog:home'
 
 
-def get_cache():
-    import os
-    if 0 == 0:
-        servers = os.environ['MEMCACHEDCLOUD_SERVERS'].split(',')
-        username = os.environ['MEMCACHEDCLOUD_USERNAME']
-        password = os.environ['MEMCACHEDCLOUD_PASSWORD']
-        return {
-            'default': {
-                'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
-            },
-            'local': {
-                'BACKEND': 'lrucache_backend.LRUObjectCache',
-                'TIMEOUT': 600,
-                'OPTIONS': {
-                    'MAX_ENTRIES': 100,
-                    'CULL_FREQUENCY': 100,
-                },
-            },
-            'memcache': {
-                'BACKEND': 'django_bmemcached.memcached.BMemcached',
-                # TIMEOUT is not the connection timeout! It's the default expiration
-                # timeout that should be applied to keys! Setting it to `None`
-                # disables expiration.
-                'TIMEOUT': 60*60,
-                'LOCATION': servers,
-                'OPTIONS': {
-                    'username': username,
-                    'password': password,
-                }
-            }
-        }
-    else:
-        return {
-            'default': {
-                'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
-            }
-        }
+CACHES = {
 
-
-CACHES = get_cache()
+    'default': {
+        'BACKEND': 'django_bmemcached.memcached.BMemcached',
+        'TIMEOUT': 60 * 60,
+        'LOCATION': os.environ['MEMCACHEDCLOUD_SERVERS'].split(','),
+        'OPTIONS': {
+            'username': os.environ['MEMCACHEDCLOUD_USERNAME'],
+            'password': os.environ['MEMCACHEDCLOUD_PASSWORD'],
+        }
+    },
+    'local': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+    },
+    'database': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'cache_table',
+    }
+}
 
 
 # Internationalization
