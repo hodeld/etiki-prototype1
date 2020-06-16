@@ -30,6 +30,13 @@ CHOICES = domains
 datefiltername = 'datefilter'
 
 
+class NotReqCharF(forms.CharField):
+    def __init__(self, *args, **kwargs):
+        lbl = kwargs.pop('label', '')
+
+        super(NotReqCharF, self).__init__(required=False, label=lbl, *args, **kwargs)
+
+
 class SearchForm(forms.Form):
     search = forms.CharField(label='', required=False)
 
@@ -90,6 +97,18 @@ class ImpevOverviewFForm(forms.Form):
     '''
     form for ImpevOverview filter. labels are defined in filter.
     '''
+    date_from = NotReqCharF(label='Date from')
+    date_to = NotReqCharF(label='Date to')
+
+    company = NotReqCharF()
+    reference = NotReqCharF()
+    country = NotReqCharF()
+    summary = NotReqCharF()
+
+    tags = NotReqCharF()
+
+    sust_domain = NotReqCharF()
+    sust_tendency = NotReqCharF()
 
     def __init__(self, *args, **kwargs):
         super(ImpevOverviewFForm, self).__init__(*args, **kwargs)
@@ -99,7 +118,7 @@ class ImpevOverviewFForm(forms.Form):
         self.fields['date_from'].label = ''
         self.fields['date_to'].label = ''
 
-        self.fields['company'].widget = forms.TextInput()
+        #self.fields['company'].widget = forms.TextInput()
         self.fields['country'].widget = forms.TextInput()
         self.fields['reference'].widget = forms.TextInput()
         self.fields['tags'].widget = forms.TextInput()

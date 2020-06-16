@@ -13,10 +13,8 @@ from etilog.models import (ImpactEvent, Company, Reference, Country,
 
 # forms
 from .forms import (SearchForm, FreetextForm, TopicForm, TendencyLegendeDiv,
-                    OverviewFiltHeaderForm
+                    OverviewFiltHeaderForm, ImpevOverviewFForm
                     )
-
-from .filters import ImpevOverviewFilter
 
 from etilog.ViewLogic.ImpevView import get_results, filter_results
 
@@ -26,12 +24,11 @@ def overview_impevs(request, reqtype=None):
     landing = False
 
     if len(request.GET) == 0:  # firsttime
-        filt = ImpevOverviewFilter({}, queryset=ImpactEvent.objects.none())  # needed, as should be shown imm.
         jsondata = json.dumps(False)  # False #Table(table_qs)
         landing = True
 
     else:
-        d_dict, filt = filter_results(request)
+        d_dict = filter_results(request)
         jsondata = json.dumps(d_dict)
 
     searchform = SearchForm()  # Filter ServerSide
@@ -39,6 +36,7 @@ def overview_impevs(request, reqtype=None):
     freetextform = FreetextForm()
     tendlegend = TendencyLegendeDiv()
     filtheader = OverviewFiltHeaderForm()
+    filtform = ImpevOverviewFForm()
 
     companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
@@ -46,7 +44,7 @@ def overview_impevs(request, reqtype=None):
     tags_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'tags'})
 
     return render(request, 'etilog/overview.html', {
-        'filter': filt,
+        'filter': filtform,
         'filtheader': filtheader,
         'searchform': searchform,
         'topicform': topicform,
@@ -62,7 +60,7 @@ def overview_impevs(request, reqtype=None):
 
 
 def filter_impevs(request):
-    d_dict, filt = filter_results(request)
+    d_dict = filter_results(request)
     jsondata = json.dumps(d_dict)
     return HttpResponse(jsondata, content_type='application/json')
 

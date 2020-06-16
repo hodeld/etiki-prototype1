@@ -12,16 +12,12 @@ from etilog.ViewLogic.ViewMessage import overview_message
 from etilog.ViewLogic.caching import (get_cache, set_cache)
 from etilog.ViewLogic.filtering import get_filterdict
 from etilog.ViewLogic.queries import count_qs, prefetch_data, query_comp_details
-from etilog.filters import ImpevOverviewFilter
 from etilog.models import (ImpactEvent, Company, Reference, Country,
                            SustainabilityTag, FrequentAskedQuestions)
 from etilog.tables import ImpEvTablePrivat, ImpEvTable, ImpEvDetails
 
 
-def get_overview_qs(request, filter_dict, limit_filt):
-    q_ie = ImpactEvent.objects.all() #  caching this does not help as will be filtered -> new hit in DB
-    filt = ImpevOverviewFilter(filter_dict, queryset=q_ie) # needed first time for template
-    q = filt.qs
+def get_overview_qs(request, q, limit_filt):
 
     cnt_ies, cnt_comp = count_qs(q)  # one query too much
     if cnt_ies > limit_filt:
@@ -36,7 +32,7 @@ def get_overview_qs(request, filter_dict, limit_filt):
         'cnt_comp': cnt_comp,
     }
 
-    return filt, share_d
+    return share_d
 
 
 def filter_results(request):
@@ -47,14 +43,14 @@ def filter_results(request):
         cnt_tot = ImpactEvent.objects.all().count()
         set_cache(key_totnr, cnt_tot, request)
 
-    filter_dict, filter_name_dict, result_type = get_filterdict(request)
+    qs, filter_name_dict, result_type = get_filterdict(request)
     filt_data_json = json.dumps(filter_name_dict) # for setting filter visually
     if request.user.is_authenticated:
         limit_filt = 1000
     else:
         limit_filt = 50
 
-    filt, share_d = get_overview_qs(request, filter_dict, limit_filt)
+    share_d = get_overview_qs(request, qs, limit_filt)
 
     info_dict = overview_message(share_d, cnt_tot, limit_filt)
 
@@ -65,7 +61,7 @@ def filter_results(request):
     set_cache('share_d', share_d, request)
 
     get_results(request, d_dict, share_d)
-    return d_dict, filt
+    return d_dict
 
 
 def get_results(request, d_dict, share_d=None):
