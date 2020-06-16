@@ -16,31 +16,32 @@ from datetime import datetime
 def get_filterdict(request):
     reqdict = request.GET
 
-    def set_value(keyname):
-        val = reqdict.get(keyname, '')
-        if val:
-            filter_dict[keyname] = val
+    def set_value(fname):
+        val_r = reqdict.get(fname, '')
+        if val_r:
+            return val_r
         else:
-            filter_dict[keyname] = None
+            return None
 
     def get_idlist(fname):
-        id_strli = filter_dict.get(fname, [''])  # can be list ['']
-        id_str = id_strli[0]  # ','.join(id_list)
-
-        if len(id_str) > 0:  #
-            value_list = json.loads(id_str)
+        id_strli = reqdict.get(fname, '')  # can be list ['']
+        if id_strli:  #
+            value_list = json.loads(id_strli)
         else:
             value_list = None
         return value_list
 
-    filter_dict = dict(reqdict)
+    value_dict = dict(reqdict)
+    filter_dict = {}
     filter_name_dict = {}  # for setting visually values
-    set_value('date_from')
-    set_value('date_to')
 
     result_type = reqdict.get('result_type', 'table')
-    #filter_dict.pop('result_type', None)
-
+    field_names = ['date_from', 'date_to']
+    for fname in field_names:
+        val = set_value(fname)
+        if val:
+            filter_name_dict[fname] = val
+            filter_dict[fname] = val
 
     field_names = ['company', 'reference', 'country', 'tags',
                    'sust_domain', 'sust_tendency',
@@ -49,8 +50,8 @@ def get_filterdict(request):
 
     for fname in field_names:
         value_list = get_idlist(fname)
-        filter_dict[fname] = value_list  # for multiple: needs to be a list
-        if value_list:  # and fname in ['company', 'reference', 'sust_tendency', 'tags']:
+        if value_list:
+            filter_dict[fname] = value_list  # for multiple: needs to be a list
             if fname in ['company', 'reference', 'tags', 'country',]:
                 tag_list = []
                 for inst_id in value_list:
@@ -68,13 +69,42 @@ def get_filterdict(request):
                                 }
                     tag_list.append(tag_dict)
                 filter_name_dict[fname] = tag_list
-                #filter_dict[fname] = ','.join(value_list)
 
             else:
                 filter_name_dict[fname] = value_list  # buttons only need ids
 
     qs = filter_queryset(filter_dict)
     return qs, filter_name_dict, result_type
+
+
+def filter_queryset(filter_dict):
+    qs = ImpactEvent.objects.all()  # caching this does not help as will be filtered -> new hit in DB
+
+
+    filter_method = {'country': f_country_idlist,
+                     'reference': f_multiple,
+                     'tags': f_multiple,
+                     'company': f_multiple,
+                     'sust_domain': f_multiple,
+                     'sust_tendency': f_multiple,
+                     'summary': filter_summary_list,
+                     'date_from': f_date_range,
+                     'date_to': f_date_range,
+                     }
+
+    field_name_d = {'tags': 'sust_tags',
+                    'date_from': 'date_published',
+                    'date_to': 'date_published', }
+
+    lookup_d = {'date_from': 'gt',
+                'date_to': 'lt', }
+
+    for fname, val in filter_dict.items():
+        lookup_expr = lookup_d.get(fname, None)
+        fn = field_name_d.get(fname, fname)
+        qs = filter_method[fname](qs, fn, val, lookup_expr)
+
+    return qs
 
 
 def f_country_idlist(qs, name, id_list, *args):
@@ -113,42 +143,6 @@ def f_date_range(qs, name, value, lookup_expr, *args):
     return qs
 
 
-def filter_queryset(filter_dict):
-    qs = ImpactEvent.objects.all()  # caching this does not help as will be filtered -> new hit in DB
-
-    field_names = ['company', 'reference', 'country', 'tags',
-                   'sust_domain', 'sust_tendency',
-                   'summary',
-                   'date_from', 'date_to'
-                   ]
-
-    filter_method = {'country': f_country_idlist,
-                     'reference': f_multiple,
-                     'tags': f_multiple,
-                     'company': f_multiple,
-                     'sust_domain': f_multiple,
-                     'sust_tendency': f_multiple,
-                     'summary': filter_summary_list,
-                     'date_from': f_date_range,
-                     'date_to': f_date_range,
-                     }
-
-    field_name_d = {'tags': 'sust_tags',
-                    'date_from': 'date_published',
-                    'date_to': 'date_published', }
-
-    lookup_d = {'date_from': 'gt',
-                'date_to': 'lt', }
-
-    for fname in field_names:
-        val = filter_dict[fname]
-        if val is None:
-            continue
-        lookup_expr = lookup_d.get(fname, None)
-        fn = field_name_d.get(fname, fname)
-        qs = filter_method[fname](qs, fn, val, lookup_expr)
-
-    return qs
 
 
 

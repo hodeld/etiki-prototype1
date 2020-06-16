@@ -72,7 +72,7 @@ const tagElementDict  = {
     'summary': '#id_f_summary',
 };
 
-function setTags(suggestion, ) {
+function setTags(suggestion) {
     const eleId = tagElementDict[suggestion.category];
     const idVal = suggestion.id;
 
