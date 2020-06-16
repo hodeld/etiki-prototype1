@@ -55,13 +55,6 @@ $(document).ready(function () {
     });
 
 
-
-
-    $("#id_search").keyup(function (event) {
-        var ele = $(this);
-        keyBehaviorSearch(event, ele);
-    });
-
 });
 
 
@@ -99,17 +92,23 @@ function set_val_from_btn(ele) {
 
 function setFilterValue(inputId, idVal, addValue) {
 
-    var el_val = $(inputId).val();
-    var val_set = new Set(JSON.parse("[" + el_val + "]"));
-
+    let el_val = $(inputId).val();
+    let val_set = new Set();
+    if (el_val !== ''){
+        val_set = new Set(JSON.parse(el_val));
+    }
     if (addValue) { //means was pressed now
         val_set.add(idVal);
     } else {
         val_set.delete(idVal);
     }
-    const new_li = Array.from(val_set);
+    const newLi = Array.from(val_set);
+    let newVal = '';
+    if (newLi.length > 0) {
+        newVal = JSON.stringify(newLi);
+    }
 
-    $(inputId).val(new_li)
+    $(inputId).val(newVal)
         .trigger('change'); //needed for hidden input fields
 }
 
@@ -119,7 +118,7 @@ function clearFilter(locResultType = 'count') {
     $('.f_tagsinput').each(function () {
 
         var ele = $(this);
-        if (ele.val() != '') {
+        if (ele.val() !== '') {
             ele.addClass('nosubmit');
             ele.tagsinput('removeAll');
         }

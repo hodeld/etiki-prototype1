@@ -86,7 +86,6 @@ def get_results(request, d_dict, share_d=None):
         'ie_detail': get_impev_detail,
         # 'count': get_impev_count,
     }
-    print ('cnt_ies', share_d['cnt_ies'])
     dispatch_result[result_type](request, d_dict, share_d)
 
 

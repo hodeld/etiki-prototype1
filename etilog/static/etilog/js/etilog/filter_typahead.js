@@ -1,18 +1,25 @@
 $(document).ready(function () {
 
     $(".f_tagsinput").keyup(function (event) {
-            var ele = $(this);
+            const ele = $(this);
             keyBehaviorSearch(event, ele);
         });
+
+
+
+    $("#id_search").keyup(function (event) {
+        var ele = $(this);
+        keyBehaviorSearch(event, ele);
+    });
 });
 
-function keyBehavior(event, ele) {
-    if (event.keyCode === 13) { //enter
-        setFirstSelection(ele);
-        ele.blur();
-        ele.focus();
+
+//on search button in searchfield
+function setTagBtn(eleId) {
+    const ele = $('#' + eleId);
+    if (setFirstSelection(ele) === false) {
+        changeWOSelection(ele);
     }
-    ;
 }
 
 function setFirstSelection(ele) {
@@ -26,29 +33,25 @@ function setFirstSelection(ele) {
 
 //if changed without suggestion
 function changeWOSelection(ele) {
-
-    var eletarget = $('#id_f_summary');
-    var el_id = '#id_row_f_summary';
-
-    var val_str = ele.typeahead('val');
-
-    eletarget.tagsinput('add', val_str);	//adds tag
-    $(el_id).show();
+    resultType = 'data';
+    const val_str = ele.typeahead('val');
+    let suggestion = {
+            'id': val_str,
+            'name': val_str,
+            'category': 'summary'
+        };
+    setTags(suggestion);
     ele.typeahead('val', ''); //typeahead input
     ele.focus();
-
 }
 
 
 function keyBehaviorSearch(event, ele) {
     if (event.keyCode === 13) { //enter
-        setFirstSelection(ele);
-        if (setFirstSelection(ele) === false) {
+        if (ele.val()!== '') {
             changeWOSelection(ele);
         }
-        ;
     }
-    ;
 }
 
 //initialize BLOODHOUND
@@ -61,7 +64,7 @@ function getBloodhoundOpt(field_url) {
             url: field_url, // url set in html
             cache: true	 // defaults to true -> for testing
         },
-    }
+    };
     return optDict
 }
 
@@ -126,7 +129,7 @@ var allTypeaheadDic = {
 var allTaHList = [
     {
         highlight: true,
-        autoselect: true,
+        autoselect: true,  //highlights and selects on enter
     },
     compTaH, countriesTaH, refTaH,
     tagsTaH

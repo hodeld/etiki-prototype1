@@ -70,14 +70,10 @@ function setFilterVisually(filterDict) {
                 }
 
                 var targetId = parfield;  //+ el_name; //eg company
-                if (el_name == 'summary') {
-                    addTag(val)
-                } else {
-                    $.each(valList, function (index, value) {
+                $.each(valList, function (index, value) {
                         var suggestion = value; //filterDict[value] ;
                         addTag(suggestion);
                     });
-                }
                 $(targetId).addClass('show');
             } else if (ele.hasClass('dateyearpicker')) {
 

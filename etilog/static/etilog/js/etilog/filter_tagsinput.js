@@ -58,7 +58,7 @@ $(document).ready(function () {
             'name': tagname,
             'category': tagCategory
         };
-        setTags(suggestion)
+        setTags(suggestion);
     });
 
 
@@ -69,10 +69,11 @@ const tagElementDict  = {
     'country': '#id_f_country',
     'reference': '#id_f_reference',
     'tags': '#id_f_tags',
+    'summary': '#id_f_summary',
 };
 
-function setTags(suggestion) {
-    const eleId = tagElementDict[suggestion.category] || '#id_f_freetext';
+function setTags(suggestion, ) {
+    const eleId = tagElementDict[suggestion.category];
     const idVal = suggestion.id;
 
     const eleAllTags = $('#id_alltaginput');
@@ -84,12 +85,4 @@ function removeTags(suggestion) {
     const eleId = tagElementDict[suggestion.category] || '#id_f_freetext';
     const idVal = suggestion.id;
     setFilterValue(eleId, idVal, addValue=false);
-}
-
-//on search button in searchfield
-function setTagBtn(eleId) {
-    const ele = $('#' + eleId);
-    if (setFirstSelection(ele) === false) {
-        changeWOSelection(ele);
-    }
 }
