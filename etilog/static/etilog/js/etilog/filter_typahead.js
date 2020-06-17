@@ -129,12 +129,16 @@ var countriesTaH = new tAwHeaderOpt(countriesTa, 'Countries');
 var tagsTa = new getTypeaheadOpt('tags', tags);
 var tagsTaH = new tAwHeaderOpt(tagsTa, 'Topics');
 
+let refExcTa = new getTypeaheadOpt('reference_exc', references);
+
 var allTypeaheadDic = {
     'tags': tagsTa,
     'company': compTa,
     'reference': refTa,
     'country': countriesTa,
+    'reference_exc_tinp': refExcTa,
 };
+
 
 var allTaHList = [
     {

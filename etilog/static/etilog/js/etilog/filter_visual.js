@@ -45,7 +45,7 @@ function setFilterVisually(filterDict) {
         if (valList.length > 0) {
             filterCount++;
             fSel = nameSel.replace('{name}', el_name);
-            ele =  fform.find(fSel);
+            ele = fform.find(fSel);
             var parfield = ele.attr('parfield');
             ele.addClass('nosubmit');
             if (ele.hasClass('btninput')) {
@@ -63,23 +63,28 @@ function setFilterVisually(filterDict) {
                     }
                 });
             } else if (ele.hasClass('f_tagsinput')) {
-
-
                 $.each(valList, function (index, value) {
-                        let suggestion = value; //filterDict[value] ;
-                        ele.addClass('nosubmit');
-                        setTags(suggestion, true);
-                    });
+                    let suggestion = value; //filterDict[value] ;
+                    ele.addClass('nosubmit');
+                    setTags(suggestion, true);
+                });
                 //let targetId = parfield;  //+ el_name; //eg company
                 //$(targetId).addClass('show');
             } else if (ele.hasClass('dateyearpicker')) {
                 ele.data("DateTimePicker").date(valList);
+            } else if (ele.hasClass('f_tagsinput_spec')) {
+                $.each(valList, function (index, value) {
+                    let suggestion = value; //filterDict[value] ;
+                    ele.addClass('nosubmit');
+                    const tagInputEle = $('#id_f_reference_exc_tinp');
+                    tagInputEle.tagsinput('add', suggestion); //sets also filtervalue
+                });
             }
 
-            $('#icon_filter').hide();
-            $('#icon_filter_active').show();
-
         }
+
+        $('#icon_filter').hide();
+        $('#icon_filter_active').show();
+        $('#filter-count').html(filterCount);
     }
-    $('#filter-count').html(filterCount);
 }

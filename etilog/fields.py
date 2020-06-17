@@ -219,7 +219,7 @@ class LabelRow(Layout):
 
         name_stripped = labelname.replace(' ', '')
         div_id = 'row' + name_stripped
-        div_class = ''
+        div_class = 'taginput-row'
         icon_str = '<i class="fas fa-chevron-down ml-1"></i> '
         cont = labelname + icon_str
         btn = StrictButton(cont, name='btn' + name_stripped, value=name_stripped,
@@ -262,7 +262,7 @@ class AllTagsInput(Layout):
                   )
         )
 
-#can be used for all tags input
+
 class LabelRowTagsInput(LabelRow):
     def __init__(self, field_name, col_class, labelname, field_class='',
                  placeholder=None,
@@ -274,7 +274,7 @@ class LabelRowTagsInput(LabelRow):
             placeholder = labelname
         name_stripped = labelname.replace(' ', '')
         parent_id = '#row' + name_stripped  # same as labelrow
-        cls_taginp = 'f_tagsinput'
+        cls_taginp = 'f_tags_search_inp'
         rowcontent = Column(Field(field_name, id=field_id,
                                   parfield=parent_id,
 
@@ -285,3 +285,7 @@ class LabelRowTagsInput(LabelRow):
                             )
 
         LabelRow.__init__(self, rowcontent, labelname)
+
+
+
+

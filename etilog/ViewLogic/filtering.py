@@ -16,6 +16,11 @@ from datetime import datetime
 def get_filterdict(request):
     reqdict = request.GET
 
+    if request.resolver_match.url_name == 'home_filtered':
+        filter_name_dict = {}  # for setting visually values
+    else:
+        filter_name_dict = None
+
     def set_value(fname):
         val_r = reqdict.get(fname, '')
         if val_r:
@@ -31,9 +36,40 @@ def get_filterdict(request):
             value_list = None
         return value_list
 
-    value_dict = dict(reqdict)
+    def get_fname_dict():
+        """dict for setting filter visually -> only when coming from outside"""
+        if filter_name_dict is None:
+            return
+        if fname in ['company', 'reference', 'tags', 'country',]:
+            tag_list = []
+            for inst_id in value_list:
+                tag_dict = get_name(inst_id, fname)
+                tag_dict.update({'category': fname})
+                tag_list.append(tag_dict)
+            filter_name_dict[fname] = tag_list
+        elif fname in ['summary']:
+            tag_list = []
+            for text_str in value_list:
+                tag_dict = {'category': fname,
+                            'id': text_str,
+                            'name': text_str,
+                            }
+                tag_list.append(tag_dict)
+            filter_name_dict[fname] = tag_list
+        elif fname in [ 'reference_exc', ]:
+            tag_list = []
+            for inst_id in value_list:
+                tag_dict = get_name(inst_id, 'reference')
+                tag_dict.update({'category': fname})
+                tag_list.append(tag_dict)
+            filter_name_dict[fname] = tag_list
+
+        elif fname in ['date_from', 'date_to']:
+            filter_name_dict[fname] = val
+        else:
+            filter_name_dict[fname] = value_list  # buttons only need ids
+
     filter_dict = {}
-    filter_name_dict = {}  # for setting visually values
 
     result_type = reqdict.get('result_type', 'table')
     field_names = ['date_from', 'date_to']
@@ -43,35 +79,16 @@ def get_filterdict(request):
             filter_name_dict[fname] = val
             filter_dict[fname] = val
 
-    field_names = ['company', 'reference', 'country', 'tags',
+    field_names = ['company', 'reference', 'country', 'tags', 'reference_exc',
                    'sust_domain', 'sust_tendency',
-                   'summary'
+                   'summary',
                    ]
 
     for fname in field_names:
         value_list = get_idlist(fname)
         if value_list:
             filter_dict[fname] = value_list  # for multiple: needs to be a list
-            if fname in ['company', 'reference', 'tags', 'country',]:
-                tag_list = []
-                for inst_id in value_list:
-                    tag_dict = get_name(inst_id, fname)
-
-                    tag_dict.update({'category': fname})
-                    tag_list.append(tag_dict)
-                filter_name_dict[fname] = tag_list
-            elif fname in ['summary']:
-                tag_list = []
-                for text_str in value_list:
-                    tag_dict = {'category': fname,
-                                'id': text_str,
-                                'name': text_str,
-                                }
-                    tag_list.append(tag_dict)
-                filter_name_dict[fname] = tag_list
-
-            else:
-                filter_name_dict[fname] = value_list  # buttons only need ids
+            get_fname_dict()
 
     qs = filter_queryset(filter_dict)
     return qs, filter_name_dict, result_type
@@ -79,7 +96,6 @@ def get_filterdict(request):
 
 def filter_queryset(filter_dict):
     qs = ImpactEvent.objects.all()  # caching this does not help as will be filtered -> new hit in DB
-
 
     filter_method = {'country': f_country_idlist,
                      'reference': f_multiple,
@@ -90,14 +106,18 @@ def filter_queryset(filter_dict):
                      'summary': filter_summary_list,
                      'date_from': f_date_range,
                      'date_to': f_date_range,
+                     'reference_exc': f_multiple_exc,
                      }
 
     field_name_d = {'tags': 'sust_tags',
                     'date_from': 'date_published',
-                    'date_to': 'date_published', }
+                    'date_to': 'date_published',
+                    'reference_exc': 'reference',
+                    }
 
     lookup_d = {'date_from': 'gt',
-                'date_to': 'lt', }
+                'date_to': 'lt',
+                }
 
     for fname, val in filter_dict.items():
         lookup_expr = lookup_d.get(fname, None)
@@ -121,6 +141,15 @@ def f_multiple(qs, name, id_list, *args):
     if len(id_list) > 0:
         lookup = '__'.join([name, 'in'])
         qs = qs.filter(**{lookup: id_list})
+    else:
+        qs = qs
+    return qs
+
+
+def f_multiple_exc(qs, name, id_list, *args):
+    if len(id_list) > 0:
+        lookup = '__'.join([name, 'in'])
+        qs = qs.exclude(**{lookup: id_list})
     else:
         qs = qs
     return qs

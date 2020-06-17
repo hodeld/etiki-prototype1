@@ -15,7 +15,7 @@ from .models import (Source, ImpactEvent, SustainabilityDomain
 from .fields import (DateYearPicker, DateYearPickerField,
                      ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, SearchWIcon,
                      LabelRow,
-                     TagField, AllTagsInput)
+                     TagField, AllTagsInput, LabelRowTagsInput)
 from etikicapture.fields import Readonly
 
 DT_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -79,6 +79,9 @@ class ImpevOverviewFForm(forms.Form):
     country = NotReqCharF()
     summary = NotReqCharF()
 
+    reference_exc = NotReqCharF()
+    reference_exc_tinp = NotReqCharF()
+
     tags = NotReqCharF()
 
     sust_domain = NotReqCharF()
@@ -111,6 +114,9 @@ class ImpevOverviewFForm(forms.Form):
             TagField('reference', cls_filterinput),
             TagField('summary', cls_filterinput),
 
+            Field('reference_exc', id='id_f_reference_exc', type="hidden",
+                  css_class=cls_filterinput + ' f_tagsinput_spec',),
+
             Row(
                 Column(
                     SearchWIcon(field_id='id_search2'),
@@ -140,6 +146,10 @@ class ImpevOverviewFForm(forms.Form):
                 ), labelname='Date'
 
             ),
+
+            LabelRowTagsInput('reference_exc_tinp', 'col-12'#, field_class='f_tags_search_inp'
+                              , labelname='Exclude Publishers'),
+
         )
 
 

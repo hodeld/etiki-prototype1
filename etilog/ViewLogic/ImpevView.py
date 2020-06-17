@@ -44,7 +44,7 @@ def filter_results(request):
         set_cache(key_totnr, cnt_tot, request)
 
     qs, filter_name_dict, result_type = get_filterdict(request)
-    filt_data_json = json.dumps(filter_name_dict) # for setting filter visually
+
     if request.user.is_authenticated:
         limit_filt = 1000
     else:
@@ -55,7 +55,9 @@ def filter_results(request):
     info_dict = overview_message(share_d, cnt_tot, limit_filt)
 
     d_dict = {}
-    d_dict['filter_dict'] = filt_data_json # for setting filter visually
+    if filter_name_dict:
+        filt_data_json = json.dumps(filter_name_dict)  # for setting filter visually
+        d_dict['filter_dict'] = filt_data_json # for setting filter visually
 
     share_d['info_dict'] = info_dict
     set_cache('share_d', share_d, request)

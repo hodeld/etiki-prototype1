@@ -67,3 +67,36 @@
 .alltaginput .bootstrap-tagsinput input {
     display: none;
 }
+
+/* used for reference_exclude */
+.taginput-row .bootstrap-tagsinput  {
+    padding: 0;
+    margin: 2px;
+}
+
+.taginput-row .bootstrap-tagsinput input {
+    color: #fff;; /* mdh; was: no color */
+    border: none;
+    box-shadow: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 2px;
+    width: auto;
+    max-width: inherit;
+}
+
+.taginput-row .bootstrap-tagsinput input:focus
+{
+    padding: 0;
+    margin: 2px;
+}
+/* tagsinput, other part in tagsinput.css */
+
+.taginput-row .bootstrap-tagsinput {
+
+    display: inline-block;
+    width: 100%;
+
+
+}
