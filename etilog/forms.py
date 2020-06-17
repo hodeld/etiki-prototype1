@@ -112,6 +112,7 @@ class ImpevOverviewFForm(forms.Form):
             TagField('company', cls_filterinput),
             TagField('country', cls_filterinput),
             TagField('reference', cls_filterinput),
+            TagField('tags', cls_filterinput),
             TagField('summary', cls_filterinput),
 
             Field('reference_exc', id='id_f_reference_exc', type="hidden",
