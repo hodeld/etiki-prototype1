@@ -6,16 +6,17 @@ Created on 2.8.2019
 from django import forms
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Column, HTML, Div
+from crispy_forms.layout import Layout, Field, Row, Column, HTML, Div, Hidden
 
 # models
 from .models import (Source, ImpactEvent, SustainabilityDomain
                      )
 
 from .fields import (DateYearPicker, DateYearPickerField,
-                     ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, Readonly, SearchWIcon, TendencyLegende,
-                     LabelRow, LabelRowTagsInput
-                     )
+                     ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, SearchWIcon,
+                     LabelRow,
+                     TagField)
+from etikicapture.fields import Readonly
 
 DT_FORMAT = '%Y-%m-%d %H:%M:%S'
 # D_FORMAT = '%Y-%m-%d'
@@ -33,7 +34,6 @@ datefiltername = 'datefilter'
 class NotReqCharF(forms.CharField):
     def __init__(self, *args, **kwargs):
         lbl = kwargs.pop('label', '')
-
         super(NotReqCharF, self).__init__(required=False, label=lbl, *args, **kwargs)
 
 
@@ -95,10 +95,10 @@ class FreetextForm(forms.Form):
 
 class ImpevOverviewFForm(forms.Form):
     '''
-    form for ImpevOverview filter. labels are defined in filter.
+    form for ImpevOverview Filter.
     '''
-    date_from = NotReqCharF(label='Date from')
-    date_to = NotReqCharF(label='Date to')
+    date_from = NotReqCharF()
+    date_to = NotReqCharF()
 
     company = NotReqCharF()
     reference = NotReqCharF()
@@ -115,16 +115,15 @@ class ImpevOverviewFForm(forms.Form):
 
         self.fields['date_from'].widget = DateYearPicker()
         self.fields['date_to'].widget = DateYearPicker()
-        self.fields['date_from'].label = ''
-        self.fields['date_to'].label = ''
 
-        #self.fields['company'].widget = forms.TextInput()
+        #self.fields['company'].widget = forms.HiddenInput()
         self.fields['country'].widget = forms.TextInput()
+
         self.fields['reference'].widget = forms.TextInput()
         self.fields['tags'].widget = forms.TextInput()
         self.fields['summary'].widget = forms.TextInput()
-        self.fields['sust_domain'].widget = forms.HiddenInput()
-        self.fields['sust_tendency'].widget = forms.HiddenInput()
+        #self.fields['sust_domain'].widget = forms.HiddenInput()
+        #self.fields['sust_tendency'].widget = forms.HiddenInput()
 
         self.helper = FormHelper()
         self.helper.form_method = 'get'
@@ -133,16 +132,20 @@ class ImpevOverviewFForm(forms.Form):
 
         self.helper.layout = Layout(
 
-            Field('sust_tendency', id='id_sust_tendency',
+            Field('sust_tendency', id='id_sust_tendency', type="hidden",
                   css_class=cls_filterinput + ' btninput', parfield='#id_sust_tendency-btn-'),
 
-            # in one so whole row could get be fetched with .parent(SELECTOR)
-            LabelRow(
-                Div(Field('sust_domain', id='id_sust_domain',
-                          css_class=cls_filterinput + ' btninput', parfield='#id_sust_domain-btn-'),
+            Field('sust_domain', id='id_sust_domain', type="hidden",
+                  css_class=cls_filterinput + ' btninput', parfield='#id_sust_domain-btn-'),
 
-                    ColDomainBtnSelect(), ),
-                labelname='Category', row_class='d-flex d-md-none'),
+            TagField('company', cls_filterinput),
+            TagField('country', cls_filterinput),
+            TagField('reference', cls_filterinput),
+            TagField('summary', cls_filterinput),
+
+
+            LabelRow(ColDomainBtnSelect(),
+                     labelname='Category', row_class='d-flex d-md-none'),
 
             LabelRow(ColTendencyBtnSelect(),
                      labelname='Which Tendency', row_class='d-flex d-md-none'),
@@ -155,23 +158,6 @@ class ImpevOverviewFForm(forms.Form):
                 ), labelname='Date'
 
             ),
-
-            LabelRowTagsInput('tags', 'col-12', field_class=cls_filterinput
-                              , labelname='Topics'),
-
-            LabelRowTagsInput('company', 'col-12',
-                              labelname='Company', field_class=cls_filterinput
-                              ),
-
-            LabelRowTagsInput('country', 'col-12', field_class=cls_filterinput
-                              , labelname='Country'),
-
-            LabelRowTagsInput('reference', 'col-12', field_class=cls_filterinput
-                              , labelname='Published In', placeholder='Publisher'),
-
-            LabelRowTagsInput('summary', 'col-12', field_class=cls_filterinput
-                              , labelname='Fulltext'),
-
         )
 
 
@@ -190,6 +176,10 @@ class OverviewFiltHeaderForm(forms.Form):
 
         self.helper.layout = Layout(
 
+            Column(Field('alltaginput', id='id_alltaginput', css_class='f_alltagsinput',
+                         wrapper_class='alltaginput justify-content-center d-flex my-2')
+                   , css_class='col-12 '),
+
             ColDomainBtnSelect(col_class='col-12 flex-nowrap',
                                labelname=None,
                                ele_class=element_class,
@@ -200,29 +190,13 @@ class OverviewFiltHeaderForm(forms.Form):
                                  ele_class=element_class,
                                  twin_ele=True,
                                  btn_wrap_class='justify-content-center d-flex w-100'),
-            Column(Field('alltaginput', id='id_alltaginput', css_class='f_alltagsinput',
-                         wrapper_class='alltaginput justify-content-center d-flex my-2')
-                   , css_class='col-12 '),
+
 
         )
 
 
 
 CSS_COL_CLS = 'col-12 col-lg-6'
-
-
-class TendencyLegendeDiv(forms.Form):
-
-    def __init__(self, *args, **kwargs):
-        super(TendencyLegendeDiv, self).__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-        self.helper.disable_csrf = True
-        self.helper.layout = Layout(
-
-            TendencyLegende(),
-        )
 
 
 class NewSource(forms.ModelForm):

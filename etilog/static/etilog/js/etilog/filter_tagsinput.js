@@ -1,6 +1,6 @@
 $(document).ready(function () {
     //add tagsinput and typeahead on hidden fields
-    $('.f_tagsinput').each(function () {
+    $('.f_tagsinput_notused').each(function () {
         let ele_name = $(this).attr('name');
         let optDic = allTypeaheadDic[ele_name];
         if (optDic) {

@@ -3,8 +3,8 @@ from crispy_forms.layout import Layout, Row, Column, Field, Submit
 from django import forms
 from django.urls import reverse_lazy
 
-from etilog.fields import (ImpactEventBtns, DateYearPickerField, DateYearPicker)
-from etikicapture.fields import CompanyWidget, ReferenceWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn
+from etilog.fields import (DateYearPickerField, DateYearPicker)
+from etikicapture.fields import CompanyWidget, ReferenceWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn, ImpactEventBtns
 from etilog.models import ImpactEvent, Company, SubsidiaryOwner, SupplierRecipient, Reference
 
 CSS_COL_CLS = 'col-12 col-lg-6'

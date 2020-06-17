@@ -12,7 +12,7 @@ from etilog.models import (ImpactEvent, Company, Reference, Country,
                            SustainabilityTag)
 
 # forms
-from .forms import (SearchForm, FreetextForm, TopicForm, TendencyLegendeDiv,
+from .forms import (SearchForm, FreetextForm, TopicForm, 
                     OverviewFiltHeaderForm, ImpevOverviewFForm
                     )
 
@@ -34,7 +34,6 @@ def overview_impevs(request, reqtype=None):
     searchform = SearchForm()  # Filter ServerSide
     topicform = TopicForm()
     freetextform = FreetextForm()
-    tendlegend = TendencyLegendeDiv()
     filtheader = OverviewFiltHeaderForm()
     filtform = ImpevOverviewFForm()
 
@@ -49,7 +48,6 @@ def overview_impevs(request, reqtype=None):
         'searchform': searchform,
         'topicform': topicform,
         'freetextform': freetextform,
-        'tendlegend': tendlegend,
         'companies_url': companies_url,
         'countries_url': countries_url,
         'references_url': references_url,
