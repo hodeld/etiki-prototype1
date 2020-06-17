@@ -1,13 +1,23 @@
 $(document).ready(function () {
 
-    $(".f_tagsinput").keyup(function (event) {
-            const ele = $(this);
-            keyBehaviorSearch(event, ele);
-        });
+    //initialize typehead -> needs to be below source (assignment is in order in js!
+    $('.f_search').typeahead(
+        ...allTaHList //elements of list
+    );
+    $('.f_search').bind('typeahead:select', function (ev, suggestion) {
+        //from search directly table
+
+        const val_str = suggestion['name'];
+        if (val_str.length > 0) {
+            const category = ev.handleObj.handler.arguments[2];
+            suggestion.category = category;
+            setTags(suggestion);
+            $(this).typeahead('val', ''); //typeahead input
+        }
+    });
 
 
-
-    $("#id_search").keyup(function (event) {
+    $(".f_search").keyup(function (event) {
         var ele = $(this);
         keyBehaviorSearch(event, ele);
     });
@@ -33,7 +43,7 @@ function setFirstSelection(ele) {
 
 //if changed without suggestion
 function changeWOSelection(ele) {
-    resultType = 'data';
+
     const val_str = ele.typeahead('val');
     let suggestion = {
             'id': val_str,

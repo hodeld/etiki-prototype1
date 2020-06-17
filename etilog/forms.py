@@ -15,7 +15,7 @@ from .models import (Source, ImpactEvent, SustainabilityDomain
 from .fields import (DateYearPicker, DateYearPickerField,
                      ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, SearchWIcon,
                      LabelRow,
-                     TagField)
+                     TagField, AllTagsInput)
 from etikicapture.fields import Readonly
 
 DT_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -47,10 +47,7 @@ class SearchForm(forms.Form):
 
         self.helper.layout = Layout(
             Row(
-                Column(SearchWIcon('search', id='id_search', autocomplete="off",
-                                   placeholder='Search Companies, Countries, Topics, Newspaper …',
-                                   css_class='tt-input'   # to have correct from beginning
-                                   ),
+                Column(SearchWIcon(field_id='id_search'),
                        css_class='col-12'
                        )
             ),
@@ -59,7 +56,6 @@ class SearchForm(forms.Form):
 
 
 class TopicForm(forms.Form):
-
     def __init__(self, *args, **kwargs):
         super(TopicForm, self).__init__(*args, **kwargs)
 
@@ -68,28 +64,6 @@ class TopicForm(forms.Form):
         self.helper.layout = Layout(
 
             RowTopics(),
-        )
-
-
-class FreetextForm(forms.Form):
-    freetext = forms.CharField(label='freetext', required=False)
-
-    def __init__(self, *args, **kwargs):
-        super(FreetextForm, self).__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-
-        self.helper.layout = Layout(
-
-            Row(
-                Column(Field('freetext', id='id_f_freetext',
-
-                             data_role='tagsinput'
-                             ),
-                       css_class='col-12'
-                       ), id='id_row_f_freetext', css_class='row_tags_class'
-            ),
-
         )
 
 
@@ -110,20 +84,14 @@ class ImpevOverviewFForm(forms.Form):
     sust_domain = NotReqCharF()
     sust_tendency = NotReqCharF()
 
+    alltaginput1 = NotReqCharF()
+    search = NotReqCharF()
+
     def __init__(self, *args, **kwargs):
         super(ImpevOverviewFForm, self).__init__(*args, **kwargs)
 
         self.fields['date_from'].widget = DateYearPicker()
         self.fields['date_to'].widget = DateYearPicker()
-
-        #self.fields['company'].widget = forms.HiddenInput()
-        self.fields['country'].widget = forms.TextInput()
-
-        self.fields['reference'].widget = forms.TextInput()
-        self.fields['tags'].widget = forms.TextInput()
-        self.fields['summary'].widget = forms.TextInput()
-        #self.fields['sust_domain'].widget = forms.HiddenInput()
-        #self.fields['sust_tendency'].widget = forms.HiddenInput()
 
         self.helper = FormHelper()
         self.helper.form_method = 'get'
@@ -142,6 +110,20 @@ class ImpevOverviewFForm(forms.Form):
             TagField('country', cls_filterinput),
             TagField('reference', cls_filterinput),
             TagField('summary', cls_filterinput),
+
+            Row(
+                Column(
+                    SearchWIcon(field_id='id_search2'),
+                    css_class='col-12'
+                ), css_class='d-flex d-md-none'
+            ),
+            Row(
+                Column(
+                    AllTagsInput('alltaginput1',
+                                 wrapper_class='mt-3'),
+                    css_class='col-12'
+                ), css_class='d-flex d-md-none'
+            ),
 
 
             LabelRow(ColDomainBtnSelect(),
@@ -162,13 +144,10 @@ class ImpevOverviewFForm(forms.Form):
 
 
 class OverviewFiltHeaderForm(forms.Form):
-    alltaginput = forms.CharField(required=False, label='',)
+    alltaginput2 = NotReqCharF()
 
     def __init__(self, *args, **kwargs):
         super(OverviewFiltHeaderForm, self).__init__(*args, **kwargs)
-
-        element_class = 'gettable '
-
         self.helper = FormHelper()
         # self.helper.form_method = 'get'
         # self.helper.form_id = 'id_filterform'
@@ -176,18 +155,17 @@ class OverviewFiltHeaderForm(forms.Form):
 
         self.helper.layout = Layout(
 
-            Column(Field('alltaginput', id='id_alltaginput', css_class='f_alltagsinput',
-                         wrapper_class='alltaginput justify-content-center d-flex my-2')
-                   , css_class='col-12 '),
+            Column(
+                AllTagsInput('alltaginput2',
+                             wrapper_class='justify-content-center d-flex my-2')
+                , css_class='col-12 '),
 
             ColDomainBtnSelect(col_class='col-12 flex-nowrap',
                                labelname=None,
-                               ele_class=element_class,
                                twin_ele=True,
                                btn_wrap_class='justify-content-center d-flex w-100'),
             ColTendencyBtnSelect(col_class='col-12 ',
                                  labelname=None,
-                                 ele_class=element_class,
                                  twin_ele=True,
                                  btn_wrap_class='justify-content-center d-flex w-100'),
 

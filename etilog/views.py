@@ -8,11 +8,11 @@ import json
 
 # models
 
-from etilog.models import (ImpactEvent, Company, Reference, Country,
+from etilog.models import (Company, Reference, Country,
                            SustainabilityTag)
 
 # forms
-from .forms import (SearchForm, FreetextForm, TopicForm, 
+from .forms import (SearchForm, TopicForm,
                     OverviewFiltHeaderForm, ImpevOverviewFForm
                     )
 
@@ -33,7 +33,6 @@ def overview_impevs(request, reqtype=None):
 
     searchform = SearchForm()  # Filter ServerSide
     topicform = TopicForm()
-    freetextform = FreetextForm()
     filtheader = OverviewFiltHeaderForm()
     filtform = ImpevOverviewFForm()
 
@@ -47,7 +46,6 @@ def overview_impevs(request, reqtype=None):
         'filtheader': filtheader,
         'searchform': searchform,
         'topicform': topicform,
-        'freetextform': freetextform,
         'companies_url': companies_url,
         'countries_url': countries_url,
         'references_url': references_url,

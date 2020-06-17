@@ -201,16 +201,14 @@ class RowTopics(Layout):
 
 
 class SearchWIcon(Layout):
-    def __init__(self, fieldname, *args, **kwargs):
-        input_id = kwargs.get('id', 'otherid')
-
-        icon_str = '''<i class="fa fa-search" onclick = "setTagBtn('%s')";></i>''' % input_id
+    def __init__(self, field_id, *args, **kwargs):
+        icon_str = '''<i class="fa fa-search" onclick = "setTagBtn('%s')";></i>''' % field_id
         super(SearchWIcon, self).__init__(
-            AppendedText(fieldname, icon_str,
+            AppendedText('search', icon_str,
+                         id=field_id, autocomplete="off",
+                         placeholder='Search Companies, Countries, Topics, Newspaper …',
+                         css_class='tt-input f_search',
                          *args, **kwargs)
-            # Field(fieldname, *args, **kwargs),
-            # 'icon_str')
-            # , css_id='div_id_search')
         )
 
 
@@ -221,7 +219,7 @@ class LabelRow(Layout):
 
         name_stripped = labelname.replace(' ', '')
         div_id = 'row' + name_stripped
-        div_class = 'taginput-row'
+        div_class = ''
         icon_str = '<i class="fas fa-chevron-down ml-1"></i> '
         cont = labelname + icon_str
         btn = StrictButton(cont, name='btn' + name_stripped, value=name_stripped,
@@ -251,6 +249,17 @@ class TagField(Layout):
         super(TagField, self).__init__(
             Field(field_name, id='id_f_' + field_name,
                   css_class=cls_filterinput + ' f_tagsinput', type="hidden"),
+        )
+
+
+class AllTagsInput(Layout):
+    def __init__(self, field_name, *args, **kwargs):
+        wrapper_cls = ' '.join([kwargs.pop('wrapper_class', ''), 'alltaginput'])
+        super(AllTagsInput, self).__init__(
+            Field(field_name, id='id_f_' + field_name, css_class='f_alltagsinput',
+                  wrapper_class=wrapper_cls,
+                  *args, **kwargs
+                  )
         )
 
 #can be used for all tags input
