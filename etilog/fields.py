@@ -201,12 +201,24 @@ class RowTopics(Layout):
 
 
 class SearchWIcon(Layout):
-    def __init__(self, field_id, *args, **kwargs):
-        icon_str = '''<i class="fa fa-search" onclick = "setTagBtn('%s')";></i>''' % field_id
+    def __init__(self, field_id, landing=False, *args, **kwargs):
+
+        ph_filter = 'FILTER BY'
+        ph_base = ' Companies, Countries, Topics, Newspaper …'
+        ph_search = 'Search'
+        icon_search = 'fa fa-search'
+        if landing:
+            ph = ph_search + ph_base
+        else:
+            ph = ph_filter + ph_base
+        icon_str = '''<i class="%s" onclick = "setTagBtn('%s')";></i>''' % (icon_search, field_id)
         super(SearchWIcon, self).__init__(
             AppendedText('search', icon_str,
                          id=field_id, autocomplete="off",
-                         placeholder='Search Companies, Countries, Topics, Newspaper …',
+                         placeholder=ph,
+                         data_phbase=ph_base,
+                         data_phsearch=ph_search,
+                         data_phfilter=ph_filter,
                          css_class='tt-input f_search',
                          *args, **kwargs)
         )

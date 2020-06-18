@@ -40,18 +40,18 @@ class NotReqCharF(forms.CharField):
 class SearchForm(forms.Form):
     search = forms.CharField(label='', required=False)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, landing=False, *args, **kwargs):
+        #searchfield =
         super(SearchForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
 
         self.helper.layout = Layout(
             Row(
-                Column(SearchWIcon(field_id='id_search'),
-                       css_class='col-12'
+                Column(SearchWIcon(field_id='id_search', landing=landing),
+                       css_class='col-12',
                        )
             ),
-
         )
 
 

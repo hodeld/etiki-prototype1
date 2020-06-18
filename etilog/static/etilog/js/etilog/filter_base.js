@@ -15,8 +15,6 @@ $(document).ready(function () {
 
 
     $('#applyFilter').click(function () {
-
-
         submitFromID('#id_filterform');
     });
 
@@ -49,15 +47,17 @@ function set_val_from_btn(ele) {
 }
 
 function setFilterValue(inputId, idVal, addValue) {
-
     let el_val = $(inputId).val();
     let val_set = new Set();
     if (el_val !== ''){
         val_set = new Set(JSON.parse(el_val));
     }
-    if (addValue) { //means was pressed now
+    if (addValue) {
+        const len = val_set.size ;
         val_set.add(idVal);
+        filterCount += (val_set.size-len);
     } else {
+        filterCount--;
         val_set.delete(idVal);
     }
     const newLi = Array.from(val_set);
@@ -72,7 +72,7 @@ function setFilterValue(inputId, idVal, addValue) {
 
 
 function clearFilter() {
-    var filterCount = 0;
+    filterCount = 0;
     $('.f_alltagsinput').each(function () {
         var ele = $(this);
         if (ele.val() !== '') {
@@ -89,10 +89,10 @@ function clearFilter() {
         if (ele.val() != '') {
             ele.addClass('nosubmit');
             ele.val('');
+            ele.removeClass('nosubmit');
         }
     });
     submitFromID('#id_filterform');
-
 }
 
 

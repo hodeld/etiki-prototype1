@@ -31,7 +31,7 @@ def overview_impevs(request, reqtype=None):
         d_dict = filter_results(request)
         jsondata = json.dumps(d_dict)
 
-    searchform = SearchForm()  # Filter ServerSide
+    searchform = SearchForm(landing)  # Filter ServerSide
     topicform = TopicForm()
     filtheader = OverviewFiltHeaderForm()
     filtform = ImpevOverviewFForm()
