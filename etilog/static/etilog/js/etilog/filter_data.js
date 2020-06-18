@@ -83,21 +83,12 @@ const formOptions = {
 
 
 };
-
-function submitFilterForm(ev) {
-    var target = $(ev.target);
-    if (target.hasClass('nosubmit')) {
-        target.removeClass('nosubmit');
-    } else {
-
-        var foid = '#' + ev.target.form.id;
-        submitFromID(foid);
+function submitFilterForm() {
+    if (submit) {
+        const fId = '#id_filterform';
+        //from filter -> first count only
+        formOptions.data = {result_type: 'count'};
+        $(fId).ajaxSubmit(formOptions);
     }
 }
 
-function submitFromID(foid) {
-    //from filter -> first count only
-    formOptions.data = {result_type: 'count'};
-    $(foid).ajaxSubmit(formOptions);
-
-}

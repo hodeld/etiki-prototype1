@@ -20,7 +20,7 @@ function setFilterIcon() {
 }
 
 function setFilterVisually(filterDict) {
-
+    submit = false;
     const nameSel = 'input[name ="{name}"]';
     const fform = $('#id_filterform');
     for (let el_name in filterDict) {
@@ -30,7 +30,6 @@ function setFilterVisually(filterDict) {
             fSel = nameSel.replace('{name}', el_name);
             ele = fform.find(fSel);
             var parfield = ele.attr('parfield');
-            ele.addClass('nosubmit');
             if (ele.hasClass('btninput')) {
                 let newVal = JSON.stringify(valList);
                 ele.val(newVal); //value set from filter is string incl. [
@@ -50,7 +49,6 @@ function setFilterVisually(filterDict) {
             } else if (ele.hasClass('f_tagsinput')) {
                 $.each(valList, function (index, value) {
                     let suggestion = value; //filterDict[value] ;
-                    ele.addClass('nosubmit');
                     setTags(suggestion, true); //includes filterCount
                 });
                 //let targetId = parfield;  //+ el_name; //eg company
@@ -62,7 +60,6 @@ function setFilterVisually(filterDict) {
                 $.each(valList, function (index, value) {
                     filterCount++;
                     let suggestion = value; //filterDict[value] ;
-                    ele.addClass('nosubmit');
                     const tagInputEle = $('#id_f_reference_exc_tinp');
                     tagInputEle.tagsinput('add', suggestion); //sets also filtervalue
                 });
@@ -71,4 +68,5 @@ function setFilterVisually(filterDict) {
         }
     }
     setFilterIcon()
+    submit = true;
 }

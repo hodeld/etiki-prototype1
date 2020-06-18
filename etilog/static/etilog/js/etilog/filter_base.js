@@ -12,25 +12,20 @@ $(document).ready(function () {
         clearFilter()
     });
 
-
-
-    $('#applyFilter').click(function () {
-        submitFromID('#id_filterform');
-    });
-
     //directly submit on filterinputs:
     $('.f_input').change(function (ev) {
-        submitFilterForm(ev)
+        submitFilterForm();
     });
 
     //directly submit on datetimeinput
     $(".dateyearpicker").on('dp.change', function (ev) { // e = event
-        submitFilterForm(ev)
+        submitFilterForm();
     });
 
 
 });
 
+let submit = true;
 
 function set_val_from_btn(ele) {
     //mirror_btn(ele);
@@ -73,13 +68,15 @@ function setFilterValue(inputId, idVal, addValue) {
 
 function clearFilter() {
     filterCount = 0;
-    $('.f_alltagsinput').each(function () {
+    submit = false;
+    $('.f_alltagsinput, .f_tags_search_inp').each(function () {
         var ele = $(this);
         if (ele.val() !== '') {
-            ele.addClass('nosubmit');
             ele.tagsinput('removeAll');
         }
     });
+
+
 
     $('.btnselect').attr('aria-pressed', 'false');
     $('.btnselect').removeClass('active');
@@ -87,12 +84,11 @@ function clearFilter() {
     $('.f_input').each(function () {
         var ele = $(this);
         if (ele.val() != '') {
-            ele.addClass('nosubmit');
             ele.val('');
-            ele.removeClass('nosubmit');
         }
     });
-    submitFromID('#id_filterform');
+    submit = true;
+    submitFilterForm();
 }
 
 
