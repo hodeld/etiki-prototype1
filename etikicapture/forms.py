@@ -1,10 +1,11 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Column, Field, Submit
+from crispy_forms.layout import Layout, Row, Column, Field, Submit, HTML
 from django import forms
 from django.urls import reverse_lazy
 
 from etilog.fields import (DateYearPickerField, DateYearPicker)
-from etikicapture.fields import CompanyWidget, ReferenceWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn, ImpactEventBtns
+from etikicapture.fields import CompanyWidget, ReferenceWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn, ImpactEventBtns, \
+    Readonly
 from etilog.models import ImpactEvent, Company, SubsidiaryOwner, SupplierRecipient, Reference
 
 CSS_COL_CLS = 'col-12 col-lg-6'
@@ -184,3 +185,4 @@ class ReferenceForm(forms.ModelForm):
     class Meta:  # only for model fields
         model = Reference
         exclude = []
+

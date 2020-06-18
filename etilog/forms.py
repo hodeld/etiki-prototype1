@@ -6,17 +6,16 @@ Created on 2.8.2019
 from django import forms
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Row, Column, HTML, Div, Hidden
+from crispy_forms.layout import Layout, Field, Row, Column
 
 # models
-from .models import (Source, ImpactEvent, SustainabilityDomain
+from .models import (Source, SustainabilityDomain
                      )
 
 from .fields import (DateYearPicker, DateYearPickerField,
                      ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, SearchWIcon,
                      LabelRow,
                      TagField, AllTagsInput, LabelRowTagsInput)
-from etikicapture.fields import Readonly
 
 DT_FORMAT = '%Y-%m-%d %H:%M:%S'
 # D_FORMAT = '%Y-%m-%d'
@@ -214,41 +213,3 @@ class NewSource(forms.ModelForm):
         }
 
 
-class ImpEvShow(forms.ModelForm):
-    '''
-    form to show details of impact event
-    '''
-
-    def __init__(self, *args, **kwargs):
-        super(ImpEvShow, self).__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-        self.helper.form_method = 'get'
-        self.helper.form_class = 'col-12 d-flex flex-wrap'
-        self.helper.layout = Layout(
-            Readonly('reference'),
-            HTML("""
-            <p>, <strong>please help us {{  form.initial.article_title }}</strong></p>
-        """),
-        )
-
-    class Meta:  # only for model fields
-        model = ImpactEvent
-        fields = ['source_url', 'date_published', 'date_impact', 'company', 'reference',
-                  'country',
-                  'sust_domain', 'sust_tendency', 'sust_tags',
-                  'summary', 'comment',
-                  'article_text', 'article_title', 'date_text', 'article_html', 'result_parse_html'
-                  ]
-
-        labels = {
-            'date_published': ('when was it published'),
-            'date_impact': ('when did it happen'),
-            'reference': ('where was it published'),
-            'company': ('which company was concerned'),
-            'country': ('where did it happen'),
-        }
-        help_texts = {
-            'date_published': (''),
-            'date_impact': (''),
-        }
