@@ -51,7 +51,8 @@
                         <span class="d-none d-sm-inline">Clear all</span>
 
                     </button>
-                    <h4 class="my-auto" id="modalTitle">Filter</h4>
+                    <h4 class="my-auto" id="modalTitle"><span class="filter-count">0</span>
+                        Filter</h4>
                     <button class="btn btn-sm btn-link" type="button" data-dismiss="modal" id="filterClose1">
                         <i class="far fa-window-close mr-1"></i>
                         <span class="d-none d-sm-inline">Close</span>
@@ -62,6 +63,7 @@
             <div class="modal-body">
                 {% if filter %}
                     {% crispy filter %}
+                    {% crispy filterform %}
                 {% endif %}
             </div>
             <div class="modal-footer">

@@ -11,7 +11,8 @@ from etilog.models import (Company, Reference, Country,
                            SustainabilityTag)
 
 # forms
-from etilog.forms.forms_filter import (SearchForm, OverviewFiltHeaderForm, ImpevOverviewFForm
+from etilog.forms.forms_filter import (SearchForm, OverviewFiltHeaderForm, OverviewFHiddenForm,
+                                       OverviewFForm
                                        )
 from etilog.forms.forms_suggestions import TopicForm
 
@@ -33,7 +34,8 @@ def overview_impevs(request, reqtype=None):
     searchform = SearchForm(landing)  # Filter ServerSide
     topicform = TopicForm()
     filtheader = OverviewFiltHeaderForm()
-    filtform = ImpevOverviewFForm()
+    filterhidden = OverviewFHiddenForm()
+    filtform = OverviewFForm()
 
     companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
@@ -41,7 +43,8 @@ def overview_impevs(request, reqtype=None):
     tags_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'tags'})
 
     return render(request, 'etilog/overview.html', {
-        'filter': filtform,
+        'filter': filterhidden,
+        'filterform': filtform,
         'filtheader': filtheader,
         'searchform': searchform,
         'topicform': topicform,

@@ -54,22 +54,14 @@ class SearchForm(forms.Form):
         )
 
 
-class ImpevOverviewFForm(forms.Form):
+class OverviewFForm(forms.Form):
     '''
-    form for ImpevOverview Filter.
+    form for ImpevOverview Filter visible fields.
     '''
-    date_from = NotReqCharF()
-    date_to = NotReqCharF()
+    date_from_pick = NotReqCharF()
+    date_to_pick = NotReqCharF()
 
-    company = NotReqCharF()
-    reference = NotReqCharF()
-    country = NotReqCharF()
-    summary = NotReqCharF()
-
-    reference_exc = NotReqCharF()
     reference_exc_tinp = NotReqCharF()
-
-    tags = NotReqCharF()
 
     sust_domain = NotReqCharF()
     sust_tendency = NotReqCharF()
@@ -78,32 +70,17 @@ class ImpevOverviewFForm(forms.Form):
     search = NotReqCharF()
 
     def __init__(self, *args, **kwargs):
-        super(ImpevOverviewFForm, self).__init__(*args, **kwargs)
+        super(OverviewFForm, self).__init__(*args, **kwargs)
 
-        self.fields['date_from'].widget = DateYearPicker()
-        self.fields['date_to'].widget = DateYearPicker()
+        self.fields['date_from_pick'].widget = DateYearPicker()
+        self.fields['date_to_pick'].widget = DateYearPicker()
 
         self.helper = FormHelper()
-        self.helper.form_method = 'get'
-        self.helper.form_id = 'id_filterform'
-        cls_filterinput = 'f_input'  # used for jquery submit
+        self.helper.form_tag = False
+        self.helper.form_id = 'id_filterform_visible'
+        cls_filterinput = ''  # used for jquery submit
 
         self.helper.layout = Layout(
-
-            Field('sust_tendency', id='id_sust_tendency', type="hidden",
-                  css_class=cls_filterinput + ' btninput', parfield='#id_sust_tendency-btn-'),
-
-            Field('sust_domain', id='id_sust_domain', type="hidden",
-                  css_class=cls_filterinput + ' btninput', parfield='#id_sust_domain-btn-'),
-
-            TagField('company', cls_filterinput),
-            TagField('country', cls_filterinput),
-            TagField('reference', cls_filterinput),
-            TagField('tags', cls_filterinput),
-            TagField('summary', cls_filterinput),
-
-            Field('reference_exc', id='id_f_reference_exc', type="hidden",
-                  css_class=cls_filterinput + ' f_tagsinput_spec',),
 
             Row(
                 Column(
@@ -128,8 +105,12 @@ class ImpevOverviewFForm(forms.Form):
 
             LabelRow(
                 Column(
-                    DateYearPickerField('date_from', 'from', css_class=cls_filterinput),
-                    DateYearPickerField('date_to', 'to', css_class=cls_filterinput),
+                    DateYearPickerField('date_from_pick', 'from', css_class=cls_filterinput,
+                                        data_category='date_from'
+                                        ),
+                    DateYearPickerField('date_to_pick', 'to', css_class=cls_filterinput,
+                                        data_category='date_to'
+                                        ),
                     css_class='col-12 d-flex flex-wrap flex-wrap justify-content-around'  # wraps if needed
                 ), labelname='Date'
 
@@ -138,6 +119,59 @@ class ImpevOverviewFForm(forms.Form):
             LabelRowTagsInput('reference_exc_tinp', 'col-12'#, field_class='f_tags_search_inp'
                               , labelname='Exclude Publishers'),
 
+        )
+
+
+class OverviewFHiddenForm(forms.Form):
+    '''
+    form for ImpevOverview Filter.
+    '''
+    date_from = NotReqCharF()
+    date_to = NotReqCharF()
+
+    company = NotReqCharF()
+    reference = NotReqCharF()
+    country = NotReqCharF()
+    tags = NotReqCharF()
+    summary = NotReqCharF()
+
+    reference_exc = NotReqCharF()
+
+    sust_domain = NotReqCharF()
+    sust_tendency = NotReqCharF()
+
+    def __init__(self, *args, **kwargs):
+        super(OverviewFHiddenForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'get'
+        self.helper.form_id = 'id_filterform'
+        cls_filterinput = 'f_input'  # used for jquery submit
+
+        self.helper.layout = Layout(
+
+            Field('sust_tendency', id='id_sust_tendency', type="hidden",
+                  css_class=cls_filterinput + ' btninput', parfield='#id_sust_tendency-btn-'),
+
+            Field('sust_domain', id='id_sust_domain', type="hidden",
+                  css_class=cls_filterinput + ' btninput', parfield='#id_sust_domain-btn-'),
+
+            TagField('company', cls_filterinput),
+            TagField('country', cls_filterinput),
+            TagField('reference', cls_filterinput),
+            TagField('tags', cls_filterinput),
+            TagField('summary', cls_filterinput),
+
+            Field('reference_exc', id='id_f_reference_exc', type="hidden",
+                  css_class=cls_filterinput + ' f_tagsinput_spec', ),
+
+            Field('date_from', id='id_f_date_from', type="hidden",
+                  css_class=cls_filterinput + ' f_dateinput',
+                  parfield='#id_date_from_pick'),
+            Field('date_to', id='id_f_date_to', type="hidden",
+                  css_class=cls_filterinput + ' f_dateinput',
+                  parfield='#id_date_to_pick',
+                  ),
         )
 
 
