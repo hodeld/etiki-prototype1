@@ -13,12 +13,19 @@ $(document).ready(function () {
     });
 
     //directly submit on filterinputs:
-    $('.f_input').change(function (ev) {
+    $('.f_input').change(function () {
         submitFilterForm();
     });
 
     //directly submit on datetimeinput
     $(".dateyearpicker").on('dp.change', function (ev) { // e = event
+        const ele = $(ev.target);
+        if (ele.val()=== ''){
+            filterCount--
+        }
+        else {
+            filterCount++
+        }
         submitFilterForm();
     });
 
