@@ -76,7 +76,7 @@ def get_filterdict(request):
     for fname in field_names:
         val = set_value(fname)
         if val:
-            filter_name_dict[fname] = val
+            get_fname_dict()
             filter_dict[fname] = val
 
     field_names = ['company', 'reference', 'country', 'tags', 'reference_exc',
