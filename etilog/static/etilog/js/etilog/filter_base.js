@@ -20,15 +20,17 @@ $(document).ready(function () {
     //directly submit on datetimeinput
     $(".dateyearpicker").on('dp.change', function (ev) { // e = event
         const ele = $(ev.target);
-        if (ele.val()=== ''){
-            filterCount--
+        const valStr = ele.val();
+        if (valStr) {
+            let suggestion = {
+                'id': valStr,
+                'name': ele.attr('placeholder') + ': ' + valStr,
+                'category': ele.attr('data-category'),
+            };
+            setTags(suggestion);
+            ele.data("DateTimePicker").clear();
         }
-        else {
-            filterCount++
-        }
-        submitFilterForm();
     });
-
 
 });
 
@@ -49,7 +51,23 @@ function set_val_from_btn(ele) {
 }
 
 function setFilterValue(inputId, idVal, addValue) {
-    let el_val = $(inputId).val();
+    const ele = $(inputId);
+    let el_val = ele.val();
+    if (ele.hasClass('f_dateinput')){
+        //set filterCount according new and old value
+        if (addValue && el_val == '') {
+            filterCount ++;
+        } else if (!addValue && el_val) {
+            filterCount--;
+        }
+        if (!addValue){
+            idVal = ''; //if remove value
+        }
+        ele.val(idVal)
+            .trigger('change'); //needed for hidden input fields
+        return
+    }
+
     let val_set = new Set();
     if (el_val !== ''){
         val_set = new Set(JSON.parse(el_val));
@@ -68,7 +86,7 @@ function setFilterValue(inputId, idVal, addValue) {
         newVal = JSON.stringify(newLi);
     }
 
-    $(inputId).val(newVal)
+    ele.val(newVal)
         .trigger('change'); //needed for hidden input fields
 }
 
@@ -87,6 +105,7 @@ function clearFilter() {
 
     $('.btnselect').attr('aria-pressed', 'false');
     $('.btnselect').removeClass('active');
+    //$('.dateyearpicker').data("DateTimePicker").clear();
     $('.row_tags_class').hide();
     $('.f_input').each(function () {
         var ele = $(this);

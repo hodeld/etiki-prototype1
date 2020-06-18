@@ -93,7 +93,7 @@ class OverviewFForm(forms.Form):
                     AllTagsInput('alltaginput1',
                                  wrapper_class='mt-3'),
                     css_class='col-12'
-                ), css_class='d-flex d-md-none'
+                ), css_class='d-flex'
             ),
 
 

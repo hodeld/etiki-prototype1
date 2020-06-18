@@ -53,9 +53,9 @@ function setFilterVisually(filterDict) {
                 });
                 //let targetId = parfield;  //+ el_name; //eg company
                 //$(targetId).addClass('show');
-            } else if (ele.hasClass('dateyearpicker')) {
-                //filterCount++; on element
-                ele.data("DateTimePicker").date(valList);
+            } else if (ele.hasClass('f_dateinput')) {
+                //sets value and filterCount
+                $(parfield).data("DateTimePicker").date(valList);
             } else if (ele.hasClass('f_tagsinput_spec')) {
                 $.each(valList, function (index, value) {
                     filterCount++;
