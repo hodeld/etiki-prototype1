@@ -9,13 +9,13 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Row, Column
 
 # models
-from .models import (Source, SustainabilityDomain
-                     )
+from etilog.models import (Source, SustainabilityDomain
+                           )
 
-from .fields import (DateYearPicker, DateYearPickerField,
-                     ColDomainBtnSelect, ColTendencyBtnSelect, RowTopics, SearchWIcon,
-                     LabelRow,
-                     TagField, AllTagsInput, LabelRowTagsInput)
+from .fields_filter import (DateYearPicker, DateYearPickerField,
+                            ColDomainBtnSelect, ColTendencyBtnSelect, SearchWIcon,
+                            LabelRow,
+                            TagField, AllTagsInput, LabelRowTagsInput)
 
 DT_FORMAT = '%Y-%m-%d %H:%M:%S'
 # D_FORMAT = '%Y-%m-%d'
@@ -51,18 +51,6 @@ class SearchForm(forms.Form):
                        css_class='col-12',
                        )
             ),
-        )
-
-
-class TopicForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super(TopicForm, self).__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-
-        self.helper.layout = Layout(
-
-            RowTopics(),
         )
 
 

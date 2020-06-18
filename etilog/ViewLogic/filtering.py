@@ -7,7 +7,7 @@ Created on 26.8.2019
 from django.db.models import Q
 
 from etilog.ViewLogic.queries import get_name
-from etilog.fields import D_FORMAT
+from etilog.forms.fields_filter import D_FORMAT
 from etilog.models import ImpactEvent
 import json
 from datetime import datetime

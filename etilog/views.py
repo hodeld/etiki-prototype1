@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.decorators.csrf import csrf_exempt
 import json
 
 # from 3rd apps
@@ -12,9 +11,9 @@ from etilog.models import (Company, Reference, Country,
                            SustainabilityTag)
 
 # forms
-from .forms import (SearchForm, TopicForm,
-                    OverviewFiltHeaderForm, ImpevOverviewFForm
-                    )
+from etilog.forms.forms_filter import (SearchForm, OverviewFiltHeaderForm, ImpevOverviewFForm
+                                       )
+from etilog.forms.forms_suggestions import TopicForm
 
 from etilog.ViewLogic.ImpevView import get_results, filter_results
 
