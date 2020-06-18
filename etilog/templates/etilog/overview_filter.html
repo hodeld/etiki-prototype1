@@ -58,13 +58,11 @@
             </div>
             <div class="modal-body">
                 {% if filter %}
-                    {% crispy filter.form %}
+                    {% crispy filter %}
                 {% endif %}
             </div>
             <div class="modal-footer">
-                <button class="btn btn-light" type="button" data-dismiss="modal" id="applyFilter">
-                    <span id="filterCountText" class="d-inline">Apply Filter</span>
-                </button>
+                 <h5 class="filterMessage" id="id_message2"></h5>
 
                 <button class="btn btn-sm btn-link" type="button" data-dismiss="modal" id="filterClose2">
                     <i class="far fa-window-close mr-1"></i>

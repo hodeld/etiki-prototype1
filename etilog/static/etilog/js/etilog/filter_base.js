@@ -1,6 +1,4 @@
 $(document).ready(function () {
-    //button select for categories
-    //$('.btnselect').on('click', mirror_btn);
 
     //send element as with event.target it can be fa-icon!
     $('.btnselect').click(function () {
@@ -8,16 +6,16 @@ $(document).ready(function () {
     });
 
     $('.filterClear').click(function () {
-        clearFilter('count')
+        clearFilter()
     });
     $('.filterClearDirect').click(function () {
-        clearFilter('data')
+        clearFilter()
     });
 
 
 
     $('#applyFilter').click(function () {
-        resultType = 'data';
+
 
         submitFromID('#id_filterform');
     });
@@ -33,89 +31,51 @@ $(document).ready(function () {
     });
 
 
-    //initialize typehead -> needs to be below source (assignment is in order in js!
-    $('#id_search').typeahead(
-        ...allTaHList //elements of list
-    );
-
-    $('#id_search').bind('typeahead:select', function (ev, suggestion) {
-
-        //from search directly table
-        resultType = 'data';
-
-        const val_str = suggestion['name'];
-
-        if (val_str.length > 0) {
-            var catgory = ev.handleObj.handler.arguments[2];
-            setTags(catgory, suggestion)
-
-            $(this).typeahead('val', ''); //typeahead input
-        }
-
-    });
-
-
-
-
-    $("#id_search").keyup(function (event) {
-        var ele = $(this);
-        keyBehaviorSearch(event, ele);
-    });
-
 });
 
 
+function set_val_from_btn(ele) {
+    //mirror_btn(ele);
+    const idVal = Number(ele.attr('name'));
+    const inputId = '#' + ele.attr('targfield');
 
-function mirror_btn(ele) {
-    var twin_id = '#' + ele.attr('twin-id');
-    var twin_ele = $(twin_id);
-    var pressed = ele.attr('aria-pressed'); // jquery: true or fals
+    const pressed = ele.attr('aria-pressed'); // true or false
 
-    if (pressed == "false") { //means was not pressed
-        twin_ele.attr('aria-pressed', 'true');
-        twin_ele.addClass('active');
-    } else {
-        twin_ele.attr('aria-pressed', 'false');
-        twin_ele.removeClass('active');
+    let addValue = false;
+    if (pressed == "false") { //means was pressed now
+        addValue = true;
     }
+    setFilterValue(inputId, idVal, addValue);
 }
 
+function setFilterValue(inputId, idVal, addValue) {
 
-function set_val_from_btn(ele) {
-    mirror_btn(ele);
-    var el_id = ele.attr('id');
-    var id_val = Number(ele.attr('name'));
-    var input_id = '#' + ele.attr('targfield');
-    var pressed = ele.attr('aria-pressed'); // true or false
-
-    var el_val = $(input_id).val();
-    try {
-        var val_set = new Set(JSON.parse("[" + el_val + "]"));
-    } catch (err) {
-        console.log(err.message);
+    let el_val = $(inputId).val();
+    let val_set = new Set();
+    if (el_val !== ''){
+        val_set = new Set(JSON.parse(el_val));
     }
-
-
-    if (pressed == "false") { //means was pressed now
-        val_set.add(id_val);
+    if (addValue) { //means was pressed now
+        val_set.add(idVal);
     } else {
-        val_set.delete(id_val);
+        val_set.delete(idVal);
     }
-    new_li = Array.from(val_set);
-    if (ele.hasClass('gettable')) {
-        resultType = 'data';
+    const newLi = Array.from(val_set);
+    let newVal = '';
+    if (newLi.length > 0) {
+        newVal = JSON.stringify(newLi);
     }
 
-    $(input_id).val(new_li)
+    $(inputId).val(newVal)
         .trigger('change'); //needed for hidden input fields
 }
 
-function clearFilter(locResultType = 'count') {
-    var filterCount = 0;
-    $('.f_tagsinput').each(function () {
 
+function clearFilter() {
+    var filterCount = 0;
+    $('.f_alltagsinput').each(function () {
         var ele = $(this);
-        if (ele.val() != '') {
+        if (ele.val() !== '') {
             ele.addClass('nosubmit');
             ele.tagsinput('removeAll');
         }
@@ -124,17 +84,13 @@ function clearFilter(locResultType = 'count') {
     $('.btnselect').attr('aria-pressed', 'false');
     $('.btnselect').removeClass('active');
     $('.row_tags_class').hide();
-
     $('.f_input').each(function () {
-
         var ele = $(this);
         if (ele.val() != '') {
             ele.addClass('nosubmit');
             ele.val('');
         }
     });
-    resultType = locResultType;
-
     submitFromID('#id_filterform');
 
 }

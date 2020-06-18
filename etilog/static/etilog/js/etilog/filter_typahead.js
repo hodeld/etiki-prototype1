@@ -1,18 +1,35 @@
 $(document).ready(function () {
 
-    $(".f_tagsinput").keyup(function (event) {
-            var ele = $(this);
-            keyBehaviorSearch(event, ele);
-        });
+    //initialize typehead -> needs to be below source (assignment is in order in js!
+    $('.f_search').typeahead(
+        ...allTaHList //elements of list
+    );
+    $('.f_search').bind('typeahead:select', function (ev, suggestion) {
+        //from search directly table
+
+        const val_str = suggestion['name'];
+        if (val_str.length > 0) {
+            const category = ev.handleObj.handler.arguments[2];
+            suggestion.category = category;
+            setTags(suggestion);
+            $(this).typeahead('val', ''); //typeahead input
+        }
+    });
+
+
+    $(".f_search").keyup(function (event) {
+        var ele = $(this);
+        keyBehaviorSearch(event, ele);
+    });
 });
 
-function keyBehavior(event, ele) {
-    if (event.keyCode === 13) { //enter
-        setFirstSelection(ele);
-        ele.blur();
-        ele.focus();
+
+//on search button in searchfield
+function setTagBtn(eleId) {
+    const ele = $('#' + eleId);
+    if (setFirstSelection(ele) === false) {
+        changeWOSelection(ele);
     }
-    ;
 }
 
 function setFirstSelection(ele) {
@@ -22,35 +39,29 @@ function setFirstSelection(ele) {
     } else {
         return false;
     }
-
-
 }
 
 //if changed without suggestion
 function changeWOSelection(ele) {
 
-    var eletarget = $('#id_f_summary');
-    var el_id = '#id_row_f_summary';
-
-    var val_str = ele.typeahead('val');
-
-    eletarget.tagsinput('add', val_str);	//adds tag
-    $(el_id).show();
+    const val_str = ele.typeahead('val');
+    let suggestion = {
+            'id': val_str,
+            'name': val_str,
+            'category': 'summary'
+        };
+    setTags(suggestion);
     ele.typeahead('val', ''); //typeahead input
     ele.focus();
-
 }
 
 
 function keyBehaviorSearch(event, ele) {
     if (event.keyCode === 13) { //enter
-        setFirstSelection(ele);
-        if (setFirstSelection(ele) === false) {
+        if (ele.val()!== '') {
             changeWOSelection(ele);
         }
-        ;
     }
-    ;
 }
 
 //initialize BLOODHOUND
@@ -63,7 +74,7 @@ function getBloodhoundOpt(field_url) {
             url: field_url, // url set in html
             cache: true	 // defaults to true -> for testing
         },
-    }
+    };
     return optDict
 }
 
@@ -86,12 +97,12 @@ var multitemplate_et = '</h5>';
 var limit_sugg = 3;
 
 function getTypeaheadOpt(name, source) {
-    optDict = {
+    const optDict = {
         name: name,
         source: source,
         display: 'name',
         limit: limit_sugg,
-    }
+    };
     return optDict
 }
 
@@ -106,29 +117,33 @@ function tAwHeaderOpt(optDict, title) {
     return newOptDict
 }
 
-var compTa = new getTypeaheadOpt('companies', companies);
+var compTa = new getTypeaheadOpt('company', companies);
 var compTaH = new tAwHeaderOpt(compTa, 'Companies');
 
-var refTa = new getTypeaheadOpt('references', references);
+var refTa = new getTypeaheadOpt('reference', references);
 var refTaH = new tAwHeaderOpt(refTa, 'Where was it published');
 
-var countriesTa = new getTypeaheadOpt('countries', countries);
+var countriesTa = new getTypeaheadOpt('country', countries);
 var countriesTaH = new tAwHeaderOpt(countriesTa, 'Countries');
 
 var tagsTa = new getTypeaheadOpt('tags', tags);
 var tagsTaH = new tAwHeaderOpt(tagsTa, 'Topics');
+
+let refExcTa = new getTypeaheadOpt('reference_exc', references);
 
 var allTypeaheadDic = {
     'tags': tagsTa,
     'company': compTa,
     'reference': refTa,
     'country': countriesTa,
+    'reference_exc_tinp': refExcTa,
 };
+
 
 var allTaHList = [
     {
         highlight: true,
-        autoselect: true,
+        autoselect: true,  //highlights and selects on enter
     },
     compTaH, countriesTaH, refTaH,
     tagsTaH

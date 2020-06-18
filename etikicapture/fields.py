@@ -1,5 +1,5 @@
 from crispy_forms.bootstrap import FieldWithButtons, StrictButton
-from crispy_forms.layout import Layout
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Button, HTML
 from django import forms
 from django.urls import reverse_lazy
 
@@ -68,4 +68,24 @@ class UrlWBtn(Layout):
                                           onclick="extract_text(this);",
                                           url_get=reverse_lazy('etikicapture:extract_text_url', )
                                           ))
+        )
+
+
+class ImpactEventBtns(Layout):
+    def __init__(self):
+        super(ImpactEventBtns, self).__init__(
+            ButtonHolder(
+                Submit('submit', 'Save Impact Event', css_class='btn btn-secondary'),
+                Button('new', 'New', css_class='btn btn-secondary', onclick="new_ie();"),
+                Button('next', 'Next', css_class='btn btn-light', onclick="next_ie();")
+            )
+        )
+
+
+class Readonly(Layout):
+
+    def __init__(self, fieldname, *args, **kwargs):
+        html_str = '<p class="rdonly">{{ form.initial.reference }}</p>'  # % fieldname
+        super(Readonly, self).__init__(
+            HTML(html_str)
         )

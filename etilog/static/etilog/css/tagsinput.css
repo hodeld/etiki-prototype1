@@ -28,12 +28,14 @@
 .bootstrap-tagsinput .badge {
     margin: 2px 1px; /* mdh; was margin: 2px 0px; */
     padding: 5px 8px;
+    line-height: inherit; /* mdh; was not defined */
 }
 
 .bootstrap-tagsinput .badge [data-role="remove"] {
     margin-left: 8px;
     cursor: pointer;
 }
+
 
 .bootstrap-tagsinput .badge [data-role="remove"]:after {
     content: "×";

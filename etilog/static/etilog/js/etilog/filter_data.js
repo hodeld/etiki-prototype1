@@ -7,27 +7,15 @@ let drawcharts = false;
 
 let comp_ratings = '';
 
-let resultType = 'data'; //'count'  or data
-
 function setData(response) {
-
-    $('#filterCountText').html(response.msg_count); // in Button, always update
-    if (resultType == 'count') {
-        return
+    if (response.message) { //other messages if new calculated
+        setMessages(response);
     }
-
-    if (resultType === 'data'){
-        resultType = 'count'; // on fields which need to be data -> is set data
-        if (response.message) { //other messages if new calculated
-            setMessages(response);
-        }
-        getResults();
-    }
+    getResults();
 }
 
 function setResultData(response){
     let responseType = response.result_type;
-
 
     if (responseType === 'table') {
         tableGet = false;
@@ -62,7 +50,7 @@ function setResultData(response){
 }
 function setMessages(response){
     // cached or new messages
-    $("#id_message").html(response.message);
+    $(".filterMessage").html(response.message);
     $(".ie_count").html(response.ie_count);
     $(".company_count").html(response.company_count);
 

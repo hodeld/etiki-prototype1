@@ -15,7 +15,6 @@ function setFilterIcon() {
 
     });
     if (!validate) {
-
         $('#icon_filter_active').hide();
         $('#icon_filter').show();
     } else {
@@ -38,18 +37,20 @@ function setFilterIcon() {
 }
 
 function setFilterVisually(filterDict) {
-    var filterCount = 0;
-    $('.f_input').each(function () {
-
-        var ele = $(this);
-        if (ele.val() != '') {
+    let filterCount = 0;
+    const nameSel = 'input[name ="{name}"]';
+    const fform = $('#id_filterform');
+    for (let el_name in filterDict) {
+        let valList = filterDict[el_name];
+        if (valList.length > 0) {
             filterCount++;
-            var val = ele.val();
+            fSel = nameSel.replace('{name}', el_name);
+            ele = fform.find(fSel);
             var parfield = ele.attr('parfield');
-            var el_name = ele.attr('name');
-            var valList = filterDict[el_name];
+            ele.addClass('nosubmit');
             if (ele.hasClass('btninput')) {
-                ele.val(valList); //value set from filter is string incl. [
+                let newVal = JSON.stringify(valList);
+                ele.val(newVal); //value set from filter is string incl. [
                 $.each(valList, function (index, value) {
                     //todo check but should only ids
                     var targetId = parfield + value;
@@ -60,36 +61,30 @@ function setFilterVisually(filterDict) {
                         $(twinId).addClass('active')
                             .attr('aria-pressed', 'true');
                     }
-
-
                 });
             } else if (ele.hasClass('f_tagsinput')) {
-                function addTag(suggestion) {
+                $.each(valList, function (index, value) {
+                    let suggestion = value; //filterDict[value] ;
                     ele.addClass('nosubmit');
-                    ele.tagsinput('add', suggestion);
-                }
-
-                var targetId = parfield //+ el_name; //eg company
-                if (el_name == 'summary') {
-                    addTag(val)
-                } else {
-
-                    $.each(valList, function (index, value) {
-                        var suggestion = value; //filterDict[value] ;
-                        addTag(suggestion)
-                    });
-                }
-                $(targetId).addClass('show');
+                    setTags(suggestion, true);
+                });
+                //let targetId = parfield;  //+ el_name; //eg company
+                //$(targetId).addClass('show');
             } else if (ele.hasClass('dateyearpicker')) {
-
-                //ele.data("DateTimePicker").date(val);
-
+                ele.data("DateTimePicker").date(valList);
+            } else if (ele.hasClass('f_tagsinput_spec')) {
+                $.each(valList, function (index, value) {
+                    let suggestion = value; //filterDict[value] ;
+                    ele.addClass('nosubmit');
+                    const tagInputEle = $('#id_f_reference_exc_tinp');
+                    tagInputEle.tagsinput('add', suggestion); //sets also filtervalue
+                });
             }
 
-            $('#icon_filter').hide();
-            $('#icon_filter_active').show();
-
         }
-    });
-    $('#filter-count').html(filterCount);
+
+        $('#icon_filter').hide();
+        $('#icon_filter_active').show();
+        $('#filter-count').html(filterCount);
+    }
 }

@@ -6,8 +6,8 @@ Created on 15 Mar 2019
 from django.db.models import Count
 
 # crispoy
-from crispy_forms.layout import Layout, Field, Row, Column, Div, Button, HTML, ButtonHolder, Submit
-from crispy_forms.bootstrap import FieldWithButtons, StrictButton, AppendedText
+from crispy_forms.layout import Layout, Field, Row, Column, Div, HTML
+from crispy_forms.bootstrap import StrictButton, AppendedText
 # datepicker
 from bootstrap_datepicker_plus import DatePickerInput
 
@@ -38,27 +38,6 @@ class DateYearPickerField(Layout):
             Field(field_name, autocomplete='off', wrapper_class='datepicker',
                   placeholder=placeholder,
                   *args, **kwargs)
-        )
-
-
-class RowTagsInput(Layout):
-    def __init__(self, field_name, col_class, field_class='', field_id=None, row_id=None, *args, **kwargs):
-        if field_id == None:
-            field_id = 'id_f_' + field_name
-        if row_id == None:
-            row_id = 'id_row_f_' + field_name
-        cls_taginp = 'f_tagsinput'
-        super(RowTagsInput, self).__init__(
-            Row(
-                Column(Field(field_name, id=field_id,
-                             parfield='#id_row_f_',
-                             css_class=' '.join([cls_taginp, field_class])
-                             ),
-                       css_class=col_class
-                       ),
-                css_class='row_tags_class',
-                id=row_id
-            )
         )
 
 
@@ -172,35 +151,6 @@ class ColTendencyBtnSelect(ColBtnSelect):
                               *args, **kwargs)
 
 
-class TendencyLegende(Layout):
-    def __init__(self, *args, **kwargs):
-        q = SustainabilityTendency.objects.all()  # double query as above
-        ele_list = []
-        icon_name = 'fa-dot-circle'
-        icon_str = '<i class="fas %s mr-1"></i>' % icon_name
-        col_class = "col-12 d-flex flex-wrap justify-content-start chart-legend"
-        for tend in q:
-            eleclass = 'text-'
-            if 'negativ' in tend.name:
-                csscls = 'danger'
-
-            elif 'positiv' in tend.name:
-                csscls = 'success'
-            else:  # 'controv' in tend.name :
-                csscls = 'warning'
-
-            cont = icon_str + tend.name
-            css_class = eleclass + csscls + ' mx-3 text-uppercase'
-            ele = HTML('<span class="%s"> %s </span>' % (css_class, cont))
-            ele_list.append(ele)
-
-        super(TendencyLegende, self).__init__(
-
-            Div(*ele_list,
-                css_class=col_class)
-        )
-
-
 class RowTopics(Layout):
     def __init__(self, col_class='col-12', labelname='', *args, **kwargs):  # distribute buttons
         # q = SustainabilityTag.objects.all()[:5]
@@ -250,78 +200,15 @@ class RowTopics(Layout):
         )
 
 
-class ImpactEventBtns(Layout):
-    def __init__(self):
-        super(ImpactEventBtns, self).__init__(
-            ButtonHolder(
-                Submit('submit', 'Save Impact Event', css_class='btn btn-secondary'),
-                Button('new', 'New', css_class='btn btn-secondary', onclick="new_ie();"),
-                Button('next', 'Next', css_class='btn btn-light', onclick="next_ie();")
-            )
-        )
-
-
-class Readonly(Layout):
-
-    def __init__(self, fieldname, *args, **kwargs):
-        html_str = '<p class="rdonly">{{ form.initial.reference }}</p>'  # % fieldname
-        super(Readonly, self).__init__(
-            HTML(html_str)
-        )
-        # )
-
-
-class SearchWBtn(Layout):
-    def __init__(self, fieldname, *args, **kwargs):
-        img_1 = '<img class="icon collapse" id="icon_filter_active" alt="icon-filter" src="/static/etilog/img/icon/filter_active.png">'
-        img_2 = '<img class="icon collapse show" id="icon_filter" alt="icon-filter" src="/static/etilog/img/icon/filter_nonact.png">'
-
-        cnt_filters = '<small id="filter-count">0</small>'
-        super(SearchWBtn, self).__init__(
-            FieldWithButtons(
-                Field(fieldname, *args, **kwargs),
-                StrictButton(img_1 + img_2 + cnt_filters,
-                             css_class='btn-dark m-0 px-3 py-0 z-depth-0',
-                             css_id='btn_filter_toggle',
-                             onclick="toggle_filter_frombtn()"),
-                css_id='div_id_search'
-
-                # for prepend: change template -> span before, prepend-class
-            )
-        )
-
-
 class SearchWIcon(Layout):
-    def __init__(self, fieldname, *args, **kwargs):
-        input_id = kwargs.get('id', 'otherid')
-
-        icon_str = '''<i class="fa fa-search" onclick = "setTagBtn('%s')";></i>''' % input_id
+    def __init__(self, field_id, *args, **kwargs):
+        icon_str = '''<i class="fa fa-search" onclick = "setTagBtn('%s')";></i>''' % field_id
         super(SearchWIcon, self).__init__(
-            AppendedText(fieldname, icon_str,
+            AppendedText('search', icon_str,
+                         id=field_id, autocomplete="off",
+                         placeholder='Search Companies, Countries, Topics, Newspaper …',
+                         css_class='tt-input f_search',
                          *args, **kwargs)
-            # Field(fieldname, *args, **kwargs),
-            # 'icon_str')
-            # , css_id='div_id_search')
-        )
-
-
-class BtnIcon(Layout):
-    def __init__(self, col_class='col-12 ',
-                 sname='Filter',
-                 icon_name='fa-filter',
-                 *args, **kwargs):  # distribute buttons
-
-        icon_str = '<i class="fas %s mr-1"></i>'
-
-        cont = icon_str % icon_name + sname
-        btn = StrictButton(cont, name='btnfilter', value='filter',
-                           css_class='btn-outline-light btn-block',  # 'active btn-light',  )
-                           )
-
-        super(BtnIcon, self).__init__(
-            Column(
-                btn, css_class=col_class + ' mt-1'
-            )
         )
 
 
@@ -357,6 +244,25 @@ class LabelRow(Layout):
         )
 
 
+class TagField(Layout):
+    def __init__(self, field_name, cls_filterinput):
+        super(TagField, self).__init__(
+            Field(field_name, id='id_f_' + field_name,
+                  css_class=cls_filterinput + ' f_tagsinput', type="hidden"),
+        )
+
+
+class AllTagsInput(Layout):
+    def __init__(self, field_name, *args, **kwargs):
+        wrapper_cls = ' '.join([kwargs.pop('wrapper_class', ''), 'alltaginput'])
+        super(AllTagsInput, self).__init__(
+            Field(field_name, id='id_f_' + field_name, css_class='f_alltagsinput',
+                  wrapper_class=wrapper_cls,
+                  *args, **kwargs
+                  )
+        )
+
+
 class LabelRowTagsInput(LabelRow):
     def __init__(self, field_name, col_class, labelname, field_class='',
                  placeholder=None,
@@ -368,7 +274,7 @@ class LabelRowTagsInput(LabelRow):
             placeholder = labelname
         name_stripped = labelname.replace(' ', '')
         parent_id = '#row' + name_stripped  # same as labelrow
-        cls_taginp = 'f_tagsinput'
+        cls_taginp = 'f_tags_search_inp'
         rowcontent = Column(Field(field_name, id=field_id,
                                   parfield=parent_id,
 
@@ -379,3 +285,7 @@ class LabelRowTagsInput(LabelRow):
                             )
 
         LabelRow.__init__(self, rowcontent, labelname)
+
+
+
+
