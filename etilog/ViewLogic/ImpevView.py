@@ -55,7 +55,7 @@ def filter_results(request):
     info_dict = overview_message(share_d, cnt_tot, limit_filt)
 
     d_dict = {}
-    if filter_name_dict:
+    if filter_name_dict is not None:  # can be empty dict
         filt_data_json = json.dumps(filter_name_dict)  # for setting filter visually
         d_dict['filter_dict'] = filt_data_json # for setting filter visually
 
