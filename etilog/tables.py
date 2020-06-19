@@ -4,7 +4,6 @@ Created on 24 Jul 2019
 @author: daim
 '''
 # django
-from django.utils.html import mark_safe
 from django.urls import reverse
 from django.template.loader import render_to_string
 
@@ -13,7 +12,7 @@ import django_tables2 as tables
 # models
 from etilog.ViewLogic.queries import get_tags
 from .models import ImpactEvent
-from .fields import dom_icon_dict
+from etilog.forms.fields_filter import dom_icon_dict
 
 ETILOG_TABLE_TEMPLATE = 'etilog/impev_table/etilog_djangotable.html'
 

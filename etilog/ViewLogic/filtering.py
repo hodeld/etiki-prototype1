@@ -7,7 +7,7 @@ Created on 26.8.2019
 from django.db.models import Q
 
 from etilog.ViewLogic.queries import get_name
-from etilog.fields import D_FORMAT
+from etilog.forms.fields_filter import D_FORMAT
 from etilog.models import ImpactEvent
 import json
 from datetime import datetime
@@ -76,7 +76,7 @@ def get_filterdict(request):
     for fname in field_names:
         val = set_value(fname)
         if val:
-            filter_name_dict[fname] = val
+            get_fname_dict()
             filter_dict[fname] = val
 
     field_names = ['company', 'reference', 'country', 'tags', 'reference_exc',

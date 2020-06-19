@@ -12,27 +12,29 @@ $(document).ready(function () {
         clearFilter()
     });
 
-
-
-    $('#applyFilter').click(function () {
-
-
-        submitFromID('#id_filterform');
-    });
-
     //directly submit on filterinputs:
-    $('.f_input').change(function (ev) {
-        submitFilterForm(ev)
+    $('.f_input').change(function () {
+        submitFilterForm();
     });
 
     //directly submit on datetimeinput
     $(".dateyearpicker").on('dp.change', function (ev) { // e = event
-        submitFilterForm(ev)
+        const ele = $(ev.target);
+        const valStr = ele.val();
+        if (valStr) {
+            let suggestion = {
+                'id': valStr,
+                'name': ele.attr('placeholder') + ': ' + valStr,
+                'category': ele.attr('data-category'),
+            };
+            setTags(suggestion);
+            ele.data("DateTimePicker").clear();
+        }
     });
-
 
 });
 
+let submit = true;
 
 function set_val_from_btn(ele) {
     //mirror_btn(ele);
@@ -48,16 +50,35 @@ function set_val_from_btn(ele) {
     setFilterValue(inputId, idVal, addValue);
 }
 
-function setFilterValue(inputId, idVal, addValue) {
 
-    let el_val = $(inputId).val();
+function setFilterValue(inputId, idVal, addValue) {
+    const ele = $(inputId);
+    let el_val = ele.val();
+    if (ele.hasClass('f_dateinput')){
+        //set filterCount according new and old value
+        if (addValue && el_val == '') {
+            filterCount ++;
+        } else if (!addValue && el_val) {
+            filterCount--;
+        }
+        if (!addValue){
+            idVal = ''; //if remove value
+        }
+        ele.val(idVal)
+            .trigger('change'); //needed for hidden input fields
+        return
+    }
+
     let val_set = new Set();
     if (el_val !== ''){
         val_set = new Set(JSON.parse(el_val));
     }
-    if (addValue) { //means was pressed now
+    if (addValue) {
+        const len = val_set.size ;
         val_set.add(idVal);
+        filterCount += (val_set.size-len);
     } else {
+        filterCount--;
         val_set.delete(idVal);
     }
     const newLi = Array.from(val_set);
@@ -66,33 +87,35 @@ function setFilterValue(inputId, idVal, addValue) {
         newVal = JSON.stringify(newLi);
     }
 
-    $(inputId).val(newVal)
+    ele.val(newVal)
         .trigger('change'); //needed for hidden input fields
 }
 
 
 function clearFilter() {
-    var filterCount = 0;
+    filterCount = 0;
+    submit = false;
     $('.f_alltagsinput').each(function () {
         var ele = $(this);
         if (ele.val() !== '') {
-            ele.addClass('nosubmit');
             ele.tagsinput('removeAll');
         }
     });
 
+
+
     $('.btnselect').attr('aria-pressed', 'false');
     $('.btnselect').removeClass('active');
+    //$('.dateyearpicker').data("DateTimePicker").clear();
     $('.row_tags_class').hide();
     $('.f_input').each(function () {
         var ele = $(this);
         if (ele.val() != '') {
-            ele.addClass('nosubmit');
             ele.val('');
         }
     });
-    submitFromID('#id_filterform');
-
+    submit = true;
+    submitFilterForm();
 }
 
 

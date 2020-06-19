@@ -1,7 +1,7 @@
 from django.contrib.auth import logout
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 import json
 
 #forms
@@ -10,7 +10,7 @@ from django.urls import reverse
 from etikihead.forms import ContactForm
 
 # Create your views here.
-from etilog.forms import NewSource
+from etilog.forms.forms_filter import NewSource
 from etilog.models import FrequentAskedQuestions
 
 

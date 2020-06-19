@@ -62,20 +62,21 @@ function getResults(){
 
 function getResultsInBG(){
     //load all other results in background
-    if (companyGet) {
-        resultOptsBG.data = {result_type: 'company'};
-        $.ajax(resultOptsBG); // ajax request without form submit
-        companyGet = false;
-    }
+    //if in table view -> first details than companies
+    //in in company view -> first table than details
     if (tableGet) {
         resultOptsBG.data = {result_type: 'table'};
         $.ajax(resultOptsBG); // ajax request without form submit
         tableGet = false;
     }
-     if (detailsGet) {
-         resultOptsBG.data = {result_type: 'ie_detail'};
-         $.ajax(resultOptsBG); // ajax request without form submit
-         detailsGet = false;
-
-     }
+    if (detailsGet) {
+        resultOptsBG.data = {result_type: 'ie_detail'};
+        $.ajax(resultOptsBG); // ajax request without form submit
+        detailsGet = false;
+    }
+    if (companyGet) {
+        resultOptsBG.data = {result_type: 'company'};
+        $.ajax(resultOptsBG); // ajax request without form submit
+        companyGet = false;
+    }
 }

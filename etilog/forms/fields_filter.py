@@ -3,7 +3,6 @@ Created on 15 Mar 2019
 
 @author: daim
 '''
-from django.db.models import Count
 
 # crispoy
 from crispy_forms.layout import Layout, Field, Row, Column, Div, HTML
@@ -13,7 +12,6 @@ from bootstrap_datepicker_plus import DatePickerInput
 
 # models
 from etilog.models import SustainabilityDomain, SustainabilityTendency
-from etilog.models import ImpactEvent
 
 D_FORMAT = '%d.%m.%Y'
 D_YEARFORMAT = '%Y'
@@ -151,63 +149,31 @@ class ColTendencyBtnSelect(ColBtnSelect):
                               *args, **kwargs)
 
 
-class RowTopics(Layout):
-    def __init__(self, col_class='col-12', labelname='', *args, **kwargs):  # distribute buttons
-        # q = SustainabilityTag.objects.all()[:5]
-        nr_tags = 2
-        li_vals = []
-        li_sustagsid = []
-        # hits DB 5 times -> better 1 query
-        for i in range(1, 6):
-            vals = ImpactEvent.objects.filter(
-                sust_domain=i).values_list(
-                'sust_tags__id', 'sust_tags__name').annotate(
-                tag_count=Count('sust_tags')).order_by(
-                '-tag_count')[:nr_tags]
-
-            li_vals.extend(vals)
-
-        topics_list = []
-        a_str = '''<a href="#" class="topic-link link-intern" 
-                    tag-category = "tags"
-                    tagid = "%d" tagname = "%s" >%s</a>
-                    '''
-        k = nr_tags
-        for tag in li_vals:
-            stag_id = tag[0]
-            if stag_id in li_sustagsid:  # no double entries
-                k += 1
-                continue
-            li_sustagsid.append(stag_id)
-            if k % nr_tags == 0:
-                addclass = ''
-            else:
-                addclass = ' d-none d-md-block'  # only show on larger screens
-            html_str = a_str % (stag_id, tag[1], tag[1])  # (tag.id, tag.name, tag.name)
-            a_link = HTML(html_str)
-            div_a = Div(a_link, css_class='div_topic_li' + addclass)
-            topics_list.append(div_a)
-            k += 1
-
-        html_str = '<label class="col-form-label">%s</label>' % labelname
-        super(RowTopics, self).__init__(
-            Row(
-
-                Column(HTML(html_str),
-                       Div(*topics_list, css_class='d-flex flex-wrap'),  # to wrap elements
-                       css_class=col_class)
-            )
-        )
+SEARCH_WRAP_ClS = 'div_search_typeahead'  # for css
 
 
 class SearchWIcon(Layout):
-    def __init__(self, field_id, *args, **kwargs):
-        icon_str = '''<i class="fa fa-search" onclick = "setTagBtn('%s')";></i>''' % field_id
+    def __init__(self, field_id, landing=False, *args, **kwargs):
+
+        ph_filter = 'FILTER BY'
+        ph_base = ' Companies, Countries, Topics, Newspaper …'
+        ph_search = 'Search'
+        icon_search = 'fa fa-search'
+        if landing:
+            ph = ph_search + ph_base
+        else:
+            ph = ph_filter + ph_base
+        icon_str = '''<i class="%s" ></i>''' % icon_search
         super(SearchWIcon, self).__init__(
             AppendedText('search', icon_str,
                          id=field_id, autocomplete="off",
-                         placeholder='Search Companies, Countries, Topics, Newspaper …',
+                         placeholder=ph,
+                         data_phbase=ph_base,
+                         data_phsearch=ph_search,
+                         data_phfilter=ph_filter,
                          css_class='tt-input f_search',
+                         wrapper_class=' '.join([SEARCH_WRAP_ClS, 'free_input']),
+
                          *args, **kwargs)
         )
 
@@ -275,14 +241,20 @@ class LabelRowTagsInput(LabelRow):
         name_stripped = labelname.replace(' ', '')
         parent_id = '#row' + name_stripped  # same as labelrow
         cls_taginp = 'f_tags_search_inp'
-        rowcontent = Column(Field(field_name, id=field_id,
-                                  parfield=parent_id,
+        icon_search = 'fa fa-search'
+        icon_str = '''<i class="%s" ></i>''' % icon_search
 
-                                  css_class=' '.join([cls_taginp, field_class]),
-                                  placeholder='Search ' + placeholder,
-                                  ),
-                            css_class=col_class
-                            )
+        rowcontent = Column(
+            AppendedText(field_name, icon_str,
+                         parfield=parent_id,
+                         id=field_id, autocomplete="off",
+                         placeholder=placeholder,
+                         css_class=' '.join([cls_taginp, field_class]),
+                         wrapper_class=' '.join([SEARCH_WRAP_ClS, 'not_free_input']),
+                         *args, **kwargs
+                         ),
+            css_class=col_class
+        )
 
         LabelRow.__init__(self, rowcontent, labelname)
 

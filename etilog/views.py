@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.decorators.csrf import csrf_exempt
 import json
 
 # from 3rd apps
@@ -12,9 +11,10 @@ from etilog.models import (Company, Reference, Country,
                            SustainabilityTag)
 
 # forms
-from .forms import (SearchForm, TopicForm,
-                    OverviewFiltHeaderForm, ImpevOverviewFForm
-                    )
+from etilog.forms.forms_filter import (SearchForm, OverviewFiltHeaderForm, OverviewFHiddenForm,
+                                       OverviewFForm
+                                       )
+from etilog.forms.forms_suggestions import TopicForm
 
 from etilog.ViewLogic.ImpevView import get_results, filter_results
 
@@ -31,10 +31,11 @@ def overview_impevs(request, reqtype=None):
         d_dict = filter_results(request)
         jsondata = json.dumps(d_dict)
 
-    searchform = SearchForm()  # Filter ServerSide
+    searchform = SearchForm(landing)  # Filter ServerSide
     topicform = TopicForm()
     filtheader = OverviewFiltHeaderForm()
-    filtform = ImpevOverviewFForm()
+    filterhidden = OverviewFHiddenForm()
+    filtform = OverviewFForm()
 
     companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
     countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
@@ -42,7 +43,8 @@ def overview_impevs(request, reqtype=None):
     tags_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'tags'})
 
     return render(request, 'etilog/overview.html', {
-        'filter': filtform,
+        'filter': filterhidden,
+        'filterform': filtform,
         'filtheader': filtheader,
         'searchform': searchform,
         'topicform': topicform,
