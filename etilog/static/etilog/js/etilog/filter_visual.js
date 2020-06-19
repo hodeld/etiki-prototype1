@@ -49,20 +49,13 @@ function setFilterVisually(filterDict) {
             } else if (ele.hasClass('f_tagsinput')) {
                 $.each(valList, function (index, value) {
                     let suggestion = value; //filterDict[value] ;
-                    setTags(suggestion, true); //includes filterCount
+                    setTags(suggestion); //includes filterCount
                 });
                 //let targetId = parfield;  //+ el_name; //eg company
                 //$(targetId).addClass('show');
             } else if (ele.hasClass('f_dateinput')) {
                 //sets value and filterCount
                 $(parfield).data("DateTimePicker").date(valList);
-            } else if (ele.hasClass('f_tagsinput_spec')) {
-                $.each(valList, function (index, value) {
-                    filterCount++;
-                    let suggestion = value; //filterDict[value] ;
-                    const tagInputEle = $('#id_f_reference_exc_tinp');
-                    tagInputEle.tagsinput('add', suggestion); //sets also filtervalue
-                });
             }
 
         }

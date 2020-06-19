@@ -149,6 +149,9 @@ class ColTendencyBtnSelect(ColBtnSelect):
                               *args, **kwargs)
 
 
+SEARCH_WRAP_ClS = 'div_search_typeahead'  # for css
+
+
 class SearchWIcon(Layout):
     def __init__(self, field_id, landing=False, *args, **kwargs):
 
@@ -160,7 +163,7 @@ class SearchWIcon(Layout):
             ph = ph_search + ph_base
         else:
             ph = ph_filter + ph_base
-        icon_str = '''<i class="%s" onclick = "setTagBtn('%s')";></i>''' % (icon_search, field_id)
+        icon_str = '''<i class="%s" ></i>''' % icon_search
         super(SearchWIcon, self).__init__(
             AppendedText('search', icon_str,
                          id=field_id, autocomplete="off",
@@ -169,6 +172,8 @@ class SearchWIcon(Layout):
                          data_phsearch=ph_search,
                          data_phfilter=ph_filter,
                          css_class='tt-input f_search',
+                         wrapper_class=' '.join([SEARCH_WRAP_ClS, 'free_input']),
+
                          *args, **kwargs)
         )
 
@@ -236,14 +241,20 @@ class LabelRowTagsInput(LabelRow):
         name_stripped = labelname.replace(' ', '')
         parent_id = '#row' + name_stripped  # same as labelrow
         cls_taginp = 'f_tags_search_inp'
-        rowcontent = Column(Field(field_name, id=field_id,
-                                  parfield=parent_id,
+        icon_search = 'fa fa-search'
+        icon_str = '''<i class="%s" ></i>''' % icon_search
 
-                                  css_class=' '.join([cls_taginp, field_class]),
-                                  placeholder='Search ' + placeholder,
-                                  ),
-                            css_class=col_class
-                            )
+        rowcontent = Column(
+            AppendedText(field_name, icon_str,
+                         parfield=parent_id,
+                         id=field_id, autocomplete="off",
+                         placeholder=placeholder,
+                         css_class=' '.join([cls_taginp, field_class]),
+                         wrapper_class=' '.join([SEARCH_WRAP_ClS, 'not_free_input']),
+                         *args, **kwargs
+                         ),
+            css_class=col_class
+        )
 
         LabelRow.__init__(self, rowcontent, labelname)
 

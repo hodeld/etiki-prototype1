@@ -6,7 +6,6 @@ $(document).ready(function () {
     );
     $('.f_search').bind('typeahead:select', function (ev, suggestion) {
         //from search directly table
-
         const val_str = suggestion['name'];
         if (val_str.length > 0) {
             const category = ev.handleObj.handler.arguments[2];
@@ -16,20 +15,53 @@ $(document).ready(function () {
         }
     });
 
-
     $(".f_search").keyup(function (event) {
-        var ele = $(this);
+        const ele = $(this);
         keyBehaviorSearch(event, ele);
     });
+
+
+    $('.f_tags_search_inp').typeahead(
+        {
+            highlight: true,
+            autoselect: true,
+        },
+        refExcTa,
+    );
+
+    $('.f_tags_search_inp').bind('typeahead:select', function (ev, suggestion) {
+        //from search directly table
+        const val_str = suggestion['name'];
+        if (val_str.length > 0) {
+            suggestion.category = 'reference_exc';
+            setTags(suggestion);
+            $(this).typeahead('val', ''); //typeahead input
+        }
+    });
+
+    $('.div_search_typeahead.free_input .input-group-append').click(function(){
+        let ele = $(this);
+        setTagBtn(ele);
+    });
+    $('.div_search_typeahead.not_free_input .input-group-append').click(function(){
+        let ele = $(this);
+        setTagBtn(ele, false);
+    });
+
 });
 
 
 //on search button in searchfield
-function setTagBtn(eleId) {
-    const ele = $('#' + eleId);
-    if (setFirstSelection(ele) === false) {
-        changeWOSelection(ele);
+function setTagBtn(ele, freeInput=true) {
+    if (freeInput){
+        if (setFirstSelection(ele) === false) {
+            changeWOSelection(ele);
+        }
     }
+    else {
+        setFirstSelection(ele)
+    }
+
 }
 
 function setFirstSelection(ele) {
@@ -43,15 +75,16 @@ function setFirstSelection(ele) {
 
 //if changed without suggestion
 function changeWOSelection(ele) {
-
     const val_str = ele.typeahead('val');
-    let suggestion = {
+    if (val_str){ // can be undefined
+        let suggestion = {
             'id': val_str,
             'name': val_str,
             'category': 'summary'
         };
-    setTags(suggestion);
-    ele.typeahead('val', ''); //typeahead input
+        setTags(suggestion);
+        ele.typeahead('val', ''); //typeahead input
+    }
     ele.focus();
 }
 
@@ -94,9 +127,9 @@ var tags = new Bloodhound(optTopics);
 //typeahead
 var multitemplate_st = '<h5 class="category-name text-primary">';
 var multitemplate_et = '</h5>';
-var limit_sugg = 3;
+const limit_sugg = 3;
 
-function getTypeaheadOpt(name, source) {
+function getTypeaheadOpt(name, source, limitSugg=limit_sugg) {
     const optDict = {
         name: name,
         source: source,
@@ -129,7 +162,7 @@ var countriesTaH = new tAwHeaderOpt(countriesTa, 'Countries');
 var tagsTa = new getTypeaheadOpt('tags', tags);
 var tagsTaH = new tAwHeaderOpt(tagsTa, 'Topics');
 
-let refExcTa = new getTypeaheadOpt('reference_exc', references);
+let refExcTa = new getTypeaheadOpt('reference_exc', references, 5);
 
 var allTypeaheadDic = {
     'tags': tagsTa,

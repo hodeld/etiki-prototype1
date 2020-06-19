@@ -116,8 +116,8 @@ class OverviewFForm(forms.Form):
 
             ),
 
-            LabelRowTagsInput('reference_exc_tinp', 'col-12'#, field_class='f_tags_search_inp'
-                              , labelname='Exclude Publishers'),
+            LabelRowTagsInput('reference_exc_tinp', 'col-12',
+                              labelname='Exclude Publishers'),
 
         )
 
@@ -162,8 +162,7 @@ class OverviewFHiddenForm(forms.Form):
             TagField('tags', cls_filterinput),
             TagField('summary', cls_filterinput),
 
-            Field('reference_exc', id='id_f_reference_exc', type="hidden",
-                  css_class=cls_filterinput + ' f_tagsinput_spec', ),
+            TagField('reference_exc', cls_filterinput),
 
             Field('date_from', id='id_f_date_from', type="hidden",
                   css_class=cls_filterinput + ' f_dateinput',

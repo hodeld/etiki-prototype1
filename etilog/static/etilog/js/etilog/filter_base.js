@@ -50,6 +50,7 @@ function set_val_from_btn(ele) {
     setFilterValue(inputId, idVal, addValue);
 }
 
+
 function setFilterValue(inputId, idVal, addValue) {
     const ele = $(inputId);
     let el_val = ele.val();
@@ -94,7 +95,7 @@ function setFilterValue(inputId, idVal, addValue) {
 function clearFilter() {
     filterCount = 0;
     submit = false;
-    $('.f_alltagsinput, .f_tags_search_inp').each(function () {
+    $('.f_alltagsinput').each(function () {
         var ele = $(this);
         if (ele.val() !== '') {
             ele.tagsinput('removeAll');
