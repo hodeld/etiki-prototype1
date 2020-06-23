@@ -47,8 +47,6 @@
     padding: .375rem 0;
 }
 
-
-
 .div_search_typeahead input:focus
 {
     padding: .375rem 0;
@@ -64,11 +62,23 @@
     outline: none; /* in input blue shadow is outline */
 }
 
+.div_search_typeahead input::placeholder {
+    text-overflow:ellipsis !important;
+}
+.div_search_typeahead input::-webkit-input-placeholder {
+    text-overflow:ellipsis !important;
+}
+.div_search_typeahead input::-moz-placeholder {
+    text-overflow:ellipsis !important;
+}
+.div_search_typeahead input::-ms-placeholder{
+    text-overflow:ellipsis !important;
+}
+
 .div_search_typeahead span.twitter-typeahead {
     /*width: 100%;  modified by damian DH  in tagesinput.css*/
     width: 1%;
 }
-
 
 .alltaginput .bootstrap-tagsinput input {
     display: none;

@@ -13,17 +13,6 @@
 }
 /*#impev-list > table > tbody > tr:nth-child(1) > td.badge.badge-danger.sust_category*/
 
-.table-etiki .sustbtn { /* button within cell */
-    display: block; /*centers in horizontally  */
-    margin: auto;
-    overflow: hidden;
-    white-space: nowrap;
-    line-height: .8em;
-    padding-left: .5rem;
-    padding-right: .5rem;
-    text-overflow: ellipsis;
-}
-
 .table-etiki .tendency-pos { /* button within cell */
     color: var(--positive);
 }
@@ -75,6 +64,14 @@
     text-overflow: unset;
 }
 
+.table-etiki .parentrow.active .table-2lines{
+    white-space: normal;
+    text-overflow: unset;
+    display: block;
+    max-height: unset;
+}
+
+
 .table-etiki .parentrow.active .normalicon {
     display: none;
 }
@@ -97,7 +94,20 @@
     /* vertical-align: middle; */
 }
 
-/* date_published: td:nth-child(3) #impev-list > table > thead > tr > th.orderable.sort.sust_domain */
+.table-etiki .table-2lines { /* only on mobile sofar */
+    overflow: hidden;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* nr of lines */
+    -webkit-box-orient: vertical;
+    line-height: 1.5; /* fallback */
+    max-height: 2.5rem;       /* fallback */
+}
+
+.table-etiki .div-inherit{ /* inherits from td */
+    overflow: inherit;
+    text-overflow: inherit;
+}
 
 .table-etiki td.date {
     white-space: normal;

@@ -121,6 +121,18 @@ class CategoryColumn(tables.Column):
         return html_str
 
 
+class TopicsColumn(tables.Column):
+
+    def render(self, value, record):
+        if value == '':
+            value = get_tags(record)
+        html_str = render_to_string('etilog/table_cells/cell_topics.html',
+                                    {'value': value
+                                     })
+
+        return html_str
+
+
 etiki_table_classes = 'table table-sm table-etiki'  # bootstrap classes, plus own tbl class
 
 
@@ -150,7 +162,7 @@ class ImpEvBaseTable(tables.Table):
     company = tables.TemplateColumn(template_name='etilog/table_cells/cell_link.html',
                                     attrs=get_attrs(sort=True, )
                                     )
-    topics = tables.Column(accessor='get_tags', verbose_name='Topics',
+    topics = TopicsColumn(accessor='get_tags', verbose_name='Topics',
                            empty_values=(),
                            attrs=get_attrs(hover=True, sort=True))
 
@@ -197,12 +209,6 @@ class ImpEvBaseTable(tables.Table):
         # if record.summara
         val_short = str(value)[:40]
         return val_short + '…'
-
-    def render_topics(self, value, record):
-        if value == '':
-            return get_tags(record)
-        else:
-            return value
 
     # adds column name as css class in td tag -> for List.js:
     def get_column_class_names(self, classes_set, bound_column):

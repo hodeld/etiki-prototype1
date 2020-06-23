@@ -54,7 +54,7 @@
                     <h4 class="my-auto" id="modalTitle"><span class="filter-count">0</span>
                         Filter</h4>
                     <button class="btn btn-sm btn-link" type="button" data-dismiss="modal" id="filterClose1">
-                        <i class="far fa-window-close mr-1"></i>
+                        <i class="fas fa-check mr-1"></i>
                         <span class="d-none d-sm-inline">Close</span>
                     </button>
 
@@ -66,12 +66,11 @@
                     {% crispy filterform %}
                 {% endif %}
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer justify-content-center">
                  <h5 class="filterMessage" id="id_message2"></h5>
 
-                <button class="btn btn-sm btn-link" type="button" data-dismiss="modal" id="filterClose2">
-                    <i class="far fa-window-close mr-1"></i>
-                    <span class="d-none d-sm-inline">Close</span>
+                <button class="btn btn-sm btn-link d-sm-none" type="button" data-dismiss="modal" id="filterClose2">
+                    <i class="fas fa-check mr-1"></i>
                 </button>
             </div>
         </div>

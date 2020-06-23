@@ -20,24 +20,25 @@
 </head>
 <body>
 <noscript>To use etiki please enable JavaScript!</noscript>
-{% if landing %}
-    {% include 'etilog/landing/landingpage.html' %}
-{% else %}
 
+    {% if landing %}
+        {% include 'etilog/landing/landingpage.html' %}
+    {% else %}
 
+        <div class="row d-flex align-content-center justify-content-center">
 
-    <div class="fullsite-wrapper container">
-        {% include 'siteheader.html' %}
+            <div class="fullsite-wrapper container">
+                {% include 'siteheader.html' %}
 
-        {% block content %} {% endblock content %}
+                {% block content %} {% endblock content %}
 
+            
+                <div class="sitefooter">
+                    {% include 'footer.html' %}
+                </div>
 
-
-        <div class="sitefooter">
-            {% include 'footer.html' %}
+            </div>
         </div>
-
-    </div>
 {% endif %}
 {% block bottomscript %} {% endblock bottomscript %}
 </body>

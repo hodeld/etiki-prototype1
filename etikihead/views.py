@@ -21,7 +21,7 @@ def contact(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name_visitor']
-            new_subject = 'contactform –' + form.cleaned_data['subject']
+            new_subject = 'contactform – ' + form.cleaned_data['subject']
             from_email = form.cleaned_data['from_email']
             message = form.cleaned_data['message']
             line_break = ' '.join(('\n', '\n', '–––– original message ––––', '\n', '\n'))
