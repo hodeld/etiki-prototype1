@@ -22,9 +22,10 @@ $(document).ready(function () {
         const ele = $(ev.target);
         const valStr = ele.val();
         if (valStr) {
+            let ph = ele.attr('placeholder');
             let suggestion = {
                 'id': valStr,
-                'name': ele.attr('placeholder') + ': ' + valStr,
+                'name': ph[0].toUpperCase() +  ph.slice(1) + ' ' + valStr,
                 'category': ele.attr('data-category'),
             };
             setTags(suggestion);
