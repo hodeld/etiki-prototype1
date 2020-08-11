@@ -135,7 +135,7 @@ noscript {
     height: 25px; /* should be square image */
 }
 
-label, .nav-link {
+.nav-item {
     font-size: 12px !important;
 }
 
