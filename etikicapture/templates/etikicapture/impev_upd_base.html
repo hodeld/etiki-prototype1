@@ -1,4 +1,4 @@
-{# ... #} {% extends 'base.html' %}
+{% extends 'base_darky.html' %}
 {% load static %}
 {% block djangoadmin %}
 
@@ -16,17 +16,9 @@
 {% endblock head_css %}
 {% block script %}
 
-    <!-- - <script src="{% static 'admin/js/core.js' %}"></script>
-<script src="{% static 'admin/js/jquery.init.js' %}"></script> 
-<script src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script> -->
 
 
-    <script>
-        var next_id_url = "{{next_id_url}}";
-        var new_ie_url = "{% url 'etikicapture:newimpactevent' %}";
-    </script>
-    <script src="{% static 'etikicapture/js/etikicapture/impev_upd.js' %}"></script>
-    <script src="{% static 'etikicapture/js/etikicapture/impev_upd_base.js' %}"></script>
+
 
 
 
@@ -39,7 +31,7 @@
 
 
 {% block content %} {# script needs to be next to function and form (non in script block) #}
-
+{% include 'nav_search_bar_hidden.html' %}
     <div class="container">
         </br>
         <div class="row justify-content-center">
@@ -79,10 +71,19 @@
 {% block bottomscript %}
 
 
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"
             integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i"
             crossorigin="anonymous"></script>
 
+    <script>
+        var next_id_url = "{{next_id_url}}";
+        var new_ie_url = "{% url 'etikicapture:newimpactevent' %}";
+    </script>
+
+    <script src="{% static 'etikicapture/js/etikicapture/impev_upd.js' %}"></script>
+    <script src="{% static 'etikicapture/js/etikicapture/impev_upd_base.js' %}"></script>
+    <script src="{% static 'etikicapture/js/etikicapture/capture_typeahead.js' %}"></script>
 
 {% endblock bottomscript %}
 

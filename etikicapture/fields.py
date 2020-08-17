@@ -1,8 +1,9 @@
-from crispy_forms.bootstrap import FieldWithButtons, StrictButton
-from crispy_forms.layout import Layout, ButtonHolder, Submit, Button, HTML
+from crispy_forms.bootstrap import FieldWithButtons, StrictButton, AppendedText
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Button, HTML, Column, Field
 from django import forms
 from django.urls import reverse_lazy
 
+from etilog.forms.fields_filter import LabelRow
 from etilog.models import Company, Reference
 
 
@@ -89,3 +90,38 @@ class Readonly(Layout):
         super(Readonly, self).__init__(
             HTML(html_str)
         )
+
+SEARCH_WRAP_ClS = 'div_search_typeahead'  # for css
+
+
+class LabelRowTagsInput(LabelRow):
+    def __init__(self, field_name, col_class, labelname, field_class='',
+                 placeholder=None,
+                 field_id=None,
+                 *args, **kwargs):
+        if field_id == None:
+            field_id = 'id_f_' + field_name
+        if placeholder == None:
+            placeholder = labelname
+        name_stripped = labelname.replace(' ', '')
+        parent_id = '#row' + name_stripped  # same as labelrow
+        cls_taginp = 'f_tags_search_inp'
+
+        icon_search = 'fa fa-search'
+        icon_str = '''<i class="%s" ></i>''' % icon_search
+
+        rowcontent = Column(
+            AppendedText(field_name, icon_str,
+                         parfield=parent_id,
+                         id=field_id, autocomplete="off",
+                         placeholder=placeholder,
+                         css_class=' '.join([cls_taginp, field_class]),
+                         wrapper_class=' '.join([SEARCH_WRAP_ClS, 'not_free_input']),
+                         *args, **kwargs
+                         ),
+            css_class=col_class
+        )
+
+
+        LabelRow.__init__(self, rowcontent, labelname)
+

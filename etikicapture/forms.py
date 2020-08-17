@@ -4,7 +4,9 @@ from django import forms
 from django.urls import reverse_lazy
 
 from etilog.forms.fields_filter import (DateYearPickerField, DateYearPicker)
-from etikicapture.fields import CompanyWidget, ReferenceWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn, ImpactEventBtns
+from etikicapture.fields import CompanyWidget, ReferenceWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn, \
+    ImpactEventBtns, LabelRowTagsInput
+from etilog.forms.forms_filter import NotReqCharF
 from etilog.models import ImpactEvent, Company, SubsidiaryOwner, SupplierRecipient, Reference
 
 CSS_COL_CLS = 'col-12 col-lg-6'
@@ -14,6 +16,8 @@ class ImpactEventForm(forms.ModelForm):
     '''
     form to create an impact event
     '''
+
+    country = NotReqCharF()
 
     def __init__(self, *args, **kwargs):
         super(ImpactEventForm, self).__init__(*args, **kwargs)
@@ -35,10 +39,10 @@ class ImpactEventForm(forms.ModelForm):
                 Column(DateYearPickerField('date_published'), css_class=CSS_COL_CLS),
                 Column(DateYearPickerField('date_impact'), css_class=CSS_COL_CLS)
             ),
-            Row(
-                Column(Field('country'),
-                       css_class='col-12', )
-            ),
+
+            LabelRowTagsInput('country', 'col-12',
+                              labelname='Country'),
+
             Row(
                 Column(CompanyWBtn(fieldname='company',
                                    mainmodel='impev'),
