@@ -24,3 +24,18 @@
 
 <!--base_script for datepicker -->
 <script src="{% static 'etilog/js/base_script.js' %}"></script>
+
+<script>
+    const companies_url = "{% url 'etilog:load_jsondata' modelname='company' %}";
+    const countries_url = "{% url 'etilog:load_jsondata' modelname='country' %}";
+    const references_url = "{% url 'etilog:load_jsondata' modelname='reference' %}";
+    const tags_url = "{% url 'etilog:load_jsondata' modelname='tags' %}";
+</script>
+
+<!-- tagsinput and typeahead -->
+<script src="{% static 'etilog/js/etilog/tagsinput.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script>
+    {# needed for typaahead #}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script>
+    <!-- jquery.min -->
+<script src="{% static 'etilog/js/base_typeahead.js' %}"></script>
