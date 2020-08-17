@@ -84,10 +84,6 @@ span.twitter-typeahead {
     flex: 1 1 auto;
 }
 
-.input-group span.twitter-typeahead {
-    display: block !important;
-}
-
 .input-group span.twitter-typeahead .tt-menu {
     top: 2.375rem !important;
 }

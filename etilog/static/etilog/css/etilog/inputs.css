@@ -28,11 +28,13 @@
     color: white;
 }
 
-.div_search_typeahead .input-group-text:hover {
+.div_search_typeahead .input-group-text:hover,
+.div_c_taginput .input-group-text:hover{
     cursor: pointer; /* hand pointer */
 }
 
-.div_search_typeahead input{
+.div_search_typeahead input,
+.div_c_taginput .input-group {
     box-shadow: none;
     border-bottom: 1px solid #fff;
     border-radius: 0;
@@ -40,14 +42,14 @@
     border-top: 0;
     border-left: 0;
     border-right: 0;
-}
 
-
-.div_search_typeahead input {
     padding: .375rem 0;
 }
 
-.div_search_typeahead input:focus
+
+.div_search_typeahead input:focus,
+/*.taginput-row .bootstrap-tagsinput.focus, */
+.div_c_taginput .input-group:focus-within
 {
     padding: .375rem 0;
 
@@ -84,32 +86,46 @@
     display: none;
 }
 
-/* used for reference_exclude */
-.taginput-row .bootstrap-tagsinput  {
-    padding: 0;
+/* used for capture etiki */
+.div_c_taginput .bootstrap-tagsinput  {
     margin: 2px;
 }
 
-.taginput-row .bootstrap-tagsinput input {
+.div_c_taginput .input-group .bootstrap-tagsinput {
+    flex: 1 1 auto;
+    display: inline-block;
+    width: 1%;
+}
+
+.div_c_taginput .input-group input.c_tags_search_inp  {
+    display: none;
+}
+.input-group span.twitter-typeahead {
+    /*display: block !important; */
+}
+
+
+.div_c_taginput .bootstrap-tagsinput input {
     color: #fff;; /* mdh; was: no color */
     border: none;
     box-shadow: none;
     outline: none;
     background-color: transparent;
-    padding: 0;
     margin: 2px;
     width: auto;
     max-width: inherit;
 }
 
-.taginput-row .bootstrap-tagsinput input:focus
+.div_c_taginput .bootstrap-tagsinput input:focus
 {
-    padding: 0;
     margin: 2px;
 }
 /* tagsinput, other part in tagsinput.css */
 
-.taginput-row .bootstrap-tagsinput {
+.div_c_taginput .bootstrap-tagsinput {
     display: inline-block;
     width: 100%;
+}
+.div_c_taginput .input-group-text {
+    color: var(--etikigreen);
 }

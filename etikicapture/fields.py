@@ -1,10 +1,16 @@
 from crispy_forms.bootstrap import FieldWithButtons, StrictButton, AppendedText
-from crispy_forms.layout import Layout, ButtonHolder, Submit, Button, HTML, Column, Field
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Button, HTML, Column, Field, Row, Div
 from django import forms
 from django.urls import reverse_lazy
 
-from etilog.forms.fields_filter import LabelRow
 from etilog.models import Company, Reference
+
+
+class CharF(forms.CharField):
+    def __init__(self, *args, **kwargs):
+        lbl = kwargs.pop('label', '')
+        req = kwargs.pop('required', True)
+        super(CharF, self).__init__(required=req, label=lbl, *args, **kwargs)
 
 
 class AutocompleteWidget(forms.TextInput):
@@ -52,6 +58,7 @@ class ReferenceWBtn(Layout):
     def __init__(self, *args, **kwargs):
         super(ReferenceWBtn, self).__init__(
             FieldWithButtons('reference',
+
                              StrictButton("+", css_class='btn btn-light add_foreignmodel',
                                           # css_id='add_id_reference',
                                           add_url=reverse_lazy('etikicapture:add_foreignmodel',
@@ -91,37 +98,83 @@ class Readonly(Layout):
             HTML(html_str)
         )
 
-SEARCH_WRAP_ClS = 'div_search_typeahead'  # for css
 
 
-class LabelRowTagsInput(LabelRow):
+class LabelInputRow(Layout):
+    def __init__(self, rowcontent, labelname,
+                 row_class='',
+                 *args, **kwargs):  # distribute buttons
+
+        name_stripped = labelname.replace(' ', '')
+        div_id = 'row' + name_stripped
+        div_class = 'div_c_taginput' # 'taginput-row'
+        label_str = '''
+        <label for="id_company" class="col-form-label  requiredField">
+            which company was concerned<span class="asteriskField">*</span> </label>
+        '''
+        lab = HTML(label_str)
+
+        super(LabelInputRow, self).__init__(
+            Row(
+                Column(
+                    Div(
+                        Row(rowcontent, *args, **kwargs),
+                        css_class=' '.join([ div_class, ]),
+                        css_id=div_id
+                    ),
+                    css_class='col-12'
+
+                ),
+                css_class='justify-content-center ' + row_class
+            )
+        )
+
+
+class RowTagsButton(LabelInputRow):
     def __init__(self, field_name, col_class, labelname, field_class='',
                  placeholder=None,
                  field_id=None,
                  *args, **kwargs):
         if field_id == None:
-            field_id = 'id_f_' + field_name
+            field_id = 'id_c_' + field_name
         if placeholder == None:
             placeholder = labelname
         name_stripped = labelname.replace(' ', '')
         parent_id = '#row' + name_stripped  # same as labelrow
-        cls_taginp = 'f_tags_search_inp'
+        cls_taginp = 'c_tags_search_inp'
 
-        icon_search = 'fa fa-search'
-        icon_str = '''<i class="%s" ></i>''' % icon_search
+
+
+        if field_name == 'country':
+            html_str = ''
+
+        else:
+            icon_name = 'fas fa-plus-square'
+            icon_str = '''<i class="%s" ></i>''' % icon_name
+
+            add_url = reverse_lazy('etikicapture:add_foreignmodel',
+                                   kwargs={'main_model': 'impev',
+                                           'foreign_model': field_name})
+            h_css_class = 'input-group-text add_foreignmodel'
+            html_str = '<span class="%s" add-url="%s">%s</span' % (h_css_class, add_url, icon_str)
 
         rowcontent = Column(
-            AppendedText(field_name, icon_str,
-                         parfield=parent_id,
-                         id=field_id, autocomplete="off",
-                         placeholder=placeholder,
-                         css_class=' '.join([cls_taginp, field_class]),
-                         wrapper_class=' '.join([SEARCH_WRAP_ClS, 'not_free_input']),
-                         *args, **kwargs
-                         ),
+            FieldWithButtons(
+                Field(field_name,
+
+                  id=field_id,
+                  parfield=parent_id,
+
+                  css_class=' '.join([cls_taginp, field_class]),
+                  placeholder='Search ' + placeholder,
+                  ),
+
+                HTML(html_str
+                             )
+            ),
             css_class=col_class
         )
 
 
-        LabelRow.__init__(self, rowcontent, labelname)
+        LabelInputRow.__init__(self, rowcontent, labelname)
 

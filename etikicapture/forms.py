@@ -3,9 +3,9 @@ from crispy_forms.layout import Layout, Row, Column, Field, Submit
 from django import forms
 from django.urls import reverse_lazy
 
-from etilog.forms.fields_filter import (DateYearPickerField, DateYearPicker)
+from etilog.forms.fields_filter import (DateYearPickerField, DateYearPicker, LabelRow)
 from etikicapture.fields import CompanyWidget, ReferenceWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn, \
-    ImpactEventBtns, LabelRowTagsInput
+    ImpactEventBtns, RowTagsButton
 from etilog.forms.forms_filter import NotReqCharF
 from etilog.models import ImpactEvent, Company, SubsidiaryOwner, SupplierRecipient, Reference
 
@@ -17,12 +17,14 @@ class ImpactEventForm(forms.ModelForm):
     form to create an impact event
     '''
 
-    country = NotReqCharF()
+    country = forms.CharField(label='Where did it happen', required=False)
+    company = forms.CharField(label='Which company was concerned', required=True)
+    reference = forms.CharField(label='Where was it published', required=True)
 
     def __init__(self, *args, **kwargs):
         super(ImpactEventForm, self).__init__(*args, **kwargs)
 
-        self.fields['company'].widget = CompanyWidget()
+        #self.fields['company'].widget = CompanyWidget()
         self.fields['reference'].widget = ReferenceWidget()
         self.fields['article_html'].widget = forms.TextInput()
 
@@ -35,22 +37,28 @@ class ImpactEventForm(forms.ModelForm):
                 Column(UrlWBtn('source_url'),
                        css_class='col-12', )
             ),
-            Row(
-                Column(DateYearPickerField('date_published'), css_class=CSS_COL_CLS),
-                Column(DateYearPickerField('date_impact'), css_class=CSS_COL_CLS)
+            LabelRow(
+                Column(
+                    DateYearPickerField('date_published', 'when was it published', css_class='',
+                                        data_category='date_from'
+                                        ),
+                    DateYearPickerField('date_impact', 'when did it happen', css_class='',
+                                        data_category='date_to'
+                                        ),
+                    css_class='col-12 d-flex flex-wrap flex-wrap justify-content-around'  # wraps if needed
+                ), labelname='Date'
+
             ),
 
-            LabelRowTagsInput('country', 'col-12',
+            RowTagsButton('country', 'col-12',
                               labelname='Country'),
 
-            Row(
-                Column(CompanyWBtn(fieldname='company',
-                                   mainmodel='impev'),
-                       css_class=CSS_COL_CLS, ),
+            RowTagsButton('company', 'col-12',
+                              labelname='Company'),
 
-                Column(ReferenceWBtn(),
-                       css_class=CSS_COL_CLS, )
-            ),
+            RowTagsButton('reference', 'col-12',
+                          labelname='Company'),
+
 
             Row(
                 Column(Field('sust_domain'
@@ -96,9 +104,6 @@ class ImpactEventForm(forms.ModelForm):
         labels = {
             'date_published': ('when was it published'),
             'date_impact': ('when did it happen'),
-            'reference': ('where was it published'),
-            'company': ('which company was concerned'),
-            'country': ('where did it happen'),
         }
         help_texts = {
             'date_published': (''),

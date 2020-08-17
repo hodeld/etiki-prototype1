@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
-        //used for reference_exclude
-    $('.f_tags_search_inp').each(function () {
+        //used for fields in capture
+    $('.c_tags_search_inp').each(function () {
         let ele_name = $(this).attr('name');
         let optDic = allTypeaheadDic[ele_name];
         $(this).tagsinput({
@@ -114,18 +114,18 @@ function keyBehaviorSearch(event, ele) {
 
 const limit_sugg = 5;
 
-//var compTa = new getTypeaheadOpt('company', companies, limit_sugg);
+let compTa = new getTypeaheadOpt('company', companies, limit_sugg);
 
-//var refTa = new getTypeaheadOpt('reference', references, limit_sugg);
+let refTa = new getTypeaheadOpt('reference', references, limit_sugg);
 
 let countriesTa = new getTypeaheadOpt('country', countries, limit_sugg);
 
-//var tagsTa = new getTypeaheadOpt('tags', tags, limit_sugg);
+let tagsTa = new getTypeaheadOpt('tags', tags, limit_sugg);
 
 
-var allTypeaheadDic = {
-    //'tags': tagsTa,
-    //'company': compTa,
-    //'reference': refTa,
+let allTypeaheadDic = {
+    'tags': tagsTa,
+    'company': compTa,
+    'reference': refTa,
     'country': countriesTa,
 };
