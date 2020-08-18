@@ -15,54 +15,26 @@ $(document).ready(function () {
                 },
                 optDic,
             ],
-            selectTag: true,
         });
         let plcHolder = $(this).attr('placeholder');
         let parentId = $(this).attr('parfield');
         $(parentId).find('.bootstrap-tagsinput input.tt-input').attr('placeholder', plcHolder);
     });
 
-
-    $('._f_tags_search_inp').on('beforeItemAdd', function (event) {
-        let suggestion = event.item;
-        suggestion.category = 'reference_exc';
-        setTags(suggestion, allTags = false);
+    $('.c_tags_select').each(function () {
+        let ele_name = $(this).attr('name');
+        $(this).tagsinput({
+            itemValue: 'id',
+            itemText: 'name',
+            itemCategory: 'category',
+            selectTag: true,
+        });
+        let plcHolder = $(this).attr('placeholder');
+        let parentId = $(this).attr('parfield');
+        $(parentId).find('.bootstrap-tagsinput input.tt-input').attr('placeholder', plcHolder);
     });
+    load_tags();
 
-    $('._f_tags_search_inp').on('beforeItemRemove', function (event) {
-        let suggestion = event.item;
-        suggestion.category = 'reference_exc';
-        removeTags(suggestion);
-    });
-
-
-    $('._f_tags_search_inp').typeahead(
-        {
-            highlight: true,
-            autoselect: true,
-        },
-        countriesTa,
-    );
-
-    $('._f_tags_search_inp').bind('typeahead:select', function (ev, suggestion) {
-        //from search directly table
-        const val_str = suggestion['name'];
-        if (val_str.length > 0) {
-            suggestion.category = 'reference_exc';
-            setTags(suggestion);
-            $(this).typeahead('val', ''); //typeahead input
-        }
-    });
-
-    $('.div_search_typeahead.free_input .input-group-append').click(function(){
-        let ele = $(this);
-        setTagBtn(ele);
-    });
-
-    $('.div_search_typeahead.not_free_input .input-group-append').click(function(){
-        let ele = $(this);
-        setTagBtn(ele, false);
-    });
 
 });
 
@@ -129,4 +101,5 @@ let allTypeaheadDic = {
     'company': compTa,
     'reference': refTa,
     'country': countriesTa,
+    'tags_select': tagsTa,
 };

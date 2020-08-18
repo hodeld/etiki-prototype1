@@ -117,16 +117,10 @@ function extract_text(ele) {
 
 
 function load_tags() {
-    var url = $("#id_sust_tags").attr("data-url"); // get
-    // the
-    // url
-    // of
-
+    //var url = $("#id_sust_tags").attr("data-url"); // get
+    var url = tags_url;
     var domainId = $("#id_sust_domain").val(); // get the selected Domain ID
     var categoryId = $("#id_sust_tendency").val(); // get the selected tendency ID
-    // from the
-    // HTML input
-    // var cachname = $("#dateForm").attr("cachname_tbldict");
     $.ajax({ // initialize an AJAX request
         url: url, // set the url of the request (= '')
         data: {
@@ -137,13 +131,11 @@ function load_tags() {
             // add the domainId to the GET parameters
         },
         success: function (data) { // `data` is the return of the
-            // `load_susts` view function
-            $("#id_sust_tags").html(data); // replace the
-            // contents of the
-            // sust input with
-            // the data that
-            // came from the
-            // server
+            // id_c_tags_select
+            $.each(data, function (index, tag) {
+                $('#id_c_tags_select').tagsinput('add', tag);
+            });
+            //$("#id_sust_tags").html(data); // replace the
         }
 
     });

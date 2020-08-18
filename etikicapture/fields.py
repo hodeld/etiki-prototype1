@@ -139,7 +139,10 @@ class TagsButton(Layout):
         name_stripped = labelname.replace(' ', '')
         parent_id = '#row' + name_stripped  # same as labelrow
         if taginput:
-            cls_taginp = 'c_tags_search_inp'
+            if isinstance(taginput, str):
+                cls_taginp = taginput
+            else:
+                cls_taginp = 'c_tags_search_inp'
         else:
             cls_taginp = ''
 

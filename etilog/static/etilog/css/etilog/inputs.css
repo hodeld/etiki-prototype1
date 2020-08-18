@@ -97,7 +97,8 @@
     width: 1%;
 }
 
-.div_c_taginput .input-group input.c_tags_search_inp  {
+.div_c_taginput .input-group input.c_tags_search_inp,
+.div_c_taginput .input-group input.c_tags_select{
     display: none;
 }
 .input-group span.twitter-typeahead {

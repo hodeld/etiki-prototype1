@@ -82,7 +82,8 @@ class ImpactEventForm(forms.ModelForm):
                           labelname='Search Tags'),
 
             RowTagsButton('tags_select', 'col-12',
-                          labelname='Select Tags'),
+                          labelname='Select Tags',
+                          taginput='c_tags_select'),
 
 
 
