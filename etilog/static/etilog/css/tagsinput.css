@@ -31,7 +31,8 @@
     line-height: inherit; /* mdh; was not defined */
 }
 
-.bootstrap-tagsinput .badge [data-role="remove"] {
+.bootstrap-tagsinput .badge [data-role="remove"],
+.bootstrap-tagsinput .badge [data-role="select"]{
     margin-left: 8px;
     cursor: pointer;
 }
@@ -45,14 +46,26 @@
     font-size: 13px
 }
 
-.bootstrap-tagsinput .badge [data-role="remove"]:hover:after {
+.bootstrap-tagsinput .badge [data-role="remove"]:hover:after,
+.bootstrap-tagsinput .badge [data-role="select"]:hover:after{
 
     background-color: rgba(0, 0, 0, 0.62);
 }
 
-.bootstrap-tagsinput .badge [data-role="remove"]:hover:active {
+.bootstrap-tagsinput .badge [data-role="remove"]:hover:active,
+.bootstrap-tagsinput .badge [data-role="select"]:hover:active
+{
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
+
+.bootstrap-tagsinput .badge [data-role="select"]:after {
+    content: "+";
+    padding: 0px 4px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    font-size: 13px
+}
+
 
 .bootstrap-tagsinput span.twitter-typeahead {
     /*width: 100%;  modified by damian DH */

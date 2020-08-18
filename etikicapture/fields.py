@@ -99,7 +99,6 @@ class Readonly(Layout):
         )
 
 
-
 class LabelInputRow(Layout):
     def __init__(self, rowcontent, labelname,
                  row_class='',
@@ -108,11 +107,6 @@ class LabelInputRow(Layout):
         name_stripped = labelname.replace(' ', '')
         div_id = 'row' + name_stripped
         div_class = 'div_c_taginput' # 'taginput-row'
-        label_str = '''
-        <label for="id_company" class="col-form-label  requiredField">
-            which company was concerned<span class="asteriskField">*</span> </label>
-        '''
-        lab = HTML(label_str)
 
         super(LabelInputRow, self).__init__(
             Row(
@@ -130,10 +124,13 @@ class LabelInputRow(Layout):
         )
 
 
-class RowTagsButton(LabelInputRow):
+class TagsButton(Layout):
     def __init__(self, field_name, col_class, labelname, field_class='',
                  placeholder=None,
                  field_id=None,
+                 taginput=True,
+                 addmodel=True,
+                 icon_name=None,
                  *args, **kwargs):
         if field_id == None:
             field_id = 'id_c_' + field_name
@@ -141,14 +138,12 @@ class RowTagsButton(LabelInputRow):
             placeholder = labelname
         name_stripped = labelname.replace(' ', '')
         parent_id = '#row' + name_stripped  # same as labelrow
-        cls_taginp = 'c_tags_search_inp'
-
-
-
-        if field_name == 'country':
-            html_str = ''
-
+        if taginput:
+            cls_taginp = 'c_tags_search_inp'
         else:
+            cls_taginp = ''
+
+        if addmodel:
             icon_name = 'fas fa-plus-square'
             icon_str = '''<i class="%s" ></i>''' % icon_name
 
@@ -157,6 +152,16 @@ class RowTagsButton(LabelInputRow):
                                            'foreign_model': field_name})
             h_css_class = 'input-group-text add_foreignmodel'
             html_str = '<span class="%s" add-url="%s">%s</span' % (h_css_class, add_url, icon_str)
+        else:
+            if icon_name:
+                onclick = 'extract_text(this);'
+                url_get = reverse_lazy('etikicapture:extract_text_url')
+                h_css_class = 'input-group-text'
+                icon_str = '''<i class="%s" ></i>''' % icon_name
+                html_str = '<span class="%s" url-get="%s" onclick="%s">%s</span' % (h_css_class, url_get,
+                                                                                    onclick, icon_str)
+            else:
+                html_str = ''
 
         rowcontent = Column(
             FieldWithButtons(
@@ -166,7 +171,7 @@ class RowTagsButton(LabelInputRow):
                   parfield=parent_id,
 
                   css_class=' '.join([cls_taginp, field_class]),
-                  placeholder='Search ' + placeholder,
+                  placeholder=placeholder,
                   ),
 
                 HTML(html_str
@@ -174,7 +179,13 @@ class RowTagsButton(LabelInputRow):
             ),
             css_class=col_class
         )
+        super(TagsButton, self).__init__(rowcontent)
 
 
-        LabelInputRow.__init__(self, rowcontent, labelname)
+class RowTagsButton(LabelInputRow):
+    def __init__(self, *args, **kwargs):
+        labelname = kwargs.get('labelname')
+        LabelInputRow.__init__(self, TagsButton(*args, **kwargs), labelname)
+
+
 

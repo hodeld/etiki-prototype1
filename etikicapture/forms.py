@@ -20,12 +20,14 @@ class ImpactEventForm(forms.ModelForm):
     country = forms.CharField(label='Where did it happen', required=False)
     company = forms.CharField(label='Which company was concerned', required=True)
     reference = forms.CharField(label='Where was it published', required=True)
+    sust_tags = forms.CharField(label='Select Tags', required=True)
+    tags_select = NotReqCharF()
 
     def __init__(self, *args, **kwargs):
         super(ImpactEventForm, self).__init__(*args, **kwargs)
 
         #self.fields['company'].widget = CompanyWidget()
-        self.fields['reference'].widget = ReferenceWidget()
+        #self.fields['reference'].widget = ReferenceWidget()
         self.fields['article_html'].widget = forms.TextInput()
 
         # crispy form layout:
@@ -33,10 +35,15 @@ class ImpactEventForm(forms.ModelForm):
         self.helper.form_id = 'id_impevform'
         self.helper.layout = Layout(
             ImpactEventBtns(),
-            Row(
-                Column(UrlWBtn('source_url'),
-                       css_class='col-12', )
-            ),
+
+            RowTagsButton('source_url', 'col-12',
+                          taginput=False,
+                          addmodel=False,
+                          icon_name='fas fa-search',
+                          labelname='paste URL'),
+
+
+
             LabelRow(
                 Column(
                     DateYearPickerField('date_published', 'when was it published', css_class='',
@@ -51,13 +58,15 @@ class ImpactEventForm(forms.ModelForm):
             ),
 
             RowTagsButton('country', 'col-12',
-                              labelname='Country'),
+                              labelname='Search Country',
+                          addmodel=False,
+                          ),
 
             RowTagsButton('company', 'col-12',
-                              labelname='Company'),
+                              labelname='Search Company'),
 
             RowTagsButton('reference', 'col-12',
-                          labelname='Company'),
+                          labelname='Search News Paper'),
 
 
             Row(
@@ -69,8 +78,15 @@ class ImpactEventForm(forms.ModelForm):
                        css_class=CSS_COL_CLS)
             ),
 
-            Field('sust_tags', data_url=reverse_lazy('etikicapture:get_sust_tags')),
-            Field('summary', rows=3),
+            RowTagsButton('sust_tags', 'col-12',
+                          labelname='Search Tags'),
+
+            RowTagsButton('tags_select', 'col-12',
+                          labelname='Select Tags'),
+
+
+
+            Field('summary', rows=3, placeholder='Short summary of content'),
             Field('comment', rows=3),
 
             Row(Column(Field('date_text'), css_class=CSS_COL_CLS)),
@@ -87,7 +103,9 @@ class ImpactEventForm(forms.ModelForm):
         fields = ['source_url', 'date_published', 'date_impact', 'company', 'reference',
                   'country',
                   'sust_domain', 'sust_tendency', 'sust_tags',
-                  'summary', 'comment',
+                  'summary',
+                  # from here only for etikis
+                  'comment',
                   'article_text', 'article_title', 'date_text', 'article_html', 'result_parse_html'
                   ]
 
@@ -108,6 +126,7 @@ class ImpactEventForm(forms.ModelForm):
         help_texts = {
             'date_published': (''),
             'date_impact': (''),
+            'summary': (''),
         }
 
 

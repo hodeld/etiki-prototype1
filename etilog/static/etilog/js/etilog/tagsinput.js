@@ -34,7 +34,8 @@
         },
         trimValue: false,
         allowDuplicates: false,
-        triggerChange: true
+        triggerChange: true,
+        selectTag: false // mdh
     };
 
     /**
@@ -143,9 +144,11 @@
             // register item in internal array and map
             self.itemsArray.push(item);
 
-            // add a tag element
-
-            var $tag = $('<span class="badge ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
+            // add a tag element --> mdh
+            if (!self.options.selectTag)
+                var $tag = $('<span class="badge ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
+            else
+                var $tag = $('<span onclick="selectTag(this);" class="badge ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="select"></span></span>');
             $tag.data('item', item);
             self.findInputWrapper().before($tag);
 

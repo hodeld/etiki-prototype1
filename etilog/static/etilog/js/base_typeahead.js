@@ -10,7 +10,7 @@ function getBloodhoundOpt(field_url) {
         //identify: function(obj) { return obj.id; }, //to get suggestion by ID -> not used and breaks typahead!
         prefetch: {
             url: field_url, // url set in html
-            cache: true	 // defaults to true -> for testing
+            cache: true, // true	 // defaults to true -> for testing
         },
     };
     return optDict

@@ -15,6 +15,7 @@ $(document).ready(function () {
                 },
                 optDic,
             ],
+            selectTag: true,
         });
         let plcHolder = $(this).attr('placeholder');
         let parentId = $(this).attr('parfield');
@@ -124,7 +125,7 @@ let tagsTa = new getTypeaheadOpt('tags', tags, limit_sugg);
 
 
 let allTypeaheadDic = {
-    'tags': tagsTa,
+    'sust_tags': tagsTa,
     'company': compTa,
     'reference': refTa,
     'country': countriesTa,

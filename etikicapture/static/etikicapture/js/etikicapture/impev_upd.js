@@ -72,7 +72,7 @@ function new_ie() {
 
 
 function extract_text(ele) {
-    var source_url = $("#id_source_url").val();
+    var source_url = $("#id_c_source_url").val();
     var get_url = $(ele).attr("url-get"); // get
 
     $("#id_impev_msg").html('reads text from website …');

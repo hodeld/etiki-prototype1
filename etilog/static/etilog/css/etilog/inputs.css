@@ -129,3 +129,8 @@
 .div_c_taginput .input-group-text {
     color: var(--etikigreen);
 }
+
+/* used in input interface */
+.textarea.form-control{
+    border: 1px solid #fff;
+}
