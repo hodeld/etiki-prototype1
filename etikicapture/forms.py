@@ -1,5 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Column, Field, Submit
+from crispy_forms.layout import Layout, Row, Column, Field, Submit, HTML, Div
 from django import forms
 from django.urls import reverse_lazy
 
@@ -20,7 +20,7 @@ class ImpactEventForm(forms.ModelForm):
     country = forms.CharField(label='Where did it happen', required=False)
     company = forms.CharField(label='Which company was concerned', required=True)
     reference = forms.CharField(label='Where was it published', required=True)
-    sust_tags = forms.CharField(label='Select Tags', required=True)
+    sust_tags = NotReqCharF() #forms.CharField(label='', required=False)
     tags_select = NotReqCharF()
 
     def __init__(self, *args, **kwargs):
@@ -39,7 +39,7 @@ class ImpactEventForm(forms.ModelForm):
             RowTagsButton('source_url', 'col-12',
                           taginput=False,
                           addmodel=False,
-                          icon_name='fas fa-search',
+                          icon_name='fas fa-sync',
                           labelname='paste URL'),
 
 
@@ -81,17 +81,18 @@ class ImpactEventForm(forms.ModelForm):
             #RowTagsButton('sust_tags', 'col-12',labelname='Search Tags'),
 
             LabelInputRow(
-                TagsButton('sust_tags', 'col-12',
+                rowcontent=[TagsButton('tags_select', 'col-12 div_tags_select', taginput='c_tags_select',
+                                       addmodel=False,),
+                            Div(HTML('<h3><i class="fas fa-arrow-down"></i></h3>'), css_class='mx-auto'),
+
+                TagsButton('sust_tags', 'col-12 div_tags_drop',
                            labelname='Search Tags',
                            taginput='c_tags_search_inp c_tags_drop'),
-                labelname='Search Tags',
+                            ],
+                labelname='Select Sustainability Topics'
             ),
 
-            LabelInputRow(
-                TagsButton('tags_select', 'col-12', taginput='c_tags_select',
-                           labelname='',),
-                          labelname='',
-                          div_cls='div_tags_select',),
+            #LabelInputRow(TagsButton('tags_select', 'col-12 div_tags_select', taginput='c_tags_select',labelname='',),labelname='',),
 
 
             Field('summary', rows=3, placeholder='Short summary of content'),

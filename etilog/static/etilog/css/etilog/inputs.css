@@ -46,6 +46,11 @@
     padding: .375rem 0;
 }
 
+.div_c_taginput.div_tags_select .input-group,
+.div_c_taginput.div_tags_drop .input-group
+{
+    border: .5px dotted #fff;
+}
 
 .div_search_typeahead input:focus,
 /*.taginput-row .bootstrap-tagsinput.focus, */

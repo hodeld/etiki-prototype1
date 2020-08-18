@@ -100,22 +100,28 @@ class Readonly(Layout):
 
 
 class LabelInputRow(Layout):
-    def __init__(self, rowcontent, labelname,
+    def __init__(self, rowcontent,
+                 labelname=None,
                  row_class='',
-                 div_cls='',
                  *args, **kwargs):  # distribute buttons
 
-        name_stripped = labelname.replace(' ', '')
-        div_id = 'row' + name_stripped
-        div_class = ' '.join([div_cls, 'div_c_taginput'])
+        if not isinstance(rowcontent, list):
+            rowcontent = [rowcontent]
+
+        if labelname:
+            html_str = '<label class="col-form-label">%s</label>' % labelname
+            label_html = HTML(html_str)
+        else:
+            label_html = HTML('')
 
         super(LabelInputRow, self).__init__(
             Row(
                 Column(
+                    label_html,
                     Div(
-                        Row(rowcontent, *args, **kwargs),
-                        css_class=' '.join([div_class, ]),
-                        css_id=div_id
+                        Row(*rowcontent, *args, **kwargs),
+                        #css_class=' '.join([div_class, ]),
+                        #css_id=div_id
                     ),
                     css_class='col-12'
 
@@ -126,7 +132,7 @@ class LabelInputRow(Layout):
 
 
 class TagsButton(Layout):
-    def __init__(self, field_name, col_class, labelname, field_class='',
+    def __init__(self, field_name, col_class, labelname='', field_class='',
                  placeholder=None,
                  field_id=None,
                  taginput=True,
@@ -139,6 +145,13 @@ class TagsButton(Layout):
             placeholder = labelname
         name_stripped = labelname.replace(' ', '')
         parent_id = '#row' + name_stripped  # same as labelrow
+        div_id = 'row' + name_stripped  # needed for set placeholder
+        name_stripped = field_name
+        parent_id = '#id_parent_' + name_stripped  # same as labelrow
+        div_id = 'row' + name_stripped  # needed for set placeholder
+
+        div_class = ' '.join([col_class, 'div_c_taginput'])
+
         if taginput:
             if isinstance(taginput, str):
                 cls_taginp = taginput
@@ -181,15 +194,15 @@ class TagsButton(Layout):
                 HTML(html_str
                              )
             ),
-            css_class=col_class
+            css_class=div_class,
+            css_id=div_id,
         )
         super(TagsButton, self).__init__(rowcontent)
 
 
 class RowTagsButton(LabelInputRow):
     def __init__(self, *args, **kwargs):
-        labelname = kwargs.get('labelname')
-        LabelInputRow.__init__(self, TagsButton(*args, **kwargs), labelname)
+        LabelInputRow.__init__(self, TagsButton(*args, **kwargs))
 
 
 
