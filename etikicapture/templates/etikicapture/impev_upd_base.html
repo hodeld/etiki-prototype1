@@ -77,8 +77,9 @@
             crossorigin="anonymous"></script>
 
     <script>
-        var next_id_url = "{{next_id_url}}";
-        var new_ie_url = "{% url 'etikicapture:newimpactevent' %}";
+        const next_id_url = "{{next_id_url}}";
+        const new_ie_url = "{% url 'etikicapture:newimpactevent' %}";
+        const load_tags_f = "{% url 'etikicapture:get_sust_tags' %}";
     </script>
 
     <script src="{% static 'etikicapture/js/etikicapture/impev_upd.js' %}"></script>

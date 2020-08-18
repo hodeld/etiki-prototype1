@@ -102,18 +102,19 @@ class Readonly(Layout):
 class LabelInputRow(Layout):
     def __init__(self, rowcontent, labelname,
                  row_class='',
+                 div_cls='',
                  *args, **kwargs):  # distribute buttons
 
         name_stripped = labelname.replace(' ', '')
         div_id = 'row' + name_stripped
-        div_class = 'div_c_taginput' # 'taginput-row'
+        div_class = ' '.join([div_cls, 'div_c_taginput'])
 
         super(LabelInputRow, self).__init__(
             Row(
                 Column(
                     Div(
                         Row(rowcontent, *args, **kwargs),
-                        css_class=' '.join([ div_class, ]),
+                        css_class=' '.join([div_class, ]),
                         css_id=div_id
                     ),
                     css_class='col-12'

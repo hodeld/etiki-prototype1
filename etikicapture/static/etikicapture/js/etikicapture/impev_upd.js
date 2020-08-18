@@ -116,31 +116,6 @@ function extract_text(ele) {
 }
 
 
-function load_tags() {
-    //var url = $("#id_sust_tags").attr("data-url"); // get
-    var url = tags_url;
-    var domainId = $("#id_sust_domain").val(); // get the selected Domain ID
-    var categoryId = $("#id_sust_tendency").val(); // get the selected tendency ID
-    $.ajax({ // initialize an AJAX request
-        url: url, // set the url of the request (= '')
-        data: {
-            // both can be null
-            'domainId': domainId,
-            'categoryId': categoryId
-
-            // add the domainId to the GET parameters
-        },
-        success: function (data) { // `data` is the return of the
-            // id_c_tags_select
-            $.each(data, function (index, tag) {
-                $('#id_c_tags_select').tagsinput('add', tag);
-            });
-            //$("#id_sust_tags").html(data); // replace the
-        }
-
-    });
-}
-
 function hide_img_vid() {
     $('img').hide();
     var vidtags = ["iframe", "video"];

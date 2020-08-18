@@ -27,12 +27,30 @@ $(document).ready(function () {
             itemValue: 'id',
             itemText: 'name',
             itemCategory: 'category',
-            selectTag: true,
         });
         let plcHolder = $(this).attr('placeholder');
         let parentId = $(this).attr('parfield');
         $(parentId).find('.bootstrap-tagsinput input.tt-input').attr('placeholder', plcHolder);
     });
+    $('#id_c_tags_select').on('beforeItemRemove', function (event) {
+        if (event.options) {
+            return
+        }
+        const suggestion = event.item;
+        $('#id_c_sust_tags').tagsinput('add', suggestion, );
+    });
+
+    $('#id_c_sust_tags').on('beforeItemRemove', function (event) {
+        if (event.options) {
+            return
+        }
+        const suggestion = event.item;
+        $('#id_c_tags_select').tagsinput('add', suggestion, );
+    });
+
+
+
+
     load_tags();
 
 
@@ -95,11 +113,57 @@ let countriesTa = new getTypeaheadOpt('country', countries, limit_sugg);
 
 let tagsTa = new getTypeaheadOpt('tags', tags, limit_sugg);
 
+var tagsFData = [{id: 15, name: "Animal Testing"}, {id: 16, name: "Factory Farming"}];
+
+let tagsFOpts = {
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        //identify: function(obj) { return obj.id; }, //to get suggestion by ID -> not used and breaks typahead!
+        local: tagsFData,
+    };
+
+let tagsFSource = new Bloodhound(tagsFOpts);
+let tagsFTa = new getTypeaheadOpt('tagsF', tagsFSource, limit_sugg);
+
 
 let allTypeaheadDic = {
-    'sust_tags': tagsTa,
+    'sust_tags': tagsFTa,
     'company': compTa,
     'reference': refTa,
     'country': countriesTa,
     'tags_select': tagsTa,
+};
+
+
+function load_tags() {
+    //let url = $("#id_sust_tags").attr("data-url"); // get
+    let url = load_tags_f;
+    var domainId = $("#id_sust_domain").val(); // get the selected Domain ID
+    var categoryId = $("#id_sust_tendency").val(); // get the selected tendency ID
+    $.ajax({ // initialize an AJAX request
+        url: url, // set the url of the request (= '')
+        data: {
+            // both can be null
+            'domainId': domainId,
+            'categoryId': categoryId
+
+            // add the domainId to the GET parameters
+        },
+        success: function (data) { // `data` is the return of the
+            // id_c_tags_select
+            tagsFSource.local = data;
+            tagsFSource.initialize(true);
+            $('#id_c_tags_select').tagsinput('removeAll',{preventContinue:true});
+
+            $.each(data, function (index, tag) {
+                $('#id_c_tags_select').tagsinput('add', tag);
+            });
+            //$("#id_sust_tags").html(data); // replace the
+        }
+
+    });
+}
+
+function selectTag(ele){
+    console.log();
 };

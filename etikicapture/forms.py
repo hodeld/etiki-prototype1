@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 
 from etilog.forms.fields_filter import (DateYearPickerField, DateYearPicker, LabelRow)
 from etikicapture.fields import CompanyWidget, ReferenceWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn, \
-    ImpactEventBtns, RowTagsButton
+    ImpactEventBtns, RowTagsButton, LabelInputRow, TagsButton
 from etilog.forms.forms_filter import NotReqCharF
 from etilog.models import ImpactEvent, Company, SubsidiaryOwner, SupplierRecipient, Reference
 
@@ -78,13 +78,20 @@ class ImpactEventForm(forms.ModelForm):
                        css_class=CSS_COL_CLS)
             ),
 
-            RowTagsButton('sust_tags', 'col-12',
-                          labelname='Search Tags'),
+            #RowTagsButton('sust_tags', 'col-12',labelname='Search Tags'),
 
-            RowTagsButton('tags_select', 'col-12',
-                          labelname='Select Tags',
-                          taginput='c_tags_select'),
+            LabelInputRow(
+                TagsButton('sust_tags', 'col-12',
+                           labelname='Search Tags',
+                           taginput='c_tags_search_inp c_tags_drop'),
+                labelname='Search Tags',
+            ),
 
+            LabelInputRow(
+                TagsButton('tags_select', 'col-12', taginput='c_tags_select',
+                           labelname='',),
+                          labelname='',
+                          div_cls='div_tags_select',),
 
 
             Field('summary', rows=3, placeholder='Short summary of content'),

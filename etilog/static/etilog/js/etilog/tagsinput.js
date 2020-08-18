@@ -148,7 +148,7 @@
             if (!self.options.selectTag)
                 var $tag = $('<span class="badge ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="remove"></span></span>');
             else
-                var $tag = $('<span onclick="selectTag(this);" class="badge ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="select"></span></span>');
+                var $tag = $('<span onclick="selectTag(event);" class="badge ' + htmlEncode(tagClass) + (itemTitle !== null ? ('" title="' + itemTitle) : '') + '">' + htmlEncode(itemText) + '<span data-role="select"></span></span>');
             $tag.data('item', item);
             self.findInputWrapper().before($tag);
 
