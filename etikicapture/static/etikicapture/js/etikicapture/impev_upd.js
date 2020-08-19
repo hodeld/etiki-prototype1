@@ -123,17 +123,6 @@ function extract_text(ele) {
 }
 
 
-function hide_img_vid() {
-    $('img').hide();
-    var vidtags = ["iframe", "video"];
-    vidtags.forEach(function (item, index) { //to hide videos
-        $(item).each(function (index) {
-            $(this).parent().hide();
-        });
-    });
-
-}
-
 function setValSwitch($ele) {
     const idVal = Number($ele.attr('name'));
     const eleId = $ele.attr('id');

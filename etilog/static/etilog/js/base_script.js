@@ -58,3 +58,14 @@ function set_topheadaer() {
     $('.anchor').css({'padding-top': hAnchor});
     $('.anchor').css({'margin-top': -hAnchor });
 }
+
+function hide_img_vid(idStr='id_articleshow') {
+    const articleid = '#' + idStr + ' ';
+    $(articleid + 'img').hide();
+    var vidtags = [articleid + "iframe", articleid + "video"];
+    vidtags.forEach(function (item, index) { //to hide videos
+        $(item).each(function (index) {
+            $(this).parent().hide();
+        });
+    });
+}

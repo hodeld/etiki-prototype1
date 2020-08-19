@@ -70,6 +70,7 @@ class ImpactEventForm(forms.ModelForm):
                           labelname='Search News Paper'),
 
             LabelInputRow(ColDomainSelect(), labelname='Category'),
+
             LabelInputRow(ColTendencySelect(), labelname='Which Tendency?'),
 
 
