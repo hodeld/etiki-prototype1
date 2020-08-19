@@ -31,6 +31,10 @@ $(document).ready(function () {
     // pass options to ajaxForm
     $('#id_impevform').ajaxForm(formoptions); //id_div_impevform
 
+    $('.swselect').click(function () {
+        setValSwitch($(this))
+    });
+
 
     $("#id_sust_domain").change(function () {
         load_tags();
@@ -109,6 +113,9 @@ function extract_text(ele) {
             $("#id_result_parse_html").val(parse_res);
             $("#id_impev_msg").html(msg);
 
+        },
+        error: function () {
+             $("#id_impev_msg").html('there was an error');
         }
 
     });
@@ -124,5 +131,53 @@ function hide_img_vid() {
             $(this).parent().hide();
         });
     });
+
+}
+
+function setValSwitch($ele) {
+    const idVal = Number($ele.attr('name'));
+    const eleId = $ele.attr('id');
+    const inputId = '#' + $ele.attr('data-target');
+
+    let checked = $ele[0].checked;
+
+    const targetEle = $(inputId);
+    if (!(targetEle.hasClass('many-values'))){
+        const $parent = $ele.closest('.switches_wrap');
+        let sel = '.swselect:not(' + '#' + eleId + ')';
+        $parent.find(sel).prop('checked', false);
+    }
+
+    setFormValue(inputId, idVal, checked);
+}
+
+function setFormValue(inputId, idVal, addValue){
+    const ele = $(inputId);
+    let el_val = ele.val();
+    let newVal = '';
+    if (ele.hasClass('many-values')){
+        let val_set = new Set();
+        if (el_val !== '') {
+            val_set = new Set(JSON.parse(el_val));
+        }
+        if (addValue) {
+            val_set.add(idVal);
+        } else {
+            val_set.delete(idVal);
+        }
+        const newLi = Array.from(val_set);
+
+        if (newLi.length > 0) {
+            newVal = JSON.stringify(newLi);
+        }
+    }
+    else {
+        if (addValue) {
+            newVal = idVal;
+        }
+    }
+
+    ele.val(newVal)
+        .trigger('change'); //needed for hidden input fields
 
 }

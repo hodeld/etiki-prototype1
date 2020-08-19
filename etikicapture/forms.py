@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 
 from etilog.forms.fields_filter import (DateYearPickerField, DateYearPicker, LabelRow)
 from etikicapture.fields import CompanyWidget, ReferenceWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn, \
-    ImpactEventBtns, RowTagsButton, LabelInputRow, TagsButton
+    ImpactEventBtns, RowTagsButton, LabelInputRow, TagsButton, ColDomainSelect, ColTendencySelect
 from etilog.forms.forms_filter import NotReqCharF
 from etilog.models import ImpactEvent, Company, SubsidiaryOwner, SupplierRecipient, Reference
 
@@ -22,6 +22,7 @@ class ImpactEventForm(forms.ModelForm):
     reference = forms.CharField(label='Where was it published', required=True)
     sust_tags = NotReqCharF() #forms.CharField(label='', required=False)
     tags_select = NotReqCharF()
+    sust_domain = NotReqCharF()
 
     def __init__(self, *args, **kwargs):
         super(ImpactEventForm, self).__init__(*args, **kwargs)
@@ -43,8 +44,8 @@ class ImpactEventForm(forms.ModelForm):
                           labelname='paste URL'),
 
 
-
-            LabelRow(
+            #first hidden
+            LabelInputRow(
                 Column(
                     DateYearPickerField('date_published', 'when was it published', css_class='',
                                         data_category='date_from'
@@ -68,11 +69,11 @@ class ImpactEventForm(forms.ModelForm):
             RowTagsButton('reference', 'col-12',
                           labelname='Search News Paper'),
 
+            LabelInputRow(ColDomainSelect(), labelname='Category'),
+            LabelInputRow(ColTendencySelect(), labelname='Which Tendency?'),
 
-            Row(
-                Column(Field('sust_domain'
-                             ),
-                       css_class=CSS_COL_CLS),
+
+            Row(Field('sust_domain', id='id_sust_domain', type="hidden",),
                 Column(Field('sust_tendency'
                              ),
                        css_class=CSS_COL_CLS)
@@ -96,6 +97,8 @@ class ImpactEventForm(forms.ModelForm):
 
 
             Field('summary', rows=3, placeholder='Short summary of content'),
+
+
             Field('comment', rows=3),
 
             Row(Column(Field('date_text'), css_class=CSS_COL_CLS)),
@@ -109,7 +112,9 @@ class ImpactEventForm(forms.ModelForm):
 
     class Meta:  # only for model fields
         model = ImpactEvent
-        fields = ['source_url', 'date_published', 'date_impact', 'company', 'reference',
+        fields = ['source_url',
+                  # first part hidden
+                  'date_published', 'date_impact', 'company', 'reference',
                   'country',
                   'sust_domain', 'sust_tendency', 'sust_tags',
                   'summary',
@@ -129,8 +134,8 @@ class ImpactEventForm(forms.ModelForm):
         }
 
         labels = {
-            'date_published': ('when was it published'),
-            'date_impact': ('when did it happen'),
+            'date_published': (''),
+            'date_impact': (''),
         }
         help_texts = {
             'date_published': (''),

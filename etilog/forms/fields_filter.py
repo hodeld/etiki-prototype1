@@ -65,6 +65,7 @@ class ColBtnSelect(Layout):
             twin_pref = 'twin-'
         btn_ele_li = []
         for (cont, name, val, css_clss, css_id, targfield) in btn_list:
+
             btn = StrictButton(cont, name=name,
                                value=val,
                                css_class=css_clss,
