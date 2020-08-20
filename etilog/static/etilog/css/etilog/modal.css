@@ -1,5 +1,8 @@
-#div_filterform .modal-content {
+.modal-content {
     background-color: var(--full_bckgrnd);
 }
 
-
+/* used in input interface form */
+.invalid-feedback {
+  display: block;
+}

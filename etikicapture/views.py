@@ -1,8 +1,11 @@
 import json
 
+from crispy_forms.utils import render_crispy_form
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+from django.template.context_processors import csrf
+from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 
 from etikicapture.ViewLogic.ViewAccessURL import parse_url, parse_url_all, extract_text_rpy
@@ -124,10 +127,10 @@ def impact_event_change(request, ietype='new', ie_id=None):
 
 def get_ie_form_data(request):
     data_dict = request.POST.dict()
-    company_names = ['company']
-    data_dict = upd_datadict_company(company_names, data_dict)
+    #company_names = ['company']
+    #data_dict = upd_datadict_company(company_names, data_dict)
 
-    data_dict = upd_datadict_reference(data_dict)
+    #data_dict = upd_datadict_reference(data_dict)
 
     sust_tags_list = request.POST.getlist('sust_tags')
     data_dict['sust_tags'] = sust_tags_list
@@ -169,9 +172,8 @@ def add_foreignmodel(request, main_model, foreign_model):
 
         else:  # company, owner, subsidiary, supplier, recipient
             comany_names = ['owner', 'subsidiary', 'supplier', 'recipient']
-            data_dict = upd_datadict_company(comany_names, data_dict, m2m=True)
+            #data_dict = upd_datadict_company(comany_names, data_dict, request)
 
-        id_field = 'id_' + foreign_model
         if foreign_model == 'reference':
             form = ReferenceForm(data_dict)
         else:
@@ -181,14 +183,34 @@ def add_foreignmodel(request, main_model, foreign_model):
             instance = form.save()  # (commit false) only needed if changes are done afterwards
 
             # handles the result of the foreign model in the original one
-            return HttpResponse(
-                '<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+            d_dict = {
+                'tag': {'id': instance.pk,
+                        'name': str(instance),
+                        'category': foreign_model},
+                'is_valid': 'true',
+
+            }
+            jsondata = json.dumps(d_dict)
+            return HttpResponse(jsondata, content_type='application/json')
+
+            #return HttpResponse('<script>opener.closeModal(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
 
         else:
             if foreign_model == 'reference':
                 form = ReferenceForm(request.POST)
             else:
                 form = CompanyForm(request.POST)
+            d_dict = {
+                'is_valid': 'false',
+
+            }
+            ctx = {}
+            ctx.update(csrf(request))
+
+            form_html = render_crispy_form(form, context=ctx)
+            d_dict.update({'form_html': form_html})
+            jsondata = json.dumps(d_dict)
+            return HttpResponse(jsondata, content_type='application/json')
 
     else:
         if foreign_model == 'reference':
@@ -198,23 +220,23 @@ def add_foreignmodel(request, main_model, foreign_model):
             form = CompanyForm()
 
     modelname = foreign_model[0].upper() + foreign_model[1:]
+    ctx = {}
+    ctx.update(csrf(request))
 
-    return render(request, 'etikicapture/addforeign_form.html', {'form': form,
-                                                           'modelname': modelname})
+    form_html = render_crispy_form(form, context=ctx)
 
 
-def upd_datadict_company(fieldlist, data_dict, m2m=False):
+    d_dict = form_html
+    jsondata = json.dumps(d_dict)
+    return HttpResponse(jsondata, content_type='application/json')
+
+
+
+
+def upd_datadict_company(fieldlist, data_dict, request):
     for nam in fieldlist:
-        if data_dict.get(nam):
-            try:
-                obj = Company.objects.get(name=data_dict.get(nam))
-                if m2m:
-                    comp_id = [obj.id]  # needs to be a list
-                else:
-                    comp_id = obj.id
-            except Company.DoesNotExist:
-                comp_id = data_dict.get(nam)  # send back wrong name
-            data_dict[nam] = comp_id
+        id_li = request.POST.getlist('nam')
+        data_dict[nam] = id_li
     return data_dict
 
 

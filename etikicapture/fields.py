@@ -166,7 +166,7 @@ class TagsButton(Layout):
                                    kwargs={'main_model': 'impev',
                                            'foreign_model': field_name})
             h_css_class = 'input-group-text add_foreignmodel'
-            html_str = '<span class="%s" add-url="%s">%s</span' % (h_css_class, add_url, icon_str)
+            html_str = '<span class="%s" add-url="%s" field-id="%s">%s</span' % (h_css_class, add_url, field_id, icon_str)
         else:
             if icon_name:
                 onclick = 'extract_text(this);'

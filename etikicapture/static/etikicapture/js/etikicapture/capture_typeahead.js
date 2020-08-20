@@ -1,27 +1,7 @@
 $(document).ready(function () {
 
         //used for fields in capture
-    $('.c_tags_search_inp').each(function () {
-        let ele_name = $(this).attr('name');
-        let optDic = allTypeaheadDic[ele_name];
-        const maxTags = maxTagsDic[ele_name]  || undefined;
-        $(this).tagsinput({
-            itemValue: 'id',
-            itemText: 'name',
-            itemCategory: 'category',
-            maxTags: maxTags,
-            typeaheadjs: [
-                {
-                    highlight: true,
-                    autoselect: true,
-                },
-                optDic,
-            ],
-        });
-        let plcHolder = $(this).attr('placeholder');
-        let parentId = $(this).attr('parfield');
-        $(parentId).find('.bootstrap-tagsinput input.tt-input').attr('placeholder', plcHolder);
-    });
+    initTagInput();
 
     $('.c_tags_select').each(function () {
         let ele_name = $(this).attr('name');
@@ -131,6 +111,11 @@ let allTypeaheadDic = {
     'reference': refTa,
     'country': countriesTa,
     'tags_select': tagsTa,
+
+    'owner': compTa,
+    'subsidiary': compTa,
+    'supplier': compTa,
+    'recipient': compTa,
 };
 
 const maxTagsDic = {
@@ -180,6 +165,27 @@ function load_tags() {
     });
 }
 
-function selectTag(ele){
-    console.log();
-};
+
+function initTagInput(parentID=''){
+    $(parentID + ' ' + '.c_tags_search_inp').each(function () {
+        let ele_name = $(this).attr('name');
+        let optDic = allTypeaheadDic[ele_name];
+        const maxTags = maxTagsDic[ele_name]  || undefined;
+        $(this).tagsinput({
+            itemValue: 'id',
+            itemText: 'name',
+            itemCategory: 'category',
+            maxTags: maxTags,
+            typeaheadjs: [
+                {
+                    highlight: true,
+                    autoselect: true,
+                },
+                optDic,
+            ],
+        });
+        let plcHolder = $(this).attr('placeholder');
+        let parentId = $(this).attr('parfield');
+        $(parentId).find('.bootstrap-tagsinput input.tt-input').attr('placeholder', plcHolder);
+    });
+}

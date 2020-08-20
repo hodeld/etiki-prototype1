@@ -11,14 +11,18 @@ from etilog.models import ImpactEvent, Company, SubsidiaryOwner, SupplierRecipie
 
 CSS_COL_CLS = 'col-12 col-lg-6'
 
+_PH_COMPANY = 'e.g. Coca Cola, Apple …'
+_PH_COUNTRY = 'e.g. Switzerland, France … '
+_PH_REFERENCE = 'e.g. New York Times, Guardian …'
+
 
 class ImpactEventForm(forms.ModelForm):
-    '''
+    """
     model form to create an impact event.
     fields default -> validation correct.
     widgets customized.
-    '''
-
+    """
+    tags_select = NotReqCharF()
 
     def __init__(self, *args, **kwargs):
         super(ImpactEventForm, self).__init__(*args, **kwargs)
@@ -50,16 +54,17 @@ class ImpactEventForm(forms.ModelForm):
 
             ),
 
+
             RowTagsButton('country', 'col-12',
-                              labelname='Search Country',
+                              labelname=_PH_COUNTRY,
                           addmodel=False,
                           ),
 
             RowTagsButton('company', 'col-12',
-                              labelname='Search Company'),
+                              labelname=_PH_COMPANY),
 
             RowTagsButton('reference', 'col-12',
-                          labelname='Search News Paper'),
+                          labelname=_PH_REFERENCE),
 
             LabelInputRow(ColDomainSelect(), labelname='Category'),
 
@@ -67,10 +72,8 @@ class ImpactEventForm(forms.ModelForm):
 
 
             Row(Field('sust_domain', id='id_sust_domain', type="hidden",),
-                Column(Field('sust_tendency'
-                             ),
-                       css_class=CSS_COL_CLS)
-            ),
+                Field('sust_tendency',  id='id_sust_tendency', type="hidden",),
+                       css_class=CSS_COL_CLS),
 
 
             LabelInputRow(
@@ -116,6 +119,7 @@ class ImpactEventForm(forms.ModelForm):
             'source_url': forms.URLInput(attrs={'placeholder': 'url to the article',
 
                                                 }),
+            'country': forms.TextInput(),
             'company': forms.TextInput(),
             'reference': forms.TextInput(),
             'sust_tags': forms.TextInput(),
@@ -143,40 +147,61 @@ class ImpactEventForm(forms.ModelForm):
         }
 
 
+_FOREIGN_MODEL_CLS = 'foreignModel'
+
+
 class CompanyForm(forms.ModelForm):
     '''
     form to create a company
     '''
-    owner = forms.ModelMultipleChoiceField(queryset=Company.objects.all(),
+
+    owner = forms.ModelMultipleChoiceField(queryset=Company.objects.none(),
                                            required=False)  # for validation
-    subsidiary = forms.ModelMultipleChoiceField(queryset=Company.objects.all(),
+    subsidiary = forms.ModelMultipleChoiceField(queryset=Company.objects.none(),
                                                 required=False)
-    supplier = forms.ModelMultipleChoiceField(queryset=Company.objects.all(),
+    supplier = forms.ModelMultipleChoiceField(queryset=Company.objects.none(),
                                               required=False)
-    recipient = forms.ModelMultipleChoiceField(queryset=Company.objects.all(),
+    recipient = forms.ModelMultipleChoiceField(queryset=Company.objects.none(),
                                                required=False)
 
     def __init__(self, *args, **kwargs):
         super(CompanyForm, self).__init__(*args, **kwargs)
 
-        self.fields['owner'].widget = CompanyWidget()
-        self.fields['subsidiary'].widget = CompanyWidget()
-        self.fields['supplier'].widget = CompanyWidget()
-        self.fields['recipient'].widget = CompanyWidget()
+        # as they are not model fields -> widget needs to be adapet here
+        self.fields['owner'].widget = forms.TextInput()
+        self.fields['subsidiary'].widget = forms.TextInput()
+        self.fields['supplier'].widget = forms.TextInput()
+        self.fields['recipient'].widget = forms.TextInput()
 
         self.helper = FormHelper(self)
-        self.helper['owner'].wrap(CompanyWBtn,  # fieldname is passed as arg
-                                  mainmodel='company')
-        self.helper['subsidiary'].wrap(CompanyWBtn,  # fieldname is passed as arg
-                                       mainmodel='company')
-        self.helper['supplier'].wrap(CompanyWBtn,  # fieldname is passed as arg
-                                     mainmodel='company')
-        self.helper['recipient'].wrap(CompanyWBtn,  # fieldname is passed as arg
-                                      mainmodel='company')
+        self.helper.form_class = _FOREIGN_MODEL_CLS
+        self.helper.form_action = reverse_lazy('etikicapture:add_foreignmodel',
+                                   kwargs={'main_model': 'impev',
+                                           'foreign_model': 'company'})
 
-        # adds a submit button at the end
-        self.helper.layout.append(
-            Row(Submit('submit', 'Save', css_class='btn btn-light'))
+        self.helper.layout = Layout(
+            RowTagsButton('name', 'col-12',
+                          taginput=False,
+                          addmodel=False,
+                          labelname=_PH_COMPANY,),
+
+            RowTagsButton('country', 'col-12',
+                          labelname=_PH_COUNTRY,
+                          addmodel=False,
+                          ),
+
+            Field('activity'),
+            Field('comment', rows=3),
+
+            RowTagsButton('owner', 'col-12',
+                          labelname=_PH_COMPANY),
+            RowTagsButton('subsidiary', 'col-12',
+                          labelname=_PH_COMPANY),
+            RowTagsButton('supplier', 'col-12',
+                          labelname=_PH_COMPANY),
+            RowTagsButton('recipient', 'col-12',
+                          labelname=_PH_COMPANY),
+
         )
 
     def save(self, commit=True):
@@ -207,6 +232,16 @@ class CompanyForm(forms.ModelForm):
                    'subsidiary_to_owner', 'supplier_to_recipient'
                    ]
 
+        widgets = {
+
+            'country': forms.TextInput(),
+
+
+
+            'comment': forms.Textarea(),
+
+        }
+
 
 class ReferenceForm(forms.ModelForm):
     '''
@@ -217,10 +252,21 @@ class ReferenceForm(forms.ModelForm):
         super(ReferenceForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
-        # adds a submit button at the end
-        self.helper.layout.append(
-            Submit('submit', 'Save', css_class='btn btn-light')
+        self.helper.layout = Layout(
+
+
+            RowTagsButton('reference', 'col-12',
+                          labelname=_PH_REFERENCE),
+
+            RowTagsButton('country', 'col-12',
+                          labelname='e.g. Switzerland, France … ',
+                          addmodel=False,
+                          ),
+            Submit('submit', 'Save', css_class='btn btn-light'),
+
+
         )
+
 
     class Meta:  # only for model fields
         model = Reference
