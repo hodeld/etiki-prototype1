@@ -14,22 +14,14 @@ CSS_COL_CLS = 'col-12 col-lg-6'
 
 class ImpactEventForm(forms.ModelForm):
     '''
-    form to create an impact event
+    model form to create an impact event.
+    fields default -> validation correct.
+    widgets customized.
     '''
 
-    country = forms.CharField(label='Where did it happen', required=False)
-    company = forms.CharField(label='Which company was concerned', required=True)
-    reference = forms.CharField(label='Where was it published', required=True)
-    sust_tags = NotReqCharF() #forms.CharField(label='', required=False)
-    tags_select = NotReqCharF()
-    sust_domain = NotReqCharF()
 
     def __init__(self, *args, **kwargs):
         super(ImpactEventForm, self).__init__(*args, **kwargs)
-
-        #self.fields['company'].widget = CompanyWidget()
-        #self.fields['reference'].widget = ReferenceWidget()
-        self.fields['article_html'].widget = forms.TextInput()
 
         # crispy form layout:
         self.helper = FormHelper()
@@ -80,7 +72,6 @@ class ImpactEventForm(forms.ModelForm):
                        css_class=CSS_COL_CLS)
             ),
 
-            #RowTagsButton('sust_tags', 'col-12',labelname='Search Tags'),
 
             LabelInputRow(
                 rowcontent=[TagsButton('tags_select', 'col-12 div_tags_select', taginput='c_tags_select',
@@ -93,9 +84,6 @@ class ImpactEventForm(forms.ModelForm):
                             ],
                 labelname='Select Sustainability Topics'
             ),
-
-            #LabelInputRow(TagsButton('tags_select', 'col-12 div_tags_select', taginput='c_tags_select',labelname='',),labelname='',),
-
 
             Field('summary', rows=3, placeholder='Short summary of content'),
 
@@ -128,15 +116,25 @@ class ImpactEventForm(forms.ModelForm):
             'source_url': forms.URLInput(attrs={'placeholder': 'url to the article',
 
                                                 }),
+            'company': forms.TextInput(),
+            'reference': forms.TextInput(),
+            'sust_tags': forms.TextInput(),
+            'tags_select': forms.TextInput(),
+            'sust_domain': forms.TextInput(),
+
             'date_published': DateYearPicker(),
             'date_impact': DateYearPicker(),
             'comment': forms.Textarea(),
-            'summary': forms.Textarea()
+            'summary': forms.Textarea(),
+            'article_html': forms.TextInput(),
         }
 
         labels = {
             'date_published': (''),
             'date_impact': (''),
+            'company': ('Which company was concerned'),
+            'reference': ('Where was it published?'),
+            'country':  'Where did it happen',
         }
         help_texts = {
             'date_published': (''),
