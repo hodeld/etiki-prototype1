@@ -97,47 +97,12 @@ function keyBehaviorSearch(event, ele) {
     }
 }
 
-//initialize BLOODHOUND
-function getBloodhoundOpt(field_url) {
-    optDict = {
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        //identify: function(obj) { return obj.id; }, //to get suggestion by ID -> not used and breaks typahead!
-        prefetch: {
-            url: field_url, // url set in html
-            cache: true	 // defaults to true -> for testing
-        },
-    };
-    return optDict
-}
-
-var bldhndOptComp = new getBloodhoundOpt(companies_url);
-var companies = new Bloodhound(bldhndOptComp);
-
-var optCountries = new getBloodhoundOpt(countries_url);
-var countries = new Bloodhound(optCountries);
-
-var optReferences = new getBloodhoundOpt(references_url);
-var references = new Bloodhound(optReferences);
-
-var optTopics = new getBloodhoundOpt(tags_url);
-var tags = new Bloodhound(optTopics);
-
 
 //typeahead
 var multitemplate_st = '<h5 class="category-name text-primary">';
 var multitemplate_et = '</h5>';
 const limit_sugg = 3;
 
-function getTypeaheadOpt(name, source, limitSugg=limit_sugg) {
-    const optDict = {
-        name: name,
-        source: source,
-        display: 'name',
-        limit: limit_sugg,
-    };
-    return optDict
-}
 
 function tAwHeaderOpt(optDict, title) {
     var templatesDic = {
@@ -150,27 +115,20 @@ function tAwHeaderOpt(optDict, title) {
     return newOptDict
 }
 
-var compTa = new getTypeaheadOpt('company', companies);
+var compTa = new getTypeaheadOpt('company', companies, limit_sugg);
 var compTaH = new tAwHeaderOpt(compTa, 'Companies');
 
-var refTa = new getTypeaheadOpt('reference', references);
+var refTa = new getTypeaheadOpt('reference', references, limit_sugg);
 var refTaH = new tAwHeaderOpt(refTa, 'Where was it published');
 
-var countriesTa = new getTypeaheadOpt('country', countries);
+var countriesTa = new getTypeaheadOpt('country', countries, limit_sugg);
 var countriesTaH = new tAwHeaderOpt(countriesTa, 'Countries');
 
-var tagsTa = new getTypeaheadOpt('tags', tags);
+var tagsTa = new getTypeaheadOpt('tags', tags, limit_sugg);
 var tagsTaH = new tAwHeaderOpt(tagsTa, 'Topics');
 
 let refExcTa = new getTypeaheadOpt('reference_exc', references, 5);
 
-var allTypeaheadDic = {
-    'tags': tagsTa,
-    'company': compTa,
-    'reference': refTa,
-    'country': countriesTa,
-    'reference_exc_tinp': refExcTa,
-};
 
 
 var allTaHList = [

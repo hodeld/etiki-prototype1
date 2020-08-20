@@ -48,10 +48,6 @@ def overview_impevs(request, reqtype=None):
         'filtheader': filtheader,
         'searchform': searchform,
         'topicform': topicform,
-        'companies_url': companies_url,
-        'countries_url': countries_url,
-        'references_url': references_url,
-        'tags_url': tags_url,
         'landing': landing,
         'jsondata': jsondata,
     })

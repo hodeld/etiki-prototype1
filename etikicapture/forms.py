@@ -1,10 +1,12 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Column, Field, Submit
+from crispy_forms.layout import Layout, Row, Column, Field, Submit, HTML, Div
 from django import forms
 from django.urls import reverse_lazy
 
-from etilog.forms.fields_filter import (DateYearPickerField, DateYearPicker)
-from etikicapture.fields import CompanyWidget, ReferenceWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn, ImpactEventBtns
+from etilog.forms.fields_filter import (DateYearPickerField, DateYearPicker, LabelRow)
+from etikicapture.fields import CompanyWidget, ReferenceWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn, \
+    ImpactEventBtns, RowTagsButton, LabelInputRow, TagsButton, ColDomainSelect, ColTendencySelect
+from etilog.forms.forms_filter import NotReqCharF
 from etilog.models import ImpactEvent, Company, SubsidiaryOwner, SupplierRecipient, Reference
 
 CSS_COL_CLS = 'col-12 col-lg-6'
@@ -12,53 +14,80 @@ CSS_COL_CLS = 'col-12 col-lg-6'
 
 class ImpactEventForm(forms.ModelForm):
     '''
-    form to create an impact event
+    model form to create an impact event.
+    fields default -> validation correct.
+    widgets customized.
     '''
+
 
     def __init__(self, *args, **kwargs):
         super(ImpactEventForm, self).__init__(*args, **kwargs)
-
-        self.fields['company'].widget = CompanyWidget()
-        self.fields['reference'].widget = ReferenceWidget()
-        self.fields['article_html'].widget = forms.TextInput()
 
         # crispy form layout:
         self.helper = FormHelper()
         self.helper.form_id = 'id_impevform'
         self.helper.layout = Layout(
             ImpactEventBtns(),
-            Row(
-                Column(UrlWBtn('source_url'),
-                       css_class='col-12', )
-            ),
-            Row(
-                Column(DateYearPickerField('date_published'), css_class=CSS_COL_CLS),
-                Column(DateYearPickerField('date_impact'), css_class=CSS_COL_CLS)
-            ),
-            Row(
-                Column(Field('country'),
-                       css_class='col-12', )
-            ),
-            Row(
-                Column(CompanyWBtn(fieldname='company',
-                                   mainmodel='impev'),
-                       css_class=CSS_COL_CLS, ),
 
-                Column(ReferenceWBtn(),
-                       css_class=CSS_COL_CLS, )
+            RowTagsButton('source_url', 'col-12',
+                          taginput=False,
+                          addmodel=False,
+                          icon_name='fas fa-sync',
+                          labelname='paste URL'),
+
+
+            #first hidden
+            LabelInputRow(
+                Column(
+                    DateYearPickerField('date_published', 'when was it published', css_class='',
+                                        data_category='date_from'
+                                        ),
+                    DateYearPickerField('date_impact', 'when did it happen', css_class='',
+                                        data_category='date_to'
+                                        ),
+                    css_class='col-12 d-flex flex-wrap flex-wrap justify-content-around'  # wraps if needed
+                ), labelname='Date'
+
             ),
 
-            Row(
-                Column(Field('sust_domain'
-                             ),
-                       css_class=CSS_COL_CLS),
+            RowTagsButton('country', 'col-12',
+                              labelname='Search Country',
+                          addmodel=False,
+                          ),
+
+            RowTagsButton('company', 'col-12',
+                              labelname='Search Company'),
+
+            RowTagsButton('reference', 'col-12',
+                          labelname='Search News Paper'),
+
+            LabelInputRow(ColDomainSelect(), labelname='Category'),
+
+            LabelInputRow(ColTendencySelect(), labelname='Which Tendency?'),
+
+
+            Row(Field('sust_domain', id='id_sust_domain', type="hidden",),
                 Column(Field('sust_tendency'
                              ),
                        css_class=CSS_COL_CLS)
             ),
 
-            Field('sust_tags', data_url=reverse_lazy('etikicapture:get_sust_tags')),
-            Field('summary', rows=3),
+
+            LabelInputRow(
+                rowcontent=[TagsButton('tags_select', 'col-12 div_tags_select', taginput='c_tags_select',
+                                       addmodel=False,),
+                            Div(HTML('<h3><i class="fas fa-arrow-down"></i></h3>'), css_class='mx-auto'),
+
+                TagsButton('sust_tags', 'col-12 div_tags_drop',
+                           labelname='Search Tags',
+                           taginput='c_tags_search_inp c_tags_drop'),
+                            ],
+                labelname='Select Sustainability Topics'
+            ),
+
+            Field('summary', rows=3, placeholder='Short summary of content'),
+
+
             Field('comment', rows=3),
 
             Row(Column(Field('date_text'), css_class=CSS_COL_CLS)),
@@ -72,10 +101,14 @@ class ImpactEventForm(forms.ModelForm):
 
     class Meta:  # only for model fields
         model = ImpactEvent
-        fields = ['source_url', 'date_published', 'date_impact', 'company', 'reference',
+        fields = ['source_url',
+                  # first part hidden
+                  'date_published', 'date_impact', 'company', 'reference',
                   'country',
                   'sust_domain', 'sust_tendency', 'sust_tags',
-                  'summary', 'comment',
+                  'summary',
+                  # from here only for etikis
+                  'comment',
                   'article_text', 'article_title', 'date_text', 'article_html', 'result_parse_html'
                   ]
 
@@ -83,22 +116,30 @@ class ImpactEventForm(forms.ModelForm):
             'source_url': forms.URLInput(attrs={'placeholder': 'url to the article',
 
                                                 }),
+            'company': forms.TextInput(),
+            'reference': forms.TextInput(),
+            'sust_tags': forms.TextInput(),
+            'tags_select': forms.TextInput(),
+            'sust_domain': forms.TextInput(),
+
             'date_published': DateYearPicker(),
             'date_impact': DateYearPicker(),
             'comment': forms.Textarea(),
-            'summary': forms.Textarea()
+            'summary': forms.Textarea(),
+            'article_html': forms.TextInput(),
         }
 
         labels = {
-            'date_published': ('when was it published'),
-            'date_impact': ('when did it happen'),
-            'reference': ('where was it published'),
-            'company': ('which company was concerned'),
-            'country': ('where did it happen'),
+            'date_published': (''),
+            'date_impact': (''),
+            'company': ('Which company was concerned'),
+            'reference': ('Where was it published?'),
+            'country':  'Where did it happen',
         }
         help_texts = {
             'date_published': (''),
             'date_impact': (''),
+            'summary': (''),
         }
 
 

@@ -1,0 +1,53 @@
+/*SWITCH */
+
+
+.custom-control-label{
+    cursor: pointer;
+}
+.custom-control-label span {
+    text-transform: uppercase;
+    font-size: small;
+}
+
+.custom-switch.switch-etiki{
+    color: var(--etikigreen);
+}
+/* switch thing */
+.switch-etiki .custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: var(--etikigreen);
+    background-color: var(--etikigreen);
+}
+
+
+.custom-switch.switch-danger{
+    color: var(--negative);
+}
+/* switch thing */
+.switch-danger .custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: var(--negative);
+    background-color: var(--negative);
+}
+
+
+.custom-switch.switch-success{
+    color: var(--positive);
+}
+/* switch thing */
+.switch-success .custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: var(--positive);
+    background-color: var(--positive);
+}
+
+
+.custom-switch.switch-warning{
+    color: var(--controversial);
+}
+/* switch thing */
+.switch-warning .custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: var(--controversial);
+    background-color: var(--controversial);
+}

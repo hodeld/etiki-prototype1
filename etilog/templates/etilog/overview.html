@@ -23,11 +23,6 @@
 {% block script %}
 
     <script>
-        const companies_url = "{{companies_url}}";
-        const countries_url = "{{countries_url}}";
-        const references_url = "{{references_url}}";
-        const tags_url = "{{tags_url}}";
-
         const list_url = "{% url 'etilog:home' %}";
         const filter_url = "{% url 'etilog:filter' %}";
         const result_url = "{% url 'etilog:results' %}";
@@ -55,11 +50,6 @@
 
 {% block bottomscript %}
 
-    <script src="{% static 'etilog/js/etilog/tagsinput.js' %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script>
-    {# needed for typaahead #}
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script>
-    <!-- jquery.min -->
 
 
     <!-- for charts -> todo, separate; do not load jquery again (removes prev plugins -->

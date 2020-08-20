@@ -251,6 +251,9 @@ def load_sust_tags(request):  # ,
     if len(domain_id_str) > 0:
         lookup_many('sust_domains', domain_id_str)
 
-    sust_tags = SustainabilityTag.objects.filter(**lookup_dict).order_by('name')
+    sust_tags = SustainabilityTag.objects.filter(**lookup_dict).order_by('name').values('id', 'name')
 
-    return render(request, 'etikicapture/select_sust_tags.html', {'tags': sust_tags})
+
+    data = json.dumps(list(sust_tags))
+    return HttpResponse(data, content_type='application/json')
+    #return render(request, 'etikicapture/select_sust_tags.html', {'tags': sust_tags})
