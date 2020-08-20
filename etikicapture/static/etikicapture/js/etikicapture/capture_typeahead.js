@@ -4,10 +4,12 @@ $(document).ready(function () {
     $('.c_tags_search_inp').each(function () {
         let ele_name = $(this).attr('name');
         let optDic = allTypeaheadDic[ele_name];
+        const maxTags = maxTagsDic[ele_name]  || undefined;
         $(this).tagsinput({
             itemValue: 'id',
             itemText: 'name',
             itemCategory: 'category',
+            maxTags: maxTags,
             typeaheadjs: [
                 {
                     highlight: true,
@@ -47,9 +49,6 @@ $(document).ready(function () {
         const suggestion = event.item;
         $('#id_c_tags_select').tagsinput('add', suggestion, );
     });
-
-
-
 
     load_tags();
 
@@ -134,9 +133,17 @@ let allTypeaheadDic = {
     'tags_select': tagsTa,
 };
 
+const maxTagsDic = {
+    //'sust_tags': tagsFTa,
+    'company': 1,
+    'reference': 1,
+    'country': 1,
+    //'tags_select': tagsTa,
+};
 
 function load_tags() {
     //let url = $("#id_sust_tags").attr("data-url"); // get
+    $('#id_c_sust_tags').tagsinput('removeAll' );
     let url = load_tags_f;
     var domainId = $("#id_sust_domain").val(); // get the selected Domain ID
     var categoryId = $("#id_sust_tendency").val(); // get the selected tendency ID
@@ -158,6 +165,15 @@ function load_tags() {
             $.each(data, function (index, tag) {
                 $('#id_c_tags_select').tagsinput('add', tag);
             });
+
+            //add click event on all tags
+            $('.div_tags_select .bootstrap-tagsinput .badge').click(function (event) {
+                const $ele = $(event.target);
+                const tag = $ele.data('item');
+                $('#id_c_tags_select').tagsinput('remove', tag);
+
+            });
+
             //$("#id_sust_tags").html(data); // replace the
         }
 

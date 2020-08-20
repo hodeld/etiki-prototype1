@@ -118,7 +118,7 @@
     outline: none;
     background-color: transparent;
     margin: 2px;
-    width: auto;
+    width: inherit; /* was auto */
     max-width: inherit;
 }
 
