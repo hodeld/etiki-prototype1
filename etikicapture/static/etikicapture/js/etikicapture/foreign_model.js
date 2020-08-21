@@ -21,7 +21,7 @@ $(document).ready(function () {
                     $('#fModelSave').click(function(){
                         saveFModel()
                     });
-                    $('#id_field_id').html(fieldId);
+                    $('#id_field_id').val(fieldId);
                     $('#div_addforeign').modal('show');
                 },
                 error: function () {
@@ -41,11 +41,11 @@ function saveFModel(){
             if (response.is_valid == 'true') {
                 const fieldId = $('#id_field_id').val();
                 $('#'+fieldId).tagsinput('removeAll');
-                $('#'+fieldId).taginput('add', response.tag);
+                $('#'+fieldId).tagsinput('add', response.tag);
                 $('#div_addforeign').modal('hide');
             } else {
                 const parID = '#id_foreign_body';
-
+                $(parID).html(response.form_html);
                 initTagInput(parID);
             }
         }

@@ -1,11 +1,11 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Row, Column, Field, Submit, HTML, Div
 from django import forms
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
-from etilog.forms.fields_filter import (DateYearPickerField, DateYearPicker, LabelRow)
-from etikicapture.fields import CompanyWidget, ReferenceWidget, CompanyWBtn, ReferenceWBtn, UrlWBtn, \
-    ImpactEventBtns, RowTagsButton, LabelInputRow, TagsButton, ColDomainSelect, ColTendencySelect
+from etilog.forms.fields_filter import (DateYearPickerField, DateYearPicker)
+from etikicapture.fields import  ImpactEventBtns, RowTagsButton, LabelInputRow, TagsButton, \
+    ColDomainSelect, ColTendencySelect
 from etilog.forms.forms_filter import NotReqCharF
 from etilog.models import ImpactEvent, Company, SubsidiaryOwner, SupplierRecipient, Reference
 
@@ -27,9 +27,12 @@ class ImpactEventForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ImpactEventForm, self).__init__(*args, **kwargs)
 
+        self.fields['source_url'].required = True
+
         # crispy form layout:
         self.helper = FormHelper()
         self.helper.form_id = 'id_impevform'
+        self.helper.form_action = reverse('etikicapture:newimpactevent',)
         self.helper.layout = Layout(
             ImpactEventBtns(),
 
@@ -56,24 +59,19 @@ class ImpactEventForm(forms.ModelForm):
 
 
             RowTagsButton('country', 'col-12',
-                              labelname=_PH_COUNTRY,
+                              placeholder=_PH_COUNTRY,
                           addmodel=False,
                           ),
 
             RowTagsButton('company', 'col-12',
-                              labelname=_PH_COMPANY),
+                              placeholder=_PH_COMPANY),
 
             RowTagsButton('reference', 'col-12',
-                          labelname=_PH_REFERENCE),
+                          placeholder=_PH_REFERENCE),
 
-            LabelInputRow(ColDomainSelect(), labelname='Category'),
+            LabelInputRow(ColDomainSelect('sust_domain')),
 
-            LabelInputRow(ColTendencySelect(), labelname='Which Tendency?'),
-
-
-            Row(Field('sust_domain', id='id_sust_domain', type="hidden",),
-                Field('sust_tendency',  id='id_sust_tendency', type="hidden",),
-                       css_class=CSS_COL_CLS),
+            LabelInputRow(ColTendencySelect('sust_tendency')),
 
 
             LabelInputRow(
@@ -124,7 +122,9 @@ class ImpactEventForm(forms.ModelForm):
             'reference': forms.TextInput(),
             'sust_tags': forms.TextInput(),
             'tags_select': forms.TextInput(),
+
             'sust_domain': forms.TextInput(),
+            'sust_tendency': forms.TextInput(),
 
             'date_published': DateYearPicker(),
             'date_impact': DateYearPicker(),
@@ -133,12 +133,15 @@ class ImpactEventForm(forms.ModelForm):
             'article_html': forms.TextInput(),
         }
 
+        # if added labels here -> correct required or not
         labels = {
             'date_published': (''),
             'date_impact': (''),
             'company': ('Which company was concerned'),
             'reference': ('Where was it published?'),
             'country':  'Where did it happen',
+            'sust_domain': 'Which Category?',
+            'sust_tendency': 'Which Tendency?'
         }
         help_texts = {
             'date_published': (''),
@@ -183,10 +186,10 @@ class CompanyForm(forms.ModelForm):
             RowTagsButton('name', 'col-12',
                           taginput=False,
                           addmodel=False,
-                          labelname=_PH_COMPANY,),
+                          placeholder=_PH_COMPANY,),
 
             RowTagsButton('country', 'col-12',
-                          labelname=_PH_COUNTRY,
+                          placeholder=_PH_COUNTRY,
                           addmodel=False,
                           ),
 
@@ -194,13 +197,13 @@ class CompanyForm(forms.ModelForm):
             Field('comment', rows=3),
 
             RowTagsButton('owner', 'col-12',
-                          labelname=_PH_COMPANY),
+                          placeholder=_PH_COMPANY),
             RowTagsButton('subsidiary', 'col-12',
-                          labelname=_PH_COMPANY),
+                          placeholder=_PH_COMPANY),
             RowTagsButton('supplier', 'col-12',
-                          labelname=_PH_COMPANY),
+                          placeholder=_PH_COMPANY),
             RowTagsButton('recipient', 'col-12',
-                          labelname=_PH_COMPANY),
+                          placeholder=_PH_COMPANY),
 
         )
 

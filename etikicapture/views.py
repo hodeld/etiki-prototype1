@@ -95,12 +95,7 @@ def impact_event_change(request, ietype='new', ie_id=None):
 
 
         else:
-            message = form.errors.__html__()  # html
-            err_items = list(form.errors.keys())
-
-            to_json['is_valid'] = 'false'
-            to_json['err_items'] = err_items
-            to_json['message'] = message
+            error_handling(form, to_json)
         return HttpResponse(json.dumps(to_json), content_type='application/json')
 
     else:
@@ -166,15 +161,6 @@ def add_foreignmodel(request, main_model, foreign_model):
     if request.POST:
         data_dict = request.POST.dict()
         if foreign_model == 'reference':
-            pass
-            # reference = Reference.objects.get(name = data_dict['name'])
-            # data_dict [foreign_model] = reference.id
-
-        else:  # company, owner, subsidiary, supplier, recipient
-            comany_names = ['owner', 'subsidiary', 'supplier', 'recipient']
-            #data_dict = upd_datadict_company(comany_names, data_dict, request)
-
-        if foreign_model == 'reference':
             form = ReferenceForm(data_dict)
         else:
             form = CompanyForm(data_dict)
@@ -193,22 +179,10 @@ def add_foreignmodel(request, main_model, foreign_model):
             jsondata = json.dumps(d_dict)
             return HttpResponse(jsondata, content_type='application/json')
 
-            #return HttpResponse('<script>opener.closeModal(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
-
         else:
-            if foreign_model == 'reference':
-                form = ReferenceForm(request.POST)
-            else:
-                form = CompanyForm(request.POST)
             d_dict = {
-                'is_valid': 'false',
-
             }
-            ctx = {}
-            ctx.update(csrf(request))
-
-            form_html = render_crispy_form(form, context=ctx)
-            d_dict.update({'form_html': form_html})
+            error_handling(form, d_dict)
             jsondata = json.dumps(d_dict)
             return HttpResponse(jsondata, content_type='application/json')
 
@@ -279,3 +253,12 @@ def load_sust_tags(request):  # ,
     data = json.dumps(list(sust_tags))
     return HttpResponse(data, content_type='application/json')
     #return render(request, 'etikicapture/select_sust_tags.html', {'tags': sust_tags})
+
+
+def error_handling(form, d_dict):
+    message = form.errors.__html__()  # html
+    err_items = list(form.errors.keys())
+
+    d_dict['is_valid'] = 'false'
+    d_dict['err_items'] = err_items
+    d_dict['error_msg'] = message

@@ -10,13 +10,9 @@ $(document).ready(function () {
         success: function (response) {
             var msg = response.message;
             if (response.is_valid == "false") {
-                //$("#id_impev_msg").html(JSON.stringify(msg));
-                $("#id_impev_msg").html(msg);
-                var error_items = response.err_items;
-                error_items.forEach(function (item, index) {
-                    var el_id = '#id_' + item;
-                    $(el_id).addClass('is-invalid') //django class
-                });
+                errorHandling('#id_impev_msg', response)
+
+
 
                 //$("#id_impevform").html(response.form); // to show errors
             } else {
@@ -25,6 +21,9 @@ $(document).ready(function () {
                 window.history.pushState("", "", response.upd_url);
                 window.scrollTo(0, 0);
             }
+        },
+        error: function (response) {
+            $("#id_impev_msg").html('uups');
         }
 
     };
@@ -76,7 +75,7 @@ function new_ie() {
 
 
 function extract_text(ele) {
-    var source_url = $("#id_c_source_url").val();
+    var source_url = $("#id_source_url").val();
     var get_url = $(ele).attr("url-get"); // get
 
     $("#id_impev_msg").html('reads text from website …');
@@ -169,4 +168,16 @@ function setFormValue(inputId, idVal, addValue){
     ele.val(newVal)
         .trigger('change'); //needed for hidden input fields
 
+}
+
+function errorHandling (msgId, response){
+    $(msgId).html(response.error_msg);
+    const error_items = response.err_items;
+    error_items.forEach(function (item, index) {
+        var el_id = '#id_' + item;
+        if ($(el_id).hasClass('')){
+
+        } //django class
+        $(el_id).addClass('is-invalid') //django class
+    });
 }

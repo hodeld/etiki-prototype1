@@ -10,24 +10,23 @@ $(document).ready(function () {
             itemText: 'name',
             itemCategory: 'category',
         });
-        let plcHolder = $(this).attr('placeholder');
-        let parentId = $(this).attr('parfield');
-        $(parentId).find('.bootstrap-tagsinput input.tt-input').attr('placeholder', plcHolder);
+        //placeholder automatically added
+
     });
-    $('#id_c_tags_select').on('beforeItemRemove', function (event) {
+    $('#id_tags_select').on('beforeItemRemove', function (event) {
         if (event.options) {
             return
         }
         const suggestion = event.item;
-        $('#id_c_sust_tags').tagsinput('add', suggestion, );
+        $('#id_sust_tags').tagsinput('add', suggestion, );
     });
 
-    $('#id_c_sust_tags').on('beforeItemRemove', function (event) {
+    $('#id_sust_tags').on('beforeItemRemove', function (event) {
         if (event.options) {
             return
         }
         const suggestion = event.item;
-        $('#id_c_tags_select').tagsinput('add', suggestion, );
+        $('#id_tags_select').tagsinput('add', suggestion, );
     });
 
     load_tags();
@@ -128,7 +127,7 @@ const maxTagsDic = {
 
 function load_tags() {
     //let url = $("#id_sust_tags").attr("data-url"); // get
-    $('#id_c_sust_tags').tagsinput('removeAll' );
+    $('#id_sust_tags').tagsinput('removeAll' );
     let url = load_tags_f;
     var domainId = $("#id_sust_domain").val(); // get the selected Domain ID
     var categoryId = $("#id_sust_tendency").val(); // get the selected tendency ID
@@ -142,20 +141,20 @@ function load_tags() {
             // add the domainId to the GET parameters
         },
         success: function (data) { // `data` is the return of the
-            // id_c_tags_select
+            // id_tags_select
             tagsFSource.local = data;
             tagsFSource.initialize(true);
-            $('#id_c_tags_select').tagsinput('removeAll',{preventContinue:true});
+            $('#id_tags_select').tagsinput('removeAll',{preventContinue:true});
 
             $.each(data, function (index, tag) {
-                $('#id_c_tags_select').tagsinput('add', tag);
+                $('#id_tags_select').tagsinput('add', tag);
             });
 
             //add click event on all tags
             $('.div_tags_select .bootstrap-tagsinput .badge').click(function (event) {
                 const $ele = $(event.target);
                 const tag = $ele.data('item');
-                $('#id_c_tags_select').tagsinput('remove', tag);
+                $('#id_tags_select').tagsinput('remove', tag);
 
             });
 
@@ -184,8 +183,5 @@ function initTagInput(parentID=''){
                 optDic,
             ],
         });
-        let plcHolder = $(this).attr('placeholder');
-        let parentId = $(this).attr('parfield');
-        $(parentId).find('.bootstrap-tagsinput input.tt-input').attr('placeholder', plcHolder);
     });
 }

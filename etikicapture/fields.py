@@ -1,10 +1,10 @@
-from crispy_forms.bootstrap import FieldWithButtons, StrictButton, AppendedText
+from crispy_forms.bootstrap import FieldWithButtons
 from crispy_forms.layout import Layout, ButtonHolder, Submit, Button, HTML, Column, Field, Row, Div
 from django import forms
 from django.urls import reverse_lazy
 
 from etilog.forms.fields_filter import dom_icon_dict
-from etilog.models import Company, Reference, SustainabilityDomain, SustainabilityTendency
+from etilog.models import  SustainabilityDomain, SustainabilityTendency
 
 
 class CharF(forms.CharField):
@@ -14,77 +14,11 @@ class CharF(forms.CharField):
         super(CharF, self).__init__(required=req, label=lbl, *args, **kwargs)
 
 
-class AutocompleteWidget(forms.TextInput):
-    def __init__(self, data_list, placeholder, *args, **kwargs):
-        super(AutocompleteWidget, self).__init__(*args, **kwargs)
-
-        sepa = ';'
-        list_str = sepa.join(list(data_list))
-
-        self.attrs.update({'autocomplete': 'off',
-                           'data_list': list_str,
-                           'placeholder': placeholder,
-                           'class': 'autocompwidget'})  # used for jquery
-
-
-class CompanyWidget(AutocompleteWidget):
-    def __init__(self, *args, **kwargs):
-        # when excluding companies in Reference -> excludes also companies which are both.
-        q_comp_val = Company.objects.values_list('name', flat=True)
-        AutocompleteWidget.__init__(self, data_list=q_comp_val,
-                                    placeholder='Company', *args, **kwargs)
-
-
-class ReferenceWidget(AutocompleteWidget):
-    def __init__(self, *args, **kwargs):
-        q_references = Reference.objects.values_list('name', flat=True)
-        AutocompleteWidget.__init__(self, data_list=q_references,
-                                    placeholder='Newspaper', *args, **kwargs)
-
-
-class CompanyWBtn(Layout):
-    def __init__(self, fieldname, mainmodel, *args, **kwargs):
-        super(CompanyWBtn, self).__init__(
-            FieldWithButtons(fieldname,
-                             StrictButton("+", css_class='btn btn-light add_foreignmodel',  # class for jquery
-                                          # css_id='add_id_company',
-                                          add_url=reverse_lazy('etikicapture:add_foreignmodel',
-                                                               kwargs={'main_model': mainmodel,
-                                                                       'foreign_model': fieldname})
-                                          ))
-        )
-
-
-class ReferenceWBtn(Layout):
-    def __init__(self, *args, **kwargs):
-        super(ReferenceWBtn, self).__init__(
-            FieldWithButtons('reference',
-
-                             StrictButton("+", css_class='btn btn-light add_foreignmodel',
-                                          # css_id='add_id_reference',
-                                          add_url=reverse_lazy('etikicapture:add_foreignmodel',
-                                                               kwargs={'main_model': 'impev',
-                                                                       'foreign_model': 'reference'})
-                                          ))
-        )
-
-
-class UrlWBtn(Layout):
-    def __init__(self, fieldname, *args, **kwargs):
-        super(UrlWBtn, self).__init__(
-            FieldWithButtons(fieldname,
-                             StrictButton('get', css_class='btn btn-light',
-                                          onclick="extract_text(this);",
-                                          url_get=reverse_lazy('etikicapture:extract_text_url', )
-                                          ))
-        )
-
-
 class ImpactEventBtns(Layout):
     def __init__(self):
         super(ImpactEventBtns, self).__init__(
             ButtonHolder(
-                Submit('submit', 'Save Impact Event', css_class='btn btn-secondary'),
+                Submit('submit-name', 'Save Impact Event', css_class='btn btn-secondary'),
                 Button('new', 'New', css_class='btn btn-secondary', onclick="new_ie();"),
                 Button('next', 'Next', css_class='btn btn-light', onclick="next_ie();")
             )
@@ -133,17 +67,15 @@ class LabelInputRow(Layout):
 
 
 class TagsButton(Layout):
-    def __init__(self, field_name, col_class, labelname='', field_class='',
-                 placeholder=None,
+    def __init__(self, field_name, col_class, field_class='',
+                 placeholder='',
                  field_id=None,
                  taginput=True,
                  addmodel=True,
                  icon_name=None,
                  *args, **kwargs):
         if field_id == None:
-            field_id = 'id_c_' + field_name
-        if placeholder == None:
-            placeholder = labelname
+            field_id = 'id_' + field_name
         name_stripped = field_name
         parent_id = '#id_parent_' + name_stripped  # same as labelrow
         div_id = 'row' + name_stripped  # needed for set placeholder
@@ -189,9 +121,10 @@ class TagsButton(Layout):
                   placeholder=placeholder,
                   ),
 
-                HTML(html_str
-                             )
+                HTML(html_str),
+                css_id=parent_id,
             ),
+
             css_class=div_class,
             css_id=div_id,
         )
@@ -204,7 +137,8 @@ class RowTagsButton(LabelInputRow):
 
 
 class ColBtnSwitch(Layout):
-    def __init__(self, btn_list, col_class, labelname,
+    def __init__(self, btn_list, col_class,
+                 field_name,
                  wrap_class,
                  *args, **kwargs):
         if col_class is None:
@@ -233,22 +167,19 @@ class ColBtnSwitch(Layout):
 
             btn_ele_li.append(div_frame)
         # due to key error -> no string (which is not field name) as 1st argument
-        if labelname:
-            html_str = '<label class="col-form-label">%s</label>' % labelname
-            label_html = HTML(html_str)
-            col = Column(label_html,
-                         Div(*btn_ele_li, css_class=wrap_class,),
-                         css_class=col_class)
 
-        else:
-            col = Column(Div(*btn_ele_li, css_class=wrap_class),
-                         css_class=col_class)
+        col = Column(
+            Field(field_name, css_class="input-behind"), # for client side validation
+            Div(*btn_ele_li,
+                         css_class=wrap_class),
+                     css_class=col_class)
 
         super(ColBtnSwitch, self).__init__(col)
 
 
 class ColDomainSelect(ColBtnSwitch):
-    def __init__(self, col_class=None, labelname=None,
+    def __init__(self, field_name,
+                 col_class=None,
                  btn_wrap_class=None,
                  ele_class='',
                  *args, **kwargs):  # distribute buttons
@@ -267,13 +198,15 @@ class ColDomainSelect(ColBtnSwitch):
             ele_list.append(ele)
 
         ColBtnSwitch.__init__(self, ele_list,
-                              col_class, labelname,
+                              col_class,
+                              field_name,
                               btn_wrap_class,
                               *args, **kwargs)
 
 
 class ColTendencySelect(ColBtnSwitch):
-    def __init__(self, col_class=None, labelname=None,
+    def __init__(self, field_name,
+                 col_class=None,
                  btn_wrap_class=None,
                  ele_class='',
                  twin_ele=False,
@@ -300,7 +233,8 @@ class ColTendencySelect(ColBtnSwitch):
             btn_list.append((cont, name, val, css_class, css_id, targfield))
 
         ColBtnSwitch.__init__(self, btn_list,
-                              col_class, labelname,
+                              col_class,
+                              field_name,
                               btn_wrap_class,
                               twin_ele,
                               *args, **kwargs)

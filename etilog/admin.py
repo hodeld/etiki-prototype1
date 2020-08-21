@@ -73,6 +73,7 @@ class RecipientInLine(admin.TabularInline):
 
 class CompanyAdmin(admin.ModelAdmin):
     inlines = (SubsidiaryInLine, OwnerInLine, SupplierInLine, RecipientInLine)
+    list_display = ('name', 'created_at')
 
 
 class SubsidiaryOwnerAdmin(admin.ModelAdmin):
