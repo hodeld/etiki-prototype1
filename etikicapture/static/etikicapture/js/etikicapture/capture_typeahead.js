@@ -91,8 +91,10 @@ function keyBehaviorSearch(event, ele) {
 }
 
 const limit_sugg = 5;
+var bldhndOptCompAll = new getBloodhoundOpt(companies_all_url);
+var companies_all = new Bloodhound(bldhndOptCompAll);
 
-let compTa = new getTypeaheadOpt('company', companies, limit_sugg);
+let compTa = new getTypeaheadOpt('company_all', companies_all, limit_sugg);
 
 let refTa = new getTypeaheadOpt('reference', references, limit_sugg);
 

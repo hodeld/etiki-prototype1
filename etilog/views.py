@@ -76,6 +76,9 @@ def load_names(request, modelname):
         q_names = Country.objects.values('id', 'name')
     elif modelname == 'tags':
         q_names = SustainabilityTag.objects.values('id', 'name')
+
+    elif modelname == 'company_all':
+        q_names = Company.objects.values('id', 'name')
     else:
         return HttpResponse("/")
 

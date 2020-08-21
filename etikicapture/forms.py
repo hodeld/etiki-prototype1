@@ -261,23 +261,42 @@ class ReferenceForm(forms.ModelForm):
         super(ReferenceForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
+        self.helper.form_class = _FOREIGN_MODEL_CLS
+        self.helper.form_action = reverse_lazy('etikicapture:add_foreignmodel',
+                                               kwargs={'main_model': 'impev',
+                                                       'foreign_model': 'reference'})
         self.helper.layout = Layout(
 
+            RowTagsButton('name', 'col-12',
+                          taginput=False,
+                          addmodel=False,
+                          placeholder=_PH_REFERENCE, ),
 
-            RowTagsButton('reference', 'col-12',
-                          labelname=_PH_REFERENCE),
+            Field('mediaform'),
+
+            RowTagsButton('company', 'col-12',
+                          placeholder=_PH_COMPANY),
 
             RowTagsButton('country', 'col-12',
-                          labelname='e.g. Switzerland, France … ',
+                          placeholder=_PH_COUNTRY,
                           addmodel=False,
                           ),
-            Submit('submit', 'Save', css_class='btn btn-light'),
+
+            Field('comment', rows=3),
+            Submit('submit-name', '', css_id='id_submit_fm', css_class='d-none'),
 
 
         )
-
 
     class Meta:  # only for model fields
         model = Reference
         exclude = []
 
+        widgets = {
+
+            'company': forms.TextInput(),
+            'country': forms.TextInput(),
+
+            'comment': forms.Textarea(),
+
+        }
