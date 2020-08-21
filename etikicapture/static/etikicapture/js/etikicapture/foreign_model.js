@@ -18,10 +18,13 @@ $(document).ready(function () {
                     const parID = '#id_foreign_body';
                     $(parID).html(response);
                     initTagInput(parID);
-                    $('#fModelSave').click(function(){
-                        saveFModel()
+                    $('#fModelSubmit').click(function(){
+                        $('#id_submit_fm').click(); // so html5 validation works
                     });
                     $('#id_field_id').val(fieldId);
+                    $('.foreignModel').ajaxForm(fMoOpts);
+
+
                     $('#div_addforeign').modal('show');
                 },
                 error: function () {
@@ -34,8 +37,8 @@ $(document).ready(function () {
 
 
 });
-function saveFModel(){
-    const fMoOpts = {
+
+const fMoOpts = {
         //url: get_url, // set the url of the request (= '')
         success: function (response) {
             if (response.is_valid == 'true') {
@@ -50,9 +53,9 @@ function saveFModel(){
             }
         }
     };
-    $('.foreignModel').ajaxSubmit(fMoOpts);
+function saveFModel(){
+    $('.foreignModel').submit() ;
 }
-
 
 
 function closeModal(win, newID, newRepr, id) {

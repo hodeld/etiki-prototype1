@@ -205,6 +205,8 @@ class CompanyForm(forms.ModelForm):
             RowTagsButton('recipient', 'col-12',
                           placeholder=_PH_COMPANY),
 
+            Submit('submit-name', '', css_id='id_submit_fm', css_class='d-none'),
+
         )
 
     def save(self, commit=True):
