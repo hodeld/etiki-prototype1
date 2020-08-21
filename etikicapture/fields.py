@@ -73,11 +73,12 @@ class TagsButton(Layout):
                  taginput=True,
                  addmodel=True,
                  icon_name=None,
+                 field_hidden=None,
                  *args, **kwargs):
         if field_id == None:
             field_id = 'id_' + field_name
         name_stripped = field_name
-        parent_id = '#id_parent_' + name_stripped  # same as labelrow
+        parent_id = 'id_parent_' + name_stripped  # same as labelrow
         div_id = 'row' + name_stripped  # needed for set placeholder
 
         div_class = ' '.join([col_class, 'div_c_taginput'])
@@ -98,7 +99,9 @@ class TagsButton(Layout):
                                    kwargs={'main_model': 'impev',
                                            'foreign_model': field_name})
             h_css_class = 'input-group-text add_foreignmodel'
-            html_str = '<span class="%s" add-url="%s" field-id="%s">%s</span' % (h_css_class, add_url, field_id, icon_str)
+            html_str = '''
+            <span class="%s" add-url="%s" field-id="%s" field-name="%s">%s</span
+            ''' % (h_css_class, add_url, field_id, 'ADD ' + field_name.upper(), icon_str)
         else:
             if icon_name:
                 onclick = 'extract_text(this);'
@@ -109,13 +112,18 @@ class TagsButton(Layout):
                                                                                     onclick, icon_str)
             else:
                 html_str = ''
+        if field_hidden:
+            f2 = Field(field_hidden, css_class="input-behind many-values", parent_id=parent_id)
+        else:
+            f2 = None
 
-        rowcontent = Column(
+        rowcontent = Column(f2,
+
             FieldWithButtons(
                 Field(field_name,
 
                   id=field_id,
-                  parfield=parent_id,
+                  parent_id=parent_id,
 
                   css_class=' '.join([cls_taginp, field_class]),
                   placeholder=placeholder,
@@ -148,6 +156,7 @@ class ColBtnSwitch(Layout):
 
         btn_ele_li = []
         sw_cls = 'custom-control-input swselect'
+        parent_id = 'id_parent_' + field_name
         for (cont, name, val, css_clss, css_id, targfield) in btn_list:
 
             sw_div_cls = 'custom-control custom-switch my-auto'
@@ -169,10 +178,10 @@ class ColBtnSwitch(Layout):
         # due to key error -> no string (which is not field name) as 1st argument
 
         col = Column(
-            Field(field_name, css_class="input-behind"), # for client side validation
+            Field(field_name, css_class="input-behind", parent_id=parent_id), # for client side validation
             Div(*btn_ele_li,
                          css_class=wrap_class),
-                     css_class=col_class)
+                     css_class=col_class, css_id=parent_id)
 
         super(ColBtnSwitch, self).__init__(col)
 

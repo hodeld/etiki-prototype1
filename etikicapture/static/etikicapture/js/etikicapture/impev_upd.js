@@ -10,14 +10,12 @@ $(document).ready(function () {
         success: function (response) {
             var msg = response.message;
             if (response.is_valid == "false") {
-                errorHandling('#id_impev_msg', response)
-
-
+                errorHandling('#id_impevform', response, '#id_impev_msg');
 
                 //$("#id_impevform").html(response.form); // to show errors
             } else {
                 $("#id_impev_msg").html(msg);
-                $('.is-invalid').removeClass('is-invalid') //django class
+                errorHandling('#id_impevform', response, '#id_impev_msg'); //to remove spans
                 window.history.pushState("", "", response.upd_url);
                 window.scrollTo(0, 0);
             }
@@ -170,14 +168,22 @@ function setFormValue(inputId, idVal, addValue){
 
 }
 
-function errorHandling (msgId, response){
+function errorHandling (parDivId, response, msgId=''){
     $(msgId).html(response.error_msg);
+    $(parDivId).find('.invalid-feedback').remove();
     const error_items = response.err_items;
-    error_items.forEach(function (item, index) {
-        var el_id = '#id_' + item;
-        if ($(el_id).hasClass('')){
-
-        } //django class
-        $(el_id).addClass('is-invalid') //django class
-    });
+    const html_base_str = '<span class="invalid-feedback"><strong>%%error</strong></span>';
+    for  (let key in error_items) {
+        let err = error_items[key];
+        let html_str = html_base_str.replace("%%error", err);
+        let el_id = '#id_' + key;
+        let $ele = $(el_id)
+        let parId = $ele.attr('parent-id');
+        if (typeof parId !== typeof undefined && parId !== false) {
+            $ele = $('#' + parId)
+        }
+        $ele.after(html_str);
+        //$ele.addClass('has-danger');
+        //$ele.addClass('is-invalid') //django class
+    };
 }

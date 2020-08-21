@@ -122,13 +122,10 @@ def impact_event_change(request, ietype='new', ie_id=None):
 
 def get_ie_form_data(request):
     data_dict = request.POST.dict()
-    #company_names = ['company']
-    #data_dict = upd_datadict_company(company_names, data_dict)
 
-    #data_dict = upd_datadict_reference(data_dict)
-
-    sust_tags_list = request.POST.getlist('sust_tags')
-    data_dict['sust_tags'] = sust_tags_list
+    if request.POST.get('sust_tags'):
+        sust_tags_list = json.loads(request.POST.get('sust_tags'))
+        data_dict['sust_tags'] = sust_tags_list
     return data_dict
 
 
@@ -164,6 +161,9 @@ def add_foreignmodel(request, main_model, foreign_model):
             form = ReferenceForm(data_dict)
         else:
             form = CompanyForm(data_dict)
+            fieldlist = ['owner', 'subsidiary', 'supplier', 'recipient']
+            upd_datadict_company(fieldlist, data_dict, request)
+
 
         if form.is_valid():
             instance = form.save()  # (commit false) only needed if changes are done afterwards
@@ -211,7 +211,6 @@ def upd_datadict_company(fieldlist, data_dict, request):
     for nam in fieldlist:
         id_li = request.POST.getlist('nam')
         data_dict[nam] = id_li
-    return data_dict
 
 
 def upd_datadict_reference(data_dict):
@@ -257,8 +256,10 @@ def load_sust_tags(request):  # ,
 
 def error_handling(form, d_dict):
     message = form.errors.__html__()  # html
-    err_items = list(form.errors.keys())
-
+    err_items = dict(form.errors.items())
+    #err_items = list(form.errors.keys())
+    #err_values = list(form.errors.values())
     d_dict['is_valid'] = 'false'
     d_dict['err_items'] = err_items
+    #d_dict['err_values'] = err_values
     d_dict['error_msg'] = message

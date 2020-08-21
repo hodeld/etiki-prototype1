@@ -106,7 +106,7 @@
 .div_c_taginput .input-group input.c_tags_search_inp,
 .div_tags_select .input-group input,
 .input-behind{
-    position: absolute;
+    position: absolute!important;
     z-index: -1;
     opacity: 0;
     margin-left: 50px;

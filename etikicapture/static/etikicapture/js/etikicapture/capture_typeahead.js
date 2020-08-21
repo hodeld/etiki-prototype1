@@ -18,16 +18,25 @@ $(document).ready(function () {
             return
         }
         const suggestion = event.item;
-        $('#id_sust_tags').tagsinput('add', suggestion, );
+        //$('#id_sust_tags').tagsinput('add', suggestion, );
+        $('#id_tags_drop').tagsinput('add', suggestion, );
     });
 
-    $('#id_sust_tags').on('beforeItemRemove', function (event) {
+    $('#id_tags_drop').on('beforeItemRemove', function (event) {
         if (event.options) {
             return
         }
         const suggestion = event.item;
         $('#id_tags_select').tagsinput('add', suggestion, );
+        let idVal = suggestion.id;
+        setFormValue('#id_sust_tags', idVal, false);
     });
+    $('#id_tags_drop').on('beforeItemAdd', function (event) {
+        const suggestion = event.item;
+        let idVal = suggestion.id;
+        setFormValue('#id_sust_tags', idVal, true);
+    });
+
 
     load_tags();
 
@@ -105,11 +114,14 @@ let tagsFTa = new getTypeaheadOpt('tagsF', tagsFSource, limit_sugg);
 
 
 let allTypeaheadDic = {
-    'sust_tags': tagsFTa,
+    //'sust_tags': tagsFTa,
+
     'company': compTa,
     'reference': refTa,
     'country': countriesTa,
+
     'tags_select': tagsTa,
+    'tags_drop': tagsFTa,
 
     'owner': compTa,
     'subsidiary': compTa,
@@ -126,8 +138,9 @@ const maxTagsDic = {
 };
 
 function load_tags() {
-    //let url = $("#id_sust_tags").attr("data-url"); // get
-    $('#id_sust_tags').tagsinput('removeAll' );
+    $('#id_tags_drop').tagsinput('removeAll');
+    $('#id_sust_tags').val('');
+
     let url = load_tags_f;
     var domainId = $("#id_sust_domain").val(); // get the selected Domain ID
     var categoryId = $("#id_sust_tendency").val(); // get the selected tendency ID

@@ -23,6 +23,7 @@ class ImpactEventForm(forms.ModelForm):
     widgets customized.
     """
     tags_select = NotReqCharF()
+    tags_drop = NotReqCharF()
 
     def __init__(self, *args, **kwargs):
         super(ImpactEventForm, self).__init__(*args, **kwargs)
@@ -32,7 +33,7 @@ class ImpactEventForm(forms.ModelForm):
         # crispy form layout:
         self.helper = FormHelper()
         self.helper.form_id = 'id_impevform'
-        self.helper.form_action = reverse('etikicapture:newimpactevent',)
+        #self.helper.form_action = reverse('etikicapture:newimpactevent',)
         self.helper.layout = Layout(
             ImpactEventBtns(),
 
@@ -40,7 +41,7 @@ class ImpactEventForm(forms.ModelForm):
                           taginput=False,
                           addmodel=False,
                           icon_name='fas fa-sync',
-                          labelname='paste URL'),
+                          placeholder='paste URL'),
 
 
             #first hidden
@@ -79,9 +80,10 @@ class ImpactEventForm(forms.ModelForm):
                                        addmodel=False,),
                             Div(HTML('<h3><i class="fas fa-arrow-down"></i></h3>'), css_class='mx-auto'),
 
-                TagsButton('sust_tags', 'col-12 div_tags_drop',
-                           labelname='Search Tags',
-                           taginput='c_tags_search_inp c_tags_drop'),
+                TagsButton('tags_drop', 'col-12 div_tags_drop',
+                           placeholder='Search Tags',
+                           taginput='c_tags_search_inp c_tags_drop',
+                           field_hidden='sust_tags'),
                             ],
                 labelname='Select Sustainability Topics'
             ),
@@ -122,6 +124,7 @@ class ImpactEventForm(forms.ModelForm):
             'reference': forms.TextInput(),
             'sust_tags': forms.TextInput(),
             'tags_select': forms.TextInput(),
+            'tags_drop': forms.TextInput(),
 
             'sust_domain': forms.TextInput(),
             'sust_tendency': forms.TextInput(),
@@ -141,7 +144,8 @@ class ImpactEventForm(forms.ModelForm):
             'reference': ('Where was it published?'),
             'country':  'Where did it happen',
             'sust_domain': 'Which Category?',
-            'sust_tendency': 'Which Tendency?'
+            'sust_tendency': 'Which Tendency?',
+            'sust_tags': '',
         }
         help_texts = {
             'date_published': (''),

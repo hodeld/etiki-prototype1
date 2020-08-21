@@ -10,6 +10,7 @@ $(document).ready(function () {
         function () {
             const get_url = $(this).attr("add-url"); // model_name in url
             const fieldId = $(this).attr("field-id");
+            const fieldName = $(this).attr("field-name");
             //var wname = url.substring(0, 5);
             $.ajax({
                 url: get_url, // set the url of the request (= '')
@@ -17,8 +18,9 @@ $(document).ready(function () {
                     //var msg = response.message;
                     const parID = '#id_foreign_body';
                     $(parID).html(response);
+                    $('#modalTitle').html(fieldName);
                     initTagInput(parID);
-                    $('#fModelSubmit').click(function(){
+                    $('.fModelSubmit').click(function(){
                         $('#id_submit_fm').click(); // so html5 validation works
                     });
                     $('#id_field_id').val(fieldId);
@@ -47,15 +49,10 @@ const fMoOpts = {
                 $('#'+fieldId).tagsinput('add', response.tag);
                 $('#div_addforeign').modal('hide');
             } else {
-                const parID = '#id_foreign_body';
-                $(parID).html(response.form_html);
-                initTagInput(parID);
+                errorHandling ('#id_foreign_body', response, '#id_fmodel_msg');
             }
         }
     };
-function saveFModel(){
-    $('.foreignModel').submit() ;
-}
 
 
 function closeModal(win, newID, newRepr, id) {
