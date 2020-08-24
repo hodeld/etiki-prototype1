@@ -262,7 +262,6 @@ def load_sust_tags(request):  # ,
 
     data = json.dumps(list(sust_tags))
     return HttpResponse(data, content_type='application/json')
-    #return render(request, 'etikicapture/select_sust_tags.html', {'tags': sust_tags})
 
 
 def error_handling(form, d_dict):
