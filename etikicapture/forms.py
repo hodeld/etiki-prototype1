@@ -201,13 +201,17 @@ class CompanyForm(forms.ModelForm):
             Field('comment', rows=3),
 
             RowTagsButton('owner', 'col-12',
-                          placeholder=_PH_COMPANY),
+                          placeholder=_PH_COMPANY,
+                          addmodel=False,),
             RowTagsButton('subsidiary', 'col-12',
-                          placeholder=_PH_COMPANY),
+                          placeholder=_PH_COMPANY,
+                          addmodel=False,),
             RowTagsButton('supplier', 'col-12',
-                          placeholder=_PH_COMPANY),
+                          placeholder=_PH_COMPANY,
+                          addmodel=False,),
             RowTagsButton('recipient', 'col-12',
-                          placeholder=_PH_COMPANY),
+                          placeholder=_PH_COMPANY,
+                          addmodel=False,),
 
             Submit('submit-name', '', css_id='id_submit_fm', css_class='d-none'),
 
@@ -275,6 +279,7 @@ class ReferenceForm(forms.ModelForm):
             Field('mediaform'),
 
             RowTagsButton('company', 'col-12',
+                          addmodel=False,
                           placeholder=_PH_COMPANY),
 
             RowTagsButton('country', 'col-12',

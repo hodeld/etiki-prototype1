@@ -3,14 +3,14 @@ $(document).ready(function () {
 });
 
 //initialize BLOODHOUND
-function getBloodhoundOpt(field_url) {
+function getBloodhoundOpt(field_url, caching=true) {
     optDict = {
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         //identify: function(obj) { return obj.id; }, //to get suggestion by ID -> not used and breaks typahead!
         prefetch: {
             url: field_url, // url set in html
-            cache: true, // true	 // defaults to true -> for testing
+            cache: caching, // false if new added items should be shown
         },
     };
     return optDict

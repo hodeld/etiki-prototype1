@@ -91,27 +91,19 @@ function keyBehaviorSearch(event, ele) {
 }
 
 const limit_sugg = 5;
-var bldhndOptCompAll = new getBloodhoundOpt(companies_all_url);
-var companies_all = new Bloodhound(bldhndOptCompAll);
-
+let bldhndOptCompAll = new getBloodhoundOpt(companies_all_url, false);
+let companies_all = new Bloodhound(bldhndOptCompAll);
 let compTa = new getTypeaheadOpt('company_all', companies_all, limit_sugg);
 
-let refTa = new getTypeaheadOpt('reference', references, limit_sugg);
+let referencesOpts = new getBloodhoundOpt(references_url, false);
+let references_fresh = new Bloodhound(referencesOpts);
+let refTa = new getTypeaheadOpt('reference_f', references_fresh, limit_sugg);
 
 let countriesTa = new getTypeaheadOpt('country', countries, limit_sugg);
 
 let tagsTa = new getTypeaheadOpt('tags', tags, limit_sugg);
 
-var tagsFData = [{id: 15, name: "Animal Testing"}, {id: 16, name: "Factory Farming"}];
-
-let tagsFOpts = {
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        //identify: function(obj) { return obj.id; }, //to get suggestion by ID -> not used and breaks typahead!
-        local: tagsFData,
-    };
-
-let tagsFSource = new Bloodhound(tagsFOpts);
+let tagsFSource = localBH();
 let tagsFTa = new getTypeaheadOpt('tagsF', tagsFSource, limit_sugg);
 
 
@@ -184,19 +176,47 @@ function initTagInput(parentID=''){
     $(parentID + ' ' + '.c_tags_search_inp').each(function () {
         let ele_name = $(this).attr('name');
         let optDic = allTypeaheadDic[ele_name];
+        let typeAJS = [];
+        if (Array.isArray(optDic)){
+            typeAJS = [
+                {
+                    highlight: true,
+                    autoselect: true,
+                },
+                    ...optDic,
+            ];
+        }
+        else {
+            typeAJS = [
+                {
+                    highlight: true,
+                    autoselect: true,
+                },
+                optDic,
+            ]
+        }
         const maxTags = maxTagsDic[ele_name]  || undefined;
         $(this).tagsinput({
             itemValue: 'id',
             itemText: 'name',
             itemCategory: 'category',
             maxTags: maxTags,
-            typeaheadjs: [
-                {
-                    highlight: true,
-                    autoselect: true,
-                },
-                optDic,
-            ],
+            typeaheadjs: typeAJS,
         });
     });
+}
+
+function localBH(lSource){
+
+    let tagsFOpts = {
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            //identify: function(obj) { return obj.id; }, //to get suggestion by ID -> not used and breaks typahead!
+            local: [],
+        };
+
+    let bHSource = new Bloodhound(tagsFOpts);
+    return bHSource
+
+
 }

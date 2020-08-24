@@ -17,7 +17,16 @@ const fMoOpts = {
                 const fieldId = $('#id_field_id').val();
                 $('#'+fieldId).tagsinput('removeAll');
                 $('#'+fieldId).tagsinput('add', response.tag);
+                // add new items to typeahead
+                if (fieldId.includes("company")) {
+                    companies_all.initialize(true);
+                }
+                else {
+                    references_fresh.initialize(true);
+                }
+
                 $('#div_addforeign').modal('hide');
+                companies_all.initialize(true);
             } else {
                 errorHandling ('#id_foreign_body', response, '#id_fmodel_msg');
             }
@@ -25,27 +34,6 @@ const fMoOpts = {
     };
 
 
-function closeModal(win, newID, newRepr, id) {
-    //closes modal if form is valid
-
-    var elem = document.getElementById(id);
-    var idj = "#" + id
-    if (elem) {
-        var elemName = elem.nodeName.toUpperCase();
-        if (elemName === 'SELECT') {
-            $(idj).append(
-                '<option value=' + newID + ' selected >' + newRepr
-                + '</option>');
-
-        } else {
-            $(idj).val(newRepr);
-
-        }
-    }
-
-    win.close();
-
-}
 
 function fModelClick (){
     $(".add_foreignmodel").click( //to each element with this class
