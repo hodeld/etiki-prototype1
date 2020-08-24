@@ -4,6 +4,10 @@
 
 // jquery
 $(document).ready(function () {
+    $("#id_source_url").blur(function(event){
+        const ele = $(this);
+        blurGetURL(event, ele);
+    });
 
     // form ajax options
     var formoptions = {
@@ -67,22 +71,30 @@ function new_ie() {
     $("#id_titleshow").html('');
     $("#id_url_link").html('');
     $("#id_url_link").attr("href", '');
-    load_tags()
+    load_tags();
     window.history.pushState("", "", new_ie_url);
 }
 
+function blurGetURL(event, ele) {
+    if (ele.val() !== '' && ele.val() !== sourceUrl) {
+        extract_text();
+        event.preventDefault();
+    }
 
-function extract_text(ele) {
-    var source_url = $("#id_source_url").val();
-    var get_url = $(ele).attr("url-get"); // get
+}
+
+let sourceUrl = '';
+
+function extract_text() {
+    sourceUrl = $("#id_source_url").val();
 
     $("#id_impev_msg").html('reads text from website …');
     window.scrollTo(0, 0);
     $.ajax({ // initialize an AJAX request
-        url: get_url, // set the url of the request (= '')
+        url: extractTextUrl, // set the url of the request (= '')
         data: {
             // both can be null
-            'sourceurl': source_url
+            'sourceurl': sourceUrl
         },
         success: function (response) { // `data` is the return of the
             var msg = response.message;
@@ -90,20 +102,19 @@ function extract_text(ele) {
                 var text_str = response.stext;
                 var stitle = response.stitle;
                 var sdate = response.sdate;
-                var shtml = response.shtml;
+                const shtml = response.shtml;
+                const html_article = response.html_article;
 
                 $("#id_date_text").val(sdate);
                 $("#id_article_text").html(text_str);
                 $("#id_article_title").val(stitle);
                 $("#id_article_html").val(shtml);
-                $("#id_articleshow").html(shtml);
 
-                hide_img_vid()
-
-
-                $("#id_url_link").html(source_url);
-                $("#id_url_link").attr("href", source_url);
-                $("#id_titleshow").html(stitle);
+                //$("#id_url_link").html(sourceUrl);
+                //$("#id_url_link").attr("href", sourceUrl);
+                //$("#id_titleshow").html(stitle);
+                //$("#id_articleshow").html(shtml);
+                fullArticle(html_article);
 
             }
             var parse_res = response.parse_res;
@@ -185,5 +196,11 @@ function errorHandling (parDivId, response, msgId=''){
         $ele.after(html_str);
         //$ele.addClass('has-danger');
         //$ele.addClass('is-invalid') //django class
-    };
+    }
+}
+
+function fullArticle(html_str){
+    $('#fullArticleContent').html(html_str);
+    hide_img_vid();
+    $('#modalFullArticle').modal('toggle');
 }

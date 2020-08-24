@@ -104,12 +104,11 @@ class TagsButton(Layout):
             ''' % (h_css_class, add_url, field_id, 'ADD ' + field_name.upper(), icon_str)
         else:
             if icon_name:
-                onclick = 'extract_text(this);'
-                url_get = reverse_lazy('etikicapture:extract_text_url')
+                onclick = 'extract_text();'
+                #url_get = reverse_lazy('etikicapture:extract_text_url')
                 h_css_class = 'input-group-text'
                 icon_str = '''<i class="%s" ></i>''' % icon_name
-                html_str = '<span class="%s" url-get="%s" onclick="%s">%s</span' % (h_css_class, url_get,
-                                                                                    onclick, icon_str)
+                html_str = '<span class="%s" onclick="%s">%s</span' % (h_css_class, onclick, icon_str)
             else:
                 html_str = ''
         if field_hidden:

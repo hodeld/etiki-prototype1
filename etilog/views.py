@@ -37,11 +37,6 @@ def overview_impevs(request, reqtype=None):
     filterhidden = OverviewFHiddenForm()
     filtform = OverviewFForm()
 
-    companies_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'company'})
-    countries_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'country'})
-    references_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'reference'})
-    tags_url = reverse_lazy('etilog:load_jsondata', kwargs={'modelname': 'tags'})
-
     return render(request, 'etilog/overview.html', {
         'filter': filterhidden,
         'filterform': filtform,

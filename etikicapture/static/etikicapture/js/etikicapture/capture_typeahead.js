@@ -43,53 +43,6 @@ $(document).ready(function () {
 
 });
 
-
-//for topics??
-function setTagBtn(ele, freeInput=true) {
-    if (freeInput){
-        if (setFirstSelection(ele) === false) {
-            changeWOSelection(ele);
-        }
-    }
-    else {
-        setFirstSelection(ele)
-    }
-
-}
-
-function setFirstSelection(ele) {
-    const firstsel = ele.parent().find('.tt-selectable:first');
-    if (firstsel.length > 0) {
-        firstsel[0].click();
-    } else {
-        return false;
-    }
-}
-
-//if changed without suggestion
-function changeWOSelection(ele) {
-    const val_str = ele.typeahead('val');
-    if (val_str){ // can be undefined
-        let suggestion = {
-            'id': val_str,
-            'name': val_str,
-            'category': 'summary'
-        };
-        setTags(suggestion);
-        ele.typeahead('val', ''); //typeahead input
-    }
-    ele.focus();
-}
-
-
-function keyBehaviorSearch(event, ele) {
-    if (event.keyCode === 13) { //enter
-        if (ele.val()!== '') {
-            changeWOSelection(ele);
-        }
-    }
-}
-
 const limit_sugg = 5;
 let bldhndOptCompAll = new getBloodhoundOpt(companies_all_url, false);
 let companies_all = new Bloodhound(bldhndOptCompAll);

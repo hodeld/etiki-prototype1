@@ -30,6 +30,7 @@
 {% block content %} {# script needs to be next to function and form (non in script block) #}
     {% include 'nav_search_bar_hidden.html' %}
     {% include 'etikicapture/impev_upd_modal.html' %}
+    {% include 'etilog/impev_details/impev_show_article_modal.html' %}
     <div class="container">
         </br>
         <div class="row justify-content-center">
@@ -40,24 +41,6 @@
                 <hr class="mt-0 mb-4">
                 <div id="id_div_impevform">
                     {% include 'etikicapture/impev_upd_form.html' %}
-                </div>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-10">
-                </br>
-                <h6>extracted HTML of article </h6>
-                <hr class="mt-0 mb-4">
-                <p>
-                    original link: <a id="id_url_link"
-                                      href="{{ form.initial.source_url }}">{{ form.initial.source_url }}</a>
-                </p>
-                <div id="id_articleshowdiv" class="col-12 bg-dark text-white">
-                    <h3 id="id_titleshow">{{ form.initial.article_title }}</h3>
-                    <hr class="whitehr">
-                    <div id="id_articleshow">
-                        {{ form.initial.article_html |safe }}
-                    </div>
                 </div>
             </div>
         </div>
@@ -78,6 +61,7 @@
         const next_id_url = "{{next_id_url}}";
         const new_ie_url = "{% url 'etikicapture:newimpactevent' %}";
         const load_tags_f = "{% url 'etikicapture:get_sust_tags' %}";
+        const extractTextUrl = "{% url 'etikicapture:extract_text_url' %}";
     </script>
 
     <script src="{% static 'etikicapture/js/etikicapture/impev_upd.js' %}"></script>

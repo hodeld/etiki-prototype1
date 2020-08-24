@@ -42,11 +42,22 @@ def extract_text_from_url(request):
     if save_article == True:
         msg = 'extracted'
         text_str, stitle, sdate, html_simple = article
+        impev_d = {'pk':0,
+                   'source_url': url,
+                   'article_title': stitle,
+                   'article_html': html_simple
+                   }
+        html_article = render_to_string('etilog/impev_details/impev_show_article.html', {'rec': impev_d,
+                                                                                         })
+
         d_dict['is_valid'] = 'true'
         d_dict['stext'] = text_str
         d_dict['stitle'] = stitle
         d_dict['sdate'] = sdate
         d_dict['shtml'] = html_simple
+
+        #for preview
+        d_dict['html_article'] = html_article
 
     else:
         msg = 'not extracted'
