@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 
 from etikicapture.ViewLogic.ViewAccessURL import parse_url, parse_url_all, extract_text_rpy
-from etikicapture.forms import ImpactEventForm, CompanyForm, ReferenceForm
+from etikicapture.forms import ImpactEventForm, CompanyForm, ReferenceForm, TopicTagsForm
 #models
 from etilog.models import ImpactEvent, Company, Reference, SustainabilityTag
 
@@ -127,16 +127,13 @@ def impact_event_change(request, ietype='new', ie_id=None):
     return render(request, 'etikicapture/impev_upd_base.html', {'form': form,  # for form.media
                                                           'message': message,
                                                           'next_id_url': next_id_url,
-                                                          'shtml': shtml
-                                                                                                              })
+                                                          'shtml': shtml })
 
 
 def get_ie_form_data(request):
     data_dict = request.POST.dict()
 
-    if request.POST.get('sust_tags'):
-        sust_tags_list = json.loads(request.POST.get('sust_tags'))
-        data_dict['sust_tags'] = sust_tags_list
+    upd_datadict_many(['sust_tags',], data_dict, request)
     return data_dict
 
 
@@ -170,11 +167,13 @@ def add_foreignmodel(request, main_model, foreign_model):
         data_dict = request.POST.dict()
         if foreign_model == 'reference':
             form = ReferenceForm(data_dict)
-        else:
-            form = CompanyForm(data_dict)
+        elif foreign_model == 'company':
             fieldlist = ['owner', 'subsidiary', 'supplier', 'recipient']
             upd_datadict_company(fieldlist, data_dict, request)
-
+            form = CompanyForm(data_dict)
+        else:  #tags
+            upd_datadict_many(['sust_domains', ], data_dict, request)
+            form = TopicTagsForm(data_dict)
 
         if form.is_valid():
             instance = form.save()  # (commit false) only needed if changes are done afterwards
@@ -200,41 +199,37 @@ def add_foreignmodel(request, main_model, foreign_model):
     else:
         if foreign_model == 'reference':
             form = ReferenceForm()
-
-        else:
+        elif foreign_model == 'company':
             form = CompanyForm()
+        else:
+            form = TopicTagsForm()
 
-    modelname = foreign_model[0].upper() + foreign_model[1:]
     ctx = {}
     ctx.update(csrf(request))
 
     form_html = render_crispy_form(form, context=ctx)
-
 
     d_dict = form_html
     jsondata = json.dumps(d_dict)
     return HttpResponse(jsondata, content_type='application/json')
 
 
-
-
 def upd_datadict_company(fieldlist, data_dict, request):
+    """tagsinput to list"""
     for nam in fieldlist:
-        id_li = request.POST.getlist('nam')
-        data_dict[nam] = id_li
+        if request.POST.get(nam):
+            id_str_li = request.POST.get(nam)
+            id_li = id_str_li.split(',')
+            #id_li = request.POST.getlist(nam)
+            data_dict[nam] = id_li
 
 
-def upd_datadict_reference(data_dict):
-    nam = 'reference'
-    if data_dict.get(nam):
-        try:
-            obj = Reference.objects.get(name=data_dict.get(nam))
-            obj_id = obj.id
-        except Reference.DoesNotExist:
-            obj_id = data_dict.get(nam)  # send back wrong name
-        data_dict[nam] = obj_id
+def upd_datadict_many(fieldlist, data_dict, request):
+    for nam in fieldlist:
+        if request.POST.get(nam):
+            id_list = json.loads(request.POST.get(nam))
+            data_dict[nam] = id_list
 
-    return data_dict
 
 
 # used in New IE Form

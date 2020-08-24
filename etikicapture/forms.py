@@ -8,7 +8,7 @@ from etilog.forms.fields_filter import (DateYearPickerField, DateYearPicker)
 from etikicapture.fields import  ImpactEventBtns, RowTagsButton, LabelInputRow, TagsButton, \
     ColDomainSelect, ColTendencySelect
 from etilog.forms.forms_filter import NotReqCharF
-from etilog.models import ImpactEvent, Company, SubsidiaryOwner, SupplierRecipient, Reference
+from etilog.models import ImpactEvent, Company, SubsidiaryOwner, SupplierRecipient, Reference, SustainabilityTag
 
 CSS_COL_CLS = 'col-12 col-lg-6'
 
@@ -181,13 +181,14 @@ class CompanyForm(forms.ModelForm):
     form to create a company
     '''
 
-    owner = forms.ModelMultipleChoiceField(queryset=Company.objects.none(),
+    #queryset needs to all so it gets correctly validated
+    owner = forms.ModelMultipleChoiceField(queryset=Company.objects.all(),
                                            required=False)  # for validation
-    subsidiary = forms.ModelMultipleChoiceField(queryset=Company.objects.none(),
+    subsidiary = forms.ModelMultipleChoiceField(queryset=Company.objects.all(),
                                                 required=False)
-    supplier = forms.ModelMultipleChoiceField(queryset=Company.objects.none(),
+    supplier = forms.ModelMultipleChoiceField(queryset=Company.objects.all(),
                                               required=False)
-    recipient = forms.ModelMultipleChoiceField(queryset=Company.objects.none(),
+    recipient = forms.ModelMultipleChoiceField(queryset=Company.objects.all(),
                                                required=False)
 
     def __init__(self, *args, **kwargs):
@@ -322,5 +323,55 @@ class ReferenceForm(forms.ModelForm):
             'country': forms.TextInput(),
 
             'comment': forms.Textarea(),
+
+        }
+
+
+class TopicTagsForm(forms.ModelForm):
+    '''
+    form to create a topic tag
+    '''
+
+    def __init__(self, *args, **kwargs):
+        super(TopicTagsForm, self).__init__(*args, **kwargs)
+
+        self.fields['sust_domains'].required = True
+        self.fields['sust_tendency'].required = True
+
+        self.helper = FormHelper(self)
+        self.helper.form_class = _FOREIGN_MODEL_CLS
+        self.helper.form_action = reverse_lazy('etikicapture:add_foreignmodel',
+                                               kwargs={'main_model': 'impev',
+                                                       'foreign_model': 'tags'})
+        self.helper.layout = Layout(
+
+            RowTagsButton('name', 'col-12',
+                          taginput=False,
+                          addmodel=False,
+                          placeholder='e.g. Reporting, Child Labor', ),
+
+            LabelInputRow(ColDomainSelect('sust_domains', id_prefix='fmodel_', field_css_class='many-values')),
+
+            LabelInputRow(ColTendencySelect('sust_tendency', id_prefix='fmodel_')),
+
+
+            Field('comment', rows=3),
+            Field('description', rows=3),
+            Submit('submit-name', '', css_id='id_submit_fm', css_class='d-none'),
+
+
+        )
+
+    class Meta:  # only for model fields
+        model = SustainabilityTag
+        exclude = ['impnr', ]
+
+        widgets = {
+
+            'sust_domains': forms.TextInput(),
+            'sust_tendency': forms.TextInput(),
+
+            'comment': forms.Textarea(),
+            'description': forms.Textarea(),
 
         }

@@ -144,10 +144,12 @@ class RowTagsButton(LabelInputRow):
 
 
 class ColBtnSwitch(Layout):
-    def __init__(self, btn_list, col_class,
-                 field_name,
-                 wrap_class,
-                 *args, **kwargs):
+    def __init__(self, field_name,
+                 btn_list,
+                 col_class=None,
+                 wrap_class=None,
+                 id_prefix='',
+                 field_css_class=''):
         if col_class is None:
             col_class = 'col-12'
         if wrap_class is None:
@@ -155,8 +157,11 @@ class ColBtnSwitch(Layout):
 
         btn_ele_li = []
         sw_cls = 'custom-control-input swselect'
-        parent_id = 'id_parent_' + field_name
-        for (cont, name, val, css_clss, css_id, targfield) in btn_list:
+        parent_id = id_prefix + 'id_parent_' + field_name
+        field_id = id_prefix + 'id_' + field_name
+        targfield = field_id
+        for (cont, name, val, css_clss, css_id) in btn_list:
+            css_id = id_prefix + css_id#
 
             sw_div_cls = 'custom-control custom-switch my-auto'
             div_css_clss = ' '.join([sw_div_cls, css_clss])
@@ -176,8 +181,11 @@ class ColBtnSwitch(Layout):
             btn_ele_li.append(div_frame)
         # due to key error -> no string (which is not field name) as 1st argument
 
+
+
         col = Column(
-            Field(field_name, css_class="input-behind", parent_id=parent_id), # for client side validation
+            Field(field_name, css_class=' '.join(['input-behind', field_css_class]),
+                  parent_id=parent_id, id=field_id),  # for client side validation
             Div(*btn_ele_li,
                          css_class=wrap_class),
                      css_class=col_class, css_id=parent_id)
@@ -187,8 +195,6 @@ class ColBtnSwitch(Layout):
 
 class ColDomainSelect(ColBtnSwitch):
     def __init__(self, field_name,
-                 col_class=None,
-                 btn_wrap_class=None,
                  ele_class='',
                  *args, **kwargs):  # distribute buttons
         q = SustainabilityDomain.objects.all()
@@ -200,24 +206,18 @@ class ColDomainSelect(ColBtnSwitch):
             cont = icon_str % icon_name + dom.name
             ele = (cont, dom.id, dom.name,
                    ' '.join([ele_class, sw_cls]),
-                   'id_sust_domain_sw' + str(dom.id),
-                   'id_sust_domain',
+                   field_name + '_sw' + str(dom.id),
+                   #'id_sust_domain',
                    )
             ele_list.append(ele)
 
-        ColBtnSwitch.__init__(self, ele_list,
-                              col_class,
-                              field_name,
-                              btn_wrap_class,
+        ColBtnSwitch.__init__(self, field_name, ele_list,
                               *args, **kwargs)
 
 
 class ColTendencySelect(ColBtnSwitch):
     def __init__(self, field_name,
-                 col_class=None,
-                 btn_wrap_class=None,
                  ele_class='',
-                 twin_ele=False,
                  *args, **kwargs):  # distribute buttons
         q = SustainabilityTendency.objects.all()
         btn_list = []
@@ -235,14 +235,11 @@ class ColTendencySelect(ColBtnSwitch):
             cont = tend.name
             name = tend.id
             val = tend.name
-            css_id = 'id_sust_tendency_sw' + str(tend.id)
-            targfield = 'id_sust_tendency'
+            css_id = field_name + str(tend.id)
+            #targfield = 'id_sust_tendency'
 
-            btn_list.append((cont, name, val, css_class, css_id, targfield))
+            btn_list.append((cont, name, val, css_class, css_id))
 
-        ColBtnSwitch.__init__(self, btn_list,
-                              col_class,
-                              field_name,
-                              btn_wrap_class,
-                              twin_ele,
+        ColBtnSwitch.__init__(self, field_name,
+                              btn_list,
                               *args, **kwargs)

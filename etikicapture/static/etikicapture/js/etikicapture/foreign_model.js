@@ -57,8 +57,13 @@ function fModelClick (){
                     $('.foreignModel').ajaxForm(fMoOpts);
 
 
+                    //add event on switch elements
+                    $('.swselect').click(function () {
+                        setValSwitch($(this))
+                    });
+
                     $('#div_addforeign').modal('show');
-                    fModelClick();
+                    //fModelClick();
                 },
                 error: function () {
                     $("#id_impev_msg").html('there was an error');
