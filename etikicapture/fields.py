@@ -37,7 +37,7 @@ class Readonly(Layout):
 class LabelInputRow(Layout):
     def __init__(self, rowcontent,
                  labelname=None,
-                 row_class='',
+                 row_class='mt-4',
                  *args, **kwargs):  # distribute buttons
 
         if not isinstance(rowcontent, list):

@@ -4,9 +4,9 @@
 
 // jquery
 $(document).ready(function () {
-    $("#id_source_url").blur(function(event){
+    $("#id_source_url").keydown(function(event){
         const ele = $(this);
-        blurGetURL(event, ele);
+        changeGetURL(event, ele);
     });
 
     // form ajax options
@@ -75,12 +75,14 @@ function new_ie() {
     window.history.pushState("", "", new_ie_url);
 }
 
-function blurGetURL(event, ele) {
-    if (ele.val() !== '' && ele.val() !== sourceUrl) {
-        extract_text();
+function changeGetURL(event, ele) {
+    let code = event.keyCode || event.which;
+    if (code == 9 || code == 13) {
         event.preventDefault();
+        if (ele.val() !== '' && ele.val() !== sourceUrl) {
+            extract_text();
+        }
     }
-
 }
 
 let sourceUrl = '';
@@ -89,7 +91,9 @@ function extract_text() {
     sourceUrl = $("#id_source_url").val();
 
     $("#id_impev_msg").html('reads text from website …');
+    $('#div_main_fields').fadeIn( "slow" );
     window.scrollTo(0, 0);
+
     $.ajax({ // initialize an AJAX request
         url: extractTextUrl, // set the url of the request (= '')
         data: {
@@ -110,10 +114,6 @@ function extract_text() {
                 $("#id_article_title").val(stitle);
                 $("#id_article_html").val(shtml);
 
-                //$("#id_url_link").html(sourceUrl);
-                //$("#id_url_link").attr("href", sourceUrl);
-                //$("#id_titleshow").html(stitle);
-                //$("#id_articleshow").html(shtml);
                 fullArticle(html_article);
 
             }
