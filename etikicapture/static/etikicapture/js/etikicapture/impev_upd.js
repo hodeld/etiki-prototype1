@@ -4,27 +4,28 @@
 
 // jquery
 $(document).ready(function () {
+    $("#id_source_url").keydown(function(event){
+        const ele = $(this);
+        changeGetURL(event, ele);
+    });
 
     // form ajax options
     var formoptions = {
         success: function (response) {
             var msg = response.message;
             if (response.is_valid == "false") {
-                //$("#id_impev_msg").html(JSON.stringify(msg));
-                $("#id_impev_msg").html(msg);
-                var error_items = response.err_items;
-                error_items.forEach(function (item, index) {
-                    var el_id = '#id_' + item;
-                    $(el_id).addClass('is-invalid') //django class
-                });
+                errorHandling('#id_impevform', response, '#id_impev_msg');
 
                 //$("#id_impevform").html(response.form); // to show errors
             } else {
                 $("#id_impev_msg").html(msg);
-                $('.is-invalid').removeClass('is-invalid') //django class
+                errorHandling('#id_impevform', response, '#id_impev_msg'); //to remove spans
                 window.history.pushState("", "", response.upd_url);
                 window.scrollTo(0, 0);
             }
+        },
+        error: function (response) {
+            $("#id_impev_msg").html('uups');
         }
 
     };
@@ -70,22 +71,34 @@ function new_ie() {
     $("#id_titleshow").html('');
     $("#id_url_link").html('');
     $("#id_url_link").attr("href", '');
-    load_tags()
+    load_tags();
     window.history.pushState("", "", new_ie_url);
 }
 
+function changeGetURL(event, ele) {
+    let code = event.keyCode || event.which;
+    if (code == 9 || code == 13) {
+        event.preventDefault();
+        if (ele.val() !== '' && ele.val() !== sourceUrl) {
+            extract_text();
+        }
+    }
+}
 
-function extract_text(ele) {
-    var source_url = $("#id_c_source_url").val();
-    var get_url = $(ele).attr("url-get"); // get
+let sourceUrl = '';
+
+function extract_text() {
+    sourceUrl = $("#id_source_url").val();
 
     $("#id_impev_msg").html('reads text from website …');
+    $('#div_main_fields').fadeIn( "slow" );
     window.scrollTo(0, 0);
+
     $.ajax({ // initialize an AJAX request
-        url: get_url, // set the url of the request (= '')
+        url: extractTextUrl, // set the url of the request (= '')
         data: {
             // both can be null
-            'sourceurl': source_url
+            'sourceurl': sourceUrl
         },
         success: function (response) { // `data` is the return of the
             var msg = response.message;
@@ -93,20 +106,15 @@ function extract_text(ele) {
                 var text_str = response.stext;
                 var stitle = response.stitle;
                 var sdate = response.sdate;
-                var shtml = response.shtml;
+                const shtml = response.shtml;
+                const html_article = response.html_article;
 
                 $("#id_date_text").val(sdate);
                 $("#id_article_text").html(text_str);
                 $("#id_article_title").val(stitle);
                 $("#id_article_html").val(shtml);
-                $("#id_articleshow").html(shtml);
 
-                hide_img_vid()
-
-
-                $("#id_url_link").html(source_url);
-                $("#id_url_link").attr("href", source_url);
-                $("#id_titleshow").html(stitle);
+                fullArticle(html_article);
 
             }
             var parse_res = response.parse_res;
@@ -169,4 +177,30 @@ function setFormValue(inputId, idVal, addValue){
     ele.val(newVal)
         .trigger('change'); //needed for hidden input fields
 
+}
+
+function errorHandling (parDivId, response, msgId=''){
+    $(msgId).html(response.error_msg);
+    $(parDivId).find('.invalid-feedback').remove();
+    const error_items = response.err_items;
+    const html_base_str = '<span class="invalid-feedback"><strong>%%error</strong></span>';
+    for  (let key in error_items) {
+        let err = error_items[key];
+        let html_str = html_base_str.replace("%%error", err);
+        let el_id = '#id_' + key;
+        let $ele = $(el_id)
+        let parId = $ele.attr('parent-id');
+        if (typeof parId !== typeof undefined && parId !== false) {
+            $ele = $('#' + parId)
+        }
+        $ele.after(html_str);
+        //$ele.addClass('has-danger');
+        //$ele.addClass('is-invalid') //django class
+    }
+}
+
+function fullArticle(html_str){
+    $('#fullArticleContent').html(html_str);
+    hide_img_vid();
+    $('#modalFullArticle').modal('toggle');
 }

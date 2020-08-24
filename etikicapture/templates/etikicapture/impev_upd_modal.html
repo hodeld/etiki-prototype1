@@ -1,0 +1,49 @@
+{% load static %}
+
+<!-- Modal -->
+<div class="modal fade" id="div_addforeign" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <div class="col-12 text-center d-flex justify-content-between" id="divAddForeignHead">
+                    <h4 class="my-auto" id="modalTitle">
+                        ADD</h4>
+                    <button class="btn btn-sm btn-link" type="button" data-dismiss="modal" id="addForeignClose">
+                        <i class="far fa-window-close mr-1"></i>
+                    </button>
+                </div>
+                <div class="col-12 text-center d-flex justify-content-between" >
+                    <h6 id="id_fmodel_msg"></h6>
+
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-8">
+                            <input id="id_field_id" class="d-none">
+
+                            <div id="id_foreign_body">
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <h5 class="" id="addfmessage"></h5>
+
+                <button class="btn btn-sm btn-link fModelSubmit" type="button" id="id_fModelSubmit">
+                    <i class="fas fa-check mr-1"></i>
+                    <span class="d-none d-sm-inline">Save</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,12 +1,15 @@
 import json
 
+from crispy_forms.utils import render_crispy_form
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+from django.template.context_processors import csrf
+from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 
 from etikicapture.ViewLogic.ViewAccessURL import parse_url, parse_url_all, extract_text_rpy
-from etikicapture.forms import ImpactEventForm, CompanyForm, ReferenceForm
+from etikicapture.forms import ImpactEventForm, CompanyForm, ReferenceForm, TopicTagsForm
 #models
 from etilog.models import ImpactEvent, Company, Reference, SustainabilityTag
 
@@ -39,11 +42,22 @@ def extract_text_from_url(request):
     if save_article == True:
         msg = 'extracted'
         text_str, stitle, sdate, html_simple = article
+        impev_d = {'pk':0,
+                   'source_url': url,
+                   'article_title': stitle,
+                   'article_html': html_simple
+                   }
+        html_article = render_to_string('etilog/impev_details/impev_show_article.html', {'rec': impev_d,
+                                                                                         })
+
         d_dict['is_valid'] = 'true'
         d_dict['stext'] = text_str
         d_dict['stitle'] = stitle
         d_dict['sdate'] = sdate
         d_dict['shtml'] = html_simple
+
+        #for preview
+        d_dict['html_article'] = html_article
 
     else:
         msg = 'not extracted'
@@ -92,12 +106,7 @@ def impact_event_change(request, ietype='new', ie_id=None):
 
 
         else:
-            message = form.errors.__html__()  # html
-            err_items = list(form.errors.keys())
-
-            to_json['is_valid'] = 'false'
-            to_json['err_items'] = err_items
-            to_json['message'] = message
+            error_handling(form, to_json)
         return HttpResponse(json.dumps(to_json), content_type='application/json')
 
     else:
@@ -118,19 +127,13 @@ def impact_event_change(request, ietype='new', ie_id=None):
     return render(request, 'etikicapture/impev_upd_base.html', {'form': form,  # for form.media
                                                           'message': message,
                                                           'next_id_url': next_id_url,
-                                                          'shtml': shtml
-                                                                                                              })
+                                                          'shtml': shtml })
 
 
 def get_ie_form_data(request):
     data_dict = request.POST.dict()
-    company_names = ['company']
-    data_dict = upd_datadict_company(company_names, data_dict)
 
-    data_dict = upd_datadict_reference(data_dict)
-
-    sust_tags_list = request.POST.getlist('sust_tags')
-    data_dict['sust_tags'] = sust_tags_list
+    upd_datadict_many(['sust_tags',], data_dict, request)
     return data_dict
 
 
@@ -163,72 +166,70 @@ def add_foreignmodel(request, main_model, foreign_model):
     if request.POST:
         data_dict = request.POST.dict()
         if foreign_model == 'reference':
-            pass
-            # reference = Reference.objects.get(name = data_dict['name'])
-            # data_dict [foreign_model] = reference.id
-
-        else:  # company, owner, subsidiary, supplier, recipient
-            comany_names = ['owner', 'subsidiary', 'supplier', 'recipient']
-            data_dict = upd_datadict_company(comany_names, data_dict, m2m=True)
-
-        id_field = 'id_' + foreign_model
-        if foreign_model == 'reference':
             form = ReferenceForm(data_dict)
-        else:
+        elif foreign_model == 'company':
+            fieldlist = ['owner', 'subsidiary', 'supplier', 'recipient']
+            upd_datadict_company(fieldlist, data_dict, request)
             form = CompanyForm(data_dict)
+        else:  #tags
+            upd_datadict_many(['sust_domains', ], data_dict, request)
+            form = TopicTagsForm(data_dict)
 
         if form.is_valid():
             instance = form.save()  # (commit false) only needed if changes are done afterwards
 
             # handles the result of the foreign model in the original one
-            return HttpResponse(
-                '<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+            d_dict = {
+                'tag': {'id': instance.pk,
+                        'name': str(instance),
+                        'category': foreign_model},
+                'is_valid': 'true',
+
+            }
+            jsondata = json.dumps(d_dict)
+            return HttpResponse(jsondata, content_type='application/json')
 
         else:
-            if foreign_model == 'reference':
-                form = ReferenceForm(request.POST)
-            else:
-                form = CompanyForm(request.POST)
+            d_dict = {
+            }
+            error_handling(form, d_dict)
+            jsondata = json.dumps(d_dict)
+            return HttpResponse(jsondata, content_type='application/json')
 
     else:
         if foreign_model == 'reference':
             form = ReferenceForm()
-
-        else:
+        elif foreign_model == 'company':
             form = CompanyForm()
+        else:
+            form = TopicTagsForm()
 
-    modelname = foreign_model[0].upper() + foreign_model[1:]
+    ctx = {}
+    ctx.update(csrf(request))
 
-    return render(request, 'etikicapture/addforeign_form.html', {'form': form,
-                                                           'modelname': modelname})
+    form_html = render_crispy_form(form, context=ctx)
+
+    d_dict = form_html
+    jsondata = json.dumps(d_dict)
+    return HttpResponse(jsondata, content_type='application/json')
 
 
-def upd_datadict_company(fieldlist, data_dict, m2m=False):
+def upd_datadict_company(fieldlist, data_dict, request):
+    """tagsinput to list"""
     for nam in fieldlist:
-        if data_dict.get(nam):
-            try:
-                obj = Company.objects.get(name=data_dict.get(nam))
-                if m2m:
-                    comp_id = [obj.id]  # needs to be a list
-                else:
-                    comp_id = obj.id
-            except Company.DoesNotExist:
-                comp_id = data_dict.get(nam)  # send back wrong name
-            data_dict[nam] = comp_id
-    return data_dict
+        if request.POST.get(nam):
+            id_str_li = request.POST.get(nam)
+            id_li = id_str_li.split(',')
+            #id_li = request.POST.getlist(nam)
+            data_dict[nam] = id_li
 
 
-def upd_datadict_reference(data_dict):
-    nam = 'reference'
-    if data_dict.get(nam):
-        try:
-            obj = Reference.objects.get(name=data_dict.get(nam))
-            obj_id = obj.id
-        except Reference.DoesNotExist:
-            obj_id = data_dict.get(nam)  # send back wrong name
-        data_dict[nam] = obj_id
+def upd_datadict_many(fieldlist, data_dict, request):
+    for nam in fieldlist:
+        if request.POST.get(nam):
+            id_list = json.loads(request.POST.get(nam))
+            data_dict[nam] = id_list
 
-    return data_dict
 
 
 # used in New IE Form
@@ -256,4 +257,14 @@ def load_sust_tags(request):  # ,
 
     data = json.dumps(list(sust_tags))
     return HttpResponse(data, content_type='application/json')
-    #return render(request, 'etikicapture/select_sust_tags.html', {'tags': sust_tags})
+
+
+def error_handling(form, d_dict):
+    message = form.errors.__html__()  # html
+    err_items = dict(form.errors.items())
+    #err_items = list(form.errors.keys())
+    #err_values = list(form.errors.values())
+    d_dict['is_valid'] = 'false'
+    d_dict['err_items'] = err_items
+    #d_dict['err_values'] = err_values
+    d_dict['error_msg'] = message

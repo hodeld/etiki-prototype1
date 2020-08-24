@@ -1,16 +1,23 @@
-/* Position text in the top-left corner */
 
-.siteheader.landing {
-    display: inherit;
-    position: absolute;
+@media (min-width: 350px) {
+    /* Position text in the top-left corner */
+    .siteheader.landing {
+        display: inherit;
+        position: absolute;
+    }
+
+    .landing-content {
+        height: 100%;
+    }
+
+    /* Position text in the bottom-left corner */
+    .sitefooter.landing {
+        position: absolute;
+        bottom: 0;
+        top: inherit; /*as in sitefooter: top: 100% */
+    }
 }
 
-/* Position text in the bottom-left corner */
-.sitefooter.landing {
-    position: absolute;
-    bottom: 0;
-    top: inherit; /*as in sitefooter: top: 100% */
-}
 
 #divTopics.landing {
     display: inherit;
@@ -48,4 +55,3 @@
 .navbar-toggler.landing {
     display: none !important;
 }
-

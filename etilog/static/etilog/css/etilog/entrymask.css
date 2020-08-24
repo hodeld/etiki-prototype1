@@ -1,15 +1,28 @@
 /* Position text in the top-left corner */
 
 .siteheaderlogo {
-    position: absolute;
+    position: relative;
 }
 
-/* Position text in the bottom-left corner */
-.sitefooter.entrymask {
-    position: absolute;
-    bottom: 0;
-    top: inherit; /*as in sitefooter: top: 100% */
+
+@media (min-width: 350px) {
+    .siteheaderlogo {
+        position: absolute;
+    }
+
+    .entrymask-content {
+        height: 100%;
+    }
+
+    /* Position text in the bottom-left corner */
+    .sitefooter.entrymask {
+        position: absolute;
+        bottom: 0;
+        top: inherit; /*as in sitefooter: top: 100% */
+    }
+
 }
+
 
 /* Style the <hr> element */
 .start_hr {

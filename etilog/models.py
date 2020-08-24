@@ -54,6 +54,8 @@ class ActivityCategory(models.Model):
 
 
 class Company(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)  # tz aware datetime
+
     name = models.CharField(unique=True, max_length=50)
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
     activity = models.ForeignKey(ActivityCategory, on_delete=models.PROTECT)

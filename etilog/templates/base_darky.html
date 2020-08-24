@@ -25,18 +25,15 @@
         {% include 'etilog/landing/landingpage.html' %}
     {% else %}
 
-        <div class="row d-flex align-content-center justify-content-center">
-
-            <div class="fullsite-wrapper container">
-                {% include 'siteheader.html' %}
-
+        <div class="fullsite-wrapper container">
+            {% include 'siteheader.html' %}
+            <div class="row d-flex align-content-center justify-content-center">
                 {% block content %} {% endblock content %}
 
-            
-                <div class="sitefooter py-3">
-                    {% include 'footer.html' %}
-                </div>
 
+            </div>
+            <div class="sitefooter py-3">
+                {% include 'footer.html' %}
             </div>
         </div>
 {% endif %}

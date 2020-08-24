@@ -31,8 +31,7 @@
     line-height: inherit; /* mdh; was not defined */
 }
 
-.bootstrap-tagsinput .badge [data-role="remove"],
-.bootstrap-tagsinput .badge [data-role="select"]{
+.bootstrap-tagsinput .badge [data-role="remove"] {
     margin-left: 8px;
     cursor: pointer;
 }
@@ -46,19 +45,16 @@
     font-size: 13px
 }
 
-.bootstrap-tagsinput .badge [data-role="remove"]:hover:after,
-.bootstrap-tagsinput .badge [data-role="select"]:hover:after{
+.bootstrap-tagsinput .badge [data-role="remove"]:hover:after{
 
     background-color: rgba(0, 0, 0, 0.62);
 }
 
-.bootstrap-tagsinput .badge [data-role="remove"]:hover:active,
-.bootstrap-tagsinput .badge [data-role="select"]:hover:active
+.bootstrap-tagsinput .badge [data-role="remove"]:hover:active
 {
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 
-.bootstrap-tagsinput .badge [data-role="select"]:after,
 .div_tags_select .bootstrap-tagsinput .badge [data-role="remove"]:after{
     content: "+";
     padding: 0px 4px;
@@ -67,8 +63,15 @@
     font-size: 13px
 }
 
+.div_tags_select .bootstrap-tagsinput .badge{
+    cursor: pointer;
+}
 
 .bootstrap-tagsinput span.twitter-typeahead {
     /*width: 100%;  modified by damian DH */
-    width: 35%;
+    /*width: 35%;*/
+}
+
+.bootstrap-tagsinput-max span.twitter-typeahead {
+    display: none!important;
 }

@@ -102,9 +102,15 @@
     width: 1%;
 }
 
+/* not hidden but "visible" so it can validate and focus for client side validation*/
 .div_c_taginput .input-group input.c_tags_search_inp,
-.div_tags_select .input-group input {
-    display: none;
+.div_tags_select .input-group input,
+.input-behind{
+    position: absolute!important;
+    z-index: -1;
+    opacity: 0;
+    margin-left: 50px;
+
 }
 .input-group span.twitter-typeahead {
     /*display: block !important; */
@@ -118,7 +124,7 @@
     outline: none;
     background-color: transparent;
     margin: 2px;
-    width: auto;
+    width: inherit; /* was auto */
     max-width: inherit;
 }
 
