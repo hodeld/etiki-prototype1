@@ -25,7 +25,7 @@ def full_domain_validator(hostname):
     for label in hostname.split("."):
         if len(label) > 63:
             raise ValidationError(
-                _("The label '%(label)s' is too long (maximum is 63 characters).") % {'label': label})
+                "The label '%(label)s' is too long (maximum is 63 characters)." % {'label': label})
         if not HOSTNAME_LABEL_PATTERN.match(label):
             raise ValidationError(("Unallowed characters in label '%(label)s'.") % {'label': label})
 

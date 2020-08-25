@@ -91,10 +91,10 @@ def impact_event_change(request, ietype='new', ie_id=None):
         if ietype == 'update':
             message = 'Impact Event updated'
             ie = ImpactEvent.objects.get(id=ie_id)
-            form = ImpactEventForm(data_dict, instance=ie, request=request)  # if ie = None
+            form = ImpactEventForm(data=data_dict, instance=ie, request=request)  # if ie = None
         else:  # new / new from copy
-            message = 'Impact Event saved'
-            form = ImpactEventForm(data_dict, request=request)
+            message = 'Impact Event saved – thank you!'
+            form = ImpactEventForm(data=data_dict, request=request)
 
         to_json = {}
         if form.is_valid():
