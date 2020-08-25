@@ -31,10 +31,10 @@ def extract_text_all(request):
     return HttpResponseRedirect(reverse('etilog:home'))
 
 
-@permission_required('etilog.impactevent')
 def extract_text_from_url(request):
     url = request.GET.get('sourceurl')
     d_dict = {}
+    parse_res = 0
     if url is not '':
         save_article, parse_res, article = extract_text_rpy(url)
     else:
@@ -66,7 +66,7 @@ def extract_text_from_url(request):
     return HttpResponse(json.dumps(d_dict), content_type='application/json')
 
 
-@permission_required('etilog.impactevent')
+# at permission_required('etilog.impactevent')
 def impact_event_create(request, ie_id=None):
     if ie_id:
         ietype = 'copy'
@@ -85,15 +85,16 @@ def impact_event_update(request, ietype='new', ie_id=None):
 
 def impact_event_change(request, ietype='new', ie_id=None):
     shtml = ''
+    data_dict = get_ie_form_data(request)
     if request.method == 'POST':
-        data_dict = get_ie_form_data(request)
+        #data_dict = get_ie_form_data(request)
         if ietype == 'update':
             message = 'Impact Event updated'
             ie = ImpactEvent.objects.get(id=ie_id)
-            form = ImpactEventForm(data_dict, instance=ie)  # if ie = None
+            form = ImpactEventForm(data_dict, instance=ie, request=request)  # if ie = None
         else:  # new / new from copy
             message = 'Impact Event saved'
-            form = ImpactEventForm(data_dict)
+            form = ImpactEventForm(data_dict, request=request)
 
         to_json = {}
         if form.is_valid():
@@ -122,7 +123,7 @@ def impact_event_change(request, ietype='new', ie_id=None):
 
             first_id = ImpactEvent.objects.order_by('id').values_list('id', flat=True).first()
             next_id_url = reverse_lazy('etikicapture:impactevent_update', kwargs={'ie_id': first_id})
-        form = ImpactEventForm(initial=init_data)
+        form = ImpactEventForm(initial=init_data, request=request)
         shtml = init_data.get('article_html', '')
     return render(request, 'etikicapture/impev_upd_base.html', {'form': form,  # for form.media
                                                           'message': message,
@@ -134,6 +135,11 @@ def get_ie_form_data(request):
     data_dict = request.POST.dict()
 
     upd_datadict_many(['sust_tags',], data_dict, request)
+    if request.user:
+        user_id = request.user.id
+    else:
+        user_id = None
+    data_dict['user'] = user_id
     return data_dict
 
 
@@ -262,9 +268,6 @@ def load_sust_tags(request):  # ,
 def error_handling(form, d_dict):
     message = form.errors.__html__()  # html
     err_items = dict(form.errors.items())
-    #err_items = list(form.errors.keys())
-    #err_values = list(form.errors.values())
     d_dict['is_valid'] = 'false'
     d_dict['err_items'] = err_items
-    #d_dict['err_values'] = err_values
     d_dict['error_msg'] = message

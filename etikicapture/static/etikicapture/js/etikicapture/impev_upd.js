@@ -91,7 +91,6 @@ function extract_text() {
     sourceUrl = $("#id_source_url").val();
 
     $("#id_impev_msg").html('reads text from website …');
-    $('#div_main_fields').fadeIn( "slow" );
     window.scrollTo(0, 0);
 
     $.ajax({ // initialize an AJAX request
@@ -120,10 +119,12 @@ function extract_text() {
             var parse_res = response.parse_res;
             $("#id_result_parse_html").val(parse_res);
             $("#id_impev_msg").html(msg);
+            $('#div_main_fields').fadeIn("slow");
 
         },
         error: function () {
-             $("#id_impev_msg").html('there was an error');
+            $("#id_impev_msg").html('There was an error reading the article. You can save the impact event anyways.');
+            $('#div_main_fields').fadeIn("slow");
         }
 
     });
