@@ -11,13 +11,12 @@ from prediki.predictText.main import analyze_text, sentiment_predict, multi_pred
 
 def predict_text(request, text):
     def get_path(n):
-        if settings.DEBUG:
-            base_dir = os.path.dirname(settings.BASE_DIR)
-            model_def = os.path.join(base_dir, 'prediki/static/prediki/model_data/')
-            p = os.path.join(model_def, n)
-        else:
-            p = staticfiles_storage.path('prediki/model_data/' + n)
+        base_dir = os.path.dirname(settings.BASE_DIR)
+        model_def = os.path.join(base_dir, 'prediki/static/prediki/model_data/')
+        p = os.path.join(model_def, n)
+        # p_loc = staticfiles_storage.path('prediki/model_data/' + n)
         return p
+    
     #text = request.POST.get('text')
     p_senti = get_path('sentiment')
     tend_id = sentiment_predict(text, p_senti)
