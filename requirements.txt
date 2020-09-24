@@ -24,11 +24,7 @@ python-binary-memcached==0.29.0
 pytz==2019.1
 regex==2019.8.19
 requests==2.22.0
-simpletransformers==0.20.3
 six==1.12.0
 sqlparse==0.3.0
-torch==1.2.0
-torchvision==0.4.0
-transformers==2.5.1
 
 
