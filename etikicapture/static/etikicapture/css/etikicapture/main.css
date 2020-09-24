@@ -1,3 +1,5 @@
 #id_impev_msg {
-    background-color: var(--etikigreen);
+    background-color: var(--etikilight);
+    padding: .2em;
+    color: black
 }

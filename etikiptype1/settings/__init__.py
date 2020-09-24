@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'etikicapture.apps.EtikicaptureConfig',
     'etikihead.apps.EtikiheadConfig',
     'impexport.apps.ImpexportConfig',
+    'prediki.apps.PredikiConfig',
 
 ]
 

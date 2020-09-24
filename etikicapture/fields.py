@@ -1,7 +1,7 @@
-from crispy_forms.bootstrap import FieldWithButtons
+from crispy_forms.bootstrap import FieldWithButtons, StrictButton
 from crispy_forms.layout import Layout, ButtonHolder, Submit, Button, HTML, Column, Field, Row, Div
 from django import forms
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from etilog.forms.fields_filter import dom_icon_dict
 from etilog.models import  SustainabilityDomain, SustainabilityTendency
@@ -15,13 +15,38 @@ class CharF(forms.CharField):
 
 
 class ImpactEventBtns(Layout):
-    def __init__(self):
-        super(ImpactEventBtns, self).__init__(
-            ButtonHolder(
+    def __init__(self, request):
+        submit_str = 'Save and Approve Impact Event'
+        if request.user.is_authenticated:
+            eles = [Submit('submit-name', submit_str, css_class='btn btn-info'), ]
+        else:
+            login_url = reverse('login')
+            login_str = '''
+                            <a  href="%s" title="Login">
+                            registred in</a>
+
+                            ''' % login_url
+            info_str = 'To release this Impact Event a %s user needs to approve it.' % login_str
+            text_str = '<h6 class="text-muted">%s</h6>' % info_str
+            eles = [
+                Submit('submit-name', 'Save Impact Event', css_class='btn btn-info'),
+
+                Div(
+
+                    HTML(text_str),
+                    StrictButton(submit_str, css_class='btn btn-info disabled', ),
+                    css_class='my-5'
+
+                )]
+
+
+        allbtns = ButtonHolder(
                 Submit('submit-name', 'Save Impact Event', css_class='btn btn-secondary'),
                 Button('new', 'New', css_class='btn btn-secondary', onclick="new_ie();"),
                 Button('next', 'Next', css_class='btn btn-light', onclick="next_ie();")
             )
+        super(ImpactEventBtns, self).__init__(*eles
+
         )
 
 
@@ -74,6 +99,7 @@ class TagsButton(Layout):
                  addmodel=True,
                  icon_name=None,
                  field_hidden=None,
+                 autofocus=False,
                  *args, **kwargs):
         if field_id == None:
             field_id = 'id_' + field_name
@@ -116,6 +142,11 @@ class TagsButton(Layout):
         else:
             f2 = None
 
+        if autofocus:
+            autofocus_d = {'autofocus': '',}
+        else:
+            autofocus_d = {'': ''}
+
         rowcontent = Column(f2,
 
             FieldWithButtons(
@@ -126,6 +157,7 @@ class TagsButton(Layout):
 
                   css_class=' '.join([cls_taginp, field_class]),
                   placeholder=placeholder,
+                      **autofocus_d
                   ),
 
                 HTML(html_str),

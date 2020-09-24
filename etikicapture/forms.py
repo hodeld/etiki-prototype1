@@ -26,10 +26,14 @@ class ImpactEventForm(forms.ModelForm):
     tags_select = NotReqCharF()
     tags_drop = NotReqCharF()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request, *args, **kwargs):
+
+
         super(ImpactEventForm, self).__init__(*args, **kwargs)
 
         self.fields['source_url'].required = True
+
+
 
         # crispy form layout:
         self.helper = FormHelper()
@@ -40,8 +44,9 @@ class ImpactEventForm(forms.ModelForm):
             RowTagsButton('source_url', 'col-12',
                           taginput=False,
                           addmodel=False,
-                          icon_name='fas fa-sync',
-                          placeholder='paste URL'),
+                          icon_name='fa fa-glasses',
+                          placeholder='paste URL',
+                          autofocus=True),
 
             #first hidden
             Div(
@@ -62,7 +67,8 @@ class ImpactEventForm(forms.ModelForm):
                     css_id='div_article_fields'
                 ),
 
-                Submit('submit-name', 'Save Impact Event', css_class='btn btn-info'),
+                ImpactEventBtns(request),
+
 
                 style='display: none;',  # for fadeIn
                 css_id='div_main_fields'
@@ -80,7 +86,8 @@ class ImpactEventForm(forms.ModelForm):
                   'summary',
                   # from here only for etikis
                   'comment',
-                  'article_text', 'article_title', 'date_text', 'article_html', 'result_parse_html'
+                  'article_text', 'article_title', 'date_text', 'article_html', 'result_parse_html',
+                  'user'
                   ]
 
         widgets = {
@@ -106,8 +113,8 @@ class ImpactEventForm(forms.ModelForm):
 
         # if added labels here -> correct required or not
         labels = {
-            'date_published': (''),
-            'date_impact': (''),
+            'date_published': ('When was it published'),
+            'date_impact': ('When did it happen'),
             'company': ('Which company was concerned'),
             'reference': ('Where was it published?'),
             'country':  'Where did it happen',
@@ -117,37 +124,20 @@ class ImpactEventForm(forms.ModelForm):
         }
         help_texts = {
             'date_published': (''),
-            'date_impact': (''),
-            'summary': (''),
+            'date_impact': ('optional'),
+            'summary': ('optional'),
+            'country': 'optional',
+            'comment': 'optional',
         }
 
 
 class ImpEvMainFields(Layout):
     def __init__(self):
         layout_list = [
-            LabelInputRow(
-                Column(
-                    DateYearPickerField('date_published', 'when was it published', css_class='',
-                                        data_category='date_from'
-                                        ),
-                    DateYearPickerField('date_impact', 'when did it happen', css_class='',
-                                        data_category='date_to'
-                                        ),
-                    css_class='col-12 d-flex flex-wrap flex-wrap justify-content-around'  # wraps if needed
-                ), labelname='Date'
 
-            ),
-
-            RowTagsButton('country', 'col-12',
-                          placeholder=_PH_COUNTRY,
-                          addmodel=False,
-                          ),
 
             RowTagsButton('company', 'col-12',
                           placeholder=_PH_COMPANY),
-
-            RowTagsButton('reference', 'col-12',
-                          placeholder=_PH_REFERENCE),
 
             LabelInputRow(ColDomainSelect('sust_domain')),
 
@@ -165,12 +155,40 @@ class ImpEvMainFields(Layout):
                             ],
                 labelname='Select Sustainability Topics'
             ),
+            RowTagsButton('reference', 'col-12',
+                          placeholder=_PH_REFERENCE),
+
+
+
+
+            LabelInputRow(
+                Column(
+                    DateYearPickerField('date_published', 'e.g. 18.12.1999', css_class='',
+                                        data_category='date_from'
+                                        ),
+                    css_class='col-12 d-flex flex-wrap justify-content-start'  # wraps if needed
+                ),
+
+            ),
+            LabelInputRow(
+                Column(
+                    DateYearPickerField('date_impact', 'e.g. 17.08.2003', css_class='',
+                                        data_category='date_to'
+                                        ),
+                    css_class='col-12 d-flex flex-wrap justify-content-start'  # wraps if needed
+                )
+
+            ),
+
+            RowTagsButton('country', 'col-12',
+                          placeholder=_PH_COUNTRY,
+                          addmodel=False,
+                          ),
 
             Field('summary', rows=3, placeholder='Short summary of content'),
 
         ]
         super(ImpEvMainFields, self).__init__(*layout_list)
-
 
 
 _FOREIGN_MODEL_CLS = 'foreignModel'

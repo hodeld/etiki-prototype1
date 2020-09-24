@@ -25,7 +25,7 @@ class DateYearPicker(DatePickerInput):
 
             options={'viewMode': 'years',
                      'useCurrent': False,  # needed to take initial dat
-                     'extraFormats': ['DD.MM.YY', 'DD.MM.YYYY'],  # javascript format
+                     'extraFormats': ['DD.MM.YY', 'DD.MM.YYYY', 'YYYY'],  # javascript format
                      },
         )
 

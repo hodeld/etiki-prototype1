@@ -20,7 +20,12 @@ $(document).ready(function () {
             } else {
                 $("#id_impev_msg").html(msg);
                 errorHandling('#id_impevform', response, '#id_impev_msg'); //to remove spans
-                window.history.pushState("", "", response.upd_url);
+                if (userIsIntern){
+                    window.history.pushState("", "", response.upd_url);
+                }
+                else {
+                    clearImpForm();
+                }
                 window.scrollTo(0, 0);
             }
         },
@@ -57,6 +62,7 @@ $(document).ready(function () {
     hide_img_vid();
 
 });
+userIsIntern = false; // todo
 
 function next_ie() {
     window.location.href = next_id_url; //as user clicked on a link
@@ -91,7 +97,6 @@ function extract_text() {
     sourceUrl = $("#id_source_url").val();
 
     $("#id_impev_msg").html('reads text from website …');
-    $('#div_main_fields').fadeIn( "slow" );
     window.scrollTo(0, 0);
 
     $.ajax({ // initialize an AJAX request
@@ -120,10 +125,12 @@ function extract_text() {
             var parse_res = response.parse_res;
             $("#id_result_parse_html").val(parse_res);
             $("#id_impev_msg").html(msg);
+            $('#div_main_fields').fadeIn("slow");
 
         },
         error: function () {
-             $("#id_impev_msg").html('there was an error');
+            $("#id_impev_msg").html('There was an error reading the article. You can save the impact event anyways.');
+            $('#div_main_fields').fadeIn("slow");
         }
 
     });
@@ -203,4 +210,20 @@ function fullArticle(html_str){
     $('#fullArticleContent').html(html_str);
     hide_img_vid();
     $('#modalFullArticle').modal('toggle');
+}
+
+function clearImpForm(){
+    $('#div_main_fields').fadeOut();
+    $('#id_impevform').find("input[type=text], textarea, input[type=url]").val("");
+    $('.c_tags_search_inp').each(function () {
+        $(this).tagsinput('removeAll');
+    });
+    $('.c_tags_select').each(function () {
+        $(this).tagsinput('removeAll');
+    });
+    //does not get removed with removeAll
+    $('.bootstrap-tagsinput-max').removeClass('bootstrap-tagsinput-max');
+    $('.swselect').prop('checked', false);
+    load_tags();
+
 }

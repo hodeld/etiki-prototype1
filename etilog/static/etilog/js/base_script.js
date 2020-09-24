@@ -43,7 +43,6 @@ function set_firstjan(e, element) { // e = event
         $(element).data("DateTimePicker").clear();
         $(element).data("DateTimePicker").date(date_str);
         $(element).data("DateTimePicker").defaultDate(date_str);
-        $(element).data("DateTimePicker").hide()
     }
 }
 

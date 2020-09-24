@@ -1,13 +1,8 @@
 /*DATEINPUT*/
-.datepicker{
+.datepicker .input-group.date{
         border-bottom: 1px solid #fff;
-}
-.datepicker .date {
     width: 15em;
-
-    /*margin-right: 2em !important; */
 }
-
 
 .datepicker .dateyearpicker {
     height: 20%;
