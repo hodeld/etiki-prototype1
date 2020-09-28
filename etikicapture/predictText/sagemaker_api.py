@@ -68,7 +68,6 @@ def multi_predict_text(text_m, model_path, threshold = 0.3):
 
 
 def sentiment_predict(text):
-
     endpoint_name = 'pytorch-inference-2020-09-24-13-42-26-455'
     content_type = 'application/json'  # The MIME type of the input data in the request body.
     accept = 'application/json'  # The desired MIME type of the inference in the response.
@@ -101,14 +100,17 @@ def sentiment_predict(text):
         resp_data = resp_body.data.decode('utf-8')
 
     print(resp_data)
+    resp_d = json.loads(resp_data)
 
-    return resp_data
+    return resp_d
 
 
 def analyze_text(text):
-    cat_id = multi_predict_text(text)
-    tend_id = sentiment_predict(text)
-    return cat_id, tend_id
+    #cat_id = multi_predict_text(text)
+
+    resp_data = sentiment_predict(text)
+    predict_d = resp_data
+    return predict_d
 
 
 if __name__ == '__main__':
