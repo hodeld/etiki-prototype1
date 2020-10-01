@@ -120,6 +120,8 @@ function extract_text() {
                 $("#id_article_html").val(shtml);
 
                 fullArticle(html_article);
+                predictImpEv(response);
+
 
             }
             var parse_res = response.parse_res;

@@ -11,6 +11,7 @@ from django.urls import reverse, reverse_lazy
 from etikicapture.ViewLogic.ViewAccessURL import parse_url, parse_url_all, extract_text_rpy
 from etikicapture.forms import ImpactEventForm, CompanyForm, ReferenceForm, TopicTagsForm
 #models
+from etikicapture.predictText.predicloud_api import  analyze_text
 from etilog.models import ImpactEvent, Company, Reference, SustainabilityTag
 
 
@@ -58,6 +59,14 @@ def extract_text_from_url(request):
 
         #for preview
         d_dict['html_article'] = html_article
+
+        try:
+            p_dict = analyze_text(text_str)
+            d_dict.update(p_dict)
+            d_dict['prediction'] = 'success'
+            msg = 'extracted and analyzed. %s | %s.' % (p_dict['category_name'], p_dict['tendency_name'])
+        except:
+            pass
 
     else:
         msg = 'not extracted'
