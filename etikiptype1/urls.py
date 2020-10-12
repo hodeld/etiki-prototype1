@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from etilog.admin import admin_site
 from django.urls import path, include
-from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -26,8 +25,8 @@ urlpatterns = [
     path('', include('etikihead.urls', namespace='etikihead')),
 
     path('', include('impexport.urls', namespace='impexport')),
+    path('', include('usermgmt.urls', namespace='usermgmt')),
 
-    path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
 
     
 ]

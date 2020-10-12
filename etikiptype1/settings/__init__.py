@@ -14,6 +14,7 @@ import os
 import sys
 
 import django_heroku
+from django.urls import reverse_lazy
 
 from etikiptype1.settings.secrets import *
 
@@ -53,7 +54,7 @@ INSTALLED_APPS = [
     'etikicapture.apps.EtikicaptureConfig',
     'etikihead.apps.EtikiheadConfig',
     'impexport.apps.ImpexportConfig',
-    'prediki.apps.PredikiConfig',
+    'usermgmt.apps.UsermgmtConfig',
 
 ]
 
@@ -118,6 +119,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGIN_URL = reverse_lazy('usermgmt:login')
+
 LOGIN_REDIRECT_URL = 'etilog:home'
 
 
