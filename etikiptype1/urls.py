@@ -27,7 +27,7 @@ urlpatterns = [
 
     path('', include('impexport.urls', namespace='impexport')),
 
-path('', include('prediki.urls', namespace='prediki')),
     path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
+
     
 ]
