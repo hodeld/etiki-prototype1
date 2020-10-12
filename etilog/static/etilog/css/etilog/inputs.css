@@ -29,7 +29,7 @@
     cursor: pointer; /* hand pointer */
 }
 
-/*etiki-form: contact, Login */
+/*etiki-form: contact, Login, Profile */
 .div_search_typeahead input,
 .div_c_taginput .input-group,
 .etiki-form .form-control
@@ -41,8 +41,8 @@
     border-top: 0;
     border-left: 0;
     border-right: 0;
+    padding:.375rem .75rem; /* as in forms -> to test, was padding: .375rem 0; */
 
-    padding: .375rem 0;
 }
 
 .div_c_taginput.div_tags_select .input-group,
@@ -56,7 +56,7 @@
 .div_c_taginput .input-group:focus-within,
 .etiki-form .form-control:focus
 {
-    padding: .375rem 0;
+    padding:.375rem .75rem; /* as in forms -> to test, was padding: .375rem 0; */
 
     border-bottom: 1px solid #fff;
     border-radius: 0;

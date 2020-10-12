@@ -50,12 +50,6 @@ def entry_mask(request):
     return render(request, 'etikihead/entrymask/main.html', )
 
 
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('login'))
-    # Redirect to a success page.
-
-
 def legal(request):
     return render(request, 'etikihead/legal.html', )
 

@@ -188,26 +188,6 @@ function setFormValue(inputId, idVal, addValue){
 
 }
 
-function errorHandling (parDivId, response, msgId=''){
-    $(msgId).html(response.error_msg);
-    $(parDivId).find('.invalid-feedback').remove();
-    const error_items = response.err_items;
-    const html_base_str = '<span class="invalid-feedback"><strong>%%error</strong></span>';
-    for  (let key in error_items) {
-        let err = error_items[key];
-        let html_str = html_base_str.replace("%%error", err);
-        let el_id = '#id_' + key;
-        let $ele = $(el_id)
-        let parId = $ele.attr('parent-id');
-        if (typeof parId !== typeof undefined && parId !== false) {
-            $ele = $('#' + parId)
-        }
-        $ele.after(html_str);
-        //$ele.addClass('has-danger');
-        //$ele.addClass('is-invalid') //django class
-    }
-}
-
 function fullArticle(html_str){
     $('#fullArticleContent').html(html_str);
     hide_img_vid();
