@@ -1,0 +1,9 @@
+.message {
+    background-color: var(--etikilight);
+    padding: .2em;
+    color: black
+}
+
+.message.error {
+    background-color: var(--negative);
+}

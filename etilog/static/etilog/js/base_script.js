@@ -69,9 +69,27 @@ function hide_img_vid(idStr='id_articleshow') {
     });
 }
 
+function messageHandling (msgId, response = null, msg='', msgcls = null){  //mainly error
+    if (response) {
+        msg = response.message;
+        if (response.message_tag) {
+            msgcls = response.message_tag;
+        }
+    }
+    if (msgcls) {
+        $(msgId).addClass(msgcls);
+    } else {
+        $(msgId).removeClass('error');
+    }
+    $(msgId).html(msg);
+}
 
-function errorHandling (parDivId, response, msgId=''){
-    $(msgId).html(response.error_msg);
+
+function formErrorHandling (parDivId, response, msgId=null){  //mainly error
+    if (msgId){
+        formErrorHandling (msgId, response);
+    }
+
     $(parDivId).find('.invalid-feedback').remove();
     const error_items = response.err_items;
     const html_base_str = '<span class="invalid-feedback"><strong>%%error</strong></span>';
