@@ -1,0 +1,28 @@
+{% extends 'base_darky.html' %}
+{% load static %}
+{% block cls_userprofile %} active {% endblock cls_userprofile %}
+
+
+{% block content %} {# script needs to be next to function and form (non in script block) #}
+{% include 'nav_search_bar_hidden.html' %}
+<div class="container">
+	<div class="row justify-content-center mt-5">
+		<div class="col-12 col-md-8">
+        {% block userform %}
+            {% endblock userform %}
+
+
+		</div>
+	</div>
+</div>
+{% endblock content %}
+
+{% block bottomscript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"
+            integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i"
+            crossorigin="anonymous"></script>
+    <script src="{% static 'usermgmt/js/usermgmt/userprofile.js' %}"></script>
+
+{% endblock bottomscript %}
+
+

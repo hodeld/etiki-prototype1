@@ -68,3 +68,53 @@ function hide_img_vid(idStr='id_articleshow') {
         });
     });
 }
+
+function messageHandling (msgId, response = null, msg='', msgcls = null){  //mainly error
+    if (response) {
+        msg = response.message;
+        if (response.message_tag) {
+            msgcls = response.message_tag;
+        }
+    }
+    if (msgcls) {
+        $(msgId).addClass(msgcls);
+    } else {
+        $(msgId).removeClass('error');
+    }
+    $(msgId).html(msg);
+}
+
+
+function formErrorHandling (parDivId, response, msgId=null){  //mainly error
+    if (response.responseJSON){ // if ajax error -> data object in response.responseJSON
+        response = response.responseJSON;
+    }
+    if (msgId){
+        messageHandling(msgId, response);
+    }
+    const divErrorId = '#id_div_errors';
+    if ($(divErrorId)) {
+        if (response.message_error) {
+            $(divErrorId).html(response.message_error);
+        } else {
+            $(divErrorId).html('');
+        }
+    }
+
+    $(parDivId).find('.invalid-feedback').remove();
+    const error_items = response.err_items;
+    const html_base_str = '<span class="invalid-feedback"><strong>%%error</strong></span>';
+    for  (let key in error_items) {
+        let err = error_items[key];
+        let html_str = html_base_str.replace("%%error", err);
+        let el_id = '#id_' + key;
+        let $ele = $(el_id)
+        let parId = $ele.attr('parent-id');
+        if (typeof parId !== typeof undefined && parId !== false) {
+            $ele = $('#' + parId)
+        }
+        $ele.after(html_str);
+        //$ele.addClass('has-danger');
+        //$ele.addClass('is-invalid') //django class
+    }
+}

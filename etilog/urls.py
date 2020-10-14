@@ -11,7 +11,7 @@ app_name = 'etilog'
 load_data = 'load_data/'
 
 
-prototype = 'prototype/'
+prototype = 'view/'  # already in etikprtype1_urls
 
 urlpatterns = [
 

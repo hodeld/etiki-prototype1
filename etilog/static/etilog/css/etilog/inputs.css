@@ -29,11 +29,12 @@
     cursor: pointer; /* hand pointer */
 }
 
-/*etiki-form: contact, Login */
+/*etiki-form: contact, Login, Profile */
 .div_search_typeahead input,
 .div_c_taginput .input-group,
 .etiki-form .form-control
 {
+
     box-shadow: none;
     border-bottom: 1px solid #fff;
     border-radius: 0;
@@ -41,8 +42,16 @@
     border-top: 0;
     border-left: 0;
     border-right: 0;
+}
 
-    padding: .375rem 0;
+.div_search_typeahead input,
+.div_c_taginput .input-group input,
+.etiki-form .form-control,
+.div_search_typeahead input:focus,
+.div_c_taginput .input-group input:focus,
+.etiki-form .form-control:focus
+{
+    padding: .375rem .75rem;
 }
 
 .div_c_taginput.div_tags_select .input-group,
@@ -52,12 +61,9 @@
 }
 
 .div_search_typeahead input:focus,
-/*.taginput-row .bootstrap-tagsinput.focus, */
 .div_c_taginput .input-group:focus-within,
 .etiki-form .form-control:focus
 {
-    padding: .375rem 0;
-
     border-bottom: 1px solid #fff;
     border-radius: 0;
 
@@ -68,6 +74,7 @@
     box-shadow: 0 1px 0 0 var(--etikigreen);
     outline: none; /* in input blue shadow is outline */
 }
+
 
 .div_search_typeahead input::placeholder {
     text-overflow:ellipsis !important;
@@ -92,8 +99,10 @@
 }
 
 /* used for capture etiki */
-.div_c_taginput .bootstrap-tagsinput  {
-    margin: 2px;
+.div_c_taginput .bootstrap-tagsinput,
+.div_c_taginput .bootstrap-tagsinput input,
+.div_c_taginput .bootstrap-tagsinput input:focus{
+    margin: 0; /* margin: 2px; */
 }
 
 .div_c_taginput .input-group .bootstrap-tagsinput {
@@ -123,15 +132,11 @@
     box-shadow: none;
     outline: none;
     background-color: transparent;
-    margin: 2px;
+    /*margin: 2px; */
     width: inherit; /* was auto */
     max-width: inherit;
 }
 
-.div_c_taginput .bootstrap-tagsinput input:focus
-{
-    margin: 2px;
-}
 /* tagsinput, other part in tagsinput.css */
 
 .div_c_taginput .bootstrap-tagsinput {

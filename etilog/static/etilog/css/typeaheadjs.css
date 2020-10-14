@@ -10,7 +10,7 @@ input.tt-input, input.tt-input:focus {
     color: #fff !important;
 }
 input.tt-hint, input.tt-hint:focus {
-    font-weight:lighter !important;
+    font-weight:lighter !important; /* changes also distance between letters */
 }
 
 

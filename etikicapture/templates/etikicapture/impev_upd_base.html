@@ -9,8 +9,10 @@
 
 {% load render_table from django_tables2 %}
 {% block head_css %}
-<link rel="stylesheet" type="text/css"
+    <link rel="stylesheet" type="text/css"
           href="{% static 'etikicapture/css/etikicapture/main.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'etilog/css/etilog/impev_show.css' %}">
 {% endblock head_css %}
 {% block script %}
 
@@ -27,12 +29,10 @@
     {% include 'etikicapture/impev_upd_modal.html' %}
     {% include 'etilog/impev_details/impev_show_article_modal.html' %}
     <div class="container">
-        </br>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mt-5">
             <div class="col-12 col-lg-8">
-
                 <h6>
-                    <span id="id_impev_msg">{{ message }}</span> </h6>
+                    <span id="id_impev_msg" class="message"></span> </h6>
 
                 <div id="id_div_impevform">
                     {% include 'etikicapture/impev_upd_form.html' %}
@@ -45,9 +45,6 @@
 {% endblock content %}
 
 {% block bottomscript %}
-
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"
             integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i"
             crossorigin="anonymous"></script>

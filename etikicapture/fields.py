@@ -20,7 +20,7 @@ class ImpactEventBtns(Layout):
         if request.user.is_authenticated:
             eles = [Submit('submit-name', submit_str, css_class='btn btn-info'), ]
         else:
-            login_url = reverse('login')
+            login_url = reverse('usermgmt:login')
             login_str = '''
                             <a  href="%s" title="Login">
                             registred in</a>

@@ -163,7 +163,7 @@ class ImpEvMainFields(Layout):
 
             LabelInputRow(
                 Column(
-                    DateYearPickerField('date_published', 'e.g. 18.12.1999', css_class='',
+                    DateYearPickerField('date_published', 'e.g. 17.08.2003', css_class='',
                                         data_category='date_from'
                                         ),
                     css_class='col-12 d-flex flex-wrap justify-content-start'  # wraps if needed
@@ -172,7 +172,7 @@ class ImpEvMainFields(Layout):
             ),
             LabelInputRow(
                 Column(
-                    DateYearPickerField('date_impact', 'e.g. 17.08.2003', css_class='',
+                    DateYearPickerField('date_impact', 'e.g. 18.12.1999', css_class='',
                                         data_category='date_to'
                                         ),
                     css_class='col-12 d-flex flex-wrap justify-content-start'  # wraps if needed

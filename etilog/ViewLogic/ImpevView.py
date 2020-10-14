@@ -45,7 +45,7 @@ def filter_results(request):
 
     qs, filter_name_dict, result_type = get_filterdict(request)
 
-    if request.user.is_authenticated:
+    if request.user.is_staff:
         limit_filt = 1000
     else:
         limit_filt = 50
@@ -89,7 +89,7 @@ def get_results(request, d_dict, share_d=None):
 
 def get_impev_table(request, d_dict, share_d):
     q = share_d['q_ie']
-    if request.user.is_authenticated:
+    if request.user.is_staff:
         table_obj = ImpEvTablePrivat
     else:
         table_obj = ImpEvTable

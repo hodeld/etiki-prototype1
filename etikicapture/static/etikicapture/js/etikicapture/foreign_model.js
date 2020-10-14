@@ -28,7 +28,7 @@ const fMoOpts = {
                 $('#div_addforeign').modal('hide');
                 companies_all.initialize(true);
             } else {
-                errorHandling ('#id_foreign_body', response, '#id_fmodel_msg');
+                formErrorHandling ('#id_foreign_body', response, '#id_fmodel_msg');
             }
         }
     };

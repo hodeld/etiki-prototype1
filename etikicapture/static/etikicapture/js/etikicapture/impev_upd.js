@@ -14,12 +14,10 @@ $(document).ready(function () {
         success: function (response) {
             var msg = response.message;
             if (response.is_valid == "false") {
-                errorHandling('#id_impevform', response, '#id_impev_msg');
-
-                //$("#id_impevform").html(response.form); // to show errors
+                formErrorHandling(formId, response, messageId);
             } else {
                 $("#id_impev_msg").html(msg);
-                errorHandling('#id_impevform', response, '#id_impev_msg'); //to remove spans
+                formErrorHandling(formId, response, messageId); //to remove spans
                 if (userIsIntern){
                     window.history.pushState("", "", response.upd_url);
                 }
@@ -30,7 +28,8 @@ $(document).ready(function () {
             }
         },
         error: function (response) {
-            $("#id_impev_msg").html('uups');
+            const msgtxt = 'uups';
+            messageHandling(messageId, undefined, msgtxt, 'error');
         }
 
     };
@@ -62,6 +61,8 @@ $(document).ready(function () {
     hide_img_vid();
 
 });
+const messageId = '#id_impev_msg';
+const formId = '#id_impevform';
 userIsIntern = false; // todo
 
 function next_ie() {
@@ -95,8 +96,8 @@ let sourceUrl = '';
 
 function extract_text() {
     sourceUrl = $("#id_source_url").val();
-
-    $("#id_impev_msg").html('reads text from website …');
+    const msgtxt = 'reads text from website …'
+    messageHandling(messageId, undefined, msgtxt );
     window.scrollTo(0, 0);
 
     $.ajax({ // initialize an AJAX request
@@ -126,12 +127,13 @@ function extract_text() {
             }
             var parse_res = response.parse_res;
             $("#id_result_parse_html").val(parse_res);
-            $("#id_impev_msg").html(msg);
+            $(messageId).html(msg);
             $('#div_main_fields').fadeIn("slow");
 
         },
         error: function () {
-            $("#id_impev_msg").html('There was an error reading the article. You can save the impact event anyways.');
+            const msgtxt = 'There was an error reading the article. You can save the impact event anyways.';
+            messageHandling(messageId, undefined, msgtxt, 'error');
             $('#div_main_fields').fadeIn("slow");
         }
 
@@ -186,26 +188,6 @@ function setFormValue(inputId, idVal, addValue){
     ele.val(newVal)
         .trigger('change'); //needed for hidden input fields
 
-}
-
-function errorHandling (parDivId, response, msgId=''){
-    $(msgId).html(response.error_msg);
-    $(parDivId).find('.invalid-feedback').remove();
-    const error_items = response.err_items;
-    const html_base_str = '<span class="invalid-feedback"><strong>%%error</strong></span>';
-    for  (let key in error_items) {
-        let err = error_items[key];
-        let html_str = html_base_str.replace("%%error", err);
-        let el_id = '#id_' + key;
-        let $ele = $(el_id)
-        let parId = $ele.attr('parent-id');
-        if (typeof parId !== typeof undefined && parId !== false) {
-            $ele = $('#' + parId)
-        }
-        $ele.after(html_str);
-        //$ele.addClass('has-danger');
-        //$ele.addClass('is-invalid') //django class
-    }
 }
 
 function fullArticle(html_str){

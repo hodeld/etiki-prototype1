@@ -6,7 +6,7 @@
 
     <div class="row d-flex justify-content-center">
 
-        <div class="col-12 col-md-1 col-lg-2 d-flex justify-content-center">
+        <div class="col-6 col-md-1 col-lg-2 d-flex justify-content-start">
 
             <a class="navbar-brand" href="{% url 'etilog:home' %}">
                 <div class="landing  d-flex justify-content-center align-items-center h-100"
@@ -29,34 +29,43 @@
         </div>
 
 
-        <div class="col-12 col-md-1 col-lg-2 d-flex justify-content-end justify-content-md-center">
-            {% if user.is_authenticated %}
+        <div class="col-6 col-md-1 col-lg-2 d-flex justify-content-end justify-content-md-center">
                 <button class="navbar-toggler landing" type="button" data-toggle="collapse"
                         data-target="#collapsenav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-            {% endif %}
-
         </div>
     </div>
 
-    {% if user.is_authenticated %}
-        <div class="row">
-            <div class="col-12 col-md-6"></div>
-            <div class="col-12 col-md-6 col-lg-5 text-right">
 
-                <div class="collapse navbar-collapse" id="collapsenav">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item"><a
-                                class="nav-link {% block cls_overview %}{% endblock cls_overview %}"
-                                href="{% url 'etilog:home' %}">search</a></li>
+    <div class="row">
+        <div class="col-12 col-md-6"></div>
+        <div class="col-12 col-md-6 col-lg-5 text-right">
+            <div class="collapse navbar-collapse" id="collapsenav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a
+                            class="nav-link {% block cls_overview %}{% endblock cls_overview %}"
+                            href="{% url 'etilog:home' %}">search</a></li>
 
 
-                        <li class="nav-item"><a
-                                class="nav-link {% block cls_newie %}{% endblock cls_newie %}"
-                                href="{% url 'etikicapture:newimpactevent' %}">New Impact Event</a></li>
+                    <li class="nav-item"><a
+                            class="nav-link {% block cls_newie %}{% endblock cls_newie %}"
+                            href="{% url 'etikicapture:newimpactevent' %}">New Impact Event</a></li>
 
-                    </ul>
+
+                {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link"
+                                            href="{% url 'usermgmt:profile' %}">{{ user.username }}</a></li>
+
+                    <li class="nav-item"><a class="nav-link"
+                                            href="{% url 'usermgmt:logout' %}">Logout</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link"
+                                            href="{% url 'usermgmt:login' %}">Login | Sign Up</a></li>
+                {% endif %}
+                </ul>
+
+                {% if user.is_staff %}
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown"><a
                                 class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -65,10 +74,11 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{% url 'impexport:export_csv_nlp' %}">Export:
                                     CSV_NLP</a> <a class="dropdown-item"
-                                                   href="{% url 'impexport:export_csv_base' %}">Export: CSV_Base</a> <a
-                                    class="dropdown-item"
-                                    href="{% url 'impexport:export_csv_exterrs' %}">CSV: Extract
-                                Errors</a>
+                                                   href="{% url 'impexport:export_csv_base' %}">Export: CSV_Base</a>
+                                <a
+                                        class="dropdown-item"
+                                        href="{% url 'impexport:export_csv_exterrs' %}">CSV: Extract
+                                    Errors</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown"><a
@@ -79,27 +89,22 @@
                                 <a class="dropdown-item" href="{% url 'impexport:import_dbdata' %}">Import
                                     DB Data</a>
                                 <a class="dropdown-item"
-                                                   href="{% url 'etikicapture:extract_text_all' %}">Extract all IE's</a>
+                                   href="{% url 'etikicapture:extract_text_all' %}">Extract all IE's</a>
                                 <a class="dropdown-item"
-                                                   href="{% url 'impexport:update_db_internal' %}">Internal DB Update</a>
+                                   href="{% url 'impexport:update_db_internal' %}">Internal DB Update</a>
                             </div>
                         </li>
                         <li class="nav-item"><a class="nav-link"
                                                 href="{% url 'admin:index' %}">Admin</a></li>
-                        <li class="nav-item"><a class="nav-link"
-                                                href="{% url 'etikihead:logout' %}">Logout</a></li>
-                        {# else #}
-                        <li class="nav-item"><a class="nav-link"
-                                                href="{% url 'login' %}">Login</a></li>
-
 
                     </ul>
-                </div>
+                {% endif %}
             </div>
+        </div>
             <div class="col-0 col-lg-1"></div>
 
 
         </div>
-    {% endif %}
+
 
 </div>
