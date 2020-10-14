@@ -13,7 +13,7 @@ from usermgmt.forms import UserForm, UserCreateForm
 
 
 @login_required
-def profile(request, user_name=None):
+def profile(request):
     user = request.user
     if request.user.is_authenticated:
         user = request.user
@@ -81,7 +81,7 @@ def create_user_save(request):
         login(request, user)
         d_dict['message'] = 'success'
         status_code = None  # 200
-        d_dict['redirect'] = reverse('usermgmt:profile', kwargs={'user_name': user.username})
+        d_dict['redirect'] = reverse('usermgmt:profile')
     else:
         d_dict['message'] = 'error'
         status_code = 406  # not acceptable

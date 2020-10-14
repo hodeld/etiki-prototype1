@@ -1,49 +1,35 @@
-{% extends 'base_darky.html' %}
+{% extends 'usermgmt/main.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 
 {% block title %}{{ user.username }}
-{% endblock title %} 
+{% endblock title %}
+
 {% block cls_userprofile %} active {% endblock cls_userprofile %}
 
+{% block userform %}
 
-{% block content %} {# script needs to be next to function and form (non in script block) #}
-{% include 'nav_search_bar_hidden.html' %}
-<div class="container">
-	<div class="row justify-content-center mt-5">
-		<div class="col-8">
-
-			<div class="container p-none etiki-form">
-                <p><span id="id_up_message" class="message">
+    <div class="container p-none etiki-form">
+        <p><span id="id_up_message" class="message">
                     Hello {{ user.username }}
                 </span></p>
-            <div id="id_div_errors">
+        <div id="id_div_errors">
 
-            </div>
-                {% if user %}
-                <h2>{{ user.username }}
-                    <small class="text-muted small mx-2">Reputation {{ user.profile.privilege_points }}</small>
-                </h2>
-                <h6>
-                    <small class="text-muted small mx-2">{{ user.last_login }} | {{ user.date_joined }}</small>
-                </h6>
-                {% else %}
-                    <h2>New User
-                </h2>
-                {% endif %}
-                {% crispy form %}
-			</div>
-		</div>
-	</div>
-</div>
-{% endblock content %}
+        </div>
+        {% if user %}
+            <h2>{{ user.username }}
+                <small class="text-muted small mx-2">Reputation {{ user.profile.privilege_points }}</small>
+            </h2>
+            <h6>
+                <small class="text-muted small mx-2">{{ user.last_login }} | {{ user.date_joined }}</small>
+            </h6>
+        {% else %}
+            <h2>New User
+            </h2>
+        {% endif %}
+        {% crispy form %}
+    </div>
+{% endblock userform %}
 
-{% block bottomscript %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"
-            integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i"
-            crossorigin="anonymous"></script>
-    <script src="{% static 'usermgmt/js/usermgmt/userprofile.js' %}"></script>
-
-{% endblock bottomscript %}
 
 

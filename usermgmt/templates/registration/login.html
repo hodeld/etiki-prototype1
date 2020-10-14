@@ -1,49 +1,44 @@
-{% extends 'base_darky.html' %}
+{% extends 'usermgmt/main.html' %}
 {% load crispy_forms_tags %}
-
-
 
 {% block title %}Login
 {% endblock title %} 
 {% block cls_login %}active{%endblock cls_login %}
 
 
-{% block content %} {# script needs to be next to function and form (non in script block) #}
-
-<div class="container">
-</br>
-	<div class="row justify-content-center">
-		<div class="col-8">
-            {% if form.errors %}
-                <p><span id="id_impev_msg" class="message error">
+{% block userform %}
+    {% if form.errors %}
+        <p><span id="id_impev_msg" class="message error">
                     Your username and password didn't match. Please try again.
                 </span></p>
+    {% endif %}
+    <div class="container p-none etiki-form">
+
+        {% if next %}
+            {% if user.is_authenticated %}
+                <p>Your account doesn't have access to this page. To proceed,
+                    please login with an account that has access.</p>
+            {% else %}
+                <p>Please login to see this page.</p>
             {% endif %}
-			<div class="container p-none etiki-form">
+        {% endif %}
 
-                {% if next %}
-                    {% if user.is_authenticated %}
-                        <p>Your account doesn't have access to this page. To proceed,
-                            please login with an account that has access.</p>
-                    {% else %}
-                        <p>Please login to see this page.</p>
-                    {% endif %}
-                {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.username |as_crispy_field }}
+            {{ form.password |as_crispy_field }}
+            <button type="submit" class="btn btn-info">Login</button>
+        </form>
+        <div class="my-3">
+            <p>Not registered yet?
+                <a href="{% url 'usermgmt:create_user' %}">Sign Up</a>
+            </p>
+            <p>
+                <a href="{% url 'etikihead:faq' %}#faq_21">Why should I sign up?</a>
+            </p>
+        </div>
 
-				<form method="post">
-					{% csrf_token %} 
-					{{ form.username |as_crispy_field}}
-					{{ form.password |as_crispy_field}}
-					<button type="submit" class="btn btn-info">Login</button>
-				</form>
-			</div>
-			
-		</div>
+    </div>
 
-
-	</div>
-</div>
-
-
-{% endblock content %}
+{% endblock userform %}
 

@@ -51,7 +51,6 @@
 
 #tabContent.landing,
 #div_filterform.landing,
-#divFilterBar.landing,
-.navbar-toggler.landing {
+#divFilterBar.landing {
     display: none !important;
 }
