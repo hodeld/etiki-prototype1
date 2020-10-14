@@ -10,18 +10,18 @@
 {% block userform %}
 
     <div class="container p-none etiki-form">
-        <p><span id="id_up_message" class="message">
-                    Hello {{ user.username }}
-                </span></p>
+        <p><span id="id_up_message" class="message">{% if user %}
+            Hello {{ user.username }}
+        {% endif %}</span></p>
         <div id="id_div_errors">
 
         </div>
         {% if user %}
             <h2>{{ user.username }}
-                <small class="text-muted small mx-2">Reputation {{ user.profile.privilege_points }}</small>
+                <small class="text-muted mx-2">Reputation {{ user.profile.privilege_points }}</small>
             </h2>
             <h6>
-                <small class="text-muted small mx-2">{{ user.last_login }} | {{ user.date_joined }}</small>
+                <small class="text-muted">{{ user.last_login }} | {{ user.date_joined }}</small>
             </h6>
         {% else %}
             <h2>New User
