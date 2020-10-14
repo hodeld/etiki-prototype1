@@ -86,8 +86,19 @@ function messageHandling (msgId, response = null, msg='', msgcls = null){  //mai
 
 
 function formErrorHandling (parDivId, response, msgId=null){  //mainly error
+    if (response.responseJSON){ // if ajax error -> data object in response.responseJSON
+        response = response.responseJSON;
+    }
     if (msgId){
-        formErrorHandling (msgId, response);
+        messageHandling(msgId, response);
+    }
+    const divErrorId = '#id_div_errors';
+    if ($(divErrorId)) {
+        if (response.message_error) {
+            $(divErrorId).html(response.message_error);
+        } else {
+            $(divErrorId).html('');
+        }
     }
 
     $(parDivId).find('.invalid-feedback').remove();

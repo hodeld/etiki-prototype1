@@ -14,11 +14,19 @@ const formId = '#id_userform';
 
 const formoptions = {
     success: function (response) {
-        const msg = response.message;
-        $(messageId).html(msg);
-        errorHandling(formId, response, messageId);
+
+        if (response.redirect) {
+            messageHandling (messageId, response);
+            window.location.href = response.redirect;
+        }
+        else {
+            formErrorHandling(formId, response, messageId);
+        }
+
+
     },
     error: function (response) {
-        $(messageId).html('uups');
+        formErrorHandling(formId, response, messageId); // error get jqXHR as argument
+       //messageHandling(messageId, undefined, 'uups', 'error')
     }
 }

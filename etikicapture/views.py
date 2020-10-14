@@ -279,4 +279,5 @@ def error_handling(form, d_dict):
     err_items = dict(form.errors.items())
     d_dict['is_valid'] = 'false'
     d_dict['err_items'] = err_items
-    d_dict['error_msg'] = message
+    d_dict['message_error'] = message
+    d_dict['message_tag'] = 'error'

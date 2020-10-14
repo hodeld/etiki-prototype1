@@ -3,7 +3,9 @@
     padding: .2em;
     color: black
 }
-
+.message:empty {
+    display: None;
+}
 .message.error {
     background-color: var(--negative);
 }
