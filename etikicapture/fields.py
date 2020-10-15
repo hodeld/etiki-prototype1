@@ -23,7 +23,7 @@ class ImpactEventBtns(Layout):
             login_url = reverse('usermgmt:login')
             login_str = '''
                             <a  href="%s" title="Login">
-                            registred in</a>
+                            registered</a>
 
                             ''' % login_url
             info_str = 'To release this Impact Event a %s user needs to approve it.' % login_str
@@ -101,6 +101,10 @@ class TagsButton(Layout):
                  field_hidden=None,
                  autofocus=False,
                  *args, **kwargs):
+        am_disabled, am_title = '', ''
+        if kwargs.get('request', None):
+            request = kwargs.get('request', None)
+
         if field_id == None:
             field_id = 'id_' + field_name
         name_stripped = field_name
@@ -120,14 +124,21 @@ class TagsButton(Layout):
         if addmodel:
             icon_name = 'fas fa-plus-square'
             icon_str = '''<i class="%s" ></i>''' % icon_name
-
-            add_url = reverse_lazy('etikicapture:add_foreignmodel',
-                                   kwargs={'main_model': 'impev',
-                                           'foreign_model': field_name})
-            h_css_class = 'input-group-text add_foreignmodel'
-            html_str = '''
-            <span class="%s" add-url="%s" field-id="%s" field-name="%s">%s</span
-            ''' % (h_css_class, add_url, field_id, 'ADD ' + field_name.upper(), icon_str)
+            if request.user.is_authenticated:
+                add_url = reverse_lazy('etikicapture:add_foreignmodel',
+                                       kwargs={'main_model': 'impev',
+                                               'foreign_model': field_name})
+                h_css_class = 'input-group-text add_fm'
+                html_str = '''
+                <span class="%s" add-url="%s" field-id="%s" field-name="%s">%s</span
+                ''' % (h_css_class, add_url, field_id,
+                       'ADD ' + field_name.upper(), icon_str)
+            else:
+                h_css_class = 'input-group-text add_fm_disabled'
+                am_title = 'title="only registered users can add instances."'
+                html_str = '''
+                                <span class="%s" field-id="%s" %s>%s</span
+                                ''' % (h_css_class, field_id, am_title, icon_str)
         else:
             if icon_name:
                 onclick = 'extract_text();'

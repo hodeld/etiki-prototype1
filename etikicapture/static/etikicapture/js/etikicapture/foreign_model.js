@@ -36,7 +36,7 @@ const fMoOpts = {
 
 
 function fModelClick (){
-    $(".add_foreignmodel").click( //to each element with this class
+    $(".add_fm").click( //to each element with this class
         function () {
             const get_url = $(this).attr("add-url"); // model_name in url
             const fieldId = $(this).attr("field-id");
