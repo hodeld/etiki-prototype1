@@ -22,7 +22,6 @@ from etilog.ViewLogic.ImpevView import get_results, filter_results
 def overview_impevs(request, reqtype=None):
 
     landing = False
-
     if len(request.GET) == 0:  # firsttime
         jsondata = json.dumps(False)  # False #Table(table_qs)
         landing = True
@@ -65,6 +64,7 @@ def load_names(request, modelname):
     if modelname == 'company':
         q_names = Company.objects.exclude(impevents=None
                                           ).values('id', 'name')
+
     elif modelname == 'reference':
         q_names = Reference.objects.values('id', 'name')
     elif modelname == 'country':
@@ -77,6 +77,8 @@ def load_names(request, modelname):
     else:
         return HttpResponse("/")
 
+    reloadname = modelname + '_reload'
+    request.session[reloadname] = False
     data = json.dumps(list(q_names))
     return HttpResponse(data, content_type='application/json')
 

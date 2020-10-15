@@ -44,13 +44,11 @@ $(document).ready(function () {
 });
 
 const limit_sugg = 5;
-let bldhndOptCompAll = new getBloodhoundOpt(companies_all_url, false);
+let bldhndOptCompAll = new getBloodhoundOpt(companies_all_url, companyReload);
 let companies_all = new Bloodhound(bldhndOptCompAll);
 let compTa = new getTypeaheadOpt('company_all', companies_all, limit_sugg);
 
-let referencesOpts = new getBloodhoundOpt(references_url, false);
-let references_fresh = new Bloodhound(referencesOpts);
-let refTa = new getTypeaheadOpt('reference_f', references_fresh, limit_sugg);
+let refTa = new getTypeaheadOpt('reference', references, limit_sugg);
 
 let countriesTa = new getTypeaheadOpt('country', countries, limit_sugg);
 
