@@ -4,6 +4,12 @@
 {% block djangoadmin %} {% endblock djangoadmin %}
 {% load crispy_forms_tags %}
 
+    <script>
+        let companyReload = {{request.session.company_reload|yesno:"true,false,true" }};
+        let referenceReload = {{request.session.reference_reload|yesno:"true,false,true" }};
+        let tagsRelaod = {{request.session.tags_reload|yesno:"true,false,true" }};
+    </script>
+
 {% include 'base_include/base_scripts.html'  %}
 {% block script %} {% endblock script %}
 <head>

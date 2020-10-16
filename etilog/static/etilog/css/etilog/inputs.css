@@ -24,9 +24,14 @@
     color: white;
 }
 
-.div_search_typeahead .input-group-text:hover,
-.div_c_taginput .input-group-text:hover{
+.div_search_typeahead .input-group-text.add_fm:hover,
+.div_c_taginput .input-group-text.add_fm:hover {
     cursor: pointer; /* hand pointer */
+}
+
+.div_search_typeahead .input-group-text.add_fm_disabled,
+.div_c_taginput .input-group-text.add_fm_disabled {
+    opacity: 0.65;
 }
 
 /*etiki-form: contact, Login, Profile */

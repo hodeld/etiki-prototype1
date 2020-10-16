@@ -202,6 +202,8 @@ def add_foreignmodel(request, main_model, foreign_model):
 
             }
             jsondata = json.dumps(d_dict)
+            reloadname = foreign_model + '_reload'
+            request.session[reloadname] = True
             return HttpResponse(jsondata, content_type='application/json')
 
         else:

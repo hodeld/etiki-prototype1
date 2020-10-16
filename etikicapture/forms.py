@@ -53,7 +53,7 @@ class ImpactEventForm(forms.ModelForm):
                 StrictButton('Article Preview', css_class='btn btn-sm btn-info',
                        data_toggle="modal", data_target="#modalFullArticle",
                        ),
-                ImpEvMainFields(),
+                ImpEvMainFields(request),
 
                 Field('comment', rows=3),
 
@@ -132,12 +132,13 @@ class ImpactEventForm(forms.ModelForm):
 
 
 class ImpEvMainFields(Layout):
-    def __init__(self):
+    def __init__(self, request):
         layout_list = [
 
 
             RowTagsButton('company', 'col-12',
-                          placeholder=_PH_COMPANY),
+                          placeholder=_PH_COMPANY,
+                          request=request),
 
             LabelInputRow(ColDomainSelect('sust_domain')),
 
@@ -145,18 +146,20 @@ class ImpEvMainFields(Layout):
 
             LabelInputRow(
                 rowcontent=[TagsButton('tags_select', 'col-12 div_tags_select', taginput='c_tags_select',
-                                       addmodel=False, ),
+                                       addmodel=False),
                             Div(HTML('<h3><i class="fas fa-arrow-down"></i></h3>'), css_class='mx-auto'),
 
                             TagsButton('tags_drop', 'col-12 div_tags_drop',
                                        placeholder='Search Tags',
                                        taginput='c_tags_search_inp c_tags_drop',
-                                       field_hidden='sust_tags'),
+                                       field_hidden='sust_tags',
+                                       request=request),
                             ],
                 labelname='Select Sustainability Topics'
             ),
             RowTagsButton('reference', 'col-12',
-                          placeholder=_PH_REFERENCE),
+                          placeholder=_PH_REFERENCE,
+                          request=request),
 
 
 
