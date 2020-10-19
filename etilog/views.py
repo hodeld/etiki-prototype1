@@ -31,7 +31,13 @@ def overview_impevs(request, reqtype=None):
         jsondata = json.dumps(d_dict)
 
     searchform = SearchForm(landing)  # Filter ServerSide
-    topicform = TopicForm()
+
+    suggestions = ['tags', 'company', ] # 'industry']
+    topicforms = []
+    for n in suggestions:
+        tform = TopicForm(n)
+        topicforms.append(tform)
+
     filtheader = OverviewFiltHeaderForm()
     filterhidden = OverviewFHiddenForm()
     filtform = OverviewFForm()
@@ -41,7 +47,7 @@ def overview_impevs(request, reqtype=None):
         'filterform': filtform,
         'filtheader': filtheader,
         'searchform': searchform,
-        'topicform': topicform,
+        'topicforms': topicforms,
         'landing': landing,
         'jsondata': jsondata,
     })
