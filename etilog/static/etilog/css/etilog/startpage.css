@@ -23,10 +23,14 @@
     display: inherit;
 }
 
+
 #divTopics {
     display: none;
 }
 
+.carousel {
+   height: 200px; /* 5 rows of topic_links */
+}
 .div_topic_li {
     max-width: 100%;
     padding: 0.125rem;
@@ -41,6 +45,10 @@
     white-space: nowrap;
     font-size: .875rem;
 
+}
+
+.carousel-indicators{
+    bottom: -50px;
 }
 
 .fullsite-wrapper.landing {

@@ -118,6 +118,9 @@ function tAwHeaderOpt(optDict, title) {
 var compTa = new getTypeaheadOpt('company', companies, limit_sugg);
 var compTaH = new tAwHeaderOpt(compTa, 'Companies');
 
+let industryTa = new getTypeaheadOpt('industry', industries, limit_sugg);
+let industryTaH = new tAwHeaderOpt(industryTa, 'Industries');
+
 var refTa = new getTypeaheadOpt('reference', references, limit_sugg);
 var refTaH = new tAwHeaderOpt(refTa, 'Where was it published');
 
@@ -136,6 +139,6 @@ var allTaHList = [
         highlight: true,
         autoselect: true,  //highlights and selects on enter
     },
-    compTaH, countriesTaH, refTaH,
-    tagsTaH
+    compTaH, tagsTaH, industryTaH, countriesTaH, refTaH
+
 ];

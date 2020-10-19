@@ -134,6 +134,7 @@ class OverviewFHiddenForm(forms.Form):
     country = NotReqCharF()
     tags = NotReqCharF()
     summary = NotReqCharF()
+    industry = NotReqCharF()
 
     reference_exc = NotReqCharF()
 
@@ -161,6 +162,7 @@ class OverviewFHiddenForm(forms.Form):
             TagField('reference', cls_filterinput),
             TagField('tags', cls_filterinput),
             TagField('summary', cls_filterinput),
+            TagField('industry', cls_filterinput),
 
             TagField('reference_exc', cls_filterinput),
 

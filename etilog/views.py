@@ -8,7 +8,7 @@ import json
 # models
 
 from etilog.models import (Company, Reference, Country,
-                           SustainabilityTag)
+                           SustainabilityTag, ActivityCategory)
 
 # forms
 from etilog.forms.forms_filter import (SearchForm, OverviewFiltHeaderForm, OverviewFHiddenForm,
@@ -31,7 +31,14 @@ def overview_impevs(request, reqtype=None):
         jsondata = json.dumps(d_dict)
 
     searchform = SearchForm(landing)  # Filter ServerSide
-    topicform = TopicForm()
+    topicforms = []
+    if landing:
+        suggestions = ['tags', 'company', 'industry']
+
+        for n in suggestions:
+            tform = TopicForm(n)
+            topicforms.append(tform)
+
     filtheader = OverviewFiltHeaderForm()
     filterhidden = OverviewFHiddenForm()
     filtform = OverviewFForm()
@@ -41,7 +48,7 @@ def overview_impevs(request, reqtype=None):
         'filterform': filtform,
         'filtheader': filtheader,
         'searchform': searchform,
-        'topicform': topicform,
+        'topicforms': topicforms,
         'landing': landing,
         'jsondata': jsondata,
     })
@@ -71,6 +78,11 @@ def load_names(request, modelname):
         q_names = Country.objects.values('id', 'name')
     elif modelname == 'tags':
         q_names = SustainabilityTag.objects.values('id', 'name')
+    elif modelname == 'industry':
+        q_comps = Company.objects.exclude(impevents=None
+                                          ).values_list('activity_id', flat=True).distinct()
+        q_names = ActivityCategory.objects.filter(id__in=q_comps
+                                          ).values('id', 'name')
 
     elif modelname == 'company_all':
         q_names = Company.objects.values('id', 'name')

@@ -40,7 +40,7 @@ def get_filterdict(request):
         """dict for setting filter visually -> only when coming from outside"""
         if filter_name_dict is None:
             return
-        if fname in ['company', 'reference', 'tags', 'country',]:
+        if fname in ['company', 'reference', 'tags', 'country', 'industry']:
             tag_list = []
             for inst_id in value_list:
                 tag_dict = get_name(inst_id, fname)
@@ -81,7 +81,7 @@ def get_filterdict(request):
 
     field_names = ['company', 'reference', 'country', 'tags', 'reference_exc',
                    'sust_domain', 'sust_tendency',
-                   'summary',
+                   'summary', 'industry'
                    ]
 
     for fname in field_names:
@@ -107,12 +107,14 @@ def filter_queryset(filter_dict):
                      'date_from': f_date_range,
                      'date_to': f_date_range,
                      'reference_exc': f_multiple_exc,
+                     'industry': f_multiple
                      }
 
     field_name_d = {'tags': 'sust_tags',
                     'date_from': 'date_published',
                     'date_to': 'date_published',
                     'reference_exc': 'reference',
+                    'industry': 'company__activity'
                     }
 
     lookup_d = {'date_from': 'gt',

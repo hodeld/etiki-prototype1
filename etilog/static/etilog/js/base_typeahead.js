@@ -22,6 +22,9 @@ function getBloodhoundOpt(field_url, reload=false) {
 var bldhndOptComp = new getBloodhoundOpt(companies_url, companyReload);
 var companies = new Bloodhound(bldhndOptComp);
 
+let OptIndustry = new getBloodhoundOpt(industry_url);
+let industries = new Bloodhound(OptIndustry);
+
 var optCountries = new getBloodhoundOpt(countries_url);
 var countries = new Bloodhound(optCountries);
 

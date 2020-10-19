@@ -54,6 +54,7 @@ const tagElementDict = {
     'reference_exc': '#id_f_reference_exc',
     'date_from': '#id_f_date_from',
     'date_to': '#id_f_date_to',
+    'industry': '#id_f_industry',
 };
 
 const visTagElementDict = {
