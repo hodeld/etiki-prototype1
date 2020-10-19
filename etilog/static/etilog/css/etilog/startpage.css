@@ -29,7 +29,7 @@
 }
 
 .carousel {
-   min-height: 200px;
+   height: 200px; /* 5 rows of topic_links */
 }
 .div_topic_li {
     max-width: 100%;

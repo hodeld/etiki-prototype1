@@ -1,7 +1,7 @@
 from crispy_forms.layout import Layout, HTML, Div, Row, Column
 from django.db.models import Count
 
-from etilog.models import ImpactEvent, Company
+from etilog.models import ImpactEvent, Company, ActivityCategory
 
 
 def get_topic_vals(nr_instances):
@@ -35,8 +35,23 @@ def get_company_vals(nr_instances):
     return li_vals
 
 
+def get_industry_vals(nr_instances):
+    li_vals = []
+    inst = ActivityCategory.objects.select_related(
+        'company').annotate(
+        activity_count=Count('company__impevents', distinct=True)).order_by(
+            '-activity_count')
+    vals = inst.values_list(
+        'pk', 'name')[:nr_instances]
+
+    li_vals.extend(vals)
+    return li_vals
+
+
 vals_dispatch_d = {'tags': get_topic_vals,
-                   'company': get_company_vals}
+                   'company': get_company_vals,
+                   'industry': get_industry_vals,
+                   }
 
 
 class RowTopics(Layout):
@@ -65,7 +80,7 @@ class RowTopics(Layout):
             li_sustagsid.append(stag_id)
             addclass = ''
             if (k % nr_tags == 0 and tag_category) == 'tags' or (
-                    k > nr_insts/2 and tag_category in ['company', ]):
+                    k > nr_insts/2 and tag_category in ['company', 'industry']):
                 addclass = ' d-none d-md-block'  # only show on larger screens
 
             html_str = a_str % (tag_category, stag_id, tag[1], tag[1])  # (tag.id, tag.name, tag.name)

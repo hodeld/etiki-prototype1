@@ -9,7 +9,7 @@ from django.db.models import Count, Q, Sum
 
 # models
 from etilog.models import (Company, Reference, SustainabilityTag, SustainabilityDomain,
-                           Country, SustainabilityTendency)
+                           Country, SustainabilityTendency, ActivityCategory)
 import unicodedata
 
 POS_IMPNR = 1
@@ -36,6 +36,8 @@ def get_name(inst_id, modelname):
         mod = SustainabilityDomain
     elif modelname == 'sust_tendency':
         mod = SustainabilityTendency
+    elif modelname == 'industry':
+        mod = ActivityCategory
     else:
         return ''
     name = mod.objects.values('id', 'name').get(id=inst_id)
