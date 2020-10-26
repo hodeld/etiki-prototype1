@@ -19,10 +19,12 @@ const fMoOpts = {
                 $('#'+fieldId).tagsinput('add', response.tag);
                 // add new items to typeahead
                 if (fieldId.includes("company")) {
+                    companies_all.clearPrefetchCache();
                     companies_all.initialize(true);
                 }
                 else {
-                    references_fresh.initialize(true);
+                    references.clearPrefetchCache();
+                    references.initialize(true);
                 }
 
                 $('#div_addforeign').modal('hide');
