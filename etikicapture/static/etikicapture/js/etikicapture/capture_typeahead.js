@@ -44,7 +44,7 @@ $(document).ready(function () {
 });
 
 const limit_sugg = 5;
-let bldhndOptCompAll = new getBloodhoundOpt(companies_all_url, companyReload);
+let bldhndOptCompAll = new getBloodhoundOpt(companies_all_url);
 let companies_all = new Bloodhound(bldhndOptCompAll);
 let compTa = new getTypeaheadOpt('company_all', companies_all, limit_sugg);
 

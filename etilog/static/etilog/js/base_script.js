@@ -67,6 +67,7 @@ function hide_img_vid(idStr='id_articleshow') {
             $(this).parent().hide();
         });
     });
+    $(articleid + 'svg').hide();
 }
 
 function messageHandling (msgId, response = null, msg='', msgcls = null){  //mainly error

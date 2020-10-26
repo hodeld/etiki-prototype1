@@ -10,7 +10,7 @@ function getBloodhoundOpt(field_url, reload=false) {
         //identify: function(obj) { return obj.id; }, //to get suggestion by ID -> not used and breaks typahead!
         prefetch: {
             url: field_url, // url set in html
-            cache: reload === true ? false : true, // false if new added items should be shown.
+            cache: true, // false if new added items should be shown.
                             // if true even hard reload does not reload
                             // could probably be done with bloodHound.clearPrefetchCache();
 
@@ -19,8 +19,12 @@ function getBloodhoundOpt(field_url, reload=false) {
     return optDict
 }
 
-var bldhndOptComp = new getBloodhoundOpt(companies_url, companyReload);
+var bldhndOptComp = new getBloodhoundOpt(companies_url);
 var companies = new Bloodhound(bldhndOptComp);
+if (companyReload === true){//refresh and reinitialize
+    companies.clearPrefetchCache();
+    companies.initialize(true);
+}
 
 let OptIndustry = new getBloodhoundOpt(industry_url);
 let industries = new Bloodhound(OptIndustry);
@@ -28,11 +32,19 @@ let industries = new Bloodhound(OptIndustry);
 var optCountries = new getBloodhoundOpt(countries_url);
 var countries = new Bloodhound(optCountries);
 
-var optReferences = new getBloodhoundOpt(references_url, referenceReload);
+var optReferences = new getBloodhoundOpt(references_url);
 var references = new Bloodhound(optReferences);
+if (referenceReload === true) {//refresh and reinitialize
+    references.clearPrefetchCache();
+    references.initialize(true);
+}
 
-var optTopics = new getBloodhoundOpt(tags_url, tagsRelaod);
+var optTopics = new getBloodhoundOpt(tags_url);
 var tags = new Bloodhound(optTopics);
+if (tagsRelaod === true) {//refresh and reinitialize
+    tags.clearPrefetchCache();
+    tags.initialize(true);
+}
 
 //TypeaheadOpt
 function getTypeaheadOpt(name, source, limitSugg=3) {

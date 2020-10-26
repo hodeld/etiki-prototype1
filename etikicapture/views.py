@@ -121,7 +121,7 @@ def impact_event_change(request, ietype='new', ie_id=None):
 
     else:
         message = ''
-        init_data = {}
+        init_data = {'language': 1}  # English
         if ietype == 'update':
             init_data = get_ie_init_data(ie_id, update=True)
             next_id = ImpactEvent.objects.filter(id__gt=ie_id).order_by('id').values_list('id', flat=True).first()
