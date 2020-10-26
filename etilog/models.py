@@ -30,6 +30,17 @@ def full_domain_validator(hostname):
             raise ValidationError(("Unallowed characters in label '%(label)s'.") % {'label': label})
 
 
+class Language(models.Model):
+    name = models.CharField(unique=True, max_length=100, verbose_name='Local Name')
+    code_639_1 = models.CharField(unique=True, verbose_name='ISO 639-1', max_length=2)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name', ]
+
+
 class Country(models.Model):
     numeric = models.PositiveSmallIntegerField(unique=True)
     name = models.CharField(unique=True, max_length=100)
@@ -235,6 +246,7 @@ class ImpactEvent(models.Model):
     sources = models.ManyToManyField('Source', blank=True, verbose_name='further sources',
                                      related_name='impevents')  # get Source.impevents.all()
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, blank=True, null=True)
+    language = models.ForeignKey(Language, on_delete=models.SET(1), default=1)
 
     summary = models.CharField(max_length=500, blank=True, null=True,
                                help_text='abstract, title or first part of text')

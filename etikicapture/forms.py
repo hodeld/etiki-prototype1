@@ -15,6 +15,7 @@ CSS_COL_CLS = 'col-12 col-lg-6'
 _PH_COMPANY = 'e.g. Coca Cola, Apple …'
 _PH_COUNTRY = 'e.g. Switzerland, France … '
 _PH_REFERENCE = 'e.g. New York Times, Guardian …'
+_PH_LANGUAGE = 'e.g. English, Deutsch'
 
 
 class ImpactEventForm(forms.ModelForm):
@@ -82,6 +83,7 @@ class ImpactEventForm(forms.ModelForm):
                   # first part hidden
                   'date_published', 'date_impact', 'company', 'reference',
                   'country',
+                  'language',
                   'sust_domain', 'sust_tendency', 'sust_tags',
                   'summary',
                   # from here only for etikis
@@ -185,6 +187,10 @@ class ImpEvMainFields(Layout):
 
             RowTagsButton('country', 'col-12',
                           placeholder=_PH_COUNTRY,
+                          addmodel=False,
+                          ),
+            Field('language', 'col-12',
+                          placeholder=_PH_LANGUAGE,
                           addmodel=False,
                           ),
 

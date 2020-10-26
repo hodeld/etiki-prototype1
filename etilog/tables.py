@@ -157,7 +157,9 @@ class ImpEvBaseTable(tables.Table):
     summary = tables.Column(accessor='summary', attrs=get_attrs(hide_mobile=True, hover=True))
 
     country = tables.Column(accessor='country_display',
+                            verbose_name='Country Impact Event',
                             attrs=get_attrs(hide_mobile=True, sort=True))
+
 
     company = tables.TemplateColumn(template_name='etilog/table_cells/cell_link.html',
                                     attrs=get_attrs(sort=True, )
@@ -284,6 +286,19 @@ class ImpEvDetails(ImpEvBaseTable):
     date = None
     topics = None
 
+    date_impact = tables.DateColumn(verbose_name='Date Impact Event', accessor='date_impact', format='M Y',
+                             attrs=get_attrs(sort=True))
+    date_published = tables.DateColumn(verbose_name='Date Published', accessor='date_published', format='M Y',
+                                       attrs=get_attrs(sort=True))
+
+    country_company = tables.Column(accessor='company.country',
+                            verbose_name='Country of the Company',
+                            attrs=get_attrs(sort=True))
+
+    language = tables.Column(accessor='language',
+                                    verbose_name='Language of Article',
+                                    attrs=get_attrs(sort=True))
+
     #on mobile:
     reference = tables.Column(linkify=lambda record: record.source_url,
                               verbose_name='Published in',
@@ -299,5 +314,8 @@ class ImpEvDetails(ImpEvBaseTable):
     class Meta:
         sequence = (
             # 'sust_domain', 'topics', 'company', 'date', # already in parent row
-            'reference', 'country', 'summary', '...'
+            'reference', 'country', 'country_company',
+
+            'date_impact', 'date_published',
+            'summary', 'language', '...'
         )
