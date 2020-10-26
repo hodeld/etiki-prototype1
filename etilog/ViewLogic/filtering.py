@@ -132,8 +132,8 @@ def filter_queryset(filter_dict):
 def f_country_idlist(qs, name, id_list, *args):
     if len(id_list) > 0:
         qs = qs.filter(Q(country__in=id_list)
-                             | Q(company__country__in=id_list, country__isnull=True)
-                             )  # "name__in = id_list
+                       | Q(company__country__in=id_list)
+                       )
     else:
         qs = qs
     return qs

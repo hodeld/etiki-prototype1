@@ -11,7 +11,7 @@ from .models import (ImpactEvent,
                      Company, Country, ActivityCategory,
                      Media, Reference, Source,
                      SubsidiaryOwner, SupplierRecipient,
-                     FrequentAskedQuestions, RelatedQuestion
+                     FrequentAskedQuestions, RelatedQuestion, Language
                      )
 
 
@@ -119,5 +119,6 @@ admin_site.register(SupplierRecipient, SupplierRecipientAdmin)
 admin_site.register(Media)
 admin_site.register(ActivityCategory)
 admin_site.register(Country)
+admin_site.register(Language)
 
 admin_site.register(FrequentAskedQuestions, FrequentAskedQuestionsAdmin)
