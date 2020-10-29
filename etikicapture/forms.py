@@ -29,7 +29,6 @@ class ImpactEventForm(forms.ModelForm):
 
     def __init__(self, request, *args, **kwargs):
 
-
         super(ImpactEventForm, self).__init__(*args, **kwargs)
 
         self.fields['source_url'].required = True
@@ -62,6 +61,7 @@ class ImpactEventForm(forms.ModelForm):
                     Row(Column(Field('date_text'), css_class=CSS_COL_CLS)),
                     Field('article_title'),
                     Field('article_text'),
+                    Field('article_byline'),
                     Field('article_html'),
                     Field('result_parse_html'),
                     css_class='collapse',
@@ -88,7 +88,8 @@ class ImpactEventForm(forms.ModelForm):
                   'summary',
                   # from here only for etikis
                   'comment',
-                  'article_text', 'article_title', 'date_text', 'article_html', 'result_parse_html',
+                  'article_text', 'article_title', 'date_text', 'article_byline',
+                  'article_html', 'result_parse_html',
                   'user'
                   ]
 

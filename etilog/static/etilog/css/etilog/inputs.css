@@ -157,6 +157,7 @@
     border: 1px solid #fff;
 }
 
+/* scroll on tags select */
 .div_tags_select.div_c_taginput .bootstrap-tagsinput {
     overflow: auto !important;
     max-height: 100px

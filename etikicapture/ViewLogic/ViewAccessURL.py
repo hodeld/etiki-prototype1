@@ -106,6 +106,7 @@ def extract_text_rpy(url):
     stitle = article.get('title', '')
 
     sdate = article.get('date', None)
+    byline = article.get('byline', None)  # author information
 
     if sdate:
         sdate = str(sdate)[:100]
@@ -119,7 +120,7 @@ def extract_text_rpy(url):
     # included *textContent and "siteName" in article which could be used instead.
     txt_str = article['textContent']
     text_str = stitle_art + '\n' + txt_str
-    article = (text_str, stitle, sdate, html_simple)
+    article = (text_str, stitle, sdate, byline, html_simple)
     save_article = True
     return save_article, parse_res, article
 

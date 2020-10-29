@@ -253,6 +253,7 @@ class ImpactEvent(models.Model):
     comment = models.CharField(max_length=500, blank=True, null=True)
     article_text = models.TextField(blank=True, null=True)
     article_title = models.CharField(max_length=150, blank=True, null=True)
+    article_byline = models.CharField(max_length=150, blank=True, null=True)
     article_html = models.TextField(blank=True, null=True)
     result_parse_html = models.PositiveSmallIntegerField(choices=choices_res_html, default=0)
 

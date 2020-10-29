@@ -42,8 +42,8 @@ def extract_text_from_url(request):
         save_article = False
     if save_article == True:
         msg = 'extracted'
-        text_str, stitle, sdate, html_simple = article
-        impev_d = {'pk':0,
+        text_str, stitle, sdate, byline, html_simple = article
+        impev_d = {'pk': 0,
                    'source_url': url,
                    'article_title': stitle,
                    'article_html': html_simple
@@ -55,6 +55,7 @@ def extract_text_from_url(request):
         d_dict['stext'] = text_str
         d_dict['stitle'] = stitle
         d_dict['sdate'] = sdate
+        d_dict['byline'] = byline[:150]
         d_dict['shtml'] = html_simple
 
         #for preview
@@ -261,7 +262,8 @@ def load_sust_tags(request):  # ,
 
     def lookup_one(name_s, val):
         f_id = int(val)
-        lookup_dict[name_s] = f_id
+        if f_id != 3: # if controversial -> all tags
+            lookup_dict[name_s] = f_id
 
     if len(tendency_id_str) > 0:
         lookup_one('sust_tendency', tendency_id_str)
