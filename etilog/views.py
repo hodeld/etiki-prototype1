@@ -67,7 +67,7 @@ def get_result(request):
     return HttpResponse(jsondata, content_type='application/json')
 
 
-def load_names(request, modelname):
+def load_names(request, modelname, query=None):
     if modelname == 'company':
         q_names = Company.objects.exclude(impevents=None
                                           ).values('id', 'name')
@@ -89,8 +89,8 @@ def load_names(request, modelname):
     else:
         return HttpResponse("/")
 
-    reloadname = modelname + '_reload'
-    request.session[reloadname] = False
+    if query:
+        q_names = q_names.filter(name__icontains=query)
     data = json.dumps(list(q_names))
     return HttpResponse(data, content_type='application/json')
 

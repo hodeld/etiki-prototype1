@@ -22,9 +22,16 @@
 
 <div class="">
     <div class="article-preview my-3">
-        <h6>
-           Article not found.
-        </h6>
+        {% if rec.source_url %}
+            <h6>
+                Article could not be extracted. Original link: <a id="id_url_link" href="{{ rec.source_url }}"
+                                                     target="_blank">{{ rec.source_url }}</a>
+            </h6>
+        {% else %}
+            <h6>
+                No URL provided to this Impact Event.
+            </h6>
+        {% endif %}
     </div>
 </div>
 
