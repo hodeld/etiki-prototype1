@@ -23,6 +23,7 @@ urlpatterns = [
     path(prototype+'results/', views.get_result, name='results'),
 
     path(load_data + '<slug:modelname>', views.load_names, name='load_jsondata'),
+    path(load_data + '<slug:modelname>' + '/<slug:query>', views.load_names, name='load_jsondata'),
 
 
 ]
