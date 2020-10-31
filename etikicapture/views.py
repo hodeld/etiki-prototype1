@@ -1,7 +1,7 @@
 import json
 
 from crispy_forms.utils import render_crispy_form
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import permission_required, login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.template.context_processors import csrf
@@ -15,7 +15,7 @@ from etikicapture.predictText.predicloud_api import  analyze_text
 from etilog.models import ImpactEvent, Company, Reference, SustainabilityTag
 
 
-@permission_required('etilog.impactevent')
+@login_required
 def extract_text(request, ie_id=None):
     try:
         ie = ImpactEvent.objects.get(id=ie_id)
@@ -55,7 +55,8 @@ def extract_text_from_url(request):
         d_dict['stext'] = text_str
         d_dict['stitle'] = stitle
         d_dict['sdate'] = sdate
-        d_dict['byline'] = byline[:150]
+        if byline:
+            d_dict['byline'] = byline[:150]
         d_dict['shtml'] = html_simple
 
         #for preview
@@ -177,7 +178,7 @@ def get_ie_init_data(ie_id, update=False):
     return init_data
 
 
-@permission_required('etilog.impactevent')
+@login_required
 def add_foreignmodel(request, main_model, foreign_model):
     if request.POST:
         data_dict = request.POST.dict()
