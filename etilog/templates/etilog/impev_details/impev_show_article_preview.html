@@ -3,20 +3,14 @@
 
 <div class="">
     <div class="article-preview my-3">
-        <h4 class="">{{ rec.article_title }}</h4>
-        <h6>
-            {{ text_prev }}
-        </h6>
+        <a href="{{ rec.source_url }}" target="_blank">
+            <h4 class="">{{ rec.article_title }}  </h4>
+            <h6>
+                {{ text_prev }} <i class="fas fa-external-link-alt ml-1"></i>
+            </h6>
+        </a>
     </div>
 
-    <div class="text-center showbtn" id='id_div_btn_{{ rec.pk }}'>
-
-        <button class="btn btn-bright" type="button"
-                data-toggle="collapse"
-                onclick='full_article(this, "{{ rec.pk }}")'>
-            show full article
-        </button>
-    </div>
 </div>
 {%  else  %}
 
@@ -25,7 +19,9 @@
         {% if rec.source_url %}
             <h6>
                 Article could not be extracted. Original link: <a id="id_url_link" href="{{ rec.source_url }}"
-                                                     target="_blank">{{ rec.source_url }}</a>
+                                                                  target="_blank">{{ rec.source_url }}
+                <i class="fas fa-external-link-alt ml-1"></i>
+            </a>
             </h6>
         {% else %}
             <h6>
