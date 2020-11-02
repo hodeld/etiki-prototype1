@@ -127,7 +127,7 @@ def load_ie_details(qs, single_ie=False):
         id_ie = rec.pk
         if rec.article_title:
             len_title = len(rec.article_title)
-            text_prev = rec.article_text[len_title:300] + ' …'
+            text_prev = rec.article_text[len_title:len_title+160] + ' …'
         else:
             text_prev = None  # better: without text
         html_fields = render_to_string('etilog/impev_details/impev_show_fields.html', {'row': row,
