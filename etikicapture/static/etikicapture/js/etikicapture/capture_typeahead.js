@@ -44,18 +44,17 @@ $(document).ready(function () {
 });
 
 const limit_sugg = 5;
-let bldhndOptCompAll = new getBloodhoundOpt(companies_all_url);
-let companies_all = new Bloodhound(bldhndOptCompAll);
-let compTa = new getTypeaheadOpt('company_all', companies_all, limit_sugg);
 
-let refTa = new getTypeaheadOpt('reference', references, limit_sugg);
+let compTa = new getTypeaheadOpt('company_all', limit_sugg);
 
-let countriesTa = new getTypeaheadOpt('country', countries, limit_sugg);
+let refTa = new getTypeaheadOpt('reference',  limit_sugg);
 
-let tagsTa = new getTypeaheadOpt('tags', tags, limit_sugg);
+let countriesTa = new getTypeaheadOpt('country', limit_sugg);
+
+let tagsTa = new getTypeaheadOpt('tags', limit_sugg);
 
 let tagsFSource = localBH();
-let tagsFTa = new getTypeaheadOpt('tagsF', tagsFSource, limit_sugg);
+let tagsFTa = new getTypeaheadOpt('tagsF', limit_sugg, tagsFSource);
 
 
 let allTypeaheadDic = {

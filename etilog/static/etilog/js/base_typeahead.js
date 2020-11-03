@@ -3,7 +3,7 @@ $(document).ready(function () {
 });
 
 //initialize BLOODHOUND
-function getBloodhoundOpt(field_url, remote=false, caching=false) {
+function getBloodhoundOpt(name, field_url, remote=false, caching=false) {
 
     optDict = {
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'), //obj.whitespace('name') -> data needs to be transformed
@@ -15,7 +15,8 @@ function getBloodhoundOpt(field_url, remote=false, caching=false) {
                             // if true even hard reload does not reload
                             // could probably be done with bloodHound.clearPrefetchCache();
         },
-        identify: function(obj) { return obj.id; },
+        //returned value needs to be unique -> name in front
+        identify: function(obj) { return name + obj.id.toString(); },
 
     };
     if (remote){
@@ -30,25 +31,27 @@ function getBloodhoundOpt(field_url, remote=false, caching=false) {
     return optDict
 }
 
-var bldhndOptComp = new getBloodhoundOpt(companies_url, true);
-var companies = new Bloodhound(bldhndOptComp);
 
-
-let OptIndustry = new getBloodhoundOpt(industry_url);
-let industries = new Bloodhound(OptIndustry);
-
-var optCountries = new getBloodhoundOpt(countries_url);
-var countries = new Bloodhound(optCountries);
-
-var optReferences = new getBloodhoundOpt(references_url);
-var references = new Bloodhound(optReferences);
-
-
-var optTopics = new getBloodhoundOpt(tags_url);
-var tags = new Bloodhound(optTopics);
+const paramDict  = {
+    'company': [companies_url, true],
+    'country': [countries_url, false],
+    'reference': [references_url, false],
+    'tags': [tags_url, false],
+    'industry': [industry_url, false],
+    'company_all': [companies_all_url, true],
+    'reference_exc': [references_url, false],
+};
 
 //TypeaheadOpt
-function getTypeaheadOpt(name, source, limitSugg=3) {
+function getTypeaheadOpt(name, limitSugg=3, source=undefined) {
+    if (source === undefined) {
+        let params = paramDict[name];
+        let objUrl = params[0],
+            rem = params[1];
+        let objOPtions = new getBloodhoundOpt(name, objUrl, rem);
+        source = new Bloodhound(objOPtions);
+    }
+
     const optDict = {
         name: name,
         source: source,

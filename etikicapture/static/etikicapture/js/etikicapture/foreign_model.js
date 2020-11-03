@@ -19,16 +19,14 @@ const fMoOpts = {
                 $('#'+fieldId).tagsinput('add', response.tag);
                 // add new items to typeahead
                 if (fieldId.includes("company")) {
-                    companies_all.clearPrefetchCache();
-                    companies_all.initialize(true);
+                    compTa.source.clearPrefetchCache();
+                    compTa.source.initialize(true);
                 }
                 else {
-                    references.clearPrefetchCache();
-                    references.initialize(true);
+                    refTa.source.clearPrefetchCache();
+                    refTa.source.initialize(true);
                 }
-
                 $('#div_addforeign').modal('hide');
-                companies_all.initialize(true);
             } else {
                 formErrorHandling ('#id_foreign_body', response, '#id_fmodel_msg');
             }
