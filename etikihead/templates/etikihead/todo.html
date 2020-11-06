@@ -11,29 +11,29 @@
         <div class="col-0 col-md-1 col-xl-2"></div>
         <div class="col-12 col-md-10 col-xl-8">
             <div class="py-3 px-2 px-sm-0">
-                <h5>Frequent Asked Questions</h5>
+                <h5>What we are working on</h5>
                 <hr class="whitehr">
                 <div class="pb-5">
-                    {% for faq in faqs %}
+                    {% for todo in todos %}
                         <p>
-                            <a class="link-intern " href="#faq_{{ faq.id }}">{{ faq.question }}</a>
+                            <a class="link-intern " href="#todo_{{ todo.id }}">{{ todo.name }}</a>
                         </p>
                     {% endfor %}
                 </div>
 
-                {% for faq in faqs %}
+                {% for todo in todos %}
 
-                    <div id="faq_{{ faq.id }}" class="anchor">
-                        <h6 class="link-intern ">{{ faq.question }}</h6>
+                    <div id="todo_{{ todo.id }}" class="anchor">
+                        <h6 class="link-intern ">{{ todo.name }}</h6>
                     </div>
 
 
                     <div class="text-justify ml-md-2 ">
-                        <p class="">{{ faq.answer|urlizetrunc:50|linebreaks }} </p>
-                        {% for rel_faq in faq.related_question.all %}
+                        <p class="">{{ todo.description|urlizetrunc:50|linebreaks }} </p>
+                        {% for rel_todo in todo.related_todo.all %}
 
                             <p>
-                                See also <a class="" href="#faq_{{ rel_faq.id }}">{{ rel_faq.question }}</a>
+                                See also <a class="" href="#todo_{{ rel_todo.id }}">{{ rel_todo.name }}</a>
                             </p>
 
                         {% endfor %}

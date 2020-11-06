@@ -164,6 +164,19 @@
 }
 
 
+select > option
+{
+    background-color: black !important;
+    color: #000;
+}
 
 
+select {
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+    background-color: red !important;
+    color: #000;
+
+}
 

@@ -14,6 +14,7 @@ urlpatterns = [
     path('privacy/', views.legal, name='legal'),
     path('about/', views.about, name='about'),
     path('faq/', views.faq, name='faq'),
+    path('todo/', views.todo, name='todo'),
 
     path('startinfo/', views.startinfo, name='startinfo'),  #
 
