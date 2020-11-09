@@ -32,7 +32,8 @@
         <div class="row justify-content-center mt-5">
             <div class="col-12 col-lg-8">
                 <h6>
-                    <span id="id_impev_msg" class="message"></span> </h6>
+                    <span id="id_impev_msg" class="message">{{ message }}</span></h6>
+                <h6 id="id_msg2" class="">{{ message2 |safe }}</h6>
 
                 <div id="id_div_impevform">
                     {% include 'etikicapture/impev_upd_form.html' %}

@@ -11,9 +11,10 @@ from django.urls import reverse, reverse_lazy
 from etikicapture.ViewLogic.ViewAccessURL import parse_url, parse_url_all, extract_text_rpy
 from etikicapture.forms import ImpactEventForm, CompanyForm, ReferenceForm, TopicTagsForm
 #models
-from etikicapture.predictText.predicloud_api import  analyze_text
+from etikicapture.predictText.predicloud_api import analyze_text
 from etilog.models import ImpactEvent, Company, Reference, SustainabilityTag
-
+FAQ_NLP = '#faq_' + str(22)
+FAQ_CAPTURE = '#faq_' + str(23)
 
 @login_required
 def extract_text(request, ie_id=None):
@@ -66,12 +67,25 @@ def extract_text_from_url(request):
             p_dict = analyze_text(text_str)
             d_dict.update(p_dict)
             d_dict['prediction'] = 'success'
-            msg = 'extracted and analyzed. %s | %s.' % (p_dict['category_name'], p_dict['tendency_name'])
+            msg = 'Analyzed. Suggestions: %s | %s.' % (p_dict['category_name'], p_dict['tendency_name'])
+
+            msg_extr = 'Please check suggested category and tendency and change if needed. ' \
+                       'Especially if article is in another language than English. '
+
+            info = msg_extr
+            url = reverse('etikihead:faq') + str(FAQ_NLP)
+            url_text = 'How does this work?'
+
+            link = render_to_string('etikihead/info_url.html', {'url': url,
+                                                                   'url_text': url_text})
+            msg2 = info + link
+            d_dict['message2'] = msg2
+
         except:
             pass
 
     else:
-        msg = 'not extracted'
+        msg = 'not analyzed'
     d_dict['parse_res'] = parse_res
     d_dict['message'] = msg
     return HttpResponse(json.dumps(d_dict), content_type='application/json')
@@ -122,7 +136,13 @@ def impact_event_change(request, ietype='new', ie_id=None):
         return HttpResponse(json.dumps(to_json), content_type='application/json')
 
     else:
-        message = ''
+        url = reverse_lazy('etikihead:faq') +  str(FAQ_CAPTURE)
+        url_text = 'How can I add an Impact Event?'
+        link = render_to_string('etikihead/info_url.html', {
+            'url': url,
+            'url_text': url_text})
+        message2 = 'If you need you help: ' + link
+        message = 'Hello!'
         init_data = {'language': 1}  # English
         if ietype == 'update':
             init_data = get_ie_init_data(ie_id, update=True)
@@ -138,6 +158,7 @@ def impact_event_change(request, ietype='new', ie_id=None):
         shtml = init_data.get('article_html', '')
     return render(request, 'etikicapture/impev_upd_base.html', {'form': form,  # for form.media
                                                           'message': message,
+                                                                'message2': message2,
                                                           'next_id_url': next_id_url,
                                                           'shtml': shtml })
 

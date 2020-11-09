@@ -16,7 +16,8 @@ $(document).ready(function () {
             if (response.is_valid == "false") {
                 formErrorHandling(formId, response, messageId);
             } else {
-                $("#id_impev_msg").html(msg);
+                //$("#id_impev_msg").html(msg);
+                messageHandling(messageId, response, '', null, msg2Id);
                 formErrorHandling(formId, response, messageId); //to remove spans
                 if (userIsIntern){
                     window.history.pushState("", "", response.upd_url);
@@ -29,7 +30,7 @@ $(document).ready(function () {
         },
         error: function (response) {
             const msgtxt = 'uups';
-            messageHandling(messageId, undefined, msgtxt, 'error');
+            messageHandling(messageId, undefined, msgtxt, 'error', msg2Id);
         }
 
     };
@@ -62,6 +63,7 @@ $(document).ready(function () {
 
 });
 const messageId = '#id_impev_msg';
+const msg2Id = '#id_msg2';
 const formId = '#id_impevform';
 userIsIntern = false; // todo
 
@@ -97,7 +99,7 @@ let sourceUrl = '';
 function extract_text() {
     sourceUrl = $("#id_source_url").val();
     const msgtxt = 'reads text from website …'
-    messageHandling(messageId, undefined, msgtxt );
+    messageHandling(messageId, undefined, msgtxt, null, msg2Id);
     window.scrollTo(0, 0);
 
     $.ajax({ // initialize an AJAX request
@@ -107,7 +109,7 @@ function extract_text() {
             'sourceurl': sourceUrl
         },
         success: function (response) { // `data` is the return of the
-            var msg = response.message;
+            //var msg = response.message;
             if (response.is_valid == "true") {
                 var text_str = response.stext;
                 var stitle = response.stitle;
@@ -127,13 +129,13 @@ function extract_text() {
             }
             var parse_res = response.parse_res;
             $("#id_result_parse_html").val(parse_res);
-            $(messageId).html(msg);
+            messageHandling(messageId, response, null, null, msg2Id);
             $('#div_main_fields').fadeIn("slow");
 
         },
         error: function () {
             const msgtxt = 'There was an error reading the article. You can save the impact event anyways.';
-            messageHandling(messageId, undefined, msgtxt, 'error');
+            messageHandling(messageId, undefined, msgtxt, 'error', msg2Id);
             $('#div_main_fields').fadeIn("slow");
         }
 

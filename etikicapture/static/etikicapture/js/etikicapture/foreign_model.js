@@ -66,7 +66,7 @@ function fModelClick (){
                     //fModelClick();
                 },
                 error: function () {
-                    $("#id_impev_msg").html('there was an error');
+                    messageHandling(messageId, undefined, 'there was an error', 'error', msg2Id);
                 }
 
             });
