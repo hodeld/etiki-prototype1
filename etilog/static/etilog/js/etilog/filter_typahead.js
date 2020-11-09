@@ -115,22 +115,22 @@ function tAwHeaderOpt(optDict, title) {
     return newOptDict
 }
 
-var compTa = new getTypeaheadOpt('company', companies, limit_sugg);
+var compTa = new getTypeaheadOpt('company', limit_sugg);
 var compTaH = new tAwHeaderOpt(compTa, 'Companies');
 
-let industryTa = new getTypeaheadOpt('industry', industries, limit_sugg);
+let industryTa = new getTypeaheadOpt('industry', limit_sugg);
 let industryTaH = new tAwHeaderOpt(industryTa, 'Industries');
 
-var refTa = new getTypeaheadOpt('reference', references, limit_sugg);
+var refTa = new getTypeaheadOpt('reference', limit_sugg);
 var refTaH = new tAwHeaderOpt(refTa, 'Where was it published');
 
-var countriesTa = new getTypeaheadOpt('country', countries, limit_sugg);
+var countriesTa = new getTypeaheadOpt('country', limit_sugg);
 var countriesTaH = new tAwHeaderOpt(countriesTa, 'Countries');
 
-var tagsTa = new getTypeaheadOpt('tags', tags, limit_sugg);
+var tagsTa = new getTypeaheadOpt('tags', limit_sugg);
 var tagsTaH = new tAwHeaderOpt(tagsTa, 'Topics');
 
-let refExcTa = new getTypeaheadOpt('reference_exc', references, 5);
+let refExcTa = new getTypeaheadOpt('reference_exc', 5);
 
 
 

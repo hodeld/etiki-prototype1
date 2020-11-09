@@ -70,7 +70,9 @@ function hide_img_vid(idStr='id_articleshow') {
     $(articleid + 'svg').hide();
 }
 
-function messageHandling (msgId, response = null, msg='', msgcls = null){  //mainly error
+function messageHandling (msgId, response = null, msg='',
+                          msgcls = null,
+                          msg2Id=undefined){  //mainly error
     if (response) {
         msg = response.message;
         if (response.message_tag) {
@@ -83,6 +85,17 @@ function messageHandling (msgId, response = null, msg='', msgcls = null){  //mai
         $(msgId).removeClass('error');
     }
     $(msgId).html(msg);
+    if (msg2Id){
+        let msg2 = null;
+        if (response) {
+            msg2 = response.message2;
+        }
+        if (msg2) {
+            $(msg2Id).html(msg2);
+        } else {
+            $(msg2Id).html('');
+        }
+    }
 }
 
 

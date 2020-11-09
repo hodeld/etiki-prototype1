@@ -10,6 +10,7 @@ from django.urls import reverse
 from etikihead.forms import ContactForm
 
 # Create your views here.
+from etikihead.models import ToDo
 from etilog.forms.forms_filter import NewSource
 from etilog.models import FrequentAskedQuestions
 
@@ -61,6 +62,11 @@ def about(request):
 def faq(request):
     faqs = FrequentAskedQuestions.objects.all().order_by('question')
     return render(request, 'etikihead/faq.html', {'faqs': faqs})
+
+
+def todo(request):
+    todos = ToDo.objects.all().order_by('name')
+    return render(request, 'etikihead/todo.html', {'todos': todos})
 
 
 def startinfo(request):
