@@ -95,8 +95,7 @@ def get_filterdict(request):
 
 
 def filter_queryset(filter_dict):
-    # todo filter IE's with user (only registered users)
-    qs = ImpactEvent.objects.all()  # caching this does not help as will be filtered -> new hit in DB
+    qs = ImpactEvent.objects.exclude(user=None)  # caching this does not help as will be filtered -> new hit in DB
 
     filter_method = {'country': f_country_idlist,
                      'reference': f_multiple,
