@@ -4,9 +4,9 @@ from django import forms
 
 from etilog.forms.fields_suggestions import RowTopics
 
-label_dict = {'tags': 'Frequent Searched Topics',
-              'company': 'Frequent Searched Companies',
-              'industry': 'Frequent Searched Industries'
+label_dict = {'tags': 'Frequently searched topics',
+              'company': 'Frequently searched companies',
+              'industry': 'Frequently searched industries'
               }
 nr_inst_dict = {'tags': 10,
                 'company': 14,
