@@ -36,3 +36,7 @@
 #modalFullArticle .fullarticleheader {
     background-color: var(--read_bckgrnd);
 }
+
+.text-vote{
+    font-size: 1.25rem;
+}

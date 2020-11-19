@@ -1,38 +1,45 @@
 <!--no javascript for parsing to json -->
-<div class="div_iedetails d-flex flex-wrap">
+<div class="div_iedetails row">
 
-    {% for column, cell in row.items %}
-        {% if column.name == 'summary' %}
-            <div id="div_id_{{ column.header }}" class="div_iedetail {{ column.attrs.div_class }} col-12">
-                <label for="id_{{ column.header }}" class="detail_label">
-                    {{ column.header }}
-                </label>
 
-                <div class=""><h6 class="iedetail" id="id_{{ column.header }}">{{ cell }} </h6>
+    <div class="col-10 col-sm-11 d-flex flex-wrap">
+
+        {% for column, cell in row.items %}
+            {% if column.name == 'summary' %}
+                <div id="div_id_{{ column.header }}" class="div_iedetail {{ column.attrs.div_class }} col-12">
+                    <label for="id_{{ column.header }}" class="detail_label">
+                        {{ column.header }}
+                    </label>
+
+                    <div class=""><h6 class="iedetail" id="id_{{ column.header }}">{{ cell }} </h6>
+                    </div>
                 </div>
-            </div>
-        {% elif column.name == 'language' %}
-            <div id="div_id_{{ column.header }}" class="div_iedetail {{ column.attrs.div_class }} col-12">
-                <label for="id_language" class="detail_label">
-                    Article is in {{ cell }}
-                </label>
-            </div>
-
-        {% else %}
-
-
-            <div id="div_id_{{ column.header }}" class="div_iedetail {{ column.attrs.div_class }} col-12 col-md-6">
-                <label for="id_{{ column.header }}" class="detail_label">
-                    {{ column.header }}
-                </label>
-
-                <div class=""><h6 class="iedetail" id="id_{{ column.header }}">{{ cell }} </h6>
+            {% elif column.name == 'language' %}
+                <div id="div_id_{{ column.header }}" class="div_iedetail {{ column.attrs.div_class }} col-12">
+                    <label for="id_language" class="detail_label">
+                        Article is in {{ cell }}
+                    </label>
                 </div>
-            </div>
-        {% endif %}
 
-    {% endfor %}
+            {% else %}
 
+
+                <div id="div_id_{{ column.header }}" class="div_iedetail {{ column.attrs.div_class }} col-12 col-md-6">
+                    <label for="id_{{ column.header }}" class="detail_label">
+                        {{ column.header }}
+                    </label>
+
+                    <div class=""><h6 class="iedetail" id="id_{{ column.header }}">{{ cell }} </h6>
+                    </div>
+                </div>
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+    <div class="col-2 col-sm-1">
+        {% include 'usermgmt/relevance_vote.html' %}
+    </div>
 
 </div>
-    {% include 'etilog/impev_details/impev_show_article_preview.html' %}
+{% include 'etilog/impev_details/impev_show_article_preview.html' %}

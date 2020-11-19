@@ -34,12 +34,15 @@
     const industry_url = "{% url 'etilog:load_jsondata' modelname='industry' %}";
 
     const companies_all_url = "{% url 'etilog:load_jsondata' modelname='company_all' %}";
+    const vote_relevance = "{% url 'usermgmt:relevance_vote' %}";
 </script>
 
 <!-- tagsinput and typeahead -->
 <script src="{% static 'etilog/js/etilog/tagsinput.js' %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script>
-    {# needed for typaahead #}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script>
-    <!-- jquery.min -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js"></script>
+{# needed for typaahead #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.min.js"></script>
+<!-- jquery.min -->
 <script src="{% static 'etilog/js/base_typeahead.js' %}"></script>
+<!-- usermgmt -->
+<script src="{% static 'usermgmt/js/base_user.js' %}"></script>

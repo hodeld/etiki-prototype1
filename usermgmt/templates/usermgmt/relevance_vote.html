@@ -1,0 +1,14 @@
+
+<div class="vote-relevance d-flex justify-content-center flex-wrap" data-ie-id="{{ ie_id }}">
+        <button class="btn-vote"  aria-pressed="false" aria-label="Up vote"
+                onclick="voteRelevance(this, 1);">
+            <i class="fas fa-lg fa-caret-up"></i>
+        </button>
+
+        <div class="text-vote" id="vote_text{{ ie_id }}" itemprop="upvoteCount" data-value="0">0</div>
+        <button class="btn-vote"  aria-pressed="false" aria-label="Down vote"
+        onclick="voteRelevance(this, -1);">
+            <i class="fas fa-lg fa-caret-down"></i>
+        </button>
+
+</div>
