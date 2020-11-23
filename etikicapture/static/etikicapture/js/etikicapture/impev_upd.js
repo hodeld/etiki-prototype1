@@ -115,16 +115,13 @@ function extract_text() {
                 var stitle = response.stitle;
                 var sdate = response.sdate;
                 const shtml = response.shtml;
-                const html_article = response.html_article;
 
                 $("#id_date_text").val(sdate);
                 $("#id_article_text").html(text_str);
                 $("#id_article_title").val(stitle);
                 $("#id_article_html").val(shtml);
 
-                fullArticle(html_article);
                 predictImpEv(response);
-
 
             }
             var parse_res = response.parse_res;

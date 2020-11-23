@@ -50,9 +50,6 @@ class ImpactEventForm(forms.ModelForm):
 
             #first hidden
             Div(
-                StrictButton('Article Preview', css_class='btn btn-sm btn-info',
-                       data_toggle="modal", data_target="#modalFullArticle",
-                       ),
                 ImpEvMainFields(request),
 
                 Field('comment', rows=3),
@@ -190,7 +187,7 @@ class ImpEvMainFields(Layout):
                           placeholder=_PH_COUNTRY,
                           addmodel=False,
                           ),
-            Field('language', 'col-12',
+            Field('language', css_class='col-12',
                           placeholder=_PH_LANGUAGE,
                           addmodel=False,
                           ),

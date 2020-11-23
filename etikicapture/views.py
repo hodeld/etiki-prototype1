@@ -60,8 +60,6 @@ def extract_text_from_url(request):
             d_dict['byline'] = byline[:150]
         d_dict['shtml'] = html_simple
 
-        #for preview
-        d_dict['html_article'] = html_article
 
         try:
             p_dict = analyze_text(text_str)
