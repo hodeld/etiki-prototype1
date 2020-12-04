@@ -25,9 +25,18 @@ function drawCharts() {
         });
     }
 }
+const etiki_colors = get_colors();
+const chartoptions = {
+        pieHole: 0.4,
+        backgroundColor: 'transparent',
+        legend: {position: 'none'},
+        title: {position: 'none'},
+        colors: etiki_colors,
+        chartArea: {'height': '100%'},
+    };
 
 function drawChart(co) {
-    var etiki_colors = get_colors();
+
     var eleId = 'company-chart-' + co.pk;
     var ele = document.getElementById(eleId);
 
@@ -39,21 +48,24 @@ function drawChart(co) {
         ['Negative', Number(co.num_neg)],
     ]);
 
-    var chartoptions = {
-        pieHole: 0.4,
-        backgroundColor: 'transparent',
-        legend: {position: 'none'},
-        title: {position: 'none'},
-        colors: etiki_colors,
-        chartArea: {'height': '100%'},
-    };
+    let chartopts = {...chartoptions}
+    let tot_num = co.num_pos + co.num_con + co.num_neg;
+    let prz = 100;
+    if (tot_num<10){
+        prz = parseInt(tot_num/10*100)
+    }
+    let size_prz = '{}%';
+    let prz_str = prz.toString()
+    size_prz = size_prz.replace('{}', prz_str)
+    chartopts.chartArea = {'height': size_prz};
+
 
     var chart = new google.visualization.PieChart(ele);
-    chart.draw(chartdata, chartoptions);
+    chart.draw(chartdata, chartopts);
 }
 
 
-function size_ratings(ie_id) {
+function size_ratings(ie_id) { // not used
     var parId = '#company-chart '; //ie_id
     var fullwid = $(parId).width();
     var pos_num = Number(comp_details[ie_id][0]);
