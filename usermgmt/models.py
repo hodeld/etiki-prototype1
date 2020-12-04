@@ -13,6 +13,8 @@ class Privilege(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     privilege_points = models.PositiveIntegerField(default=1)
+    agree_terms = models.BooleanField(default=True)
+    agree_privacy = models.BooleanField(default=True)
 
 
 @receiver(post_save, sender=User)
