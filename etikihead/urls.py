@@ -11,7 +11,8 @@ urlpatterns = [
 
     path('', views.entry_mask, name='entrymask'),
     path('contact/', views.contact, name='contact'),
-    path('privacy/', views.legal, name='legal'),
+    path('privacy/', views.privacy, name='privacy'),
+    path('terms/', views.legal, name='legal'),
     path('about/', views.about, name='about'),
     path('faq/', views.faq, name='faq'),
     path('todo/', views.todo, name='todo'),

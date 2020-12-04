@@ -52,7 +52,11 @@ def entry_mask(request):
 
 
 def legal(request):
-    return render(request, 'etikihead/legal.html', )
+    return render(request, 'etikihead/terms.html', )
+
+
+def privacy(request):
+    return render(request, 'etikihead/privacy.html', )
 
 
 def about(request):

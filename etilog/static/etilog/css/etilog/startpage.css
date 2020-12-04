@@ -27,6 +27,9 @@
 #divTopics {
     display: none;
 }
+ #id_disclaimer.landing{
+     display: none;
+ }
 
 .carousel {
    height: 200px; /* 5 rows of topic_links */
