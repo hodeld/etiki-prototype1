@@ -59,6 +59,10 @@ def privacy(request):
     return render(request, 'etikihead/privacy.html', )
 
 
+def impressum(request):
+    return render(request, 'etikihead/impressum.html', )
+
+
 def about(request):
     return render(request, 'etikihead/about.html', )
 
