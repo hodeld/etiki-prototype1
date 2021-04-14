@@ -4,6 +4,7 @@ Etiki Webserver using django. Etiki – Wikipedia for corporate sustainability a
 ## Dependencies
 - Python >= 3.7
 - django >= 2.2.9
+- NodeJS >= 6.9.0
 
 ## Apps
 ### etilog
@@ -25,8 +26,10 @@ Etiki Webserver using django. Etiki – Wikipedia for corporate sustainability a
 - internal NLP endpoint
 
 ## Installation
-- Setup django
-- install packages using pip: `pip install -r requirements.txt`
+- Install django
+- Install NodeJS
+- install node packages in package.json: `npm install`
+- install python packages using pip: `python -m pip install -r requirements.txt`
 
-## Run in Dev environment
-Using pip: `python EtikiPtype1/manage.py runserver 0.0.0.0:8000`
+## Run in development environment
+- `python EtikiPtype1/manage.py runserver 0.0.0.0:8000`
