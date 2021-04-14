@@ -26,10 +26,12 @@ Etiki Webserver using django. Etiki – Wikipedia for corporate sustainability a
 - internal NLP endpoint
 
 ## Installation
-- Install django
-- Install NodeJS
-- install node packages in package.json: `npm install`
-- install python packages using pip: `python -m pip install -r requirements.txt`
+1. Install NodeJS
+2. install node packages in package.json: `npm install`
+3. install python packages using pip: `python -m pip install -r requirements.txt`
+4. Setup database 
+5. Define env variables (database connection, memcache server, …)
+6. run migrations `python EtikiPtype1/manage.py migrate`
 
 ## Run in development environment
 - `python EtikiPtype1/manage.py runserver 0.0.0.0:8000`
