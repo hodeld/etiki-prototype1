@@ -132,7 +132,8 @@ def load_ie_details(qs, single_ie=False):
             text_prev = None  # better: without text
         html_fields = render_to_string('etilog/impev_details/impev_show_fields.html', {'row': row,
                                                                                        'rec': rec,  # can be deleted
-                                                                                       'text_prev': text_prev
+                                                                                       'text_prev': text_prev,
+                                                                                       'ie_id': id_ie,
                                                                                        })
 
         if single_ie:

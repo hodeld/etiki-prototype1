@@ -88,3 +88,13 @@ def create_user_save(request):
         error_handling(form, d_dict)
     return HttpResponse(json.dumps(d_dict), content_type='application/json', status=status_code)
 
+
+def relevance_vote(request):
+    ie_id = request.GET.get('ie_id', None)
+    if ie_id is None:
+        return False
+    ie_id = int(ie_id)
+    vote = int(request.GET.get('vote', 0))
+    d_dict = {'ie_id': ie_id,
+              'vote_count': 2 + vote}
+    return HttpResponse(json.dumps(d_dict), content_type='application/json')
