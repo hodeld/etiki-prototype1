@@ -49,12 +49,12 @@
 }
 
 /* buttons select outline colors; border-color in both cases needed as mdb uses !important*/
-.btn-outline-info {
+.btnselect.btn-outline-info {
     color: var(--etikigreen) !important;
     border-color: var(--etikigreen) !important;
 }
 
-.btn-outline-info:not([disabled]):not(.disabled).active {
+.btnselect.btn-outline-info:not([disabled]):not(.disabled).active {
     background-color: var(--etikigreen) !important;
     color: white !important;
     border-color: var(--etikigreen) !important;
@@ -145,14 +145,6 @@
     background-color: var(--etikilight);
 }
 
-.btn-vote, .btn-vote:focus{
-    color: var(--etikigreen) !important;
-    font-size: 1.25rem;
-    border: none;
-    background-color: transparent;
-    outline: none; /* in input blue shadow is outline */
-}
-
 /* not used at the moment */
 
 .btn-outline-default:not([disabled]):not(.disabled) {
@@ -165,4 +157,3 @@
     border-color: var(--foreground) !important;
     color: white !important;
 }
-

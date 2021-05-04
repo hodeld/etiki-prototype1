@@ -15,7 +15,5 @@ urlpatterns = [
     path(user_prefix + 'create/', views.create_user, name='create_user'),
     path(user_prefix + 'create/save', views.create_user_save, name='create_user_save'),
 
-    path('relevance_vote/', views.relevance_vote, name='relevance_vote'),
-
 
 ]
