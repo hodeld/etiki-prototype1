@@ -16,8 +16,6 @@ import sys
 import django_heroku
 from django.urls import reverse_lazy
 
-from etikiptype1.settings.secrets import *
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,13 +23,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+#used for heroku local: (in .env file)
 SECRET_KEY = os.getenv('SECRET_KEY', 'Optional default value')
 
+db_user = os.getenv('DB_USER', 'Optional default value')
+db_password = os.getenv('DB_PW', 'Optional default value')
+db_host = os.getenv('DB_HOST', 'Optional default value')
+db_port = os.getenv('DB_PORT', 'Optional default value')
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 local_app = os.getenv('LOCAL_APP', False)
 
 ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -43,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # third party apps
+    #third party apps
     'django_tables2',
     'bootstrap4',
     'bootstrap_datepicker_plus',
@@ -73,7 +78,7 @@ ROOT_URLCONF = 'etikiptype1.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # for custom templates
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], #for custom templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,13 +93,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'etikiptype1.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'etiki-local',  # 'etikiprtype-1-prealpha', # 'etiki-local',
+        'NAME': 'etiki-local', #'etikiprtype-1-prealpha', # 'etiki-local',
         'USER': db_user,
         'PASSWORD': db_password,
         'HOST': db_host,
@@ -161,6 +167,8 @@ def get_caches():
 
 
 CACHES = get_caches()
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -174,37 +182,39 @@ USE_L10N = True
 
 USE_TZ = True
 
-DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"  # 'django_tables2/bootstrap-responsive.html'
+
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html" #'django_tables2/bootstrap-responsive.html'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 BOOTSTRAP4 = {
-    # already includes jquery:
+    #already includes jquery:
     'include_jquery': 'full',
     "css_url": {
         "href": "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
-    },
+        },
     "javascript_url": {
         "url": "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
-    },
+        },
     "jquery_url": {
         "url": "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
-    },
-    # default:
-    # "css_url": {
+        },
+    #default:
+    #"css_url": {
     #    "href": "https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css",
     #    "integrity": "sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB",
     #    "crossorigin": "anonymous",
-    # },
+    #},
 }
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  # /Users/…/etikiptype1/media
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')  #/Users/…/etikiptype1/media
 MEDIA_URL = '/media/'
-# needed for debug = False -> test if needs to under heroku setting
+#needed for debug = False -> test if needs to under heroku setting
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -212,71 +222,13 @@ spath_sys = os.path.join(base_dir, 'node_modules/ReadabiliPy')
 sys.path.append(spath_sys)
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST', L_EMAIL_HOST)
-EMAIL_PORT = os.getenv('EMAIL_PORT', L_EMAIL_PORT)
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', L_EMAIL_HOST_USER)
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', L_EMAIL_HOST_PASSWORD)
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'email_host')
+EMAIL_PORT = os.getenv('EMAIL_PORT', 'email_port')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'email_host_user')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'email_host_pw')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# defines static root, logger, etc.
+#defines static root, logger, etc.
 django_heroku.settings(locals())
-
-if DEBUG:
-
-    # in order to find node (in readabilipy), wkhtmltopdf executable
-    os.environ['PATH'] = '/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
-
-    # for query inspect
-    MIDDLEWARE += (
-        'qinspect.middleware.QueryInspectMiddleware',
-    )
-
-    # Whether the Query Inspector should do anything (default: False)
-    QUERY_INSPECT_ENABLED = True
-    # Whether to log duplicate queries (default: False)
-    QUERY_INSPECT_LOG_QUERIES = True
-    # Whether to log queries that are above an absolute limit (default: None - disabled)
-    QUERY_INSPECT_ABSOLUTE_LIMIT = 20  # in milliseconds
-    # Whether to include tracebacks in the logs (default: False)
-    # QUERY_INSPECT_LOG_TRACEBACKS = True
-
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'formatters': {
-            'verbose': {
-                'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-                'datefmt': "%d/%b/%Y %H:%M:%S"
-            },
-            'simple': {
-                'format': '%(levelname)s %(message)s'
-            },
-        },
-        'handlers': {
-            'file': {
-                'level': 'DEBUG',
-                'class': 'logging.FileHandler',
-                'filename': os.path.join(BASE_DIR, 'algoterm.log'),
-                'formatter': 'verbose',
-                # 'maxBytes': 1024 only for 'class': 'logging.handlers.RotatingFileHandler',
-            },
-            # for query_inspect
-            'console': {
-                'level': 'DEBUG',
-                'class': 'logging.StreamHandler',
-            },
-        },
-        'loggers': {
-            # replace normal django logger in console!
-            # 'django': { 'handlers':['console'], 'propagate': True, 'level':'DEBUG',},
-
-            # 'algoterm': {'handlers': ['file'], 'level': 'DEBUG',},
-            'qinspect': {
-                'handlers': ['console'],
-                'level': 'DEBUG',
-                'propagate': True,
-            },
-        }
-    }
