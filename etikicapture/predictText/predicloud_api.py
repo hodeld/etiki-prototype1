@@ -56,6 +56,7 @@ def get_tendency(res_d, threshold=0.3):
 
 
 def analyze_text(text):
+    return False  # linode delted 8.12.21
     url = os.getenv('PREDICLOUD_URL')
     apitoken = os.getenv('PREDICLOUD_TOKEN')
     headers = {'apitoken': apitoken}
