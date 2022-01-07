@@ -25,5 +25,6 @@ regex==2019.8.19
 requests==2.22.0
 six==1.12.0
 sqlparse==0.3.0
+#django-queryinspect==1.1.0 only local
 
 
